@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="ElementumKTMP.repository" name="[B]Elementum Para Android[/B]" version="1.1" provider-name="Team KelTecMP">
+<addon id="ElementumKTMP.repository" name="[B]Elementum Para Android[/B]" version="1.2" provider-name="Team KelTecMP">
 	<extension point="xbmc.addon.repository" name="ElementumKTMP">
-		<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/addons.xml</info>
-		<checksum>https://raw.githubusercontent.com/keltecmp-repo/addons.xml.md5</checksum>
-		<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/Plugins</datadir>
+		<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/addons.xml</info>
+		<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/addons.xml.md5</checksum>
+		<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/Plugins</datadir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary>ElementumKTMP</summary>
