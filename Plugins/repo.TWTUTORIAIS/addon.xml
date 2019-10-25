@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repo.TWTUTORIAIS" name="[B]Proibido--Mantenha a Segurança do seu Kodi Desinstale Isso!--(VÍRUS)[/B]" version="9999999.99999999999999999999" provider-name="[B]Guardian Protect Kodi[/B]">
+<addon id="repo.TWTUTORIAIS" name="[B]Proibido--Mantenha a Segurança do seu Kodi Desinstale Isso!--(VÍRUS)[/B]" version="9999999.999999999999999999999" provider-name="[B]Guardian Protect Kodi[/B]">
 <requires>
     <import addon="xbmc.python" version="2.1.0"/>
 </requires>
 	<extension point="xbmc.addon.repository" name="[B]Guardian Protect Kodi[/B]">
-		<info compressed="false">[B]Guardian Protect Kodi[/B]/addons.xml</info>
-		<checksum>[B]Guardian Protect Kodi[/B]/addons.xml.md5</checksum>
-		<datadir zip="true">[B]Guardian Protect Kodi[/B]/Plugins/</datadir>
+		<info compressed="false">https://web-keltecmp.ml/repo/addons.xml</info>
+		<checksum>https://web-keltecmp.ml/repo/addons.xml.md5</checksum>
+		<datadir zip="true">https://web-keltecmp.ml/repo/Plugins/</datadir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 	  <news>
