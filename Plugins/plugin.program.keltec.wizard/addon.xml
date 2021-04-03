@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.program.keltec.wizard" name="[B][COLOR limegreen]KelTec [/COLOR]Open Wizard[/B] Matrix" version="1.0.0+matrix.1" provider-name="Team KelTec Media Play">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0" />
+        <import addon="script.module.requests" />
+        <import addon="script.module.six" />
+        <import addon="script.kodi.android.update" optional="true" version="1.1.7" />
+        <import addon="script.speedtester" optional="true" version="1.1.2" />
+    </requires>
+    
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>executable</provides>
+    </extension>
+    
+    <extension point="xbmc.service" library="startup.py" start="startup" />
+    
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">[COLOR limegreen]Open[/COLOR]Wizard</summary>
+        <description lang="en">[COLOR limegreen]Open[/COLOR]O Wizard oferece muitos recursos de manutenção, salvamento seletivo de dados complementares e instalações de compilação automatizadas.\nInstalador KelTe-Media-Play Wizard, Para Versão do Kodi v19_Matrix, não aceite Imitações.</description>
+        <disclaimer lang="en">[COLOR darkgrey][B] KelTec-Media-Play[/COLOR][COLOR crimson] O autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[/COLOR][COLOR darkgrey] KelTec-Media-Play o Futuro é Agora![/COLOR][/B]</disclaimer>
+		<platform>all</platform>
+        <reuselanguageinvoker>false</reuselanguageinvoker>
+        <source>https://www.keltecmp.net/</source>
+        <news>
+Add-on KelTec Open Wizard
+1.0.0
+ - Initial Commit
+        </news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.png</fanart>
+        </assets>
+    </extension>
+</addon>
