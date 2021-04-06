@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
 
-<addon id="plugin.video.torrent.play.matrix" name="[B][COLOR white]Torrent[COLOR darkorange] - [/COLOR][COLOR darkgreen]Play[/COLOR][/B]" version="1.0.0+Matrix1" provider-name="Team KelTec Media'Play & Team Zorel(OnePlay)">
+<addon id="plugin.video.torrent.play.matrix" name="[B][COLOR white]Torrent[/COLOR][COLOR darkorange] - [/COLOR][COLOR darkgreen]Play[/COLOR][/B]" version="1.0.0+Matrix1" provider-name="Team KelTec Media'Play & Team Zorel(OnePlay)">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
 		<import addon="script.module.beautifulsoup4"/>
@@ -10,9 +10,9 @@
         <provides>video</provides>
     </extension>
     <extension point="xbmc.addon.repository" name="[B]KelTe-Medi-Play Repositório[/B]">
-		<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/addons.xml</info>
-		<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/addons.xml.md5</checksum>
-		<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/Plugins</datadir>
+		<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
+		<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
+		<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
 		<hashes>false</hashes>
 	</extension>
     <extension point="xbmc.addon.metadata">
@@ -24,10 +24,14 @@
         <forum></forum>
         <license>GNU GENERAL PUBLIC LICENSE. Version 3.</license>
         <platform>all</platform>
-		<assets>
-			<icon>icon.png</icon>
-			<fanart>fanart.jpg</fanart>
-		</assets>
+	<assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+    </assets>
+	<news>
+v1.0.0.matrix.1
+- Addon Torrent Play
+	</news>
     </extension>
 </addon>
 
