@@ -1,4 +1,4 @@
-﻿# -*- coding: UTF-8 -*-if 64 - 64: i11iIiiIii
+﻿# -*- coding: UTF-8 -*-
 import sys
 try :
  import cookielib

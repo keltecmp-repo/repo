@@ -1,4 +1,4 @@
-﻿# encoded by pyprotect
+# encoded by pyprotect
 # https://keltecmp.net/pyprotect
 #checkintegrity101219
 # Update : 06.04.21

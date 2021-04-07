@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.torrent.play.matrix" name="[B][COLOR white]Torrent[/COLOR][COLOR darkorange] - [/COLOR][COLOR darkgreen]Play[/COLOR][/B]" version="1.0.0+Matrix1" provider-name="Team KelTec Media'Play & Team Zorel(OnePlay)">
+<addon id="plugin.video.torrent.play.matrix" name="[B][COLOR white]Torrent[/COLOR][COLOR darkorange] - [/COLOR][COLOR darkgreen]Play[/COLOR][/B]" version="1.0.0+matrix.1" provider-name="Team KelTec Media'Play e Team Zorel OnePlay">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
 		<import addon="script.module.beautifulsoup4"/>
@@ -27,7 +27,7 @@
         <fanart>fanart.jpg</fanart>
     </assets>
 	<news>
-v1.0.0.matrix.1
+v1.0.0+matrix.1
 - Addon Torrent Play
 	</news>
     </extension>
