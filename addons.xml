@@ -69,7 +69,7 @@ v1.0.0+matrix.1
     </extension>
 </addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.1+matrix.1" provider-name="Team KelTec"> 
+<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.2+matrix.1" provider-name="Team KelTec"> 
 <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests"/>
@@ -80,9 +80,9 @@ v1.0.0+matrix.1
 	<provides>video</provides>
 </extension>
 <extension point="xbmc.addon.repository" name="[B]KelTe-Medi-Play Repositório[/B]">
-	<info compressed="false">https://keltecplay.ml/rp/addons.xml</info>
-	<checksum>https://keltecplay.ml/rp/addons.xml.md5</checksum>
-	<datadir zip="true">https://keltecplay.ml/rp/Plugins</datadir>
+	<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
+	<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
+	<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
 </extension>   
 <extension point="xbmc.addon.metadata">
 	<summary lang="en">TV, Movies, Series, Drawings Online - KelTec Media'Play Official Repository</summary>
@@ -99,12 +99,15 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
 [COLOR crimson]O  autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] KelTec-Media-Play[/B] [/COLOR]</disclaimer>
     <platform>all</platform>
 	<assets>
-       <icon>icon.png</icon>
+       <icon>icon.gif</icon>
        <fanart>fanart.jpg</fanart>
     </assets>
 	<news>
-v1.0.0.matrix.1
+v1.0.1.matrix.1
 - Addon KelTec Media Play
+v1.0.2.matrix.1
+- Atualização de Repositório Oficial
+- Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
 	</news>
 </extension>
 </addon>

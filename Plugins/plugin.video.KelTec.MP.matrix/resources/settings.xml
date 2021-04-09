@@ -21,6 +21,7 @@
 		<setting label="[COLOR dimgrey][B]de hospedagem.[/B][/COLOR]" type="bool"/>
 		<setting label="[COLOR dimgrey][B]Aviso: Pode demorar a carregar[/B][/COLOR]" type="bool"/>
 		<setting label="[COLOR dimgrey][B]Utilize VPN se a operadora bloqueia o IPTV.[/B][/COLOR]" type="bool"/>
+		<setting label="ssl" id="verify_ssl" type="bool" default="true"/>
 </category>
 <category label="Canais">
 		<setting label="[COLOR white]Configurações dos Canais:[/COLOR]" type="lsep"/>
