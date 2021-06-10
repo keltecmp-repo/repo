@@ -44,15 +44,13 @@ v1.0.0
   </extension>
 </addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.2+matrix.1" provider-name="Team KelTec"> 
-<requires>
+<addon id="plugin.video.KelTecPlayTv" name="[B][COLOR white]KeTec[/COLOR] [COLOR crimson]Play TV[/COLOR][/B]" version="1.0.2+matrix" provider-name="Team KelTec">
+  <requires>
     <import addon="xbmc.python" version="3.0.0"/>
-    <import addon="script.module.requests"/>
-    <import addon="script.module.simplejson"/>
-	<import addon="script.module.kodi-six" />
-</requires>  
-<extension point="xbmc.python.pluginsource" library="default.py">
-	<provides>video</provides>
+    <import addon="script.module.requests" version="2.22.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
 </extension>
 <extension point="xbmc.addon.repository" name="[B]KelTe-Medi-Play Repositório[/B]">
 	<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
@@ -72,15 +70,16 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
     <disclaimer lang="en">The author is in no way affiliated with Kodi, Team Kodi or the XBMC Foundation. This is a non-profit resource.</disclaimer>
 	<disclaimer lang="pt">[COLOR darkgrey][B] KelTec-Media-Play[/B][/COLOR]
 [COLOR crimson]O  autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] KelTec-Media-Play[/B] [/COLOR]</disclaimer>
+    <language>en de</language>
     <platform>all</platform>
 	<assets>
        <icon>icon.gif</icon>
        <fanart>fanart.jpg</fanart>
     </assets>
 	<news>
-v1.0.1.matrix.1
-- Addon KelTec Media Play
-v1.0.2.matrix.1
+v1.0.2.+matrix
+- Atualização de Grade
+- Addon KelTec Play TV
 - Atualização de Repositório Oficial
 - Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
 	</news>
