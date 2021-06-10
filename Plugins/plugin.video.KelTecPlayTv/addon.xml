@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.KelTecPlayTv" name="KelTec Play Tv" version="1.0.1+matrix" provider-name="Team KelTec">
+<addon id="plugin.video.KelTecPlayTv" name="[B][COLOR white]KeTec[/COLOR] [COLOR crimson]Play TV[/COLOR][/B]" version="1.0.2+matrix" provider-name="Team KelTec">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests" version="2.22.0"/>
@@ -32,7 +32,8 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
        <fanart>fanart.jpg</fanart>
     </assets>
 	<news>
-v1.0.1.+matrix
+v1.0.2.+matrix
+- Atualização de Grade
 - Addon KelTec Play TV
 - Atualização de Repositório Oficial
 - Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
