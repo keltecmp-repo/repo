@@ -1,4 +1,12 @@
 <settings>
+<category label="MENU DE VISUALIZAÇAO">	 
+		<setting label="SELECIONE PLAYER TORRENT:" type="lsep" />
+		<setting label="___________________________________________________________________________" type="lsep" />
+		<setting label="PLAYER TORRENT" id="torrent" type="enum" values="Elementum|Ace Stream(APK)|BitX Torrent Video Player(APK)" default="0" />
+		<!--setting id="local_roxplayer" type="file" source="files" label="localize o arquivo 'ROX Player.lnk'" default="" visible="eq(-1,Rox Player)"/-->
+		<setting label="___________________________________________________________________________" type="lsep" />
+	    <setting id="makeGroups" type="text" label="30036" default="true" visible="True"/>		
+</category>
 <category label="Complementos">
 	    <setting label="[COLOR dimgrey]Configurações de Complemento:[/COLOR]" type="lsep"/>
 	    <setting label="Verificar Complementos" id="check_addon" type="bool" default="true" />
@@ -36,7 +44,7 @@
 		<setting label="Exibir Menu Adultos" id="adult" type="bool" default="false" />
 		<setting label="Exibir Canais Adultos (Lista M3U)" id="adult2" type="bool" default="false" />
 		<setting label="Tipo de Teclado (OK para trocar)" id="keyboard" type="enum" values="Númerico|Alfanúmerico" default="0" />
-		<setting label="Entre aqui para alterar senha" type="action" action="RunScript(plugin.video.testando2.matrix, SetPassword)"/>
+		<setting label="Entre aqui para alterar senha" type="action" action="RunScript(plugin.video.KelTec.MP.matrix, SetPassword)"/>
 		<setting label="[COLOR dimgrey][B]Senha padrão 0069[/B][/COLOR]" type="bool"/>
 </category>
 <category label="Outros">
@@ -44,7 +52,7 @@
     <setting label="Exibir Mensagem de Boas Vindas" id="mensagem1" type="bool" default="true" />	
     <setting label="Exibir Mensagem de Status" id="mensagem2" type="bool" default="true" />		
 	<setting label="Exibir Favoritos" id="favoritos" type="bool" default="false" />
-    <setting label="Entre aqui para limpar os favoritos" type="action" action="RunScript(plugin.video.testando2.matrix, limparFavoritos)"/>	
+    <setting label="Entre aqui para limpar os favoritos" type="action" action="RunScript(plugin.video.KelTec.MP.matrix, limparFavoritos)"/>	
 	<setting label="Executar Youtube" id="ytbmode" type="enum" values="Interno 1|Interno 2|Externo" default="1" />	
     <setting label="Use Miniaturas como Fanart" id="use_thumb" type="bool" default="false" />
 </category>
