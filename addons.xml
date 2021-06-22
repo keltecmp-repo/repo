@@ -156,7 +156,7 @@ v1.0.2+matrix.1
     </extension>
 </addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.3+matrix.1" provider-name="Team KelTec"> 
+<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.4+matrix.1" provider-name="Team KelTec"> 
 <requires>
     <import addon="xbmc.python" version="3.0.0"/>
 	<import addon="script.module.beautifulsoup4"/>	
@@ -192,10 +192,16 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
     </assets>
 	<news>
 v1.0.1.matrix.1
+- Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
 - Addon KelTec Media Play
 v1.0.2.matrix.1
 - Atualização de Repositório Oficial
-- Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
+v1.0.3.matrix.1
+- Adicionado ao add-on Torrent Play - Play tv
+v1.0.4.matrix.1
+- Melhorias no desempenho upgrade de arquivos base.-- Update 22-06-21  --
+
+
 	</news>
 </extension>
 </addon>
