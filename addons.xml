@@ -156,7 +156,7 @@ v1.0.2+matrix.1
     </extension>
 </addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.5+matrix.1" provider-name="Team KelTec"> 
+<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.6+matrix.1" provider-name="Team KelTec"> 
 <requires>
     <import addon="xbmc.python" version="3.0.0"/>
 	<import addon="script.module.beautifulsoup4"/>	
@@ -202,6 +202,8 @@ v1.0.4.matrix.1
 - Melhorias no desempenho upgrade de arquivos base.-- Update 22-06-21  --
 v1.0.5.matrix.1
 - Corrigido erro de instalação. -- Update 23-06-21  --
+v1.0.6.matrix.1
+- Corrigido iniciar do add-on. -- Update 01-07-21  --
 
 
 	</news>

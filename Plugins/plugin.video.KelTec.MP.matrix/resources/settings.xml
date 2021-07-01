@@ -2,7 +2,7 @@
 <category label="MENU DE VISUALIZAÇAO">	 
 		<setting label="SELECIONE PLAYER TORRENT:" type="lsep" />
 		<setting label="___________________________________________________________________________" type="lsep" />
-		<setting label="PLAYER TORRENT" id="torrent" type="enum" values="Elementum|Ace Stream(APK)|BitX Torrent Video Player(APK)" default="0" />
+		<setting label="PLAYER TORRENT" id="torrent" type="enum" values="Elementum" default="0" />
 		<!--setting id="local_roxplayer" type="file" source="files" label="localize o arquivo 'ROX Player.lnk'" default="" visible="eq(-1,Rox Player)"/-->
 		<setting label="___________________________________________________________________________" type="lsep" />
 	    <setting id="makeGroups" type="text" label="30036" default="true" visible="True"/>		
@@ -19,7 +19,7 @@
 	    <setting label="Senha" id="password" type="text" default="" enable="!eq(-2,false)" option="hidden"/>
 	    <setting label="Saida de Transmissão VIP" id="saida" type="enum" values="M3U8|TS" default="0" />
 	    <setting label="Exibir Menu VIP" id="exibirvip" type="bool" default="false" />
-		<setting label="Exibir Suporte Top (VIP)" id="suporte" type="bool" default="true" />
+		<setting label="Exibir Suporte Top (VIP)" id="suporte" type="bool" default="false" />
 </category>
 <category label="Proxy">
 		<setting label="[COLOR white]Opções do Proxy:[/COLOR]" type="lsep"/>
