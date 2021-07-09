@@ -44,48 +44,6 @@ v1.0.0
   </extension>
 </addon>
 
-<addon id="plugin.video.KelTecPlayTv" name="[B][COLOR white]KeTec[/COLOR] [COLOR crimson]Play TV[/COLOR][/B]" version="1.0.2+matrix" provider-name="Team KelTec">
-  <requires>
-    <import addon="xbmc.python" version="3.0.0"/>
-    <import addon="script.module.requests" version="2.22.0"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-    <provides>video</provides>
-</extension>
-<extension point="xbmc.addon.repository" name="[B]KelTe-Medi-Play Repositório[/B]">
-	<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
-	<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
-	<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
-</extension>   
-<extension point="xbmc.addon.metadata">
-	<summary lang="en">TV, Movies, Series, Drawings Online - KelTec Media'Play Official Repository</summary>
-	<summary lang="pt">TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play</summary>
-	<description lang="en">[COLOR orange] [B] KelTec Media Play [/ B] [/ COLOR] 
-	        [COLOR silver] The Add-on offers TV, Movies, Series, Online Drawings - KelTec Media'Play Official Repository, links that are fully functional and constantly
-updated NOTE: The creator of this Add-on does not host any content, we just reorganized, indexed it again, all content can be found on the internet with a simple search. [/ COLOR],</description>
-	<description lang="pt">TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play
-[COLOR darkorange][B]KelTec Media Play[/B] [/COLOR] 
-[COLOR silver]O Add-on oferece TV,Filmes,Series,Desenhos Online - Repositório Oficial KelTec Media'Play, links totalmente funcionais e constantemente
-atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reorganizamos, indexamos novamente, todo conteúdo pode ser encontrado na internet com busca simples.[/COLOR],</description>
-    <disclaimer lang="en">The author is in no way affiliated with Kodi, Team Kodi or the XBMC Foundation. This is a non-profit resource.</disclaimer>
-	<disclaimer lang="pt">[COLOR darkgrey][B] KelTec-Media-Play[/B][/COLOR]
-[COLOR crimson]O  autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] KelTec-Media-Play[/B] [/COLOR]</disclaimer>
-    <language>en de</language>
-    <platform>all</platform>
-	<assets>
-       <icon>icon.gif</icon>
-       <fanart>fanart.jpg</fanart>
-    </assets>
-	<news>
-v1.0.2.+matrix
-- Atualização de Grade
-- Addon KelTec Play TV
-- Atualização de Repositório Oficial
-- Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
-	</news>
-</extension>
-</addon>
-
 <addon id="plugin.program.keltec.wizard" name="[B][COLOR limegreen]KelTec [/COLOR]Open Wizard[/B] Matrix" version="1.0.0+matrix.1" provider-name="Team KelTec Media Play">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
@@ -120,49 +78,17 @@ Add-on KelTec Open Wizard
     </extension>
 </addon>
 
-<addon id="plugin.video.torrent.play.matrix" name="[B][COLOR white]Torrent[/COLOR][COLOR darkorange] - [/COLOR][COLOR darkgreen]Play[/COLOR][/B]" version="1.0.2+matrix.1" provider-name="Team KelTec Media'Play e Team Zorel OnePlay">
-    <requires>
-        <import addon="xbmc.python" version="3.0.0" />
-		<import addon="script.module.beautifulsoup4"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="YaP.py">
-        <provides>video</provides>
-    </extension>
-    <extension point="xbmc.addon.repository" name="[B]KelTe-Medi-Play Repositório[/B]">
-		<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
-		<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
-		<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
-		<hashes>false</hashes>
-	</extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en">Créditos Team ZOREL [COLOR crimson]Filmes Torrent - Series Torrent - [COLOR gold] (Dual-Audio) 1080P - 720P[/COLOR] OBS: Necessario repositório Vikings instalado no seu Kodi!</summary>
-        <description lang="en">[COLOR gold][B]Torrent[COLOR white] - [/COLOR]Play[/B][/COLOR][COLOR crimson], oferece Filmes e Series, de qualidade 4K, H265 - 7.1, H264 - 5.1, 3D, 1080P e 720P e WEB-RIP, disponíveis para download via torrent, links totalmente funcionais e constantemente
-            atualizados.[/COLOR],</description>
-        <disclaimer lang="en">[COLOR darkgrey][B] Torrent[/B][/COLOR][COLOR crimson]O autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] Torrent[/B] [/COLOR]Os creditos para Zorel sem ele não chegariamos aqui Obrigado![/COLOR]</disclaimer>
-        <website>https://keltecmp.net/</website>
-        <forum></forum>
-        <license>GNU GENERAL PUBLIC LICENSE. Version 3.</license>
-        <platform>all</platform>
-	<assets>
-        <icon>icon.gif</icon>
-        <fanart>fanart.jpg</fanart>
-    </assets>
-	<news>
-v1.0.0+matrix.1
-- Addon Torrent Play
-v1.0.2+matrix.1
-- Correções PY
-	</news>
-    </extension>
-</addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.6+matrix.1" provider-name="Team KelTec"> 
+<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.7+matrix.1" provider-name="Team KelTec"> 
 <requires>
     <import addon="xbmc.python" version="3.0.0"/>
 	<import addon="script.module.beautifulsoup4"/>	
-    <import addon="script.module.requests" version="2.22.0"/>	
     <import addon="script.module.simplejson"/>
-	<import addon="script.module.kodi-six" />
+    <import addon="script.module.six" version="1.0.0"/>
+    <import addon="script.module.kodi-six" version="0.1.3.1"/>
+    <import addon="script.module.requests" version="2.7.0"/> 
+    <import addon="script.module.simplecache" version="1.0.0"/>
+    <import addon="script.module.routing" version="0.2.3"/>
 </requires>  
 <extension point="xbmc.python.pluginsource" library="default.py">
 	<provides>video</provides>
@@ -204,6 +130,8 @@ v1.0.5.matrix.1
 - Corrigido erro de instalação. -- Update 23-06-21  --
 v1.0.6.matrix.1
 - Corrigido iniciar do add-on. -- Update 01-07-21  --
+v1.0.7.matrix.1
+- Add-on. -- Update 09-07-21  --
 
 
 	</news>
@@ -212,15 +140,15 @@ v1.0.6.matrix.1
 
 <addon id="plugin.video.KelTecPlay" name="[B][COLOR white]KelTec[/COLOR] [COLOR crimson]Play[/COLOR][/B]" version="2.2" provider-name="Team KelTec">
   <requires>
-       <import addon="xbmc.python" version="2.0.0"/>
+       <import addon="xbmc.python" version="2.25.0"/>
   </requires>  
   <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.repository" name="Repositório KelTec Media-Play">
-		<info compressed="false">https://keltecplay.ml/rp/addons.xml</info>
-		<checksum>https://keltecplay.ml/rp/addons.xml.md5</checksum>
-		<datadir zip="true">https://keltecplay.ml/rp/Plugins</datadir>
+		<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
+		<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
+		<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
 	</extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Filmes e Series</summary>
@@ -400,60 +328,6 @@ v1.0.6.matrix.1
 	</extension>
 </addon>
 
-<addon id="ElementumKTMP.repository" name="[B]Elementum Para Android[/B]" version="1.5" provider-name="Team KelTecMP">
-	<extension point="xbmc.addon.repository" name="ElementumKTMP">
-		<info compressed="false">http://keltecplay.ml/repo/addons.xml</info>
-		<checksum>http://keltecplay.ml/repo/addons.xml.md5</checksum>
-		<datadir zip="true">http://keltecplay.ml/repo/Plugins/</datadir>
-	</extension>
-	<extension point="xbmc.addon.metadata">
-		<summary>ElementumKTMP</summary>
-		<description>ElementumKTMP - Proibido reproducao //Grupo Facebook KeltecMP IPTV https://www.facebook.com/groups/KelTec.Media.Play/</description>
-		<platform>all</platform>
-	</extension>
-</addon>
-
-<addon id="plugin.program.keltecmpleiawizard" name="[B]KelTecMP Leia Wizard Builds[/B]" version="0.0.7" provider-name="Team KelTec-MP">
-  <requires>
-    <import addon="xbmc.python" version="2.24.0"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>executable</provides>
-  </extension>
-  <extension point="xbmc.service" library="startup.py" start="startup" />
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">[B]KelTec-Media-Play Wizard Builds[/B]</summary>
-    <description lang="en">Instalador KelTe-Media-Play Wizard, Para Todas as Versões do Kodi, não aceite Imitações.</description>
-<disclaimer lang="en">[COLOR darkgrey][B] KelTec-Media-Play[/COLOR][COLOR crimson] O autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[/COLOR][COLOR darkgrey] KelTec-Media-Play o Futuro é Agora![/COLOR][/B]</disclaimer>
-    <platform>all</platform>
-  </extension>
-</addon>
-
-<addon id="plugin.video.KelTec-MP.torrents" name="[B][COLOR dimgrey]KelTec[COLOR white] - [/COLOR][COLOR darkgreen]TORRENTS[/COLOR][/B]" version="3.2" provider-name="[COLOR crimson]Team - KelTec-Media-Play[/COLOR]">
-    <requires>
-        <import addon="xbmc.python" version="2.24.0" />
-        <import addon="ElementumKTMP.repository" optional="false" />
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="YaP.py">
-        <provides>video</provides>
-    </extension>
-    <extension point="xbmc.addon.repository" name="[B]KelTe-Medi-Play Repositório[/B]">
-		<info compressed="false">https://keltecplay.ml/rp/addons.xml</info>
-		<checksum>https://keltecplay.ml/rp/addons.xml.md5</checksum>
-		<datadir zip="true">https://keltecplay.ml/rp/Plugins</datadir>
-	</extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en">[COLOR crimson]Filmes Torrent - Series Torrent - [COLOR gold] (Dual-Audio) 1080P - 720P[/COLOR] OBS: Necessario repositório Vikings instalado no seu Kodi!</summary>
-        <description lang="en">[COLOR gold][B]KelTec-Media-Play[COLOR white] - [/COLOR]TORRENTS![/B][/COLOR][COLOR crimson], oferece Filmes e Series, de qualidade 4K, H265 - 7.1, H264 - 5.1, 3D, 1080P e 720P e WEB-RIP, disponíveis para download via torrent, links totalmente funcionais e constantemente
-            atualizados.[/COLOR],</description>
-        <disclaimer lang="en">[COLOR darkgrey][B] KelTec-Media-Play[/B][/COLOR][COLOR crimson]O autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] KelTec-Media-Play[/B] [/COLOR]Os creditos para a pagina: http://www.megatorrentshd.com[/COLOR]</disclaimer>
-        <website>https://keltecmp.net/</website>
-        <forum></forum>
-        <license>GNU GENERAL PUBLIC LICENSE. Version 3.</license>
-        <platform>all</platform>
-    </extension>
-</addon>
-
 <addon id="script.KelTecMP.Builds"
   name="KelTecMP Downloads Builds"
   version="0.0.9" 
@@ -524,9 +398,9 @@ v1.0.6.matrix.1
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.repository" name="[B]KelTecMP Repo[/B]">
-		<info compressed="false">https://keltecplay.ml/rp/addons.xml</info>
-		<checksum>https://keltecplay.ml/rp/addons.xml.md5</checksum>
-		<datadir zip="true">https://keltecplay.ml/rp/Plugins</datadir>
+		<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
+		<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
+		<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
 	</extension>
   <extension point="xbmc.addon.metadata">
 	<summary>TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play</summary>

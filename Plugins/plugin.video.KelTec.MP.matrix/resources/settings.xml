@@ -19,7 +19,7 @@
 	    <setting label="Senha" id="password" type="text" default="" enable="!eq(-2,false)" option="hidden"/>
 	    <setting label="Saida de Transmissão VIP" id="saida" type="enum" values="M3U8|TS" default="0" />
 	    <setting label="Exibir Menu VIP" id="exibirvip" type="bool" default="false" />
-		<setting label="Exibir Suporte Top (VIP)" id="suporte" type="bool" default="false" />
+		<setting label="Exibir Suporte Top (VIP)" id="suporte" type="bool" default="true" />
 </category>
 <category label="Proxy">
 		<setting label="[COLOR white]Opções do Proxy:[/COLOR]" type="lsep"/>
