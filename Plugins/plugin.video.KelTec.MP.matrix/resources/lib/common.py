@@ -20,7 +20,7 @@ import xbmcvfs
 from io import StringIO
 from io import BytesIO
 
-AddonID = 'plugin.video.KelTec.MP.matrix'
+AddonID = 'plugin.video.KelTecPlayTv'
 Addon = xbmcaddon.Addon(AddonID)
 icon = Addon.getAddonInfo('icon')
 AddonName = Addon.getAddonInfo("name")
@@ -123,12 +123,13 @@ def ReadList(fileName):
 			content = json.load(handle)
 	except Exception as ex:
 		xbmc.log(str(ex), 5)
-		#if os.path.isfile(fileName):
-			#shutil.copyfile(fileName, "{0}_bak.txt".format(fileName[:fileName.rfind('.')]))
-			#xbmc.executebuiltin('Notification({0}, Cannot read file: "{1}". \nBackup createad, {2}, {3})'.format(AddonName, os.path.basename(fileName), 5000, icon))
+		if os.path.isfile(fileName):
+			shutil.copyfile(fileName, "{0}_bak.txt".format(fileName[:fileName.rfind('.')]))
+			xbmc.executebuiltin('Notification({0}, Cannot read file: "{1}". \nBackup createad, {2}, {3})'.format(AddonName, os.path.basename(fileName), 5000, icon))
 		content=[]
 
 	return content
+
 
 def SaveList(filname, chList):
 	try:

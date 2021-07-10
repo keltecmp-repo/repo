@@ -5,7 +5,10 @@
 		<setting label="PLAYER TORRENT" id="torrent" type="enum" values="Elementum" default="0" />
 		<!--setting id="local_roxplayer" type="file" source="files" label="localize o arquivo 'ROX Player.lnk'" default="" visible="eq(-1,Rox Player)"/-->
 		<setting label="___________________________________________________________________________" type="lsep" />
-	    <setting id="makeGroups" type="text" label="30036" default="true" visible="True"/>		
+</category>
+<category label="30000">
+        <setting id="makeGroups" type="bool" label="30036" default="true" />
+        <setting id="actDelFavourites" type="action" label="30102" action="RunPlugin(plugin://plugin.video.KelTec.MP.matrix/default.py?mode=39&url=settings)" option="close" />	
 </category>
 <category label="Complementos">
 	    <setting label="[COLOR dimgrey]Configurações de Complemento:[/COLOR]" type="lsep"/>
