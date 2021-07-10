@@ -78,7 +78,7 @@ Add-on KelTec Open Wizard
     </extension>
 </addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.8+matrix.1" provider-name="Team KelTec"> 
+<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="1.0.9+matrix.1" provider-name="Team KelTec"> 
 <requires>
     <import addon="xbmc.python" version="3.0.0"/>
 	<import addon="script.module.beautifulsoup4"/>	
@@ -132,8 +132,9 @@ v1.0.6.matrix.1
 v1.0.7.matrix.1
 - Add-on. -- Update 09-07-21  --
 v1.0.8.matrix.1
+- Corrigido iniciar do add-on Add-on. -- Update 09-07-21  --
+v1.0.9.matrix.1
 - Corrigido iniciar do add-on Add-on. -- Update 10-07-21  --
-
 
 
 	</news>

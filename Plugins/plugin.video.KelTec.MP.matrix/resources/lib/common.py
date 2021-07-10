@@ -20,7 +20,7 @@ import xbmcvfs
 from io import StringIO
 from io import BytesIO
 
-AddonID = 'plugin.video.KelTecPlayTv'
+AddonID = 'plugin.video.KelTec.MP.matrix'
 Addon = xbmcaddon.Addon(AddonID)
 icon = Addon.getAddonInfo('icon')
 AddonName = Addon.getAddonInfo("name")
