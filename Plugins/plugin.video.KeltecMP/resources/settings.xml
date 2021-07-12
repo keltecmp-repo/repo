@@ -25,20 +25,18 @@
 	<setting label="[B][COLOR white]Página no Facebook:[/COLOR][/B]" type="text" /> 
 	<setting label="[COLOR blue]http://fb.com/groups/KelTec.Media.Play[/COLOR]" type="text" />
 	<setting id="makeGroups" type="text" label="30036" default="true" visible="false"/>
-	<setting id="Cat" label="Cat" type="text" default="0" visible="false" />
-	<setting id="Catfo" label="Catfo" type="text" default="0" visible="false" />
-	<setting id="CatMM" label="CatMM" type="text" default="0" visible="false" />
-	<setting id="CatGO" label="CatGO" type="text" default="0" visible="false" />
-	<setting id="cEPG" label="cEPG" type="text" default="0" visible="false" />
+	<setting id="Cat" label="Cat" type="text" default="0" visible="true" />
+	<setting id="CatMM" label="CatMM" type="text" default="0" visible="true" />
+	<setting id="cEPG" label="cEPG" type="text" default="0" visible="true" />
 	<setting label="" type="sep" />
 	<setting id="actDelFavourites" type="action" label="Limpar todos os Filmes Favoritos" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=38&url=settings)" option="close"/>
 	<setting id="actDelHistorico" type="action" label="Limpar todas as Séries Favoritas" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=39&url=settings)" option="close"/>
 
 	<setting id="cPage" label="cPage" type="text" default="0" visible="false" />
-	<setting id="cPageMMf" label="cPageMMf" type="text" default="0" visible="false" />
-	<setting id="cPageGOf" label="cPageGOf" type="text" default="0" visible="false" />
+
+	<setting id="Oo0" label="Oo0" type="text" default="0" visible="true" />
 	<setting label="" type="sep" />
-	<setting id="actDelHistorico1" type="action" label="Limpar o Histórico" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=40&url=settings)" option="close"/>
+	<setting id="actDelHistorico1" type="action" label="Limpar o Histórico" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=-40&url=settings)" option="close"/>
 	<setting label="" type="sep" />
 </category>
 </settings>

@@ -1,6 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
 
+<addon id="plugin.program.keltecmpleiawizard" name="[B]KelTecMP Leia Wizard Builds[/B]" version="0.0.7" provider-name="Team KelTec-MP">
+  <requires>
+    <import addon="xbmc.python" version="2.24.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.service" library="startup.py" start="startup" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">[B]KelTec-Media-Play Wizard Builds[/B]</summary>
+    <description lang="en">Instalador KelTe-Media-Play Wizard, Para Todas as Versões do Kodi, não aceite Imitações.</description>
+<disclaimer lang="en">[COLOR darkgrey][B] KelTec-Media-Play[/COLOR][COLOR crimson] O autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[/COLOR][COLOR darkgrey] KelTec-Media-Play o Futuro é Agora![/COLOR][/B]</disclaimer>
+    <platform>all</platform>
+  </extension>
+</addon>
+
 <addon id="plugin.program.keltec.wizard" name="[B][COLOR limegreen]KelTec [/COLOR]Open Wizard[/B] Matrix" version="1.0.0+matrix.1" provider-name="Team KelTec Media Play">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
@@ -276,7 +292,7 @@ v1.1.0.matrix.1
 
 <addon id="plugin.video.KeltecMP"
        name="[B][COLOR silver]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]"
-       version="9.0"
+       version="9.1"
        provider-name="Team KelTec Media'Play">
   <requires>
     <import addon="xbmc.python" version="2.25.0"/>
