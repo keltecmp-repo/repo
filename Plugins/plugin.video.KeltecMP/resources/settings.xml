@@ -17,14 +17,28 @@
 <setting id="saida" type="labelenum" label="Saida de Transmissão" default="m3u8" values="ts|m3u8"/>
 <setting id="exibirvip" type="bool" label="Exibir Menu VIP" default="false" />
 <setting id="suporte" type="bool" label="Exibir Suporte Top (VIP)" default="true" />
-<!--/category>
-<category label="VIP2">
-<setting label="[COLOR white]Configurações da área[/COLOR] [COLOR gold](TOP VIP2)[/COLOR]" type="lsep"/>	
-<setting id="servidor2" type="labelenum" label="Selecione o Servidor" default="Desativado" values="TOP VIP2|Desativado"/>	
-<setting id="username2" type="text" label="Usuário" default="" enable="!eq(-1,false)"/>	
-<setting id="password2" type="text" label="Senha" default="" enable="!eq(-2,false)" option="hidden"/>	
-<setting id="saida2" type="labelenum" label="Saida de Transmissão" default="m3u8" values="ts|m3u8"/>	
-<setting id="exibirvip2" type="bool" label="Exibir Menu VIP2" default="false" /-->
+</category>
+<category label="Principal">
+	<setting label="[B][COLOR white]Onde baixar:[/COLOR][/B]" type="text" /> 
+	<setting label="[COLOR gold]www.keltecmp.net/[/COLOR]" type="text" />
+	<setting label="" type="sep" />
+	<setting label="[B][COLOR white]Página no Facebook:[/COLOR][/B]" type="text" /> 
+	<setting label="[COLOR blue]http://fb.com/groups/KelTec.Media.Play[/COLOR]" type="text" />
+	<setting id="makeGroups" type="text" label="30036" default="true" visible="false"/>
+	<setting id="Cat" label="Cat" type="text" default="0" visible="false" />
+	<setting id="Catfo" label="Catfo" type="text" default="0" visible="false" />
+	<setting id="CatMM" label="CatMM" type="text" default="0" visible="false" />
+	<setting id="CatGO" label="CatGO" type="text" default="0" visible="false" />
+	<setting id="cEPG" label="cEPG" type="text" default="0" visible="false" />
+	<setting label="" type="sep" />
+	<setting id="actDelFavourites" type="action" label="Limpar todos os Filmes Favoritos" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=38&url=settings)" option="close"/>
+	<setting id="actDelHistorico" type="action" label="Limpar todas as Séries Favoritas" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=39&url=settings)" option="close"/>
 
+	<setting id="cPage" label="cPage" type="text" default="0" visible="false" />
+	<setting id="cPageMMf" label="cPageMMf" type="text" default="0" visible="false" />
+	<setting id="cPageGOf" label="cPageGOf" type="text" default="0" visible="false" />
+	<setting label="" type="sep" />
+	<setting id="actDelHistorico1" type="action" label="Limpar o Histórico" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=40&url=settings)" option="close"/>
+	<setting label="" type="sep" />
 </category>
 </settings>
