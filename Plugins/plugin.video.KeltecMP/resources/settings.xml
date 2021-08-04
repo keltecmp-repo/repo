@@ -1,4 +1,25 @@
 <settings>
+<category label="KelTec Play">
+	<setting label="[B][COLOR white]Onde baixar:[/COLOR][/B]" type="text" /> 
+	<setting label="[COLOR gold]www.keltecmp.net/[/COLOR]" type="action" action="RunPlugin(plugin://plugin.video.KeltecMP/default.py?mode=45&url=settings)" option="close"/>
+	<setting label="" type="sep" />
+	<setting label="[B][COLOR white]Página no Facebook:[/COLOR][/B]" type="text" /> 
+	<setting label="[COLOR cyan]http://fb.com/groups/KelTec.Media.Play[/COLOR]" type="action" action="RunPlugin(plugin://plugin.video.KeltecMP/default.py?mode=45&url=settings)" option="close"/>
+	<setting id="makeGroups" type="text" label="30036" default="true" visible="false"/>
+	<setting id="Cat" label="Cat" type="text" default="0" visible="false" />
+	<setting id="CatMM" label="CatMM" type="text" default="0" visible="false" />
+	<setting id="cEPG" label="cEPG" type="text" default="0" visible="false" />
+	<setting label="" type="sep" />
+	<setting id="actDelFavourites" type="action" label="Limpar todos os Filmes Favoritos" action="RunPlugin(plugin://plugin.video.KeltecMP/default.py?mode=38&url=settings)" option="close"/>
+	<setting id="actDelHistorico" type="action" label="Limpar todas as Séries Favoritas" action="RunPlugin(plugin://plugin.video.KeltecMP/default.py?mode=39&url=settings)" option="close"/>
+
+	<setting id="cPage" label="cPage" type="text" default="0" visible="false" />
+
+	<setting id="O00oOoo00O" label="O00oOoo00O" type="text" default="0" visible="false" />
+	<setting label="" type="sep" />
+	<setting id="actDelHistorico1" type="action" label="Limpar o Histórico" action="RunPlugin(plugin://plugin.video.KeltecMP/default.py?mode=400&url=settings)" option="close"/>
+	<setting label="" type="sep" />
+</category>
 <category label="Configurações Gerais">	
 <setting label="[COLOR white]Configurações Gerais[/COLOR]" type="lsep"/>    
 <setting id="mensagem1" type="bool" label="Exibir Mensagem de Boas Vindas" default="true" />	
@@ -18,25 +39,5 @@
 <setting id="exibirvip" type="bool" label="Exibir Menu VIP" default="false" />
 <setting id="suporte" type="bool" label="Exibir Suporte Top (VIP)" default="true" />
 </category>
-<category label="Principal">
-	<setting label="[B][COLOR white]Onde baixar:[/COLOR][/B]" type="text" /> 
-	<setting label="[COLOR gold]www.keltecmp.net/[/COLOR]" type="text" />
-	<setting label="" type="sep" />
-	<setting label="[B][COLOR white]Página no Facebook:[/COLOR][/B]" type="text" /> 
-	<setting label="[COLOR blue]http://fb.com/groups/KelTec.Media.Play[/COLOR]" type="text" />
-	<setting id="makeGroups" type="text" label="30036" default="true" visible="false"/>
-	<setting id="Cat" label="Cat" type="text" default="0" visible="true" />
-	<setting id="CatMM" label="CatMM" type="text" default="0" visible="true" />
-	<setting id="cEPG" label="cEPG" type="text" default="0" visible="true" />
-	<setting label="" type="sep" />
-	<setting id="actDelFavourites" type="action" label="Limpar todos os Filmes Favoritos" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=38&url=settings)" option="close"/>
-	<setting id="actDelHistorico" type="action" label="Limpar todas as Séries Favoritas" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=39&url=settings)" option="close"/>
 
-	<setting id="cPage" label="cPage" type="text" default="0" visible="false" />
-
-	<setting id="Oo0" label="Oo0" type="text" default="0" visible="true" />
-	<setting label="" type="sep" />
-	<setting id="actDelHistorico1" type="action" label="Limpar o Histórico" action="RunPlugin(plugin://plugin.video.KelTecPlay/default.py?mode=-40&url=settings)" option="close"/>
-	<setting label="" type="sep" />
-</category>
 </settings>
