@@ -15,7 +15,7 @@
 
 	<setting id="cPage" label="cPage" type="text" default="0" visible="false" />
 
-	<setting id="O00oOoo00O" label="O00oOoo00O" type="text" default="0" visible="false" />
+	<setting id="mmf" label="mmf" type="text" default="0" visible="false" />
 	<setting label="" type="sep" />
 	<setting id="actDelHistorico1" type="action" label="Limpar o Histórico" action="RunPlugin(plugin://plugin.video.KeltecMP/default.py?mode=400&url=settings)" option="close"/>
 	<setting label="" type="sep" />
