@@ -1,5 +1,4 @@
 import xbmcgui
-#import urllib
 import urllib.request as urllib
 
 def download(url, dest, dp = None):
