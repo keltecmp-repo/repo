@@ -1,306 +1,583 @@
-import xbmc, xbmcgui, xbmcaddon, xbmcplugin, re
-import urllib, urllib2
-import re, string
-import threading
+import xbmc, xbmcvfs, xbmcgui, xbmcaddon, xbmcplugin, re
 import os
-import base64
-#from t0mm0.common.addon import Addon
-#from t0mm0.common.net import Net
-import urlparse
-import xbmcplugin
-import cookielib
+import urllib.parse as urlparse
+import gzip
+import sys     
+import threading
+
+try:
+    from urllib.request import Request, urlopen, URLError  # Python 3
+except ImportError:
+    from urllib2 import Request, urlopen, URLError # Python 2
+try:
+    from StringIO import StringIO ## for Python 2
+except ImportError:            
+    from io import BytesIO as StringIO ## for Python 3
 
 __addon__       = xbmcaddon.Addon()
 __addonname__   = __addon__.getAddonInfo('name')
 __icon__        = __addon__.getAddonInfo('icon')
 addon_id = 'plugin.video.f4mTester'
 selfAddon = xbmcaddon.Addon(id=addon_id)
+player_type = selfAddon.getSetting("player_type")
+iptv = selfAddon.getSetting("iptv")
+ask = selfAddon.getSetting("ask")
+plugin = sys.argv[0]
+handle = int(sys.argv[1])
+UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36'
 
-#addon = Addon('plugin.video.f4mTester', sys.argv)
-#net = Net()
 
-mode =None
-play=False
+class MyPlayer (xbmc.Player):
 
-#play = addon.queries.get('play', None)
-paramstring=sys.argv[2]
-#url = addon.queries.get('playurl', None)
-print paramstring
-name=''
-proxy_string=None
-proxy_use_chunks=True
-auth_string=''
-streamtype='HDS'
-setResolved=False
-if paramstring:
-    paramstring="".join(paramstring[1:])
-    params=urlparse.parse_qs(paramstring)
-    url = params['url'][0]
-    try:
-        name = params['name'][0]
-    except:pass
+    def __init__ (self):
+        xbmc.Player.__init__(self)
 
-    try:
-        proxy_string = params['proxy'][0]
-    except:pass
-    try:
-        auth_string = params['auth'][0]
-    except:pass
-    print 'auth_string',auth_string
-    try:
-        streamtype = params['streamtype'][0]
-    except:pass
-    print 'streamtype',streamtype
+    def play(self, url, li):
+        #print 'Now im playing... %s' % url
+        # self.stopPlaying.clear()
+        # runningthread=thread.start_new_thread(xbmc.Player().play(item=url, listitem=li),(parar,))
+        progress = xbmcgui.DialogProgress()
+        # import checkbad
+        # checkbad.do_block_check(False)
 
+        #progress.create('Conectando...')
+        progress.create('Estabilizador','Conectando...')
+        # stream_delay = 1
+        #progress.update( 20, "", 'Aguarde...', "" )
+        # xbmc.sleep(stream_delay*100)
+        #progress.update( 100, "", 'Carregando transmissão...', "" )
+        prog=0
+        xbmc.sleep(2000)
+
+
+        
+        xbmc.Player().play(item=url, listitem=li)
+
+        while not xbmc.Player().isPlaying() and not xbmc.Monitor().abortRequested():
+            xbmc.sleep(200)
+            progress.update(prog+10,'Carregando transmissão...')
+            prog=prog+10
+
+
+        progress.close()
+
+
+    def onPlayBackEnded( self ):
+        # Will be called when xbmc stops playing a file
+        print("seting event in onPlayBackEnded " )
+        threading.Event()
+
+        # self.stopPlaying.set()
+        # thread.exit()
+        # iniciavideo().stop()
+
+        #print "stop Event is SET" 
+    def onPlayBackStopped( self ):
+        # Will be called when user stops xbmc playing a file
+        print("seting event in onPlayBackStopped ") 
+        threading.Event()
+        # self.stopPlaying.set()
+        # thread.exit()
+        # iniciavideo().stop()
+
+        #print "stop Event is SET"  
+
+class iniciavideo():
     
+    def tocar(url, li):
 
-    swf=None
-    try:
-        swf = params['swf'][0]
-    except:pass
+        
+        # parar=threading.Event()
+        # parar.clear()   
+        mplayer = MyPlayer()    
+        # iniciavideo().stop()
+        # mplayer.stopPlaying = parar
 
-    callbackpath=""
-    try:
-        callbackpath = params['callbackpath'][0]
-    except:pass
+        mplayer.play(url,li)
 
-    iconImage=""
-    try:
-        iconImage = params['iconImage'][0]
-    except:pass    
- 
-    callbackparam=""
-    try:
-        callbackparam = params['callbackparam'][0]
-    except:pass
+
+        # thread.start_new_thread(mplayer.play,(url,li))
+        
+        # mplayer.play(url,listitem)
+
+        firstTime=True
+        played=False
+
+        
+        while True:
+            # if parar.isSet():            
+                # break
+            if xbmc.Player().isPlaying():
+                played=True
+            xbmc.log('Sleeping...')
+            xbmc.sleep(1000)
+            if firstTime:
+                xbmc.executebuiltin('Dialog.Close(all,True)')
+                firstTime=False
+                # parar.isSet()
+                # thread.exit()
+                # iniciavideo().stop()
+
+
+                    #print 'Job done'
+        # return played
     
-    
-    try:
-        proxy_use_chunks_temp = params['proxy_for_chunks'][0]
-        import json
-        proxy_use_chunks=json.loads(proxy_use_chunks_temp)
-    except:pass
-    
-    simpleDownloader=False
-    try:
-        simpleDownloader_temp = params['simpledownloader'][0]
-        import json
-        simpleDownloader=json.loads(simpleDownloader_temp)
-    except:pass
-	
-	
-    mode='play'
+    def stop(self):
+        threading.Event()
 
-    try:    
-        mode =  params['mode'][0]
-    except: pass
-    maxbitrate=0
-    try:
-        maxbitrate =  int(params['maxbitrate'][0])
-    except: pass
-    play=True
 
+def open_url(url,referer=False,post=False,timeout=12):
+    req = Request(url)
+    req.add_header('sec-ch-ua', '"Google Chrome";v="93", " Not;A Brand";v="99", "Chromium";v="93"')
+    req.add_header('sec-ch-ua-mobile', '?0')
+    req.add_header('sec-ch-ua-platform', '"Windows"')
+    req.add_header('Upgrade-Insecure-Requests', '1')    
+    req.add_header('User-Agent', UA)
+    req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9')
+    req.add_header('Sec-Fetch-Site', 'none')
+    req.add_header('Sec-Fetch-Mode', 'navigate')
+    req.add_header('Sec-Fetch-User', '?1')
+    req.add_header('Sec-Fetch-Dest', 'document')
+    # req.add_header('Accept-Encoding', 'gzip')
+    req.add_header('Accept-Language', 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7')
+    if referer:    
+        req.add_header('Referer', referer)
     try:
-        setResolved = params['setresolved'][0]
-        import json
-        setResolved=json.loads(setResolved)
-    except:setResolved=False
+        if post:
+            post = urlparse.urlencode(post)
+            try:
+                response = urlopen(req,data=post.encode('utf-8'),timeout=timeout)
+                code = response.getcode()
+                encoding = response.info().get('Content-Encoding')
+            except:
+                response = urlopen(req,data=post,timeout=timeout)
+                code = response.getcode()
+                encoding = response.info().get('Content-Encoding')
+        else:
+            try:
+                response = urlopen(req,timeout=timeout)
+                code = response.getcode()
+                encoding = response.info().get('Content-Encoding')
+            except:
+                code = 401
+                encoding = 'none'
+    except:
+        code = 401
+        encoding = 'none'
+    if code == 200:
+        try:
+            content = response.read()
+        except:
+            content = ''
+    else:
+        content = ''         
+    try:
+        content = content.decode('utf-8')
+    except:
+        pass
+    return content
+   
+
+def get_url(params):
+    url = '%s?%s'%(plugin, urlparse.urlencode(params))
+    return url
     
-def playF4mLink(url,name,proxy=None,use_proxy_for_chunks=False,auth_string=None,streamtype='HDS',setResolved=False,swf="", callbackpath="", callbackparam="",iconImage=""):
+def item(params,folder=True):
+    url = get_url(params)
+    name = params.get("name")
+    if name:
+        name = name
+    else:
+        name = 'Unknow'
+    icon = params.get("iconImage")
+    fanart = params.get("fanart")
+    description = params.get("description")
+    if description:
+        description  = description
+    else:
+        description = ''
+    
+    li=xbmcgui.ListItem(name)
+    if icon:
+        li.setArt({"icon": "DefaultVideo.png", "thumb": icon})
+    li.setInfo(type="Video", infoLabels={"Title": name, "Plot": description})
+    if fanart:
+        li.setProperty('fanart_image', fanart)
+    xbmcplugin.addDirectoryItem(handle=handle, url=url, listitem=li, isFolder=folder)    
+
+def basename(p):
+    """Returns the final component of a pathname"""
+    i = p.rfind('/') + 1
+    return p[i:]
+
+def ts_to_m3u8(url):
+    stream = False
+    # xbmc.sleep(500)
+
+    if not '.m3u8' in url and int(url.count(":")) == 2 and int(url.count("/")) > 4:
+        url_parsed = urlparse.urlparse(url)
+        try:
+            host_part1 = '%s://%s'%(url_parsed.scheme,url_parsed.netloc)
+            host_part2 = url.split(host_part1)[1]
+            url = host_part1 + '/live' + host_part2
+            url_no_param = url
+            try:
+                url_no_param = host_part2.split('&')[0]
+            except:
+                pass
+            try:
+                url_no_param = host_part2.split('|')[0]
+            except:
+                pass         
+                
+            file = basename(url_no_param)
+            try:
+                file = file.split('&')[0]
+            except:
+                pass
+            try:
+                file = file.split('|')[0]
+            except:
+                pass
+            if '.ts' in file:
+                file_new = file.replace('.ts', '.m3u8')
+                url = url.replace(file, file_new)
+            else:
+                file_new = file + '.m3u8'
+                url = url.replace(file, file_new)
+            stream = 'HLSRETRY'
+        except:
+            pass
+    return url,stream
+
+def m3u8_to_ts(url):
+    if '.m3u8' in url and '/live/' in url and int(url.count("/")) > 5:
+        url = url.replace('/live', '').replace('.m3u8', '')
+    return url
+    
+def playF4mLink(url,name,proxy=None,use_proxy_for_chunks=False,auth_string=None,streamtype='HDS',setResolved=False,swf="", callbackpath="", callbackparam="",referer="", origin="", cookie="", iconImage=""):
     from F4mProxy import f4mProxyHelper
     player=f4mProxyHelper()
     #progress = xbmcgui.DialogProgress()
     #progress.create('Starting local proxy')
+    url,stream = ts_to_m3u8(url)   
+    if stream:
+        streamtype = stream        
 
     if setResolved:
-        urltoplay,item=player.playF4mLink(url, name, proxy, use_proxy_for_chunks,maxbitrate,simpleDownloader,auth_string,streamtype,setResolved,swf,callbackpath, callbackparam,iconImage)
+        urltoplay,item=player.playF4mLink(url, name, proxy, use_proxy_for_chunks,maxbitrate,simpleDownloader,auth_string,streamtype,setResolved,swf,callbackpath, callbackparam,referer,origin,cookie,iconImage)
         item.setProperty("IsPlayable", "true")
         xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, item)
 
     else:
-        xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
-        player.playF4mLink(url, name, proxy, use_proxy_for_chunks,maxbitrate,simpleDownloader,auth_string,streamtype,setResolved,swf,callbackpath, callbackparam,iconImage)
-    
-    return   
-    
-def getUrl(url, cookieJar=None,post=None,referer=None,isJsonPost=False, acceptsession=None):
+        xbmcplugin.endOfDirectory(handle, cacheToDisc=False)        
+        player.playF4mLink(url, name, proxy, use_proxy_for_chunks,maxbitrate,simpleDownloader,auth_string,streamtype,setResolved,swf,callbackpath, callbackparam,referer,origin,cookie,iconImage)
 
-    cookie_handler = urllib2.HTTPCookieProcessor(cookieJar)
-    opener = urllib2.build_opener(cookie_handler, urllib2.HTTPBasicAuthHandler(), urllib2.HTTPHandler())
-    #opener = urllib2.install_opener(opener)
-    req = urllib2.Request(url)
-    req.add_header('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36')
-    if isJsonPost:
-        req.add_header('Content-Type','application/json')
-    if acceptsession:
-        req.add_header('Accept-Session',acceptsession)
-        
-    if referer:
-        req.add_header('Referer',referer)
-    response = opener.open(req,post,timeout=30)
-    link=response.read()
-    response.close()
-    return link;
 
-def getBBCUrl(urlToFetch):
-    urlsel=''
-    try:
-        text=getUrl(urlToFetch)
-        bitRate="1500"
-        overrideBitrate=selfAddon.getSetting( "bbcBitRateMax" )
-        if overrideBitrate<>"": bitRate=overrideBitrate
-        bitRate=int(bitRate)
-        regstring='href="(.*?)" bitrate="(.*?)"'
-        birates=re.findall(regstring, text)
-        birates=[(int(j),f) for f,j in birates]
-        birates=sorted(birates, key=lambda f: f[0])
-        
-        for r, url in birates:
-            if r<=bitRate:
-                ratesel, urlsel=r, url 
+def ffmpeg_direct(url,name,iconImage):
+    plugin = xbmcvfs.translatePath('special://home/addons/inputstream.ffmpegdirect')
+    if os.path.exists(plugin)==False:
+        try:
+            xbmc.executebuiltin('InstallAddon(inputstream.ffmpegdirect)', wait=True)
+        except:
+            pass
+    if name == "":
+        name = "F4mTester"
+    li=xbmcgui.ListItem(name, path=url)
+    if iconImage:
+        li.setArt({"icon": "DefaultVideo.png", "thumb": iconImage})
+    li.setInfo(type="Video", infoLabels={"Title": name, "Plot": ""})
+    if not '.mp4' in url and not '.mp3' in url and not '.mkv' in url and not '.avi' in url and not '.rmvb' in url:
+        if os.path.exists(plugin)==True:
+            url = m3u8_to_ts(url)
+            #url,stream = ts_to_m3u8(url) 
+            li.setProperty('inputstream', 'inputstream.ffmpegdirect')
+            li.setProperty('IsPlayable', 'true')
+            if '.m3u8' in url:
+                li.setContentLookup(False)
+                li.setMimeType('application/vnd.apple.mpegurl')
+                li.setProperty('inputstream.ffmpegdirect.mime_type', 'application/vnd.apple.mpegurl')
+                li.setProperty('ForceResolvePlugin','false')
+                # li.setProperty('inputstream', 'inputstream.adaptive')
+                # li.setProperty('inputstream.ffmpegdirect.manifest_type','hls')
             else:
-                break
-        if urlsel=='': urlsel=birates[1]
-        print 'xxxxxxxxx',ratesel, urlsel
-    except: pass
-    return urlsel
+                # li.setContentLookup(True)
+                li.setMimeType('video/mp2t')
+                li.setProperty('inputstream.ffmpegdirect.mime_type', 'video/mp2t')
+                # li.setProperty('ForceResolvePlugin','true')
+            # li.setProperty('http-reconnect', 'true')
+            # li.setProperty('TotalTime', '3600')
+            li.setProperty('inputstream.ffmpegdirect.stream_mode', 'catchup')
+            # li.setProperty('inputstream.ffmpegdirect.timezone_shift', '20')
+            li.setProperty('inputstream.ffmpegdirect.is_realtime_stream', 'true')
+            li.setProperty('inputstream.ffmpegdirect.is_catchup_stream', 'catchup')
+            li.setProperty('inputstream.ffmpegdirect.catchup_granularity', '60')
+            li.setProperty('inputstream.ffmpegdirect.catchup_terminates', 'true')            
+            li.setProperty('inputstream.ffmpegdirect.open_mode', 'curl')
+            # li.setProperty('inputstream.ffmpegdirect.playback_as_live', 'true')
+            # if '.m3u8' in url:             
+                # li.setProperty('inputstream.ffmpegdirect.manifest_type','hls') 
+            li.setProperty('inputstream.ffmpegdirect.manifest_type','ism')
+            #print('aqui', url)                
+            li.setProperty('inputstream.ffmpegdirect.default_url',url)
+            li.setProperty('inputstream.ffmpegdirect.catchup_url_format_string',url)
+            li.setProperty('inputstream.ffmpegdirect.programme_start_time','1')
+            li.setProperty('inputstream.ffmpegdirect.programme_end_time','19')
+            li.setProperty('inputstream.ffmpegdirect.catchup_buffer_start_time','1')
+            li.setProperty('inputstream.ffmpegdirect.catchup_buffer_offset','1') 
+            li.setProperty('inputstream.ffmpegdirect.default_programme_duration','19')
+    # xbmc.Player().play(item=url, listitem=li)
+
+    t1 = threading.Thread(target=iniciavideo.tocar,args=(url,li))
+    t1.start()
+    # t1.join()
     
-    
-def GUIEditExportName(name):
-
-    exit = True 
-    while (exit):
-          kb = xbmc.Keyboard('default', 'heading', True)
-          kb.setDefault(name)
-          kb.setHeading('Enter Url')
-          kb.setHiddenInput(False)
-          kb.doModal()
-          if (kb.isConfirmed()):
-              name  = kb.getText()
-              #name_correct = name_confirmed.count(' ')
-              #if (name_correct):
-              #   GUIInfo(2,__language__(33224)) 
-              #else: 
-              #     name = name_confirmed
-              #     exit = False
-          #else:
-          #    GUIInfo(2,__language__(33225)) 
-          exit = False
-    return(name)
-    
-if mode ==None:
-    bbcsname='http://a.files.bbci.co.uk/media/live/manifesto/audio_video/simulcast/hds/uk/pc/ak/'
-    videos=[[getBBCUrl('%sbbc_one_hd.f4m'%bbcsname) +'|Referer=http://www.bbc.co.uk/iplayer/live/bbcone&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc1 (uk)','http://www.parker1.co.uk/myth/icons/tv/bbc1.png',0,'',False],
-    [getBBCUrl('%sbbc_two_hd.f4m'%bbcsname)+'|Referer=http://www.bbc.co.uk/iplayer/live/bbctwo&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc2 (uk)','http://www.parker1.co.uk/myth/icons/tv/bbc2.png',0,'',False],
-    [getBBCUrl('%sbbc_three_hd.f4m'%bbcsname)+'|Referer=http://www.bbc.co.uk/iplayer/live/bbctwo&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc3 (uk)','http://www.parker1.co.uk/myth/icons/tv/bbc3.png',0,'',False],
-    [getBBCUrl('%sbbc_four_hd.f4m'%bbcsname)+'|Referer=http://www.bbc.co.uk/iplayer/live/bbctwo&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc4 (uk)','http://www.parker1.co.uk/myth/icons/tv/bbc4.png',0,'',False],
-    [getBBCUrl('http://a.files.bbci.co.uk/media/live/manifesto/audio_video/simulcast/hds/uk/pc/llnw/bbc_news24.f4m')+'|Referer=http://www.bbc.co.uk/iplayer/live/bbctwo&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc news (uk)','http://www.parker1.co.uk/myth/icons/tv/bbcnews.png',0,'',False],
-    [getBBCUrl('http://a.files.bbci.co.uk/media/live/manifesto/audio_video/simulcast/hds/uk/pc/llnw/bbc_parliament.f4m')+'|Referer=http://www.bbc.co.uk/iplayer/live/bbctwo&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc parliment (uk)','',0,'',False],
-    #    ['http://zaphod-live.bbc.co.uk.edgesuite.net/hds-live/livepkgr/_definst_/cbbc/cbbc_1500.f4m','cbbc (uk) 1500kbps','',0,'',False],
-#    ['http://zaphod-live.bbc.co.uk.edgesuite.net/hds-live/livepkgr/_definst_/cbeebies/cbeebies_1500.f4m','cbeebeies (uk) 1500kbps','',0,'',False],
-#    ['http://vs-hds-uk-live.edgesuite.net/pool_1/live/bbc_parliament/bbc_parliament.isml/bbc_parliament-audio_2%3d96000-video%3d1374000.f4m|Referer=http://www.bbc.co.uk/iplayer/live/bbcparliament&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc parliment (uk) 1500kbps','',0,'',False],
-#    ['http://vs-hds-uk-live.bbcfmt.vo.llnwd.net/pool_5/live/bbc_news_channel_hd/bbc_news_channel_hd.isml/bbc_news_channel_hd-audio_2%3d96000-video%3d1374000.f4m|Referer=http://www.bbc.co.uk/iplayer/live/bbcnews&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc news (uk) 1500kbps','',0,'',False],
-#    ['http://vs-hds-uk-live.bbcfmt.vo.llnwd.net/pool_5/live/bbc_one_london/bbc_one_london.isml/bbc_one_london-audio_2%3d96000-video%3d1374000.f4m|Referer=http://www.bbc.co.uk/iplayer/live/bbcone&X-Requested-With=ShockwaveFlash/18.0.0.160&X-Forwarded-For=212.58.241.131','bbc1 (outside uk) 1500kbps','http://www.parker1.co.uk/myth/icons/tv/bbc1.png',0,'',False],
-#    ['http://vs-hds-uk-live.bbcfmt.vo.llnwd.net/pool_5/live/bbc_two_hd/bbc_two_hd.isml/bbc_two_hd-audio_2%3d96000-video%3d1374000.f4m|Referer=http://www.bbc.co.uk/iplayer/live/bbctwo&X-Requested-With=ShockwaveFlash/18.0.0.160','bbc2 (outside uk) 1500kbps','http://www.parker1.co.uk/myth/icons/tv/bbc2.png',0,'',False],
-#    ['http://zaphod-live.bbc.co.uk.edgesuite.net/hds-live/livepkgr/_definst_/bbc3/bbc3_1500.f4m|X-Forwarded-For=212.58.241.131','bbc3 (outside uk) 1500kbps [link not valid]','',0,'',False],
-#    ['http://zaphod-live.bbc.co.uk.edgesuite.net/hds-live/livepkgr/_definst_/bbc4/bbc4_1500.f4m|X-Forwarded-For=212.58.241.131','bbc4 (outside uk) 1500kbps [link not valid]','',0,'',False],
-#    ['http://zaphod-live.bbc.co.uk.edgesuite.net/hds-live/livepkgr/_definst_/cbbc/cbbc_1500.f4m|X-Forwarded-For=212.58.241.131','cbbc (outside uk) 1500kbps','',0,'',False],
-#    ['http://zaphod-live.bbc.co.uk.edgesuite.net/hds-live/livepkgr/_definst_/cbeebies/cbeebies_1500.f4m|X-Forwarded-For=212.58.241.131','cbeebeies (outside uk) 1500kbps','',0,'',False],
-#    ['http://vs-hds-uk-live.edgesuite.net/pool_1/live/bbc_parliament/bbc_parliament.isml/bbc_parliament-audio_2%3d96000-video%3d1374000.f4m|Referer=http://www.bbc.co.uk/iplayer/live/bbcparliament&X-Requested-With=ShockwaveFlash/18.0.0.160|X-Forwarded-For=212.58.241.131','bbc parliment (outside uk) 1500kbps','',0,'',False],
-#    ['http://vs-hds-uk-live.bbcfmt.vo.llnwd.net/pool_5/live/bbc_news_channel_hd/bbc_news_channel_hd.isml/bbc_news_channel_hd-audio_2%3d96000-video%3d1374000.f4m|Referer=http://www.bbc.co.uk/iplayer/live/bbcnews&X-Requested-With=ShockwaveFlash/18.0.0.160&X-Forwarded-For=212.58.241.131','bbc news (outside uk) 1500kbps','',0,'',False],
-    ['http://nhkworld-hds-live1.hds1.fmslive.stream.ne.jp/hds-live/nhkworld-hds-live1/_definst_/livestream/nhkworld-live-128.f4m','nhk 128','',0,'',False],
-    ['http://nhkworld-hds-live1.hds1.fmslive.stream.ne.jp/hds-live/nhkworld-hds-live1/_definst_/livestream/nhkworld-live-256.f4m','nhk 256','',0,'',False],
-    ['http://nhkworld-hds-live1.hds1.fmslive.stream.ne.jp/hds-live/nhkworld-hds-live1/_definst_/livestream/nhkworld-live-512.f4m','nhk 512','',0,'',False],
-    ['http://77.245.150.95/hds-live/livepkgr/_definst_/liveevent/livestream.f4m','Turkish','',0,'',False],
-    ['http://88.157.194.246/live/ramdisk/zrtp1/HDS/zrtp1.f4m','j0anita','',0,'',False],
-    ['http://ak.live.cntv.cn/z/cctv9_1@139238/manifest.f4m?hdcore=2.11.3&g=OUVOVEOVETYH','cntv.cn','',0,'',False],
-    ['http://mlghds-lh.akamaihd.net/z/mlg17_1@167001/manifest.f4m?hdcore=2.11.3&g=TOFRPVFGXLFS','alibaba','',0,'',False],
-    ['http://peer-stream.com/api/get_manifest.f4m?groupspec=G:0101010c050e6f72663200','streamtivi.com','',0,'',False],
-    ['http://164.100.31.234/hds-live/livepkgr/_definst_/rstvlive.f4m','Rajya Sabha TV','',0,'',False],
-    ['http://fmssv1.merep.com/hds-live/livepkgr/_definst_/liveevent/livestream.f4m?blnpc20130909042035_1061880273','media center','',0,'',False],
-    ['http://fms01.stream.internetone.it/hds-live/livepkgr/_definst_/8fm/8fm1.f4m','Italy otto 8 FMTV','',0,'',False],
-    ['http://88.150.239.241/hds-live/livepkgr/_definst_/liveevent/livestream.f4m','Son Araba','',0,'',False],
-    ['http://202.162.123.172/hds-live/livepkgr/_definst_/liveevent/livestream4.f4m','Chine Live event 4','',0,'',False],
-    ['http://zb.wyol.com.cn/hds-live/livepkgr/_definst_/wslhevent/hls_pindao_1_350.f4m','CCTV 1 China','',0,'',False],
-    ['http://zb.zghhzx.net/hds-live/livepkgr/_definst_/wslhevent/hls_pindao_1_350.f4m','CCTV13 China','',0,'',False],
-    ['http://zb.sygd.tv/hds-live/livepkgr/_definst_/wslhevent/hls_pindao_1_350.f4m','SYGD TV china','',0,'',False],
-    ['http://zb.pudongtv.cn/hds-live/livepkgr/_definst_/wslhevent/hls_pindao_1_500.f4m','Pudong TV China','',0,'',False],
-    ['http://88.150.239.241/hds-live/livepkgr/_definst_/liveevent/livestream.f4m','AKS TV Turkey','',0,'',False],
-    ['http://fms.quadrant.uk.com/hds-live/livepkgr/_definst_/liveevent/livestream.f4m','Quadrant live streams UK','',0,'',False],
-    ['http://cdn3.1internet.tv/hds-live11/livepkgr/_definst_/1tv-hd.f4m','1 HD cdn1 Russia','',0,'',False],
-    ['http://cdn2.1internet.tv/hds-live/livepkgr/_definst_/1tv.f4m','1 HD cdn2 Russia','',0,'',False],
-    ['http://193.232.151.135/hds-live-not-protected/livepkgr/_1099_/1099/1099-70.f4m','ndtv plus - proxy needed','',0,'',False],
-    ['http://bbcwshdlive01-lh.akamaihd.net/z/atv_1@61433/manifest.f4m?hdcore=2.11.3','BBC Arabic','',0,'',False],
-    ['http://skaihd-f.akamaihd.net/z/advert/ORAL_B_SHAKIRA_20-SKAI.mp4/manifest.f4m?hdcore=2.6.8&g=OGEJOEGNJICP','Greek Oral B advert','',0,'',False],
-    ['http://srgssr_uni_11_ww-lh.akamaihd.net/z/enc11uni_ww@112996/manifest.f4m?g=XTJVOORDBMQF&hdcore=2.11.3','RTS Swiss a proxy needed?','',0,'',False],
-    ['http://ccr.cim-jitp.top.comcast.net/cimomg04/OPUS/83/162/119271491507/1389989008837/119271491507_1389986611184_1850000_4.f4m','aliakrep DRM not working','',0,'',False],
-    ['http://stream1-prod.spectar.tv:1935/mrt-edge/_definst_/mrt3/smil:all-streams.isml/manifest.f4m','mrt3/all-streams.isml','',0,'',False],        
-    ['http://hdv.gamespotcdn.net/z/d5/2013/10/16/Gameplay_GettingRevengeinGTAOnline_101613_,600,1000,1800,3200,4000,.mp4.csmil/manifest.f4m?hdcore=2.10.3&g=JNMDDRCQSDCH','Recorded..Getting Revenge in GTA maxbitrate 2000','',2006,'',False],        
-    ['http://hdv.gamespotcdn.net/z/d5/2013/10/16/Gameplay_GettingRevengeinGTAOnline_101613_,600,1000,1800,3200,4000,.mp4.csmil/manifest.f4m?hdcore=2.10.3&g=JNMDDRCQSDCH','Recorded..Getting Revenge in GTA maxbitrate Highest','',0,'',False],        
-    ['http://hdv.gamespotcdn.net/z/d5/2014/04/24/GSNews_Apr24_20140424a_,600,1000,1800,3200,4000,.mp4.csmil/manifest.f4m?hdcore=2.10.3&g=KUVLMGTKPJFF','Recorded..Gamespot news highest bitrate','',0,'',False],        
-    ['http://hdv.gamespotcdn.net/z/d5/2014/04/24/GSNews_Apr24_20140424a_,600,.mp4.csmil/manifest.f4m?hdcore=2.10.3&g=KUVLMGTKPJFF','Recorded..Gamespot news 600 bitrate','',0,'',False],        
-    ['http://202.125.131.170:1935/pitelevision/smil:geokahani.smil/manifest.f4m','Pitelevision geo kahani','',0,'',False], 
-    ['http://stream.flowplayer.org/flowplayer-700.flv','TESTING not F4M','',0,'',False], 
-    ['http://hlscache.fptplay.net.vn/live/htvcmovieHD_2500.stream/manifest.f4m|Referer=http://play.fpt.vn/static/mediaplayer/FPlayer.swf','Viet 2500bitrate','',0,'',False],
-    ['http://hlscache.fptplay.net.vn/live/onetv_1000.stream/manifest.f4m|Referer=http://play.fpt.vn/static/mediaplayer/FPlayer.swf','Viet 1000bitrate','',0,'',False], 
-    ['http://88.157.194.246/live/ramdisk/zsic/HDS/zviseu.f4m','Sic http://viseu.es.tl/','',0,'',False], 
-    ['http://www.rte.ie/manifests/rte1.f4m','Rte.ie multi nested manifests','',0,'',False], 
-	['http://olystreameast.nbcolympics.com/vod/157717c8-9c74-4fd1-ab1a-7daca5246324/geo1-lucas-oil-pro-motocross0531120959-ua.ism/manifest(format=f4m-f4f).f4m','NBc olypics','',900,'108.163.254.214:7808',False], 
-	['http://olystreameast.nbcolympics.com/vod/31883e54-e85b-4551-a24a-46accc4a9d49/nbc-sports-live-extra0601123118-ua.ism/manifest(format=f4m-f4f,filtername=vodcut).f4m','NBc extra olypics','',900,'108.163.254.214:7808',False], 
-
-    ['http://77.245.150.95/hds-live/livepkgr/_definst_/liveevent/livestream.f4m','something else','',0,'',False]]
-     
-
-    #['http://dummy','Custom']]
-    #print videos
-
-    if 1==2: #disable it as these links are not working, not sure why
-        req = urllib2.Request('http://www.gzcbn.tv/app/?app=ios&controller=cmsapi&action=pindao')
-        req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-        response = urllib2.urlopen(req)
-        link=response.read()
-        response.close()
-        ##	print link
-
-        s='title\":\"(.*?)\",\"stream\":\"(.*?)\"'
-        #    
-        match=re.compile(s).findall(link)
-        i=0
-        for i in range(len(match)):
-            match[i]= (match[i][1].replace('\\/','/'),match[i][0])
-
-
-        videos+=match #disabled for time being as these are not working
-    #print videos
-    for (file_link,name,imgurl,maxbitrate,proxy,usechunks) in videos:
-        liz=xbmcgui.ListItem(name,iconImage=imgurl, thumbnailImage=imgurl)
-        liz.setInfo( type="Video", infoLabels={ "Title": name} )
-        #liz.setProperty("IsPlayable","true")
-        u = sys.argv[0] + "?" + urllib.urlencode({'url': file_link,'mode':'play','name':name,'maxbitrate':maxbitrate,'proxy':proxy,'proxy_for_chunks':usechunks}) 
-        print u
+def playiptv(url,name,iconImage):
+    if '.m3u8' in url and not 'pluto.tv' in url and not 'plugin' in url:
+        url = 'plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;name='+urlparse.quote_plus(str(name))+'&amp;iconImage='+urlparse.quote_plus(iconImage)+'&amp;url='+urlparse.quote_plus(url)
+    elif not '.mp4' in url and not '.mkv' in url and not '.avi' in url and not '.rmvb' in url and not 'pluto.tv' in url and not 'plugin' in url:
+        url = 'plugin://plugin.video.f4mTester/?streamtype=TSDOWNLOADER&amp;name='+urlparse.quote_plus(str(name))+'&amp;iconImage='+urlparse.quote_plus(iconImage)+'&amp;url='+urlparse.quote_plus(url)                    
+    if 'plugin' in url:
+        xbmc.executebuiltin('RunPlugin(%s)'%url)
+    elif not 'plugin' in url:
+        li=xbmcgui.ListItem(name, path=url)
+        if iconImage:
+            li.setArt({"icon": "DefaultVideo.png", "thumb": iconImage})
+        li.setInfo(type="Video", infoLabels={"Title": name, "Plot": ""})
+        li.setProperty('IsPlayable', 'true')
+        # xbmc.Player().play(item=url, listitem=li)
+        t1 = threading.Thread(target=iniciavideo.tocar,args=(url,li))
+        t1.start()
+        t1.join()
         
-        ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=False, )
-
-
-   
-    
-elif mode == "play":
-    print 'PLAying ',mode,url,setResolved
-    
-    if not name in ['Custom','TESTING not F4M'] :
-        playF4mLink(url,name, proxy_string, proxy_use_chunks,auth_string,streamtype,setResolved,swf , callbackpath, callbackparam,iconImage)
+def re_me(data, re_patten):
+    match = ''
+    m = re.search(re_patten, data)
+    if m != None:
+        match = m.group(1)
     else:
-        listitem = xbmcgui.ListItem( label = str(name), iconImage = "DefaultVideo.png", thumbnailImage = xbmc.getInfoImage( "ListItem.Thumb" ), path=url )
-        xbmc.Player().play( url,listitem)
+        match = ''
+    return match
     
-        #newUrl=GUIEditExportName('')
-        #if not newUrl=='':
-        #    playF4mLink(newUrl,name)
+def playlist(url):
+    xbmcplugin.setContent(handle, 'videos')
+    data = open_url(url)    
+    if re.search("#EXTM3U",data) or re.search("#EXTINF",data):
+        content = data.rstrip()
+        match1 = re.compile(r'#EXTINF:.+?tvg-logo="(.*?)".+?group-title="(.*?)",(.*?)[\n\r]+([^\r\n]+)').findall(content)
+        if match1 !=[]:
+            group_list = []
+            for thumbnail,cat,channel_name,stream_url in match1:
+                if not cat in group_list:
+                    group_list.append(cat)
+                    try:
+                        cat = cat.encode('utf-8', 'ignore')
+                    except:
+                        pass
+                    item({'name': cat,'mode': 'playlist2', 'url': url, 'iconImage': ''})
+        elif match1 ==[]:
+            match2 = re.compile(r'#EXTINF:(.+?),(.*?)[\n\r]+([^\r\n]+)').findall(content)
+            #match2 = sorted(match2)
+            group_list = []
+            for other,channel_name,stream_url in match2:
+                if 'tvg-logo' in other:
+                    thumbnail = re_me(other,'tvg-logo=[\'"](.*?)[\'"]')
+                    if thumbnail:
+                        if thumbnail.startswith('http'):
+                            thumbnail = thumbnail
+                        else:
+                            thumbnail = ''
+                    else:
+                        thumbnail = ''
+                else:
+                    thumbnail = ''
+
+                if 'group-title' in other:
+                    cat = re_me(other,'group-title=[\'"](.*?)[\'"]')
+                else:
+                    cat = ''
+                if cat > '':
+                    if not cat in group_list:
+                        group_list.append(cat)
+                        try:
+                            cat = cat.encode('utf-8', 'ignore')
+                        except:
+                            pass
+                        item({'name': cat,'mode': 'playlist2', 'url': url, 'iconImage': ''})
+                else:
+                    item({'name':channel_name,'mode': 'playiptv', 'url': stream_url, 'iconImage': thumbnail},folder=False)
+            if match2 ==[]:
+                control.infoDialog(lang.id('no_playlist_available'), iconimage='INFO')
+    xbmcplugin.endOfDirectory(handle)
 
 
+def playlist2(name,url):       
+    xbmcplugin.setContent(handle, 'videos')
+    data = open_url(url)
+    if re.search("#EXTM3U",data) or re.search("#EXTINF",data):
+        content = data.rstrip()
+        match1 = re.compile(r'#EXTINF:.+?tvg-logo="(.*?)".+?group-title="(.*?)",(.*?)[\n\r]+([^\r\n]+)').findall(content)
+        if match1 !=[]:
+            #match1 = sorted(match1)
+            group_list = []
+            for thumbnail,cat,channel_name,stream_url in match1:
+                try:
+                    name = name.decode('utf-8')
+                except:
+                    pass
+                if cat == name:
+                    item({'name':channel_name,'mode': 'playiptv', 'url': stream_url, 'iconImage': thumbnail},folder=False)
+        elif match1 ==[]:
+            match2 = re.compile(r'#EXTINF:(.+?),(.*?)[\n\r]+([^\r\n]+)').findall(content)
+            #match2 = sorted(match2)
+            for other,channel_name,stream_url in match2:
+                if 'tvg-logo' in other:
+                    thumbnail = re_me(other,'tvg-logo=[\'"](.*?)[\'"]')
+                    if thumbnail:
+                        if thumbnail.startswith('http'):
+                            thumbnail = thumbnail
+                        else:
+                            thumbnail = ''
+                    else:
+                        thumbnail = ''
+                else:
+                    thumbnail = ''
+
+                if 'group-title' in other:
+                    cat = re_me(other,'group-title=[\'"](.*?)[\'"]')
+                else:
+                    cat = ''
+                if cat > '':
+                    try:
+                        name = name.decode('utf-8')
+                    except:
+                        pass
+                    if cat == name:
+                        item({'name':channel_name,'mode': 'playiptv', 'url': stream_url, 'iconImage': thumbnail},folder=False)
+    xbmcplugin.endOfDirectory(handle)
+        
 
 
-if not play:
-    xbmcplugin.endOfDirectory(int(sys.argv[1]), cacheToDisc=False)
-    
- 
+paramstring=sys.argv[2]
+args = urlparse.parse_qs(sys.argv[2][1:])
+try:
+    mode = args.get("mode")
+    mode = mode[0]
+except:
+    if paramstring:
+        mode='play'
+    else:
+        mode = None
+try:
+    url = args.get("url")
+    url = url[0]
+except:
+    url = ''
+try:
+    name = args.get("name")
+    name = name[0]
+except:
+    name = ''
+try:
+    proxy_string = args.get("proxy")
+    proxy_string = proxy_string[0]
+except:
+    proxy_string=None
+try:    
+    auth_string = args.get("auth")
+    auth_string = auth_string[0]
+except:
+    auth_string=''
+try:    
+    streamtype = args.get("streamtype")
+    streamtype = streamtype[0]
+except:
+    streamtype='HDS'
+try:    
+    swf = args.get("swf")
+    swf = swf[0]
+except:
+    swf=None
+try:    
+    callbackpath = args.get("callbackpath")
+    callbackpath = callbackpath[0]
+except:
+    callbackpath=""
+try:    
+    iconImage = args.get("iconImage")
+    iconImage = iconImage[0]
+except:
+    iconImage=""    
+try:
+    callbackparam = args.get("callbackparam")
+    callbackparam = callbackparam[0]
+except:
+    callbackparam=""
+try:
+    referer=args.get("referer")
+except:
+    referer=""
+
+try:
+    origin=args.get("origin")
+except:
+    origin=""
+
+try:
+    cookie=args.get("cookie")
+except:
+    cookie=""
+try:
+    proxy_use_chunks_temp = args.get("proxy_for_chunks")
+    import json
+    proxy_use_chunks=json.loads(proxy_use_chunks_temp[0])
+except:
+    proxy_use_chunks=True
+try:
+    simpleDownloader_temp = args.get("simpledownloader")
+    import json
+    simpleDownloader=json.loads(simpleDownloader_temp[0])
+except:
+    simpleDownloader=False
+try:
+    maxbitrate = args.get("maxbitrate")
+    maxbitrate = int(maxbitrate[0])
+except:
+    maxbitrate=0
+try:
+    setResolved = args.get("setresolved")
+    setResolved = setResolved[0]
+    import json
+    setResolved=json.loads(setResolved)
+except:
+    setResolved=False
+   
+if mode == None:
+    if 'http' in iptv:
+        item({'name': 'IPTV', 'mode': 'playlist', 'url': iptv},folder=True)
+    item({'name': 'Settings', 'mode': 'settings'},folder=True)        
+    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
+elif mode == 'settings':
+    selfAddon.openSettings()
+elif mode == "play":
+    player_type = int(player_type)
+    confirmation = True
+    if ask == 'true':
+        dialog = xbmcgui.Dialog()
+        index = dialog.select('Select a player', ['inputstream.ffmpegdirect', 'F4mProxy'])
+        if index >= 0:
+            player_type = index
+        else:
+            confirmation = False           
+    if player_type == 0 and confirmation == True:
+        ffmpeg_direct(url,name,iconImage)
+    elif confirmation == True:
+        playF4mLink(url,name,proxy_string,proxy_use_chunks,auth_string,streamtype,setResolved,swf,callbackpath,callbackparam,referer,origin,cookie,iconImage)
+elif mode == 'playlist':
+    playlist(url)
+elif mode == 'playlist2':
+    playlist2(name,url)      
+elif mode == 'playiptv':
+    if 'plugin' in url:
+        url = url.replace(';&amp;', '&').replace(';', '&').replace('&amp;', '&')
+    playiptv(url,name,iconImage)

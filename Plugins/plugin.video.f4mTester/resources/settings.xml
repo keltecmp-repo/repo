@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-    <category label="32017">
-         <setting label="32018" type="text" id="bbcBitRateMax"  default="1500" values=""/>
-                                              
-     </category>
+<category label="PLAYER">
+	<setting label="Type of Player" id="player_type" type="enum" values="inputstream.ffmpegdirect|F4mProxy" default="1" />
+	<setting label="Ask on playback?" id="ask" type="bool" default="false" />
+</category>
+<category label="IPTV">
+	<setting label="URL" id="iptv" type="text" default=""/>
+</category>
 </settings>
