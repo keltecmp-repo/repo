@@ -1,30 +1,29 @@
 <settings>
-<category label="VIP">	
+
+<category label="ACESSO DO CONTRIBUIDOR">
+	<setting label="[COLOR white]Configurações de Acesso[/COLOR] [COLOR orangered](Contribuidor):[/COLOR]" type="lsep"/>
+	<setting label="Usuário" id="username" type="text" default="vip"/>
+	<setting label="Senha" id="password" type="text" default="1234" enable="!eq(-1,false)" option="hidden"/>
+</category>
+<!--category label="VIP">	
 		<setting label="[COLOR white]Configurações da área[/COLOR] [COLOR orange](TOP VIP)[/COLOR]" type="lsep"/>	
-		<setting label="Exibir Suporte Top (VIP)" id="suporte" type="bool" default="true" />
-</category>
-<category label="30000">
-        <setting id="makeGroups" type="bool" label="30036" default="true" />
-        <setting id="actDelFavourites" type="action" label="30102" action="RunPlugin(plugin://plugin.video.KelTec.MP.matrix/default.py?mode=39&url=settings)" option="close" />	
-</category>
-<category label="Outros">
+	    <setting label="Usuário" id="1username" type="text" default="" enable="!eq(-1,false)"/>
+	    <setting label="Senha" id="1password" type="text" default="" enable="!eq(-2,false)" option="hidden"/>
+	    <setting label="Saida de Transmissão VIP" id="saida" type="enum" values="M3U8|TS" default="0" />
+	    <setting label="Exibir Menu VIP" id="exibirvip" type="bool" default="false" />
+</category-->
+<category label="MSG">
 	<setting label="[COLOR white]Configurações Gerais:[/COLOR]" type="lsep"/>
-    <setting label="Exibir Mensagem de Boas Vindas" id="mensagem1" type="bool" default="true" />	
+    <setting label="Exibir Mensagem de Boas Vindas" id="mensagem1" type="bool" default="false" />	
     <setting label="Exibir Mensagem de Status" id="mensagem2" type="bool" default="true" />		
+	<setting label="Exibir Suporte Top (VIP)" id="suporte" type="bool" default="true" />
 	<setting label="Exibir Favoritos" id="favoritos" type="bool" default="false" />
     <setting label="Entre aqui para limpar os favoritos" type="action" action="RunScript(plugin.video.KelTec.MP.matrix, limparFavoritos)"/>	
 	<setting label="Executar Youtube" id="ytbmode" type="enum" values="Interno 1|Interno 2|Externo" default="1" />	
     <setting label="Use Miniaturas como Fanart" id="use_thumb" type="bool" default="false" />
 </category>
-<category label="Proxy">
-		<setting label="[COLOR white]Opções do Proxy:[/COLOR]" type="lsep"/>
-		<setting label="Ativar Proxy" id="proxy" type="bool"  default="false" />
-		<setting label="Número de Tentativas" id="proxy_try" type="enum" values="1 Vez|2 Vezes|3 Vezes|4 Vezes|5 Vezes|6 Vezes|6 Vezes|7 Vezes|8 Vezes|9 Vezes|10 Vezes" default="4" />
-		<setting label="[COLOR dimgrey][B]Utilize apenas se a operadora estiver bloqueando o servidor[/B][/COLOR]" type="bool"/>
-		<setting label="[COLOR dimgrey][B]de hospedagem.[/B][/COLOR]" type="bool"/>
-		<setting label="[COLOR dimgrey][B]Aviso: Pode demorar a carregar[/B][/COLOR]" type="bool"/>
-		<setting label="[COLOR dimgrey][B]Utilize VPN se a operadora bloqueia o IPTV.[/B][/COLOR]" type="bool"/>
-		<setting label="ssl" id="verify_ssl" type="bool" default="true"/>
+<category label="30000">
+        <setting id="actDelFavourites" type="action" label="30102" action="RunPlugin(plugin://plugin.video.KelTec.MP.matrix/default.py?mode=39&url=settings)" option="close" />	
 </category>
 <category label="Complementos">
 	    <setting label="[COLOR dimgrey]Configurações de Complemento:[/COLOR]" type="lsep"/>
@@ -35,7 +34,6 @@
 <category label="Controle dos Pais">
 		<setting label="[COLOR white]Controle dos Pais:[/COLOR]" type="lsep"/>
 		<setting label="Exibir Menu Adultos" id="adult" type="bool" default="false" />
-		<setting label="Exibir Canais Adultos (Lista M3U)" id="adult2" type="bool" default="false" />
 		<setting label="Tipo de Teclado (OK para trocar)" id="keyboard" type="enum" values="Númerico|Alfanúmerico" default="0" />
 		<setting label="Entre aqui para alterar senha" type="action" action="RunScript(plugin.video.KelTec.MP.matrix, SetPassword)"/>
 		<setting label="[COLOR dimgrey][B]Senha padrão 0069[/B][/COLOR]" type="bool"/>
