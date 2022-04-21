@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-	<setting id="makeGroups" type="bool" label="30036" default="true" />
-	<setting id="actDelFavourites" type="action" label="30102" action="RunPlugin(plugin://plugin.video.KelTecPlayTv/default.py?mode=39&url=settings)" option="close"/>
-    <setting label="Exibir Mensagem de Boas Vindas" id="mensagem1" type="bool" default="true" />	
-    <setting label="Exibir Mensagem de Status" id="mensagem2" type="bool" default="true" />	
-</settings>
