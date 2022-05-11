@@ -1,0 +1,3 @@
+name="Themen Color Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/silvo2/themecolor/modified_topics.zip?raw=true"
+name="Wallpaper Pack 1" url="https://downloads.guidos-skinbase.de/skin_topics/silvo2/wallpaper1/modified_topics.zip?raw=true"
+name="Wallpaper Pack 2" url="https://downloads.guidos-skinbase.de/skin_topics/silvo2/wallpaper2/modified_topics.zip?raw=true"

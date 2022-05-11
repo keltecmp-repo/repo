@@ -1,0 +1,2 @@
+name="Color" url="https://downloads.guidos-skinbase.de/skin_topics/confluence6/color/skin_topics.zip?raw=true"
+

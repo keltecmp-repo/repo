@@ -1,0 +1,13 @@
+name="1. Die Trolls" url="https://downloads.guidos-skinbase.de/skin_topics/kids/trolls/modified_topics.zip?raw=true"
+name="2. Pixar Cars" url="https://downloads.guidos-skinbase.de/skin_topics/kids/cars/modified_topics.zip?raw=true"
+name="3. Super Mario" url="https://downloads.guidos-skinbase.de/skin_topics/kids/mario/modified_topics.zip?raw=true"
+name="4. Super Mario Galaxy" url="https://downloads.guidos-skinbase.de/skin_topics/kids/mario.galaxy/modified_topics.zip?raw=true"
+name="5. Sonic the Hedgehog" url="https://downloads.guidos-skinbase.de/skin_topics/kids/sonic/modified_topics.zip?raw=true"
+name="6. Ratatouille" url="https://downloads.guidos-skinbase.de/skin_topics/kids/ratatouille/modified_topics.zip?raw=true"
+name="7. SpongeBob" url="https://downloads.guidos-skinbase.de/skin_topics/kids/spongebob/modified_topics.zip?raw=true"
+name="8. Arielle" url="https://downloads.guidos-skinbase.de/skin_topics/kids/arielle/modified_topics.zip?raw=true"
+
+
+
+
+

@@ -1,0 +1,2 @@
+name="Color Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/exendet_neon/color/modified_topics.zip?raw=true"
+name="Games Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/exendet_neon/games/modified_topics.zip?raw=true"
