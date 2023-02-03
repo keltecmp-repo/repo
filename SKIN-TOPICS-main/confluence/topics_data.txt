@@ -1,0 +1,12 @@
+name="Gif1 Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/1_gif/modified_topics.zip?raw=true"
+name="Gif2 Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/10_gif/modified_topics.zip?raw=true"
+
+name="Tiere Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/2_tiere/modified_topics.zip?raw=true"
+name="Serien Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/3_serien/modified_topics.zip?raw=true"
+name="Filme Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/4_filme/modified_topics.zip?raw=true"
+name="Kids Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/5_kids/modified_topics.zip?raw=true"
+name="Games Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/6_games/modified_topics.zip?raw=true"
+name="Weltraum Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/7_weltraum/modified_topics.zip?raw=true"
+name="Gemischt Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/8_gemischt/modified_topics.zip?raw=true"
+name="4k Wallpaper" url="https://github.com/kaffepausse71/SKIN-TOPICS/blob/main/confluence/9_4k/modified_topics.zip?raw=true"
+

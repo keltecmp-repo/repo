@@ -1,0 +1,4 @@
+name="One Menu" url="https://downloads.guidos-skinbase.de/skin_topics/exendet/onemenu/modified_topics.zip?raw=true"
+name="Grey Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/exendet/grey/modified_topics.zip?raw=true"
+name="ACDC Theme" url="https://downloads.guidos-skinbase.de/skin_topics/exendet/acdc/modified_topics.zip?raw=true"
+name="NHL" url="https://downloads.guidos-skinbase.de/skin_topics/exendet/nhl/modified_topics.zip?raw=true"

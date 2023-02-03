@@ -1,0 +1,10 @@
+
+name="Tiere Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/confluence/2_tiere/modified_topics.zip?raw=true"
+name="Serien Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/confluence/3_serien/modified_topics.zip?raw=true"
+name="Filme Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/confluence/4_filme/modified_topics.zip?raw=true"
+name="Kids Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/confluence/5_kids/modified_topics.zip?raw=true"
+name="Games Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/confluence/6_games/modified_topics.zip?raw=true"
+name="Weltraum Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/confluence/7_weltraum/modified_topics.zip?raw=true"
+name="Gemischt Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/confluence/8_gemischt/modified_topics.zip?raw=true"
+name="4k Wallpaper" url="https://downloads.guidos-skinbase.de/skin_topics/confluence/9_4k/modified_topics.zip?raw=true"
+
