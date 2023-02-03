@@ -51,7 +51,7 @@ Add-on KelTec Open Wizard
     </extension>
 </addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="2.0.5+login" provider-name="Team KelTec"> 
+<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="2.0.6" provider-name="Team KelTec"> 
 <requires>
     <import addon="xbmc.python" version="3.0.0"/>
 	<import addon="script.module.beautifulsoup4"/>	
@@ -89,9 +89,7 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
        <fanart>fanart.jpg</fanart>
     </assets>
 	<news>
-v2.0.5+login
-- Corrigido Torrent Add-on. -- Update 19-04-22  --		
-
+v2.0.6
 - Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
 
 
