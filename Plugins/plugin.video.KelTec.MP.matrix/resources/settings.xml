@@ -1,11 +1,11 @@
 <settings>
 
-<category label="ACESSO DO CONTRIBUIDOR">
+<!--category label="ACESSO DO CONTRIBUIDOR">
 	<setting label="[COLOR white]Configurações de Acesso[/COLOR] [COLOR orangered](Contribuidor):[/COLOR]" type="lsep"/>
 	<setting label="Usuário" id="username" type="text" default="vip"/>
 	<setting label="Senha" id="password" type="text" default="1234" enable="!eq(-1,false)" option="hidden"/>
 </category>
-<!--category label="VIP">	
+<category label="VIP">	
 		<setting label="[COLOR white]Configurações da área[/COLOR] [COLOR orange](TOP VIP)[/COLOR]" type="lsep"/>	
 	    <setting label="Usuário" id="1username" type="text" default="" enable="!eq(-1,false)"/>
 	    <setting label="Senha" id="1password" type="text" default="" enable="!eq(-2,false)" option="hidden"/>
@@ -38,11 +38,11 @@
 		<setting label="Entre aqui para alterar senha" type="action" action="RunScript(plugin.video.KelTec.MP.matrix, SetPassword)"/>
 		<setting label="[COLOR dimgrey][B]Senha padrão 0069[/B][/COLOR]" type="bool"/>
 </category>
-<category label="MENU DE VISUALIZAÇAO">	 
+<!--category label="MENU DE VISUALIZAÇAO">	 
 		<setting label="SELECIONE PLAYER TORRENT:" type="lsep" />
 		<setting label="___________________________________________________________________________" type="lsep" />
 		<setting label="PLAYER TORRENT" id="torrent" type="enum" values="Elementum" default="0" />
-		<!--setting id="local_roxplayer" type="file" source="files" label="localize o arquivo 'ROX Player.lnk'" default="" visible="eq(-1,Rox Player)"/-->
+		<setting id="local_roxplayer" type="file" source="files" label="localize o arquivo 'ROX Player.lnk'" default="" visible="eq(-1,Rox Player)"/>
 		<setting label="___________________________________________________________________________" type="lsep" />
-</category>
+</category-->
 </settings>
