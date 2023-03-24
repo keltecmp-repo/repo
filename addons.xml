@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
 
-<addon id="plugin.video.TorrentPlay" version="1.0.0" name="[B][COLOR dimgrey]TORRENT [COLOR green]PLAY[/COLOR][/B]" provider-name="Keltec">
+<addon id="plugin.video.TorrentPlay" version="1.0.1" name="[B][COLOR dimgrey]TORRENT [COLOR green]PLAY[/COLOR][/B]" provider-name="Keltec">
     <requires>
         <import addon="script.module.simplejson" />
         <import addon="script.module.six" />
@@ -36,7 +36,7 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
     </assets>
 	<news>
 v1.0.0
-
+v1.0.1 Melhorias Gerais.
 - Add-on Liberado para todos!!!
 
 - Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
