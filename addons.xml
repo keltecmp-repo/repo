@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
 
-<addon id="plugin.video.TorrentPlay" version="1.0.1" name="[B][COLOR dimgrey]TORRENT [COLOR green]PLAY[/COLOR][/B]" provider-name="Keltec">
+<addon id="plugin.video.TorrentPlay" version="1.0.2" name="[B][COLOR dimgrey]TORRENT [COLOR green]PLAY[/COLOR][/B]" provider-name="Keltec">
     <requires>
         <import addon="script.module.simplejson" />
         <import addon="script.module.six" />
@@ -96,7 +96,7 @@ Add-on KelTec Open Wizard
     </extension>
 </addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="2.0.7" provider-name="Team KelTec"> 
+<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="2.0.8" provider-name="Team KelTec"> 
 <requires>
     <import addon="xbmc.python" version="3.0.0"/>
 	<import addon="script.module.beautifulsoup4"/>	

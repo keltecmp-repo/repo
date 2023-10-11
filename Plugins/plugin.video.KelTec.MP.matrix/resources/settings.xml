@@ -14,7 +14,7 @@
 </category-->
 <category label="MSG">
 	<setting label="[COLOR white]Configurações Gerais:[/COLOR]" type="lsep"/>
-    <setting label="Exibir Mensagem de Boas Vindas" id="mensagem1" type="bool" default="false" />	
+    <setting label="Exibir Mensagem de Boas Vindas" id="mensagem1" type="bool" default="true" />	
     <setting label="Exibir Mensagem de Status" id="mensagem2" type="bool" default="true" />		
 	<setting label="Exibir Suporte Top (VIP)" id="suporte" type="bool" default="true" />
 	<setting label="Exibir Favoritos" id="favoritos" type="bool" default="false" />

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.TorrentPlay" version="1.0.1" name="[B][COLOR dimgrey]TORRENT [COLOR green]PLAY[/COLOR][/B]" provider-name="Keltec">
-    <requires>
+<addon id="plugin.video.TorrentPlay" version="1.0.2" name="[B][COLOR dimgrey]TORRENT [COLOR green]PLAY[/COLOR][/B]" provider-name="Keltec">    <requires>
         <import addon="script.module.simplejson" />
         <import addon="script.module.six" />
         <import addon="script.module.kodi-six" />
