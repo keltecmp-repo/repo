@@ -95,6 +95,37 @@ Add-on KelTec Open Wizard
     </extension>
 </addon>
 
+<addon id="plugin.program.keltec.wizard-mult" name="Wizard KelTec Mult Kodi" version="1.0" provider-name="Team KelTec Media Play">
+	<requires>
+		<import addon="xbmc.python" version="3.0.0"/>
+	</requires>
+	<extension point="xbmc.python.pluginsource" library="addon.py">
+		<provides>executable</provides>
+	</extension>
+	<extension point="xbmc.service" library="service.py" />
+	<extension point="xbmc.addon.metadata">
+		<summary lang="en_GB">Kodi Wizard</summary>
+		<description lang="en_GB">Wizard KelTec para Kodi 19, 20, 21</description>
+		<disclaimer lang="en_GB"></disclaimer>
+		<language>en</language>
+		<platform>all</platform>
+		<license>GPL-2.0-or-later</license>
+		<forum></forum>
+		<website></website> 
+		<email></email>
+		<source></source>
+		<news>
+		</news>
+		<assets>
+				<icon>resources/icon.png</icon>
+				<fanart>resources/fanart.png</fanart>
+				<banner></banner>
+				<clearlogo></clearlogo>
+				<screenshot></screenshot>
+		</assets>
+	</extension>
+</addon>
+
 <addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="2.1.1" provider-name="Team KelTec"> 
 <requires>
     <import addon="xbmc.python" version="3.0.0"/>

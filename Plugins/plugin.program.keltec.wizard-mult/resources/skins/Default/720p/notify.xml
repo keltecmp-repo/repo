@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window>
+	<defaultcontrol always="false">1001</defaultcontrol>
+	<coordinates>
+		<left>200</left>
+		<top>50</top>
+	</coordinates>
+	<animation effect="slide" start="1300" time="500">WindowOpen</animation>
+	<animation effect="fade" time="400">WindowClose</animation>
+	<controls>
+		<control type="image">
+			<description>Image</description>
+			<width>900</width>
+			<height>600</height>
+			<texture>black.png</texture>
+			<bordertexture border="2" colordiffuse="darkgrey">white.png</bordertexture>
+			<bordersize>2</bordersize>
+		</control>
+		<control type="textbox">
+			<description>text</description>
+			<top>10</top>
+			<left>10</left>
+			<width>850</width>
+			<height>550</height>
+			<label>Press back to close</label>
+			<font>font60</font>
+			<align>left</align>
+			<aligny></aligny>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		</control>
+	</controls>
+</window>
