@@ -3,7 +3,7 @@
 
 <addon id="plugin.video.keltecmp-xtream"
        name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play [COLOR silver]Xtream[/COLOR][/B]"
-       version="1.0.0"
+       version="1.0.1"
        provider-name="zoreu (Editato por Team KelTec)">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
