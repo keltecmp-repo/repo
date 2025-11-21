@@ -1,9 +1,9 @@
 <settings>
 <category label="PLAYER">
-	<setting label="Type of Player" id="player_type" type="enum" values="inputstream.ffmpegdirect|F4mProxy" default="1" />
-	<setting label="Ask on playback?" id="ask" type="bool" default="false" />
+	<setting label="Type of Player" id="player_type" type="enum" values="PROXY - HLSRETRY" default="2" />
+	<setting label="Ask on playback?" id="ask" type="bool" default="true" />
 </category>
-<category label="IPTV">
+<!--category label="IPTV">
 	<setting label="URL" id="iptv" type="text" default=""/>
-</category>
+</category-->
 </settings>

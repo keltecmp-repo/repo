@@ -564,7 +564,7 @@ elif mode == "play":
     confirmation = True
     if ask == 'true':
         dialog = xbmcgui.Dialog()
-        index = dialog.select('Select a player', ['inputstream.ffmpegdirect', 'F4mProxy'])
+        index = dialog.select('Select a player', ['PROXY - HLSRETRY', 'PROXY - TSDOWNLOADER'])
         if index >= 0:
             player_type = index
         else:

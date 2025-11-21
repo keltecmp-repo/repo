@@ -505,7 +505,7 @@ v2.1.0
     </extension>
 </addon>
 
-<addon id="plugin.video.f4mTester" version="4.0.7" name="f4mTester" provider-name="Joel e Tiago">
+<addon id="plugin.video.f4mTester" version="4.2.6" name="f4mTester" provider-name="Joel e Tiago (Editado Team KelTec MP">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
 		<import addon="script.video.F4mProxy" version="4.0.7"/>		
