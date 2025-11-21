@@ -7,7 +7,7 @@ from urllib.parse import parse_qs
 addon_id = xbmcaddon.Addon().getAddonInfo('id')
 
 '''#####-----Build File-----#####'''
-buildfile = 'https://gitlab.com/-/snippets/4808930/raw/main/snippetfile1.txt'
+buildfile = 'https://keltecmp.crn.re/Builds/builds.xml'
 
 '''#####-----Excludes-----#####'''
 EXCLUDES  = [addon_id, 'packages', 'Addons33.db', 'kodi.log']
