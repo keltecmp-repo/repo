@@ -8,7 +8,7 @@
 
     <category label="Configurações">
         <setting id="enable_epg" type="bool" label="Habilitar EPG (Pode ficar lento)" default="false"/>
-        <setting id="retry" type="bool" label="Ativar player interno" default="false"/>
+        <setting id="retry" type="bool" label="Ativar Player F4M" default="false"/>
         <setting id="proxy_http" type="bool" label="Habilitar Proxy HTTP (apenas para canais)" default="false"/>
     </category>
 </settings>

@@ -244,7 +244,7 @@ def handle_request(client_socket, client_address, server_socket):
                     if AGENT_OF_CHAOS.get(cache_key) and not ('.ts' in url.lower() or '/hl' in url.lower()):
                         req_headers['User-Agent'] = AGENT_OF_CHAOS[cache_key] if change_user_agent[0] else original_headers.get('User-Agent', DEFAULT_USER_AGENT)
                     elif '.ts' in url.lower() or '/hl' in url.lower():
-                        req_headers['User-Agent'] = binascii.b2a_hex(os.urandom(20))[:32] if change_user_agent[0] or not req_headers.get('User-Agent') else original_headers.get('User-Agent', DEFAULT_USER_AGENT)
+                        req_headers['User-Agent'] = binascii.b2a_hex(os.urandom(20))[:32] if change_user_agent[0] or not req_headers.get('User-Agent') else origial_headers.get('User-Agent', DEFAULT_USER_AGENT)
 
                     response = session.get(url, headers=req_headers, allow_redirects=True, stream=True, timeout=timeout)
                     logging.debug("HLS PROXY: URL %s, attempt %s, status code %s" % (url, attempts, response.status_code))
