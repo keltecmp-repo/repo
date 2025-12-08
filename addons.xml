@@ -100,7 +100,7 @@ v1.0.3 Melhorias Gerais.
   </extension>
 </addon>
 
-<addon id="plugin.program.keltec.wizard" name="[B][COLOR limegreen]KelTec [/COLOR]Open Wizard[/B] Matrix" version="1.0.1+matrix.1" provider-name="Team KelTec Media Play">
+<addon id="plugin.program.keltec.wizard" name="[B][COLOR limegreen]KelTec [/COLOR]Open Wizard[/B] Matrix" version="1.0.2+matrix.1" provider-name="Team KelTec Media Play">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
         <import addon="script.module.requests" />
