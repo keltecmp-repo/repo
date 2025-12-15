@@ -40,50 +40,6 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
     </extension>
 </addon>
 
-<addon id="plugin.video.TorrentPlay" version="1.0.3" name="[B][COLOR dimgrey]TORRENT [COLOR green]PLAY[/COLOR][/B]" provider-name="Keltec">    <requires>
-        <import addon="script.module.simplejson" />
-        <import addon="script.module.six" />
-        <import addon="script.module.kodi-six" />
-		<import addon="script.module.beautifulsoup4"/>	
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
-    </extension>	
-    <extension point="xbmc.addon.repository" name="[B]KelTe-Media-Play Repositório[/B]">
-	<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
-	<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
-	<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
-    </extension>   
-    <extension point="xbmc.addon.metadata">
-	<summary lang="en">Torrent Play reproduz filmes e series em torrent usando o elementum Movies, Series, Drawings Online - KelTec Media'Play Official Repository</summary>
-	<summary lang="pt">Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play</summary>
-	<description lang="en">[COLOR orange] [B] KelTec Media Play [/ B] [/ COLOR] 
-	        [COLOR silver] The Add-on offers  Movies, Series, Online Drawings - KelTec Media'Play Official Repository, links that are fully functional and constantly
-updated NOTE: The creator of this Add-on does not host any content, we just reorganized, indexed it again, all content can be found on the internet with a simple search. [/ COLOR],</description>
-	<description lang="pt">Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play
-[COLOR darkorange][B]KelTec Media Play[/B] [/COLOR] 
-[COLOR silver]O Add-on oferece ,Filmes,Series,Desenhos Online - Repositório Oficial KelTec Media'Play, links totalmente funcionais e constantemente
-atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reorganizamos, indexamos novamente, todo conteúdo pode ser encontrado na internet com busca simples.[/COLOR],</description>
-    <disclaimer lang="en">The author is in no way affiliated with Kodi, Team Kodi or the XBMC Foundation. This is a non-profit resource.</disclaimer>
-	<disclaimer lang="pt">[COLOR darkgrey][B] KelTec-Media-Play[/B][/COLOR]
-[COLOR crimson]O  autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] KelTec-Media-Play[/B] [/COLOR]</disclaimer>
-    <platform>all</platform>
-	<assets>
-       <icon>icon.gif</icon>
-       <fanart>fanart.jpg</fanart>
-    </assets>
-	<news>
-v1.0.0
-v1.0.3 Melhorias Gerais.
-- Add-on Liberado para todos!!!
-
-- Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
-
-
-	</news>
-</extension>
-</addon>
-
 <addon id="plugin.program.keltecmpleiawizard" name="[B]KelTecMP Leia Wizard Builds[/B]" version="0.0.7" provider-name="Team KelTec-MP">
   <requires>
     <import addon="xbmc.python" version="2.24.0"/>
@@ -100,7 +56,7 @@ v1.0.3 Melhorias Gerais.
   </extension>
 </addon>
 
-<addon id="plugin.video.xtream" name="[B][COLOR red]XTream[/B][/COLOR]" version="3.1.6" provider-name="[B][COLOR orange]Fire TV Guru[/B][/COLOR]">
+<addon id="plugin.video.xtream" name="[B][COLOR red]XTream[/B][/COLOR]" version="3.1.7" provider-name="[B][COLOR orange]Fire TV Guru[/B][/COLOR]">
   <extension point="xbmc.python.pluginsource"
 			library="default.py">
 		<provides>video</provides>

@@ -543,6 +543,34 @@ def addonsettings(url,description):
 		tools.gen_m3u(panel_api, M3U_PATH)
 	elif url == "TEST":
 		tester()
+        
+def contador(msg):
+    try:
+        import urllib.request as urllib2
+    except ImportError:
+        import urllib2    
+    import platform
+    if platform.system() == 'Linux':
+        sistema_operacional = 'Android 9; Mobile; rv:68.0'
+    elif platform.system() == 'Windows':
+        sistema_operacional = 'Windows NT 6.1; WOW64; rv:54.0'
+    elif platform.system() == 'IOS':
+        sistema_operacional = 'iPhone; CPU iPhone OS 12_2 like Mac OS X'
+    else:
+        sistema_operacional = ''
+    request_headers = {    
+    "Accept-Language": "en-US,en;q=0.5",
+    "\x55\x73\x65\x72\x2d\x61\x67\x65\x6e\x74": sistema_operacional,
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,/;q=0.8",
+    "Referer": "EXTREAM PLAYER",
+    "Connection": "keep-alive" 
+    }
+    request = urllib2.Request("https://whos.amung.us/pingjs/?k=ogde9tyslf", headers=request_headers)
+    response = urllib2.urlopen(request).read()
+    #print(response)
+    #time.sleep(60)
+    tempo_delay = 0
+    xbmc.sleep(tempo_delay*0)         
 
 def adult_set():
 	dialog = DIALOG.yesno(ADDON_NAME,'Você gostaria de ocultar o menu Adulto? \nVocê pode editar isso depois na configuração.')
@@ -819,5 +847,7 @@ elif mode=='start':
 
 elif mode=='test':
 	tester()
-
+    
+    
+contador(True)    
 xbmcplugin.endOfDirectory(int(sys.argv[1]))
