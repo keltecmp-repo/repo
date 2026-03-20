@@ -1,14 +1,112 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
-    <category label="Credenciais">
-        <setting id="host" type="text" label="Host DNS (ex: http://xxxxx:80)" default="" />
-        <setting id="username" type="text" label="Usuário" default="" />
-        <setting id="password" type="text" label="Senha" option="hidden" default="" />
+    <!-- ========================================== -->
+    <!-- CONFIGURAÇÕES DE SERVIDOR -->
+    <!-- ========================================== -->
+    <category label="Configuração do Servidor">
+        <setting id="base_url" type="text" label="URL do Servidor" default="http://"/>
+        <setting id="username" type="text" label="Nome de Usuário" default=""/>
+        <setting id="password" type="text" label="Senha" default="" option="hidden"/>
+        
+        <setting type="sep"/>
+        <setting label="[B]Múltiplos Servidores[/B]" type="lsep"/>
+        <setting label="Configure até 5 servidores diferentes" type="lsep"/>
+        
+        <setting id="server1_name" type="text" label="Servidor 1 - Nome" default=""/>
+        <setting id="server1_url" type="text" label="Servidor 1 - URL" default=""/>
+        <setting id="server1_user" type="text" label="Servidor 1 - Usuário" default=""/>
+        <setting id="server1_pass" type="text" label="Servidor 1 - Senha" default="" option="hidden"/>
+        
+        <setting type="sep"/>
+        <setting id="server2_name" type="text" label="Servidor 2 - Nome" default=""/>
+        <setting id="server2_url" type="text" label="Servidor 2 - URL" default=""/>
+        <setting id="server2_user" type="text" label="Servidor 2 - Usuário" default=""/>
+        <setting id="server2_pass" type="text" label="Servidor 2 - Senha" default="" option="hidden"/>
+        
+        <setting type="sep"/>
+        <setting id="server3_name" type="text" label="Servidor 3 - Nome" default=""/>
+        <setting id="server3_url" type="text" label="Servidor 3 - URL" default=""/>
+        <setting id="server3_user" type="text" label="Servidor 3 - Usuário" default=""/>
+        <setting id="server3_pass" type="text" label="Servidor 3 - Senha" default="" option="hidden"/>
+        
+        <setting type="sep"/>
+        <setting id="server4_name" type="text" label="Servidor 4 - Nome" default=""/>
+        <setting id="server4_url" type="text" label="Servidor 4 - URL" default=""/>
+        <setting id="server4_user" type="text" label="Servidor 4 - Usuário" default=""/>
+        <setting id="server4_pass" type="text" label="Servidor 4 - Senha" default="" option="hidden"/>
+        
+        <setting type="sep"/>
+        <setting id="server5_name" type="text" label="Servidor 5 - Nome" default=""/>
+        <setting id="server5_url" type="text" label="Servidor 5 - URL" default=""/>
+        <setting id="server5_user" type="text" label="Servidor 5 - Usuário" default=""/>
+        <setting id="server5_pass" type="text" label="Servidor 5 - Senha" default="" option="hidden"/>
     </category>
 
-    <category label="Configurações">
-        <setting id="enable_epg" type="bool" label="Habilitar EPG (Pode ficar lento)" default="false"/>
-        <setting id="retry" type="bool" label="Ativar Player F4M" default="false"/>
-        <setting id="proxy_http" type="bool" label="Habilitar Proxy HTTP (apenas para canais)" default="false"/>
+    <!-- ========================================== -->
+    <!-- TMDB - THE MOVIE DATABASE -->
+    <!-- ========================================== -->
+    <category label="TMDB - Metadados">
+        <setting label="[B]The Movie Database (TMDB)[/B]" type="lsep"/>
+        <setting label="Adiciona posters, plots, ratings e mais!" type="lsep"/>
+        
+        <setting id="tmdb_enabled" type="bool" label="Habilitar TMDB" default="false"/>
+        
+        <setting type="sep"/>
+        <setting label="[B]Configuração da API[/B]" type="lsep"/>
+        <setting label="Obtenha sua API Key GRÁTIS em:" type="lsep"/>
+        <setting label="https://www.themoviedb.org/settings/api" type="lsep"/>
+        
+        <setting id="tmdb_api_key" type="text" label="API Key" default="" enable="eq(-5,true)"/>
+        
+        <setting type="sep"/>
+        <setting label="[B]Opções[/B]" type="lsep"/>
+        
+        <setting id="tmdb_language" type="select" label="Idioma" default="pt-BR" enable="eq(-8,true)">
+            <option label="Português (Brasil)">pt-BR</option>
+            <option label="Português (Portugal)">pt-PT</option>
+            <option label="Inglês">en-US</option>
+            <option label="Espanhol">es-ES</option>
+            <option label="Francês">fr-FR</option>
+        </setting>
+        
+        <setting id="tmdb_cache_days" type="slider" label="Cache (dias)" default="7" range="1,1,30" option="int" enable="eq(-11,true)"/>
+        
+        <setting id="tmdb_use_fanart" type="bool" label="Usar Fanart (fundos)" default="true" enable="eq(-13,true)"/>
+        <setting id="tmdb_use_cast" type="bool" label="Mostrar elenco" default="true" enable="eq(-14,true)"/>
+        <setting id="tmdb_use_trailer" type="bool" label="Incluir trailers" default="true" enable="eq(-15,true)"/>
+        
+        <setting type="sep"/>
+        <setting label="[B]Cache[/B]" type="lsep"/>
+        <setting label="Limpar cache do TMDB (force atualização)" type="action" action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=tmdb_clear_cache)"/>
+    </category>
+
+    <!-- ========================================== -->
+    <!-- PLAYER E PROXY -->
+    <!-- ========================================== -->
+    <category label="Player e Proxy">
+        <setting label="[B]Configurações do Player[/B]" type="lsep"/>
+        
+        <setting id="enable_epg" type="bool" label="Ativar EPG" default="false"/>
+        <setting id="epg_url" type="text" label="URL do EPG" default="" enable="eq(-1,true)"/>
+        
+        <setting type="sep"/>
+        <setting label="[B]Proxy HTTP[/B]" type="lsep"/>
+        <setting label="Use proxy HTTP para streaming (avançado)" type="lsep"/>
+        
+    </category>
+
+    <!-- ========================================== -->
+    <!-- AVANÇADO -->
+    <!-- ========================================== -->
+    <category label="Avançado">
+        <setting label="[B]Opções Avançadas[/B]" type="lsep"/>
+        
+        <setting id="debug_mode" type="bool" label="Modo Debug (logs detalhados)" default="false"/>
+        <setting id="cache_enabled" type="bool" label="Habilitar cache local" default="true"/>
+        <setting id="cache_timeout" type="slider" label="Timeout de cache (horas)" default="24" range="1,1,168" option="int"/>
+        
+        <setting type="sep"/>
+        <setting label="[B]Reset[/B]" type="lsep"/>
+        <setting label="Limpar todos os caches" type="action" action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=clear_all_cache)"/>
     </category>
 </settings>
