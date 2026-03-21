@@ -56,7 +56,7 @@
         <setting label="Obtenha sua API Key GRÁTIS em:" type="lsep"/>
         <setting label="https://www.themoviedb.org/settings/api" type="lsep"/>
         
-        <setting id="tmdb_api_key" type="text" label="API Key" default="" enable="eq(-5,true)"/>
+        <setting id="tmdb_api_key" type="text" label="API Key" default="fc168650632c6597038cf7072a7c20da" enable="eq(-5,true)"/>
         
         <setting type="sep"/>
         <setting label="[B]Opções[/B]" type="lsep"/>
