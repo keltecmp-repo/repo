@@ -138,55 +138,6 @@ Add-on KelTec Open Wizard
 	</extension>
 </addon>
 
-<addon id="plugin.video.KelTec.MP.matrix" name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]" version="2.1.1" provider-name="Team KelTec"> 
-<requires>
-    <import addon="xbmc.python" version="3.0.0"/>
-	<import addon="script.module.beautifulsoup4"/>	
-    <import addon="script.module.simplejson"/>
-    <import addon="script.module.six" version="1.0.0"/>
-    <import addon="script.module.kodi-six" version="0.1.3.1"/>
-    <import addon="script.module.requests" version="2.7.0"/> 
-    <import addon="script.module.simplecache" version="1.0.0"/>
-    <import addon="script.module.routing" version="0.2.3"/>
-</requires>  
-<extension point="xbmc.python.pluginsource" library="default.py">
-	<provides>video</provides>
-</extension>
-<extension point="xbmc.addon.repository" name="[B]KelTe-Medi-Play Repositório[/B]">
-	<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
-	<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
-	<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
-</extension>   
-<extension point="xbmc.addon.metadata">
-	<summary lang="en">TV, Movies, Series, Drawings Online - KelTec Media'Play Official Repository</summary>
-	<summary lang="pt">TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play</summary>
-	<description lang="en">[COLOR orange] [B] KelTec Media Play [/ B] [/ COLOR] 
-	        [COLOR silver] The Add-on offers TV, Movies, Series, Online Drawings - KelTec Media'Play Official Repository, links that are fully functional and constantly
-updated NOTE: The creator of this Add-on does not host any content, we just reorganized, indexed it again, all content can be found on the internet with a simple search. [/ COLOR],</description>
-	<description lang="pt">TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play
-[COLOR darkorange][B]KelTec Media Play[/B] [/COLOR] 
-[COLOR silver]O Add-on oferece TV,Filmes,Series,Desenhos Online - Repositório Oficial KelTec Media'Play, links totalmente funcionais e constantemente
-atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reorganizamos, indexamos novamente, todo conteúdo pode ser encontrado na internet com busca simples.[/COLOR],</description>
-    <disclaimer lang="en">The author is in no way affiliated with Kodi, Team Kodi or the XBMC Foundation. This is a non-profit resource.</disclaimer>
-	<disclaimer lang="pt">[COLOR darkgrey][B] KelTec-Media-Play[/B][/COLOR]
-[COLOR crimson]O  autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] KelTec-Media-Play[/B] [/COLOR]</disclaimer>
-    <platform>all</platform>
-	<assets>
-       <icon>icon.gif</icon>
-       <fanart>fanart.jpg</fanart>
-    </assets>
-	<news>
-v2.1.0
-
-- Add-on Liberado para todos!!!
-
-- Atualização das Imagens do Add-on Créditos César Prado "CV Prado"
-
-
-	</news>
-</extension>
-</addon>
-
 <addon id="plugin.video.youtube" name="YouTube" version="6.6.0.0.3" provider-name="anxdpanic, bromix">
     <requires>
         <import addon="xbmc.python" version="2.20.0"/>
@@ -272,76 +223,6 @@ v2.1.0
     </extension>
 </addon>
 
-<addon 	
-		id="vkkodi.repo" name="[B][COLOR yellow]  Vikings  [COLOR orange]Repositorio Vikings Oficial, SEM BANIMENTO, agora compativel com Kodi Matrix!![/B][/COLOR]"
-		version="3.00"
-		provider-name="[B][COLOR gold]Vikings TEAM[/B][/COLOR]">
-		
-		<requires>
-        <import addon="xbmc.addon" version="12.0.0"/>
-		</requires>
-		
-		<extension point="xbmc.addon.repository" name=".Vikings Repositorio">
-		
-		
-	<dir minversion="16.0.0" maxversion="16.9.9">
-			<info compressed="false">https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/jarvis/addons.xml</info>
-			<checksum>https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/jarvis/addons.xml.md5</checksum>
-			<datadir zip="true">https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/jarvis</datadir>
-			<hashes>false</hashes>
-    </dir>
-
-		
-	<dir minversion="17.0.0" maxversion="18.9.0">
-			<info compressed="false">https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/leia/addons.xml</info>
-			<checksum>https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/leia/addons.xml.md5</checksum>
-			<datadir zip="true">https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/leia</datadir>
-			<hashes>false</hashes>
-    </dir>
-   
-   <dir minversion="18.9.1">
-			<info compressed="false">https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/matrix/addons.xml</info>
-			<checksum>https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/matrix/addons.xml.md5</checksum>
-			<datadir zip="true">https://github.com/vikingskoditeam/vikingskoditeam.github.io/raw/master/matrix</datadir>
-			<hashes>false</hashes>
-    </dir>
-	
-	</extension>
-		
-	
-	<extension point="xbmc.addon.metadata">
-		<summary lang="pt_br"></summary>
-        <description lang="pt_br"></description>
-		<platform>all</platform>
-		<source>http://raw.github.com/vikingskoditeam/vikingskoditeam.github.io/master</source>
-		 <assets>
-            <icon>icon.png</icon>
-			<fanart>fanart.jpg</fanart>
-        </assets>
-				
-	<news>
-	[COLOR orange]LOG DE CORREÇÔES[/COLOR]
-	
-	[COLOR green]*[/COLOR] V 2.00 - compatibilidade com Kodi 19 Matrix
-	[COLOR blue]*[/COLOR] V 1.53 - ajustes de dependencias...
-	[COLOR red]*[/COLOR] V 1.53 - ajustes de dependencias...
-	[COLOR orange]*[/COLOR] V 1.15.1 - Excluido a instalação do plugin Youtube que provocava erros em algumas box...
-	[COLOR gold]*[/COLOR]   V 1.17.1 - Corrigido dependências que provocava erros quando instalado o repositório em Kodi Padrão.
-	</news>
-		
-	<summary>Repositório Vikings levando os melhores addons a sua familia e aos quatro cantos do Mundo!!!</summary>
-		
-	<description>	
-                    [B][COLOR orange]Repositório Vikings, SEM BANIMENTO! SEM SCRIPT MALICIOSO!! PURO, LIMPO E SIMPLES!!![/COLOR][/B]
-					[B][COLOR red]Repositório oficial Vikings Build - Proibido reprodução total ou parcial sem prévia autorização[/COLOR][/B]
-					[B][COLOR white]Addons deste repositório é de uso gratuito!![/COLOR][/B]
-					[B][COLOR firebrick]Proibido a venda dos add-ons contidos neste repositório[/COLOR][/B]
-	</description>
-		
-<disclaimer>[B][COLOR orange]Repositório Vikings é apenas um AGREGADOR de ADDONS e, assim como o Google.com, apenas agrega e organiza ADDONS DE TERCEIROS. Não somos responsáveis pelos arquivos aqui encontrados.[/COLOR][/B]</disclaimer>
-		
-	</extension>
-</addon>
 
 <addon 	
 		id="KeltecMP.repository" name="[B][COLOR gold]Repositorio[/COLOR]: [COLOR blue]KelTecMP[/COLOR][/B]"
@@ -427,43 +308,6 @@ v2.1.0
   </extension>
 </addon>
 
-<addon id="plugin.video.KeltecMP"
-       name="[B][COLOR silver]KelTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]"
-       version="9.3"
-       provider-name="Team KelTec Media'Play">
-  <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.beautifulsoup" version="3.2.1"/>
-    <import addon="script.module.simple.downloader" version="0.9.4"/>
-    <import addon="script.module.beautifulsoup4"/>
-    <import addon="script.module.requests"/>
-    <import addon="script.module.httplib2"/>
-    <import addon="script.module.youtube.dl" optional="true"/>
-    <import addon="plugin.video.youtube"/>
-    <import addon="script.module.urlresolver" optional="true"/>
-    <import addon="script.module.simplejson"/> 
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-    <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.repository" name="[B]Repo KelTec Media Play[/B]">
-		<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
-		<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
-		<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
-	</extension>
-  <extension point="xbmc.addon.metadata">
-	<summary>TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play</summary>
-        <description lang="en">[COLOR orange][B]KelTec Media Play[/B][/COLOR]
-		    [COLOR silver]O Add-on oferece TV,Filmes,Series,Desenhos Online - Repositório Oficial KelTec Media'Play, links totalmente funcionais e constantemente
-            atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reorganizamos, indexamos novamente, todo conteúdo pode ser encontrado na internet com busca simples.[/COLOR],</description>
-        <disclaimer lang="en">[COLOR darkgrey][B] KelTec-Media-Play[/B][/COLOR][COLOR crimson]O autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] KelTec-Media-Play[/B] [/COLOR]Os creditos para a pagina: http://www.megatorrentshd.com[/COLOR]</disclaimer>
-        <website>www.keltecmp.net/</website>
-        <forum></forum>
-        <license>GNU GENERAL PUBLIC LICENSE. Version 2.</license>
-        <platform>all</platform>
-    </extension>
-</addon>
-
 <addon id="plugin.video.gdrive" version="8.866" name="gdrive" provider-name="ddurdle">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -478,47 +322,62 @@ v2.1.0
     </extension>
 </addon>
 
-<addon id="plugin.video.f4mTester" version="4.2.6" name="f4mTester" provider-name="Joel e Tiago (Editado Team KelTec MP">
-    <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
-		<import addon="script.video.F4mProxy" version="4.0.7"/>		
-        <import addon="inputstream.ffmpegdirect"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
-    </extension>  
+<addon id="script.module.flask"
+       name="Flask"
+       version="2.1.3"
+       provider-name="Joel">
+    <extension point="xbmc.python.module" library="lib"/>
     <extension point="xbmc.addon.metadata">
-        <summary lang="en">f4mTester</summary>
-        <description></description>
+        <summary>Flask module</summary>
+        <description>Flask module</description>
         <platform>all</platform>
         <assets>
-			<icon>icon.png</icon>
-		</assets>
+            <icon>icon.png</icon>
+        </assets>        
     </extension>
 </addon>
 
-<addon id="script.video.F4mProxy" 
-	     name="F4mProxy" 
-	     version="4.0.7" 
-	     provider-name="Joel e Tiago">
-	<requires>
-		<import addon="xbmc.python" version="3.0.0" />
-		<import addon="script.module.requests" />
-        <import addon="inputstream.ffmpegdirect" />
-	</requires>
-	<extension point="xbmc.python.module" library="lib" />
-    <extension point="xbmc.python.pluginsource" library="addon.py">
-		<provides>executable</provides>
-	</extension>
-    
-	<extension point="xbmc.addon.metadata">
-		<platform>all</platform>
-		<summary lang="en">Proxy for f4m</summary>
-		<description lang="en">Use this addon to play F4m v1 and v2 streams</description>
-		<assets>
+<addon id="script.module.netunblock" name="Net Unblock" version="0.0.2" provider-name="Joel">
+    <requires>
+        <import addon="script.module.six" />
+        <import addon="script.module.kodi-six" />
+        <import addon="script.module.requests" />
+    </requires>
+    <extension point="xbmc.python.module" library="lib" />
+    <extension point="xbmc.python.pluginsource" library="app.py">
+        <provides>executable</provides>
+    </extension>    
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <summary lang="en_GB">DNS OVER HTTPS (DoH) resolver for Kodi.</summary>
+        <description lang="en_GB">dns over https resolve globally in python script with socket</description>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="plugin.video.f4mTester" version="4.2.5" name="f4mTester" provider-name="Joel">
+  <requires>
+    <import addon="script.module.flask" version="0.12"/>
+    <import addon="script.module.requests"/>
+    <import addon="script.module.netunblock"/>    	
+    <import addon="xbmc.json" version="6.0.0"/>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.service" library="service.py" start="startup"/>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+      <provides>video</provides>
+  </extension>  
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">f4mTester</summary>
+    <description lang="en"></description>
+    <platform>all</platform>
+    <assets>
 			<icon>icon.png</icon>
-		</assets>
-	</extension>
+		</assets>    
+  </extension>
 </addon>
 
 <addon id="service.subtitles.opensubtitles"
