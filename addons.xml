@@ -3,7 +3,7 @@
 
 <addon id="plugin.video.keltecmp-xtream"
        name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play [COLOR silver]Xtream[/COLOR][/B]"
-       version="2.0.1"
+       version="2.0.2"
        provider-name="Team KelTec)">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
@@ -12,11 +12,17 @@
     <extension point="xbmc.python.pluginsource" library="main.py">
         <provides>video</provides>
     </extension>
-    <extension point="xbmc.addon.repository" name="[B]KelTe-Medi-Play Repositório[/B]">
-	    <info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
-	    <checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
-	    <datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
-        </extension>	
+		<extension point="xbmc.addon.repository" name="KelTecMP Repo">
+				
+	<dir>
+			<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
+			<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
+			<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
+			<hashes>false</hashes>
+    </dir>
+	
+    </extension>	
+	
     <extension point="xbmc.addon.metadata">
         <summary>Add-on KelTec MP Xtream  com TV, Filmes, Series, EPG e Busca Global</summary>	<summary lang="en">TV, Movies, Series, Drawings Online - KelTec Media'Play Official Repository</summary>
 	    <summary lang="pt">TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play</summary>

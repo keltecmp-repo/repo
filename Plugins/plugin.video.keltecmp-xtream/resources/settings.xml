@@ -49,7 +49,7 @@
         <setting label="[B]The Movie Database (TMDB)[/B]" type="lsep"/>
         <setting label="Adiciona posters, plots, ratings e mais!" type="lsep"/>
         
-        <setting id="tmdb_enabled" type="bool" label="Habilitar TMDB" default="false"/>
+        <setting id="tmdb_enabled" type="bool" label="Habilitar TMDB" default="true"/>
         
         <setting type="sep"/>
         <setting label="[B]Configuração da API[/B]" type="lsep"/>
@@ -83,10 +83,10 @@
     <!-- ========================================== -->
     <!-- PLAYER E PROXY -->
     <!-- ========================================== -->
-    <category label="Player e Proxy">
-        <setting label="[B]Configurações do Player[/B]" type="lsep"/>
+    <category label="EPG">
+        <setting label="[B]Configurações do EPG[/B]" type="lsep"/>
         
-        <setting id="enable_epg" type="bool" label="Ativar EPG" default="false"/>
+        <setting id="enable_epg" type="bool" label="Ativar EPG" default="true"/>
         <setting id="epg_url" type="text" label="URL do EPG" default="" enable="eq(-1,true)"/>
         
         <setting type="sep"/>
