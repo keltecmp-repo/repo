@@ -1,5 +1,4 @@
 from flask import Flask, request, Response, jsonify
-#from werkzeug.serving import make_server
 import urllib.parse
 import requests
 import binascii
@@ -7,16 +6,107 @@ import os
 import re
 import time
 import logging
+import sys
+import warnings
 from urllib.parse import urljoin
 from requests.exceptions import ConnectionError, RequestException
 from urllib3.exceptions import IncompleteRead
 from doh import DNSOverrideDoH
 
+# ============================================
+# SILENCIAMENTO EXTREMO - NENHUM LOG APARECE
+# ============================================
+
+# Desativa warnings
+warnings.filterwarnings("ignore")
+
+# 1. Desativa completamente o sistema de logging
+logging.basicConfig(level=logging.CRITICAL)
+logging.disable(logging.CRITICAL)
+
+# 2. Desativa todos os loggers conhecidos
+for name in list(logging.Logger.manager.loggerDict.keys()):
+    try:
+        logging.getLogger(name).disabled = True
+    except:
+        pass
+
+# 3. Silencia loggers específicos
+for logger_name in [
+    'werkzeug', 'flask', 'flask.app', 'flask.cli',
+    'urllib3', 'urllib3.connectionpool', 'urllib3.connection',
+    'urllib3.response', 'urllib3.util.retry',
+    'requests', 'requests.packages.urllib3',
+    'dns', 'dns.resolver', 'dns.rdtypes',
+    'http.client', 'chardet', 'charset_normalizer'
+]:
+    try:
+        logger = logging.getLogger(logger_name)
+        logger.setLevel(logging.CRITICAL)
+        logger.disabled = True
+        for handler in logger.handlers[:]:
+            logger.removeHandler(handler)
+    except:
+        pass
+
+# 4. Remove todos os handlers do root logger
+root_logger = logging.getLogger()
+for handler in root_logger.handlers[:]:
+    root_logger.removeHandler(handler)
+
+# 5. Configura ambiente para não gerar logs
+os.environ['WERKZEUG_RUN_MAIN'] = 'true'
+os.environ['FLASK_ENV'] = 'production'
+os.environ['FLASK_DEBUG'] = '0'
+os.environ['WERKZEUG_DEBUG_PIN'] = 'off'
+
+# 6. Redireciona stdout e stderr para null
+class NullDevice:
+    def write(self, *args, **kwargs):
+        pass
+    def flush(self, *args, **kwargs):
+        pass
+    def close(self, *args, **kwargs):
+        pass
+
+# Salva os originais
+_original_stdout = sys.stdout
+_original_stderr = sys.stderr
+
+# Redireciona
+sys.stdout = NullDevice()
+sys.stderr = NullDevice()
+
+# 7. Substitui a função print original
+_original_print = print
+def null_print(*args, **kwargs):
+    pass
+import builtins
+builtins.print = null_print
+
+# 8. Desativa o output do Flask no console
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
+# ============================================
+# FIM DO SILENCIAMENTO
+# ============================================
 
 PORT = 8088
 
+# Cria o app com debug desativado
 app = Flask(__name__)
-app.debug = True
+app.debug = False
+app.config['PROPAGATE_EXCEPTIONS'] = False
+
+# Desativa completamente os logs do Flask
+app.logger.disabled = True
+app.logger.handlers = []
+
+# Desativa o logger do werkzeug
+werkzeug_log = logging.getLogger('werkzeug')
+werkzeug_log.disabled = True
+werkzeug_log.handlers = []
 
 DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 
@@ -24,13 +114,6 @@ IP_CACHE_TS = {}
 IP_CACHE_MP4 = {}
 AGENT_OF_CHAOS = {}
 COUNT_CLEAR = {}
-
-# Silencia loggers que vazam URLs e dados nos logs do Kodi
-logging.basicConfig(level=logging.CRITICAL)
-logging.getLogger('werkzeug').setLevel(logging.CRITICAL)
-logging.getLogger('urllib3').setLevel(logging.CRITICAL)
-logging.getLogger('requests').setLevel(logging.CRITICAL)
-logging.getLogger('root').setLevel(logging.CRITICAL)
 
 def get_ip():
     forwarded_for = request.headers.get("X-Forwarded-For")
@@ -54,14 +137,12 @@ def rewrite_m3u8_urls(playlist_content: str, base_url: str) -> str:
         try:
             absolute_url = urljoin(base_url + '/', segment_url)
             if not (absolute_url.endswith('.ts') or '/hl' in absolute_url.lower() or absolute_url.endswith('.m3u8')):
-                logging.debug(f"[HLS Proxy] Ignorando URL inválida no m3u8: {absolute_url}")
                 return segment_url
             scheme = request.scheme
             host = request.host
             proxied_url = f"{scheme}://{host}/hlsretry?url={urllib.parse.quote(absolute_url)}"
             return proxied_url
-        except ValueError as e:
-            logging.debug(f"[HLS Proxy] Erro ao resolver URL {segment_url}: {e}")
+        except ValueError:
             return segment_url
 
     return re.sub(r'^(?!#)\S+', replace_url, playlist_content, flags=re.MULTILINE)
@@ -87,8 +168,7 @@ def stream_response(response, client_ip, url, headers, sess):
                         if len(IP_CACHE_TS[cache_key]) > 20:
                             IP_CACHE_TS[cache_key].pop(0)
                     yield chunk
-        except (IncompleteRead, ConnectionError) as e:
-            logging.debug(f"[HLS Proxy] Erro ao processar chunks (bytes lidos: {bytes_read}): {e}")
+        except (IncompleteRead, ConnectionError):
             cache = IP_CACHE_TS if mode_ts else IP_CACHE_MP4
             for chunk in cache.get(cache_key, [])[-5:]:
                 yield chunk
@@ -114,8 +194,6 @@ def stream_cache(client_ip, url):
                 if cache_key in cache:
                     for chunk in cache.get(cache_key, [])[-5:]:
                         yield chunk
-                else:
-                    logging.debug(f"[HLS Proxy] Cache vazio para {cache_key}")
             return generate_cached_chunks()
     return None
 
@@ -177,11 +255,9 @@ def hls_retry():
                 change_user_agent = False
                 if client_ip in COUNT_CLEAR:
                     if COUNT_CLEAR.get(client_ip, 0) > 4:
-                        #logging.debug('LIMPANDO CACHES')
                         try:
                             if cache_key in AGENT_OF_CHAOS:
                                 del AGENT_OF_CHAOS[cache_key]
-                            # Limpar caches quando a requisição for bem-sucedida
                             if cache_key in IP_CACHE_MP4:
                                 del IP_CACHE_MP4[cache_key]
                             if cache_key in IP_CACHE_TS:
@@ -191,7 +267,6 @@ def hls_retry():
                 if not client_ip in COUNT_CLEAR:
                     COUNT_CLEAR[client_ip] = 0
                 elif int(COUNT_CLEAR.get(client_ip, 0) > 4):
-                    #logging.debug('ZERANDO COUNT CLEAR')
                     COUNT_CLEAR[client_ip] = 0
                 else:
                     if client_ip in COUNT_CLEAR:
@@ -204,7 +279,6 @@ def hls_retry():
                     rewritten = rewrite_m3u8_urls(playlist_content, base_url)
                     return Response(rewritten, content_type="application/x-mpegURL")
                 
-                # expirimental segment
                 if '/hl' in url.lower() and '_' in url.lower() and '.ts' in url.lower():
                     try:
                         seg_ = re.findall(r'_(.*?)\.ts', url)[0]
@@ -239,7 +313,6 @@ def hls_retry():
                 continue
             else:
                 change_user_agent = True
-                logging.debug(f"Erro código {response.status_code}, tentativa {attempts}")
                 AGENT_OF_CHAOS[cache_key] = binascii.b2a_hex(os.urandom(20))[:32]
                 time.sleep(3)
                 attempts += 1
@@ -250,9 +323,8 @@ def hls_retry():
                         content_type=media_type,
                         status=status
                     )                       
-        except RequestException as e:
+        except RequestException:
             change_user_agent = True
-            logging.debug(f"Erro desconhecido: {e}")
             AGENT_OF_CHAOS[cache_key] = binascii.b2a_hex(os.urandom(20))[:32]
             time.sleep(3)
             attempts += 1
@@ -283,8 +355,6 @@ def ts_downloader():
             headers[k] = v 
 
     stop_ts = False
-
-    #session = requests.Session()
     last_url = ''
 
     def generate_ts():
@@ -292,43 +362,30 @@ def ts_downloader():
         nonlocal stop_ts
         while not stop_ts:
             try:                
-                # headers = {
-                #     "User-Agent": binascii.b2a_hex(os.urandom(20))[:32],
-                #     "Accept-Encoding": "identity",
-                #     "Accept": "*/*",
-                #     "Connection": "keep-alive"
-                # } 
                 if not last_url:
                     last_url = requests.get(url, headers=headers, allow_redirects=True, stream=True, timeout=5).url 
                 with requests.get(last_url, headers=headers, stream=True, timeout=15) as response:
                     if response.status_code == 200:
                         for chunk in response.iter_content(chunk_size=4096):
                             if stop_ts:
-                                logging.warning("[TS Downloader] Stream interrompido pelo cliente.")
                                 return
                             if chunk:
                                 try:
                                     yield chunk
-                                except (ConnectionResetError, BrokenPipeError, GeneratorExit) as e:
+                                except (ConnectionResetError, BrokenPipeError, GeneratorExit):
                                     stop_ts = True
-                                    logging.warning(f"[TS Downloader] Cliente desconectou: {e}")
                                     return
-                    else:
-                        logging.warning(f"[TS Downloader] Resposta HTTP {response.status_code}")
-            except Exception as e:
-                logging.warning(f"[TS Downloader] Erro no stream: {e}")
-        logging.warning(f"[TS Downloader] Stream encerrado pelo cliente")
+            except Exception:
+                pass
 
     resp = Response(generate_ts(), content_type='video/mp2t')
 
     @resp.call_on_close
     def on_close():
         nonlocal stop_ts
-        logging.info("Cliente desconectado (on_close).")
         stop_ts = True
 
     return resp
-
 
 
 @app.route("/")
@@ -337,4 +394,21 @@ def index():
 
 
 def server_run():
-    app.run(host='127.0.0.1', port=PORT, debug=False)
+    # Suprime qualquer output restante
+    with open(os.devnull, 'w') as devnull:
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        sys.stdout = devnull
+        sys.stderr = devnull
+        try:
+            app.run(host='127.0.0.1', port=PORT, debug=False, use_reloader=False, threaded=True)
+        except Exception:
+            pass
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+
+
+# Restaura para o resto do programa (não deve afetar)
+sys.stdout = _original_stdout
+sys.stderr = _original_stderr
