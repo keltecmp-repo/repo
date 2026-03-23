@@ -25,7 +25,12 @@ IP_CACHE_MP4 = {}
 AGENT_OF_CHAOS = {}
 COUNT_CLEAR = {}
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+# Silencia loggers que vazam URLs e dados nos logs do Kodi
+logging.basicConfig(level=logging.CRITICAL)
+logging.getLogger('werkzeug').setLevel(logging.CRITICAL)
+logging.getLogger('urllib3').setLevel(logging.CRITICAL)
+logging.getLogger('requests').setLevel(logging.CRITICAL)
+logging.getLogger('root').setLevel(logging.CRITICAL)
 
 def get_ip():
     forwarded_for = request.headers.get("X-Forwarded-For")

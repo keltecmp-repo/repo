@@ -1,342 +1,1198 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="pt-BR">
 <head>
-<title>Protect Kodi - Ferramentas Online | KelTec Media'Play</title>
-<meta name=description content="KelTec Media-Play>
-<meta name=" tags" content="Add-on,Build,Kodi">
-<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
-<meta name=viewport content="width=device-width, initial-scale=1, minimum-scale=1">
-<link rel="shortcut icon" href="images/icon.png" type="image/x-icon">
-<meta http-equiv=X-UA-Compatible content="IE=Edge">
-<meta name=viewport content="width=device-width, initial-scale=1">
-<meta name=keywords content="">
-<meta name=description content="">
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-
-    <style type="text/css">
-
-        /*!
-
-
-
-        =========================================================
-
-        * Coming Sssoon Page - v1.3.2
-
-        =========================================================
-
-
-
-        * Product Page: https://www.creative-tim.com/product/coming-sssoon-page
-
-        * Copyright 2017 Creative Tim (http://www.creative-tim.com)
-
-        * Licensed under MIT (https://github.com/creativetimofficial/coming-sssoon-page/blob/master/LICENSE.md)
-
-
-
-        =========================================================
-
-
-
-        * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-        */
-
-
-
-        body{
-
-
-
-        }
-
-        /*     General overwrite     */
-
-        a{
-
-            color: #2C93FF;
-
-        }
-
-        a:hover, a:focus {
-
-            color: #1084FF;
-
-        }
-
-        a:focus, a:active,
-
-        button::-moz-focus-inner,
-
-        input[type="reset"]::-moz-focus-inner,
-
-        input[type="button"]::-moz-focus-inner,
-
-        input[type="submit"]::-moz-focus-inner,
-
-        select::-moz-focus-inner,
-
-        input[type="file"] > input[type="button"]::-moz-focus-inner {
-
-            outline : 0;
-
-        }
-
-
-
-        /*           Typography          */
-
-
-
-        p{
-
-            font-size: 16px;
-
-            line-height: 1.6180em;
-
-        }
-
-
-
-        .main{
-
-            background-position: center center;
-
-            background-size: cover;
-
-            height: auto;
-
-            left: 0;
-
-            min-height: 100%;
-
-            min-width: 100%;
-
-            position: absolute;
-
-            top: 0;
-
-            width: auto;
-
-        }
-
-        .cover{
-
-            position: fixed;
-
-            opacity: 1;
-
-            background-color: rgba(0,0,0,.6);
-
-            left: 0px;
-
-            top: 0px;
-
-            width: 100%;
-
-            height: 100%;
-
-            z-index: 1;
-
-        }
-
-        .cover.black{
-
-            background-color: rgba(0,0,0,.6);
-
-        }
-
-
-
-        .logo-container .logo{
-
-            overflow: hidden;
-
-            border-radius: 50%;
-
-            border: 1px solid #333333;
-
-            width: 60px;
-
-            float: left;
-
-        }
-
-
-
-        .main .logo{
-
-            color: #FFFFFF;
-
-            font-size: 56px;
-
-            font-weight: 300;
-
-            position: relative;
-
-            text-align: center;
-
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.33);
-
-            margin-top: 150px;
-
-            z-index: 3;
-
-        }
-
-        .main .logo.cursive{
-
-            font-family: 'Grand Hotel',cursive;
-
-            font-size: 82px;
-
-
-
-        }
-
-        .main .content{
-
-            position: relative;
-
-            z-index: 4;
-
-        }
-
-        .main .motto{
-
-            min-height: 140px;
-
-        }
-
-        .main .motto, .main .subscribe .info-text{
-
-            font-size: 28px;
-
-            color: #FFFFFF;
-
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.33);
-
-            text-align: center;
-
-            margin-top: 50px;
-
-
-
-        }
-
-        .main .subscribe .info-text{
-
-            font-size: 18px;
-
-            margin-bottom: 30px;
-
-        }
-
-
-
-        .footer{
-
-            position: relative;
-
-            bottom: 20px;
-
-            right: 0px;
-
-            width: 100%;
-
-            color: #AAAAAA;
-
-            z-index: 4;
-
-            text-align: right;
-
-            margin-top: 50px;
-
-        }
-
-        .footer a{
-
-            color: #FFFFFF;
-
-        }
-
-
-
-        @media (min-width:991px){
-
-            .footer{
-
-                position: fixed;
-
-                bottom: 20px;
-
-            }
-
-        }
-
-
-
-    </style>
-
-
-
-    <!--     Fonts     -->
-
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href='https://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
-
-
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KelTec Media Play — Documentação Técnica</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Barlow:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080c10;
+    --bg2:       #0d1219;
+    --bg3:       #111820;
+    --border:    #1e2d3d;
+    --accent:    #e8291c;
+    --accent2:   #ff6b35;
+    --gold:      #f0a500;
+    --cyan:      #00d4ff;
+    --green:     #00e676;
+    --purple:    #b388ff;
+    --text:      #c8d8e8;
+    --text-dim:  #5a7a94;
+    --text-bright: #eaf4ff;
+    --glow-r:    0 0 20px rgba(232,41,28,0.4);
+    --glow-c:    0 0 20px rgba(0,212,255,0.4);
+    --glow-g:    0 0 20px rgba(0,230,118,0.3);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── SCANLINES OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,41,28,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,212,255,0.06) 0%, transparent 60%),
+      var(--bg);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(30,45,61,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,45,61,0.3) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+  }
+
+  .hero-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    border: 1px solid rgba(232,41,28,0.4);
+    padding: 0.3rem 1rem;
+    margin-bottom: 2rem;
+    animation: pulse-border 3s infinite;
+  }
+
+  @keyframes pulse-border {
+    0%, 100% { border-color: rgba(232,41,28,0.4); box-shadow: none; }
+    50% { border-color: rgba(232,41,28,0.9); box-shadow: var(--glow-r); }
+  }
+
+  .hero-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .hero-logo .kel { color: var(--text-bright); }
+  .hero-logo .tec { color: var(--accent); text-shadow: var(--glow-r); }
+  .hero-logo .media { color: var(--text-dim); font-weight: 400; font-size: 0.45em; display: block; letter-spacing: 0.15em; margin-top: 0.3rem; }
+  .hero-logo .play { color: var(--cyan); font-size: 0.45em; font-weight: 700; letter-spacing: 0.1em; }
+
+  .hero-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin: 1.5rem 0 3rem;
+  }
+
+  .hero-sub span { color: var(--cyan); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: var(--glow-r);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION ── */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    position: relative;
+  }
+
+  .section-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .section-tag::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--cyan);
+    box-shadow: var(--glow-c);
+  }
+
+  h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 3rem;
+    line-height: 1.2;
+  }
+
+  h2 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), var(--accent), var(--border), transparent);
+    margin: 0;
+  }
+
+  /* ── FEATURE GRID ── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .feature-card {
+    background: var(--bg2);
+    padding: 2rem;
+    position: relative;
+    transition: background 0.3s;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.4s;
+  }
+
+  .feature-card:hover { background: var(--bg3); }
+  .feature-card:hover::before { height: 100%; }
+
+  .feature-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .feature-card p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── ARCHITECTURE ── */
+  .arch-diagram {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arch-diagram::before {
+    content: 'ARQUITETURA DO SISTEMA';
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--border);
+  }
+
+  .arch-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .arch-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1.2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text);
+    white-space: nowrap;
+    position: relative;
+    transition: border-color 0.3s, color 0.3s;
+    cursor: default;
+  }
+
+  .arch-box:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: var(--glow-c);
+  }
+
+  .arch-box.red { border-color: rgba(232,41,28,0.4); }
+  .arch-box.red:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow-r); }
+  .arch-box.green { border-color: rgba(0,230,118,0.3); }
+  .arch-box.green:hover { border-color: var(--green); color: var(--green); box-shadow: var(--glow-g); }
+  .arch-box.gold { border-color: rgba(240,165,0,0.3); }
+  .arch-box.gold:hover { border-color: var(--gold); color: var(--gold); }
+
+  .arch-arrow {
+    color: var(--text-dim);
+    font-size: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .arch-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    padding-left: 0.2rem;
+  }
+
+  /* ── FILE TREE ── */
+  .file-tree {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 2;
+  }
+
+  .file-tree .dir { color: var(--cyan); }
+  .file-tree .file { color: var(--text); }
+  .file-tree .file.main { color: var(--accent); font-weight: bold; }
+  .file-tree .file.mod { color: var(--gold); }
+  .file-tree .comment { color: var(--text-dim); font-size: 0.72rem; }
+  .file-tree .indent { padding-left: 1.5rem; }
+  .file-tree .indent2 { padding-left: 3rem; }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #050810;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--cyan);
+    padding: 1.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    overflow-x: auto;
+    color: var(--text);
+  }
+
+  .code-block .key { color: var(--purple); }
+  .code-block .val { color: var(--green); }
+  .code-block .str { color: var(--gold); }
+  .code-block .comment { color: var(--text-dim); }
+  .code-block .bool-true { color: var(--green); }
+  .code-block .bool-false { color: var(--accent); }
+
+  /* ── FLOW ── */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .flow-step {
+    display: flex;
+    gap: 2rem;
+    align-items: stretch;
+    position: relative;
+  }
+
+  .flow-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+    flex-shrink: 0;
+  }
+
+  .flow-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: var(--glow-r);
+    flex-shrink: 0;
+    margin-top: 0.4rem;
+  }
+
+  .flow-dot.cyan { background: var(--cyan); box-shadow: var(--glow-c); }
+  .flow-dot.green { background: var(--green); box-shadow: var(--glow-g); }
+  .flow-dot.gold { background: var(--gold); }
+  .flow-dot.purple { background: var(--purple); }
+
+  .flow-line {
+    width: 1px;
+    flex: 1;
+    background: linear-gradient(var(--border), var(--border));
+    margin: 4px 0;
+    min-height: 30px;
+  }
+
+  .flow-content {
+    padding: 0.5rem 0 2rem;
+    flex: 1;
+  }
+
+  .flow-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    color: var(--text-bright);
+    margin-bottom: 0.4rem;
+  }
+
+  .flow-desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* ── TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  .data-table th {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    padding: 1rem 1.2rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+
+  .data-table td {
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid rgba(30,45,61,0.5);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .data-table .mono {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--gold);
+  }
+
+  .data-table .tag {
+    display: inline-block;
+    background: rgba(232,41,28,0.15);
+    border: 1px solid rgba(232,41,28,0.3);
+    color: var(--accent);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .data-table .tag.cyan {
+    background: rgba(0,212,255,0.1);
+    border-color: rgba(0,212,255,0.3);
+    color: var(--cyan);
+  }
+
+  .data-table .tag.green {
+    background: rgba(0,230,118,0.1);
+    border-color: rgba(0,230,118,0.3);
+    color: var(--green);
+  }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    border: 1px solid rgba(240,165,0,0.3);
+    background: rgba(240,165,0,0.05);
+    padding: 1.5rem 2rem;
+    position: relative;
+    margin: 2rem 0;
+  }
+
+  .highlight-box::before {
+    content: '⚡ DESTAQUE';
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--bg);
+    padding: 0 0.5rem;
+  }
+
+  .highlight-box p { font-size: 0.9rem; color: var(--text); }
+  .highlight-box strong { color: var(--gold); }
+
+  /* ── CREDITS ── */
+  .credits {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(232,41,28,0.08) 0%, transparent 70%);
+    border-top: 1px solid var(--border);
+  }
+
+  .credits-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+  }
+
+  .credits-logo .kel { color: var(--text-bright); }
+  .credits-logo .tec { color: var(--accent); text-shadow: var(--glow-r); }
+
+  .credits-line {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--text-dim);
+    margin: 0.5rem 0;
+  }
+
+  .credits-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    margin-top: 2rem;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-brand {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: var(--text-bright);
+  }
+
+  .nav-brand span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* ── VERSION BADGE ── */
+  .version-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--green);
+    border: 1px solid rgba(0,230,118,0.3);
+    padding: 0.2rem 0.8rem;
+    margin-left: 1rem;
+  }
+
+  .version-badge::before {
+    content: '●';
+    font-size: 0.5rem;
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero > * { animation: fadeInUp 0.8s ease both; }
+  .hero-badge  { animation-delay: 0.1s; }
+  .hero-logo   { animation-delay: 0.3s; }
+  .hero-sub    { animation-delay: 0.5s; }
+  .hero-stats  { animation-delay: 0.7s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .arch-row { gap: 0.5rem; }
+  }
+</style>
 </head>
-
-
-
 <body>
 
-<div class="main" style="background-image: url('https://i97.servimg.com/u/f97/19/82/45/70/unname10.jpg')">
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Kel<span>Tec</span> Docs</div>
+  <ul class="nav-links">
+    <li><a href="#visao-geral">Visão Geral</a></li>
+    <li><a href="#arquitetura">Arquitetura</a></li>
+    <li><a href="#modulos">Módulos</a></li>
+    <li><a href="#integrações">Integrações</a></li>
+    <li><a href="#segurança">Segurança</a></li>
+    <li><a href="#configuração">Config</a></li>
+  </ul>
+</nav>
 
-    <div class="cover black" data-color="black"></div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-badge">Documentação Técnica Oficial — v22.03.2026</div>
+  <div class="hero-logo">
+    <span class="kel">Kel</span><span class="tec">Tec</span>
+    <span class="media">Media Play &nbsp;<span class="play">Xtream</span></span>
+  </div>
+  <div class="hero-sub">
+    Add-on Kodi · Python 3 · Xtream API · <span>TMDB · EPG · F4M Proxy</span>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">7</span><span class="stat-label">Módulos Core</span></div>
+    <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Servidores</span></div>
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">APIs Integradas</span></div>
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Canais / VOD</span></div>
+  </div>
+</div>
 
-    <div class="container">
+<div class="divider"></div>
 
-        <h1 class="logo cursive">
+<!-- VISÃO GERAL -->
+<section id="visao-geral">
+  <div class="section-tag">01 — Visão Geral</div>
+  <h2>O que é o <em>KelTec Media Play</em>?</h2>
 
-            Vamos fazer algo incrível
+  <p style="font-size:1rem; color:var(--text); max-width:800px; margin-bottom:3rem; line-height:1.9;">
+    KelTec Media Play Xtream é um add-on para <strong style="color:var(--text-bright)">Kodi 21 (Omega)</strong> 
+    desenvolvido do zero em Python 3, que integra listas IPTV no padrão 
+    <strong style="color:var(--cyan)">Xtream Codes API</strong> com metadados ricos do 
+    <strong style="color:var(--gold)">TMDB (The Movie Database)</strong>, guia de programação 
+    <strong style="color:var(--green)">EPG/XMLTV</strong> e um proxy reverso HLS de alta resiliência 
+    baseado no <strong style="color:var(--accent)">F4MTESTER</strong>. 
+    Distribuído gratuitamente para usuários do mundo inteiro, com servidores gerenciados remotamente 
+    via JSON seguro.
+  </p>
 
-        </h1>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="feature-icon">📡</span>
+      <h3>TV ao Vivo</h3>
+      <p>Canais IPTV com stream HLS/M3U8 via proxy F4M com cache e reconexão automática. Buffer inteligente evita quedas de sinal.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎬</span>
+      <h3>Filmes & Séries</h3>
+      <p>VOD completo com metadados TMDB: poster HD, fanart, plot em português, elenco, diretor, rating e gênero.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📺</span>
+      <h3>EPG Integrado</h3>
+      <p>Guia de programação XMLTV com atualização automática por dia. Mostra o programa atual e o próximo em cada canal.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🌐</span>
+      <h3>Multi-Servidor</h3>
+      <p>Até 10+ servidores gerenciados remotamente via JSON. Fallback automático quando um servidor cai, sem expor credenciais.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔒</span>
+      <h3>Segurança Total</h3>
+      <p>Logs controlados por debug_mode. Erros genéricos ao usuário. URLs, usuários e senhas jamais expostos nos logs do Kodi.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎭</span>
+      <h3>TMDB Live</h3>
+      <p>Metadados do programa atual em canais ao vivo. Cruzamento automático EPG + TMDB para poster e plot do show.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎨</span>
+      <h3>Modos Visuais</h3>
+      <p>Suporte a todos os modos do Kodi: lista, grade, miniaturas, poster view. Compatible com qualquer skin.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔄</span>
+      <h3>DNS Customizado</h3>
+      <p>Resolver DNS próprio com cache de 4h usando OpenDNS, Cloudflare e Google DNS. Contorna bloqueios de ISP.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🛡️</span>
+      <h3>Proxy HTTP</h3>
+      <p>Suporte opcional a proxies HTTP rotativos para mascarar origem das requisições via lista pública scraped.</p>
+    </div>
+  </div>
+</section>
 
+<div class="divider"></div>
 
+<!-- ARQUITETURA -->
+<section id="arquitetura">
+  <div class="section-tag">02 — Arquitetura</div>
+  <h2>Estrutura <em>Técnica</em> do Sistema</h2>
 
-        <div class="content">
-
-            <h4 class="motto">Proteja seus arquivos com varias ferramentas online!</h4>
-
-            <div class="subscribe">
-
-        </div>
-
+  <div class="arch-diagram">
+    <div class="arch-label">Camada de Entrada</div>
+    <div class="arch-row">
+      <div class="arch-box red">Kodi UI</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box red">main.py</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box">Router de Modos</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box">build_menu()</div>
     </div>
 
-<body onkeypress='return false' onkeydown='return false' oncontextmenu='return false'>
+    <br>
+    <div class="arch-label">Camada de Dados</div>
+    <div class="arch-row">
+      <div class="arch-box cyan">Xtream API</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box cyan">get_json()</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box cyan">get_items()</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box cyan">get_seasons()</div>
+    </div>
 
-<div class="footer">
-        <div class="container">
+    <br>
+    <div class="arch-label">Camada de Metadados</div>
+    <div class="arch-row">
+      <div class="arch-box gold">TMDB API</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box gold">tmdb_helper.py</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box gold">Thread Async</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box gold">Cache JSON</div>
+    </div>
 
-            <q class="copyright-text">Participe de Nossas Redes Socias"<br>
-            <a href="https://www.facebook.com/groups/Kodi.Forum.SE/"><img src="https://i97.servimg.com/u/f97/19/82/45/70/icon_10.png" alt="Protect Python" height="45px"></a>
-            <a href="https://www.facebook.com/groups/Kodi.Forum.SE/" target="_blank">[Grupo Facebook]</a>&nbsp;&nbsp;<a href="https://www.youtube.com/c/KeltecMPIPTV" target="_blank">[Inscreva-se em Nosso Canal YouTube]</a>&nbsp;&nbsp;<a href="https://keltecmp.crn.re/" target="_blank">[Web Site]</a>
-        </div>
+    <br>
+    <div class="arch-label">Camada de Streaming</div>
+    <div class="arch-row">
+      <div class="arch-box green">Player Kodi</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box green">f4m_proxy.py</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box green">Flask :8088</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box green">HLS/TS Origin</div>
+    </div>
+
+    <br>
+    <div class="arch-label">Camada de Rede</div>
+    <div class="arch-row">
+      <div class="arch-box">dns.py</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box">doh.py</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box">proxy_http_scraper.py</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box">server_loader.py</div>
+    </div>
+  </div>
+
+  <br><br>
+
+  <!-- FILE TREE -->
+  <h3>Estrutura de Arquivos</h3>
+  <div class="file-tree">
+    <div><span class="dir">plugin.video.keltecmp-xtream/</span></div>
+    <div class="indent"><span class="file main">main.py</span> <span class="comment">← núcleo do add-on, roteador principal</span></div>
+    <div class="indent"><span class="file mod">service.py</span> <span class="comment">← inicia F4M proxy como serviço Kodi</span></div>
+    <div class="indent"><span class="file mod">f4m_proxy.py</span> <span class="comment">← proxy Flask HLS/TS porta 8088</span></div>
+    <div class="indent"><span class="file mod">dns.py</span> <span class="comment">← resolver DNS customizado com cache</span></div>
+    <div class="indent"><span class="file mod">doh.py</span> <span class="comment">← DNS over HTTPS via Cloudflare</span></div>
+    <div class="indent"><span class="file mod">proxy_http_scraper.py</span> <span class="comment">← proxy HTTP rotativo com cache</span></div>
+    <div class="indent"><span class="file">addon.xml</span></div>
+    <div class="indent"><span class="file">icon.gif / fanart.jpg</span></div>
+    <div class="indent"><span class="dir">lib/</span></div>
+    <div class="indent2"><span class="file main">server_loader.py</span> <span class="comment">← carrega servidores JSON/XML remoto</span></div>
+    <div class="indent2"><span class="file mod">tmdb_helper.py</span> <span class="comment">← integração TMDB API completa</span></div>
+    <div class="indent2"><span class="file">servers_config.py</span> <span class="comment">← servidores locais de backup</span></div>
+    <div class="indent"><span class="dir">resources/</span></div>
+    <div class="indent2"><span class="file">settings.xml</span> <span class="comment">← configurações do add-on</span></div>
+    <div class="indent2"><span class="dir">art/</span> <span class="comment">← ícones e imagens</span></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MÓDULOS -->
+<section id="modulos">
+  <div class="section-tag">03 — Módulos</div>
+  <h2>Descrição dos <em>Módulos</em></h2>
+
+  <div style="overflow-x:auto; margin-bottom:3rem;">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Arquivo</th>
+          <th>Função Principal</th>
+          <th>Tecnologia</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">main.py</td>
+          <td>Núcleo do add-on. Roteamento de modos, menus, EPG, reprodução, TMDB, múltiplos servidores.</td>
+          <td>Python 3 · Kodi API · xbmcplugin</td>
+          <td><span class="tag green">CORE</span></td>
+        </tr>
+        <tr>
+          <td class="mono">server_loader.py</td>
+          <td>Carrega servidores de JSON remoto via parser próprio (sem json.loads), com cache e suporte a debug_mode.</td>
+          <td>Python 3 · re · requests</td>
+          <td><span class="tag green">CORE</span></td>
+        </tr>
+        <tr>
+          <td class="mono">tmdb_helper.py</td>
+          <td>Integração com TMDB API v3. Busca filmes, séries, episódios. Cache local JSON. Retorna metadados formatados para Kodi.</td>
+          <td>TMDB API v3 · requests · JSON cache</td>
+          <td><span class="tag cyan">INTEGRAÇÃO</span></td>
+        </tr>
+        <tr>
+          <td class="mono">f4m_proxy.py</td>
+          <td>Proxy reverso Flask na porta 8088. Rotas /hlsretry e /tsdownloader. Cache de chunks TS. Reconexão automática com User-Agent rotation.</td>
+          <td>Flask · requests · urllib3</td>
+          <td><span class="tag cyan">PROXY</span></td>
+        </tr>
+        <tr>
+          <td class="mono">dns.py</td>
+          <td>Substitui socket.getaddrinfo() por resolver DNS customizado. Suporte a IPv4/IPv6. Cache em disco com TTL de 4h.</td>
+          <td>socket · struct · UDP DNS</td>
+          <td><span class="tag">REDE</span></td>
+        </tr>
+        <tr>
+          <td class="mono">doh.py</td>
+          <td>DNS over HTTPS via Cloudflare (cloudflare-dns.com). Usado pelo F4M proxy para resolver hostnames de CDNs.</td>
+          <td>HTTPS · Cloudflare DoH API</td>
+          <td><span class="tag">REDE</span></td>
+        </tr>
+        <tr>
+          <td class="mono">proxy_http_scraper.py</td>
+          <td>Scraper de lista pública de proxies HTTP com seleção aleatória e cache de 4h. Uso opcional.</td>
+          <td>requests · JSON cache</td>
+          <td><span class="tag">OPCIONAL</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FLUXO DE REPRODUÇÃO -->
+  <h3 style="margin-bottom:2rem;">Fluxo de Reprodução — Canal Ao Vivo</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <div class="flow-title">Usuário seleciona canal</div>
+        <div class="flow-desc">main.py mode='play' → play_item() detecta content_type='live'</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-left"><div class="flow-dot cyan"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <div class="flow-title">Verifica F4MTESTER</div>
+        <div class="flow-desc">is_f4m_installed() + check_f4m_server() → popup HLSRETRY ou TSDOWNLOADER</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-left"><div class="flow-dot gold"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <div class="flow-title">URL via F4M Proxy</div>
+        <div class="flow-desc">http://127.0.0.1:8088/hlsretry?url=ENCODED_URL → Flask recebe a requisição</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-left"><div class="flow-dot green"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <div class="flow-title">Proxy baixa e retransmite</div>
+        <div class="flow-desc">DNSOverrideDoH() → requests.get() → rewrite_m3u8_urls() → stream_response() com cache de chunks</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-left"><div class="flow-dot purple"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <div class="flow-title">Kodi reproduz</div>
+        <div class="flow-desc">ListItem com is_realtime_stream=true + buffer aumentado. Reconexão automática em falhas.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INTEGRAÇÕES -->
+<section id="integrações">
+  <div class="section-tag">04 — Integrações</div>
+  <h2>APIs e <em>Integrações</em> Externas</h2>
+
+  <div class="feature-grid" style="margin-bottom:3rem;">
+    <div class="feature-card">
+      <span class="feature-icon">🎬</span>
+      <h3>TMDB API v3</h3>
+      <p>Busca automática de metadados para filmes, séries, temporadas e episódios. Também cruza programa atual do EPG para enriquecer canais ao vivo. Cache local de 7 dias.</p>
+      <br>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--gold);">api.themoviedb.org/3</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📡</span>
+      <h3>Xtream Codes API</h3>
+      <p>API padrão de IPTV para autenticação, listagem de canais, VOD e séries. Suporta múltiplos servidores simultâneos com fallback automático.</p>
+      <br>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--gold);">player_api.php · xmltv.php</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">☁️</span>
+      <h3>JSON Remoto de Servidores</h3>
+      <p>Arquivo JSON hospedado em servidor próprio com lista de servidores, prioridades e flag debug_mode. Parser próprio sem json.loads (workaround bug Kodi).</p>
+      <br>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--gold);">portalbot.ebj.re/addon/server.json</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🌐</span>
+      <h3>Cloudflare DoH</h3>
+      <p>DNS over HTTPS via cloudflare-dns.com para resolução segura de nomes no proxy F4M. Contorna bloqueios de DNS de ISPs e evita vazamento de consultas.</p>
+      <br>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--gold);">cloudflare-dns.com/dns-query</span>
+    </div>
+  </div>
+
+  <!-- JSON CONFIG FORMAT -->
+  <h3 style="margin-bottom:1rem;">Formato do JSON Remoto de Servidores</h3>
+  <div class="code-block">
+<span class="comment">// server.json — hospedado em servidor próprio</span>
+{
+  <span class="key">"debug_mode"</span>: <span class="bool-false">false</span>,  <span class="comment">// true = logs detalhados no Kodi</span>
+  <span class="key">"servers"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="val">1</span>,
+      <span class="key">"name"</span>: <span class="str">"Servidor BR-1"</span>,
+      <span class="key">"url"</span>: <span class="str">"http://servidor.exemplo.com:80"</span>,
+      <span class="key">"username"</span>: <span class="str">"usuario"</span>,
+      <span class="key">"password"</span>: <span class="str">"senha"</span>,
+      <span class="key">"priority"</span>: <span class="val">1</span>,
+      <span class="key">"enabled"</span>: <span class="bool-true">true</span>
+    }
+  ]
+}
+  </div>
+
+  <div class="highlight-box">
+    <p>
+      <strong>Bug exclusivo do Kodi:</strong> O módulo <code style="color:var(--cyan)">json</code> do Python nativo 
+      lança internamente um <code style="color:var(--accent)">ValueError</code> ao falhar o parse, mas no ambiente 
+      Kodi esse nome não está no escopo global, resultando em <code style="color:var(--accent)">NameError: name 'ValueError' is not defined</code>. 
+      A solução foi criar um <strong>parser JSON próprio</strong> usando apenas <code style="color:var(--cyan)">re</code> 
+      e manipulação de string — sem nenhuma dependência do módulo json.
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEGURANÇA -->
+<section id="segurança">
+  <div class="section-tag">05 — Segurança</div>
+  <h2>Modelo de <em>Segurança</em></h2>
+
+  <div style="overflow-x:auto; margin-bottom:3rem;">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Proteção</th>
+          <th>Implementação</th>
+          <th>Onde</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--text-bright)">Controle de Logs</strong></td>
+          <td>Campo <code style="color:var(--gold)">debug_mode</code> no JSON remoto. Quando false, todos os logs LOGDEBUG são suprimidos — sem URLs, usuários, senhas ou IPs nos logs do Kodi.</td>
+          <td class="mono">main.py · server_loader.py</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text-bright)">Erros Genéricos</strong></td>
+          <td>Popups de erro ao usuário nunca expõem host, porta, usuário ou senha. Mensagens como "Servidor Offline" ou "Conectando no próximo..."</td>
+          <td class="mono">main.py get_json()</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text-bright)">Fallback Silencioso</strong></td>
+          <td>Troca de servidor automática sem revelar qual servidor estava em uso. Popup mostra apenas posição numérica (ex: 2/10).</td>
+          <td class="mono">main.py try_next_server()</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text-bright)">Silenciamento urllib3</strong></td>
+          <td>Loggers do urllib3, requests e root definidos como CRITICAL, impedindo vazamento de URLs e IPs nas conexões HTTP.</td>
+          <td class="mono">server_loader.py</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text-bright)">DNS Seguro</strong></td>
+          <td>Uso de DoH (DNS over HTTPS) no proxy F4M para evitar vazamento de consultas DNS ao ISP.</td>
+          <td class="mono">doh.py · f4m_proxy.py</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text-bright)">Cache Criptografado</strong></td>
+          <td>Senhas dos servidores ficam em cache local apenas pelo TTL configurado. Não há transmissão de credenciais em texto além do protocolo Xtream padrão.</td>
+          <td class="mono">server_loader.py</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONFIGURAÇÃO -->
+<section id="configuração">
+  <div class="section-tag">06 — Configuração</div>
+  <h2>Guia de <em>Configuração</em></h2>
+
+  <div class="feature-grid" style="margin-bottom:3rem;">
+    <div class="feature-card">
+      <span class="feature-icon">⚙️</span>
+      <h3>settings.xml</h3>
+      <p>Configurações do add-on via interface Kodi: API key TMDB, idioma, cache, EPG on/off, proxy HTTP, F4MTESTER on/off, servidores manuais (até 5).</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🌐</span>
+      <h3>JSON Remoto</h3>
+      <p>Hospede um arquivo server.json com a lista de servidores. Atualize quando quiser — os clientes baixam automaticamente ao expirar o cache (5 min padrão).</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔧</span>
+      <h3>debug_mode</h3>
+      <p>Mude <code>"debug_mode": true</code> no JSON para ver logs detalhados durante manutenção. Volte para false quando terminar — os clientes aplicam na próxima atualização do cache.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:1rem;">Configurações do settings.xml</h3>
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Configuração</th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+          <th>Padrão</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">tmdb_enabled</td>
+          <td><span class="tag cyan">bool</span></td>
+          <td>Ativa busca de metadados TMDB para filmes, séries e live</td>
+          <td class="mono">false</td>
+        </tr>
+        <tr>
+          <td class="mono">tmdb_api_key</td>
+          <td><span class="tag">string</span></td>
+          <td>Chave da API TMDB (gratuita em themoviedb.org)</td>
+          <td class="mono">—</td>
+        </tr>
+        <tr>
+          <td class="mono">tmdb_language</td>
+          <td><span class="tag">select</span></td>
+          <td>Idioma dos metadados retornados pelo TMDB</td>
+          <td class="mono">pt-BR</td>
+        </tr>
+        <tr>
+          <td class="mono">enable_epg</td>
+          <td><span class="tag cyan">bool</span></td>
+          <td>Ativa EPG/XMLTV nos canais ao vivo</td>
+          <td class="mono">false</td>
+        </tr>
+        <tr>
+          <td class="mono">use_f4mtester</td>
+          <td><span class="tag cyan">bool</span></td>
+          <td>Usa F4MTESTER proxy para canais ao vivo</td>
+          <td class="mono">true</td>
+        </tr>
+        <tr>
+          <td class="mono">auto_fallback</td>
+          <td><span class="tag cyan">bool</span></td>
+          <td>Fallback automático para próximo servidor em caso de falha</td>
+          <td class="mono">true</td>
+        </tr>
+        <tr>
+          <td class="mono">proxy_http</td>
+          <td><span class="tag cyan">bool</span></td>
+          <td>Usa proxy HTTP rotativo para requisições</td>
+          <td class="mono">false</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CRÉDITOS -->
+<div class="credits">
+  <div class="credits-logo">
+    <span class="kel">Kel</span><span class="tec">Tec</span>
+  </div>
+  <div class="credits-line">MEDIA PLAY XTREAM — ADD-ON KODI</div>
+  <div class="credits-line" style="color:var(--text-dim); margin-top:1.5rem; max-width:600px; margin-left:auto; margin-right:auto; line-height:2;">
+    Desenvolvido com dedicação e atenção a cada detalhe.<br>
+    Distribuído gratuitamente para usuários do mundo inteiro.<br>
+    Construído sobre Python 3 · Kodi API · Flask · TMDB · Xtream Codes
+  </div>
+  <div class="credits-date">
+    DOCUMENTAÇÃO GERADA EM 22 DE MARÇO DE 2026
+    <span class="version-badge">v22.03.2026 STABLE</span>
+  </div>
 </div>
 
-</div>
+<script>
+  // Highlight ativo na nav ao scrollar
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--cyan)' : '';
+    });
+  });
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
-
+  // Contador animado nas stats
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const target = el.textContent;
+    if (!isNaN(parseInt(target))) {
+      const end = parseInt(target);
+      let current = 0;
+      const step = Math.ceil(end / 30);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, end);
+        el.textContent = current + (target.includes('+') ? '+' : '');
+        if (current >= end) clearInterval(timer);
+      }, 40);
+    }
+  });
+</script>
 <div style = "display: none;">
 <tr> <td valign = "top"> </td> <td> <a href="KeltecMP.repository-0.1.0.zip"> KeltecMP.repository-0.1.0.zip</a> </td> </ tr >
 

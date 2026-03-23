@@ -1,403 +1,356 @@
 # -*- coding: utf-8 -*-
+# SERVER_LOADER_VERSION = "5.0"
 """
-Módulo de Carregamento de Servidores - VERSÃO JSON
-====================================================
-
-Gerencia servidores de três fontes:
-1. Arquivo local (lib/servers_config.py) - servidores pré-definidos
-2. Arquivo remoto (JSON ou XML hospedado) - servidores atualizáveis
-3. Configurações do usuário (settings.xml) - servidores personalizados
-
-Prioridade: Remoto > Local > Usuário (configurável)
-
-**NOVIDADE:** Suporte a JSON (mais simples e confiável que XML)
+Modulo de Carregamento de Servidores v5.0
+==========================================
+Parser JSON proprio - nao usa json.loads pois o Kodi tem um bug
+onde ValueError nao esta no escopo do modulo json, causando NameError.
 """
 
 import os
-import json
+import re
+import sys
 import time
 import xbmc
 import xbmcvfs
 import xml.etree.ElementTree as ET
 
+# Silencia loggers que vazam URLs nos logs do Kodi
 try:
-    # Tenta importar a configuração local de servidores
+    import logging as _log
+    _log.getLogger('urllib3').setLevel(_log.CRITICAL)
+    _log.getLogger('urllib3.connectionpool').setLevel(_log.CRITICAL)
+    _log.getLogger('requests').setLevel(_log.CRITICAL)
+    _log.getLogger('root').setLevel(_log.CRITICAL)
+except Exception:
+    pass
+
+try:
     from lib import servers_config
     HAS_LOCAL_CONFIG = True
 except ImportError:
     HAS_LOCAL_CONFIG = False
-    xbmc.log("[ServerLoader] lib/servers_config.py não encontrado - usando apenas config manual", xbmc.LOGWARNING)
+    xbmc.log("[ServerLoader v5.0] lib/servers_config.py nao encontrado", xbmc.LOGWARNING)
 
+
+# ===========================================================================
+# PARSER JSON PROPRIO
+# Nao depende do modulo json do Python (que causa NameError no Kodi).
+# Usa apenas re e operacoes de string.
+# ===========================================================================
+
+def _get_str(block, key):
+    m = re.search(r'"' + key + r'"\s*:\s*"([^"]*)"', block)
+    return m.group(1) if m else ''
+
+def _get_int(block, key, default=0):
+    m = re.search(r'"' + key + r'"\s*:\s*(\d+)', block)
+    return int(m.group(1)) if m else default
+
+def _get_bool(block, key, default=True):
+    m = re.search(r'"' + key + r'"\s*:\s*(true|false)', block, re.IGNORECASE)
+    return m.group(1).lower() == 'true' if m else default
+
+def _extract_blocks(text):
+    """Extrai blocos {} de dentro do array servers: [...].
+    Usa bracket_depth para nao parar prematuramente em ] internos.
+    """
+    sm = re.search(r'"servers"\s*:\s*\[', text)
+    if not sm:
+        return []
+    tail = text[sm.end():]
+    depth = 0          # profundidade de chaves {}
+    bracket_depth = 1  # ja estamos dentro do [ principal
+    start = -1
+    blocks = []
+    in_str = False
+    esc = False
+    for i, c in enumerate(tail):
+        if esc:
+            esc = False
+            continue
+        if c == '\\' and in_str:
+            esc = True
+            continue
+        if c == '"':
+            in_str = not in_str
+            continue
+        if in_str:
+            continue
+        if c == '{':
+            if depth == 0:
+                start = i
+            depth += 1
+        elif c == '}':
+            depth -= 1
+            if depth == 0 and start != -1:
+                blocks.append(tail[start:i+1])
+                start = -1
+        elif c == '[':
+            bracket_depth += 1
+        elif c == ']':
+            bracket_depth -= 1
+            if bracket_depth == 0:
+                break  # fim do array servers
+    return blocks
+
+def parse_server_json(text):
+    """
+    Faz parse do JSON de servidores sem usar json.loads.
+    Retorna (dict, True) ou (None, False).
+    """
+    try:
+        if isinstance(text, (bytes, bytearray)):
+            text = text.decode('utf-8-sig', errors='ignore')
+        text = text.strip()
+        if text and ord(text[0]) == 0xFEFF:
+            text = text[1:]
+
+        # Extrai debug_mode da raiz
+        dm = re.search(r'"debug_mode"\s*:\s*(true|false)', text, re.IGNORECASE)
+        debug_mode = dm.group(1).lower() == 'true' if dm else False
+
+        # Extrai servidores
+        servers = []
+        for block in _extract_blocks(text):
+            srv_id = _get_int(block, 'id')
+            if srv_id == 0:
+                continue
+            if not _get_bool(block, 'enabled', True):
+                continue
+            url      = _get_str(block, 'url')
+            username = _get_str(block, 'username')
+            password = _get_str(block, 'password')
+            if url and username and password:
+                servers.append({
+                    'id':       srv_id,
+                    'name':     _get_str(block, 'name') or 'Servidor',
+                    'url':      url,
+                    'username': username,
+                    'password': password,
+                    'priority': _get_int(block, 'priority', 999),
+                    'source':   'remote'
+                })
+
+        return {'debug_mode': debug_mode, 'servers': servers}, True
+
+    except BaseException as e:
+        xbmc.log("[ServerLoader v5.0] Erro no parser: " + str(e), xbmc.LOGERROR)
+        return None, False
+
+
+# ===========================================================================
+# SERVER LOADER CLASS
+# ===========================================================================
 
 class ServerLoader:
-    """Carrega e gerencia servidores de múltiplas fontes"""
-    
+    """Carrega e gerencia servidores de multiplas fontes."""
+
     def __init__(self, addon, profile_dir):
+        xbmc.log("[ServerLoader v5.0] inicializado", xbmc.LOGINFO)
         self.addon = addon
         self.profile_dir = profile_dir
         self.cache_file = os.path.join(profile_dir, 'remote_servers_cache.json')
-        
-        # Configurações
+
         if HAS_LOCAL_CONFIG:
             self.config = servers_config.CONFIG
-            self.remote_url = self.config.get('remote_config_url', '')
-            self.cache_ttl = self.config.get('remote_cache_ttl', 3600)
+            self.remote_url  = self.config.get('remote_config_url', '')
+            self.cache_ttl   = self.config.get('remote_cache_ttl', 3600)
             self.prefer_remote = self.config.get('prefer_remote', True)
             self.override_user = self.config.get('override_user_config', False)
-            self.allow_user = self.config.get('allow_user_servers', True)
+            self.allow_user  = self.config.get('allow_user_servers', True)
         else:
-            self.remote_url = ''
-            self.cache_ttl = 3600
+            self.remote_url  = ''
+            self.cache_ttl   = 3600
             self.prefer_remote = False
             self.override_user = False
-            self.allow_user = True
-    
+            self.allow_user  = True
+
+    # ------------------------------------------------------------------
+    # Logging
+    # ------------------------------------------------------------------
+
+    def _is_debug(self):
+        """Le debug_mode do cache. Padrao: False."""
+        try:
+            if os.path.exists(self.cache_file):
+                with open(self.cache_file, 'r', encoding='utf-8') as f:
+                    raw = f.read()
+                dm = re.search(r'"debug_mode"\s*:\s*(true|false)', raw, re.IGNORECASE)
+                return dm.group(1).lower() == 'true' if dm else False
+        except Exception:
+            pass
+        return False
+
     def log(self, message, level=xbmc.LOGINFO):
-        """Helper para logging"""
-        xbmc.log(f"[ServerLoader] {message}", level)
-    
+        if level == xbmc.LOGDEBUG and not self._is_debug():
+            return
+        xbmc.log("[ServerLoader] " + str(message), level)
+
+    # ------------------------------------------------------------------
+    # Ponto de entrada
+    # ------------------------------------------------------------------
+
     def get_all_servers(self):
-        """
-        Retorna todos os servidores de todas as fontes, ordenados por prioridade
-        
-        Ordem de carregamento (configurável):
-        1. Servidores remotos (se prefer_remote=True)
-        2. Servidores locais (se disponíveis)
-        3. Servidores do usuário (se allow_user=True)
-        """
         all_servers = []
-        
-        # 1. Carrega servidores remotos (se configurado)
+
         if self.remote_url and self.prefer_remote:
-            remote_servers = self._load_remote_servers()
-            if remote_servers:
-                all_servers.extend(remote_servers)
-                self.log(f"Carregados {len(remote_servers)} servidores remotos")
-        
-        # 2. Carrega servidores locais (se disponíveis)
+            remote = self._load_remote_servers()
+            if remote:
+                all_servers.extend(remote)
+                self.log("Servidores remotos: " + str(len(remote)))
+
         if HAS_LOCAL_CONFIG:
-            local_servers = self._load_local_servers()
-            if local_servers:
-                all_servers.extend(local_servers)
-                self.log(f"Carregados {len(local_servers)} servidores locais")
-        
-        # 3. Carrega servidores do usuário (se permitido)
+            local = self._load_local_servers()
+            if local:
+                all_servers.extend(local)
+                self.log("Servidores locais: " + str(len(local)))
+
         if self.allow_user and not self.override_user:
-            user_servers = self._load_user_servers()
-            if user_servers:
-                all_servers.extend(user_servers)
-                self.log(f"Carregados {len(user_servers)} servidores do usuário")
-        
-        # Remove duplicatas (baseado em URL + USERNAME)
-        # IMPORTANTE: Mesma URL com usuários diferentes = servidores diferentes!
+            user = self._load_user_servers()
+            if user:
+                all_servers.extend(user)
+                self.log("Servidores do usuario: " + str(len(user)))
+
+        # Remove duplicatas
         seen = set()
-        unique_servers = []
-        for server in all_servers:
-            url = server.get('url', '')
-            username = server.get('username', '')
-            # Chave única: URL + USERNAME
-            key = f"{url}|{username}"
-            
-            if url and username and key not in seen:
+        unique = []
+        for s in all_servers:
+            key = s.get('url', '') + '|' + s.get('username', '')
+            if key not in seen and s.get('url') and s.get('username'):
                 seen.add(key)
-                unique_servers.append(server)
-                self.log(f"  ✅ Adicionado: {server.get('name', '?')} ({url} + {username})", xbmc.LOGDEBUG)
-            else:
-                if not url or not username:
-                    self.log(f"  ❌ Ignorado: {server.get('name', '?')} - URL ou USERNAME vazio", xbmc.LOGWARNING)
-                else:
-                    self.log(f"  ⚠️ Duplicado: {server.get('name', '?')} - Mesma URL+USERNAME", xbmc.LOGWARNING)
-        
-        # Ordena por prioridade (menor = mais prioritário)
-        unique_servers.sort(key=lambda x: x.get('priority', 999))
-        
-        self.log(f"Total de servidores únicos carregados: {len(unique_servers)}")
-        
-        # Debug: mostra todos os servidores carregados
-        for srv in unique_servers:
-            self.log(f"  [{srv.get('priority', '?')}] {srv.get('name', 'Sem nome')} - {srv.get('source', '?')}", xbmc.LOGDEBUG)
-        
-        return unique_servers
-    
+                unique.append(s)
+
+        unique.sort(key=lambda x: x.get('priority', 999))
+        self.log("Total de servidores unicos carregados: " + str(len(unique)))
+        return unique
+
+    # ------------------------------------------------------------------
+    # Fontes
+    # ------------------------------------------------------------------
+
     def _load_local_servers(self):
-        """Carrega servidores do arquivo local lib/servers_config.py"""
         if not HAS_LOCAL_CONFIG:
             return []
-        
         try:
             servers = servers_config.get_servidores()
-            self.log(f"Servidores locais carregados: {len(servers)}")
-            # Adiciona marcador de origem
-            for server in servers:
-                server['source'] = 'local'
+            for s in servers:
+                s['source'] = 'local'
             return servers
         except Exception as e:
-            self.log(f"Erro ao carregar servidores locais: {e}", xbmc.LOGERROR)
+            self.log("Erro ao carregar servidores locais: " + str(e), xbmc.LOGERROR)
             return []
-    
+
     def _load_remote_servers(self):
-        """
-        Carrega servidores do arquivo remoto (JSON ou XML) com cache
-        
-        Detecta automaticamente o formato:
-        - URL termina com .json → JSON
-        - URL termina com .xml → XML
-        - Caso contrário, tenta JSON primeiro, depois XML
-        """
         if not self.remote_url:
             return []
-        
-        # Verifica se tem cache válido
         if self._is_cache_valid():
-            self.log("Usando cache de servidores remotos")
-            return self._load_from_cache()
-        
-        # Cache inválido ou inexistente, baixa do servidor
+            cached = self._load_from_cache()
+            # Se o cache tem servidores validos, usa. Senao redownload.
+            if len(cached) > 0:
+                self.log("Usando cache de servidores remotos")
+                return cached
+            self.log("Cache invalido ou vazio, redownload forcado")
         try:
-            self.log(f"Baixando servidores remotos de: {self.remote_url}")
-            import requests
-            
-            headers = {'User-Agent': 'Mozilla/5.0'}
-            response = requests.get(self.remote_url, headers=headers, timeout=10)
-            response.raise_for_status()
-            
-            # Detecta formato automaticamente
-            servers = None
-            
-            # Tenta JSON primeiro (mais confiável)
-            if self.remote_url.endswith('.json') or 'json' in self.remote_url.lower():
-                self.log("Detectado formato JSON")
-                servers = self._parse_remote_json(response.text)
-            elif self.remote_url.endswith('.xml'):
-                self.log("Detectado formato XML")
-                servers = self._parse_remote_xml(response.content)
-            else:
-                # Tenta JSON primeiro
-                self.log("Formato não detectado, tentando JSON...")
-                servers = self._parse_remote_json(response.text)
-                
-                if not servers:
-                    self.log("JSON falhou, tentando XML...")
-                    servers = self._parse_remote_xml(response.content)
-            
-            if servers:
-                # Salva no cache
-                self._save_to_cache(servers)
-                self.log(f"✅ Servidores remotos carregados: {len(servers)}")
-                
-                # Log detalhado dos servidores
-                for srv in servers:
-                    self.log(f"  → {srv.get('name', '?')} (ID: {srv.get('id', '?')})", xbmc.LOGDEBUG)
-                
+            self.log("Atualizando lista de servidores...")
+            import requests as _req
+            r = _req.get(self.remote_url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)
+            r.raise_for_status()
+            _raw = r.content
+            _txt = _raw.decode("utf-8-sig", errors="ignore") if isinstance(_raw, (bytes, bytearray)) else _raw
+            _blocos = _extract_blocks(_txt)
+            xbmc.log("[ServerLoader-DIAG] blocos=" + str(len(_blocos)) + " inicio=" + repr(_txt[:60]), xbmc.LOGINFO)
+            data, ok = parse_server_json(_raw)
+            if ok and data and data.get('servers'):
+                servers = data['servers']
+                debug_mode = data.get('debug_mode', False)
+                self._save_to_cache(servers, debug_mode)
+                self.log("Servidores carregados: " + str(len(servers)))
                 return servers
             else:
-                self.log("❌ Nenhum servidor encontrado no arquivo remoto", xbmc.LOGWARNING)
-                return []
-                
+                self.log("Nenhum servidor encontrado no arquivo remoto", xbmc.LOGWARNING)
+                return self._load_from_cache()
         except Exception as e:
-            self.log(f"❌ Erro ao carregar servidores remotos: {e}", xbmc.LOGERROR)
-            import traceback
-            self.log(f"Traceback: {traceback.format_exc()}", xbmc.LOGDEBUG)
-            # Tenta usar cache antigo como fallback
+            self.log("Falha ao atualizar servidores remotos.", xbmc.LOGERROR)
             return self._load_from_cache()
-    
-    def _parse_remote_json(self, json_text):
-        """
-        Parse JSON e retorna lista de servidores
-        
-        Formato esperado:
-        {
-            "servers": [
-                {
-                    "id": 1,
-                    "name": "Servidor Principal",
-                    "url": "http://example.com",
-                    "username": "user",
-                    "password": "pass",
-                    "priority": 1,
-                    "enabled": true
-                }
-            ]
-        }
-        """
-        try:
-            data = json.loads(json_text)
-            servers = []
-            
-            # Suporta tanto {"servers": [...]} quanto [...]
-            server_list = data.get('servers', data) if isinstance(data, dict) else data
-            
-            if not isinstance(server_list, list):
-                self.log(f"Formato JSON inválido: esperado lista, recebido {type(server_list)}", xbmc.LOGERROR)
-                return []
-            
-            for srv_data in server_list:
-                try:
-                    # Verifica se está habilitado
-                    enabled = srv_data.get('enabled', True)
-                    if not enabled:
-                        self.log(f"Servidor {srv_data.get('name', '?')} desabilitado", xbmc.LOGDEBUG)
-                        continue
-                    
-                    server = {
-                        'id': int(srv_data.get('id', 0)),
-                        'name': srv_data.get('name', 'Servidor'),
-                        'url': srv_data.get('url', ''),
-                        'username': srv_data.get('username', ''),
-                        'password': srv_data.get('password', ''),
-                        'priority': int(srv_data.get('priority', 999)),
-                        'source': 'remote'
-                    }
-                    
-                    # Valida campos obrigatórios
-                    if server['url'] and server['username'] and server['password']:
-                        servers.append(server)
-                        self.log(f"✅ Servidor JSON carregado: {server['name']} (ID: {server['id']})", xbmc.LOGDEBUG)
-                    else:
-                        self.log(f"❌ Servidor {server['name']} ignorado - campos vazios", xbmc.LOGWARNING)
-                        
-                except Exception as e:
-                    self.log(f"Erro ao parsear servidor JSON: {e}", xbmc.LOGERROR)
-                    continue
-            
-            self.log(f"Parse JSON completo: {len(servers)} servidores válidos")
-            return servers
-            
-        except json.JSONDecodeError as e:
-            self.log(f"Erro ao decodificar JSON: {e}", xbmc.LOGERROR)
-            return []
-        except Exception as e:
-            self.log(f"Erro inesperado ao parsear JSON: {e}", xbmc.LOGERROR)
-            return []
-    
-    def _parse_remote_xml(self, xml_content):
-        """
-        Parse XML e retorna lista de servidores (mantido para compatibilidade)
-        """
-        try:
-            root = ET.fromstring(xml_content)
-            servers = []
-            
-            for server_elem in root.findall('server'):
-                try:
-                    enabled = server_elem.findtext('enabled', 'true').lower() == 'true'
-                    if not enabled:
-                        continue
-                    
-                    server = {
-                        'id': int(server_elem.findtext('id', '0')),
-                        'name': server_elem.findtext('n', 'Servidor'),
-                        'url': server_elem.findtext('url', ''),
-                        'username': server_elem.findtext('username', ''),
-                        'password': server_elem.findtext('password', ''),
-                        'priority': int(server_elem.findtext('priority', '999')),
-                        'source': 'remote'
-                    }
-                    
-                    # Valida campos obrigatórios
-                    if server['url'] and server['username'] and server['password']:
-                        servers.append(server)
-                        self.log(f"✅ Servidor XML carregado: {server['name']} (ID: {server['id']})", xbmc.LOGDEBUG)
-                    else:
-                        self.log(f"❌ Servidor {server['name']} ignorado - campos vazios", xbmc.LOGWARNING)
-                        
-                except Exception as e:
-                    self.log(f"Erro ao parsear servidor XML: {e}", xbmc.LOGERROR)
-                    continue
-            
-            self.log(f"Parse XML completo: {len(servers)} servidores válidos")
-            return servers
-            
-        except ET.ParseError as e:
-            self.log(f"Erro ao parsear XML: {e}", xbmc.LOGERROR)
-            return []
-        except Exception as e:
-            self.log(f"Erro inesperado ao parsear XML: {e}", xbmc.LOGERROR)
-            return []
-    
+
     def _load_user_servers(self):
-        """Carrega servidores configurados pelo usuário no settings.xml"""
         servers = []
-        
         for i in range(1, 6):
-            url = self.addon.getSetting(f'server{i}_url') or ''
-            user = self.addon.getSetting(f'server{i}_user') or ''
-            passwd = self.addon.getSetting(f'server{i}_pass') or ''
-            name = self.addon.getSetting(f'server{i}_name') or ''
-            
+            url    = self.addon.getSetting('server' + str(i) + '_url') or ''
+            user   = self.addon.getSetting('server' + str(i) + '_user') or ''
+            passwd = self.addon.getSetting('server' + str(i) + '_pass') or ''
+            name   = self.addon.getSetting('server' + str(i) + '_name') or ''
             if url and user and passwd:
-                # Nome automático se vazio
-                if not name or not name.strip():
+                if not name.strip():
                     try:
-                        domain = url.replace('http://', '').replace('https://', '').split('/')[0].split(':')[0]
-                        name = f"{domain}"
-                    except:
-                        name = f"Servidor {i}"
-                
+                        name = url.replace('http://', '').replace('https://', '').split('/')[0].split(':')[0]
+                    except Exception:
+                        name = 'Servidor ' + str(i)
                 servers.append({
-                    'id': i + 100,  # IDs 101-105 para servidores do usuário
-                    'name': name,
-                    'url': url,
-                    'username': user,
-                    'password': passwd,
-                    'priority': i + 100,  # Menor prioridade que pré-definidos
-                    'source': 'user'
+                    'id': i + 100, 'name': name, 'url': url,
+                    'username': user, 'password': passwd,
+                    'priority': i + 100, 'source': 'user'
                 })
-        
         return servers
-    
+
+    # ------------------------------------------------------------------
+    # Cache - usa re em vez de json para leitura tambem
+    # ------------------------------------------------------------------
+
     def _is_cache_valid(self):
-        """Verifica se o cache de servidores remotos ainda é válido"""
         if not os.path.exists(self.cache_file):
             return False
-        
         try:
-            # Verifica idade do arquivo
-            mtime = os.path.getmtime(self.cache_file)
-            age = time.time() - mtime
-            is_valid = age < self.cache_ttl
-            
-            if is_valid:
-                self.log(f"Cache válido (idade: {int(age)}s / TTL: {self.cache_ttl}s)")
-            else:
-                self.log(f"Cache expirado (idade: {int(age)}s / TTL: {self.cache_ttl}s)")
-            
-            return is_valid
-        except Exception as e:
-            self.log(f"Erro ao verificar cache: {e}", xbmc.LOGERROR)
+            return (time.time() - os.path.getmtime(self.cache_file)) < self.cache_ttl
+        except Exception:
             return False
-    
+
     def _load_from_cache(self):
-        """Carrega servidores do cache"""
+        """Le cache usando re para nao depender do modulo json."""
         try:
             if not os.path.exists(self.cache_file):
                 return []
-            
             with open(self.cache_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            
-            servers = data.get('servers', [])
-            self.log(f"Carregados {len(servers)} servidores do cache")
-            return servers
-        except Exception as e:
-            self.log(f"Erro ao carregar cache: {e}", xbmc.LOGERROR)
-            return []
-    
-    def _save_to_cache(self, servers):
-        """Salva servidores no cache"""
+                raw = f.read()
+            data, ok = parse_server_json(raw)
+            if ok and data and data.get('servers'):
+                return data['servers']
+        except Exception:
+            pass
+        return []
+
+    def _save_to_cache(self, servers, debug_mode=False):
+        """Salva cache como JSON gerado manualmente (sem modulo json)."""
         try:
-            # Garante que o diretório existe
             if not os.path.exists(self.profile_dir):
                 os.makedirs(self.profile_dir)
-            
-            cache_data = {
-                'timestamp': time.time(),
-                'servers': servers
-            }
-            
+
+            def esc(s):
+                return str(s).replace('\\', '\\\\').replace('"', '\\"')
+
+            lines = ['{\n']
+            lines.append('  "debug_mode": ' + ('true' if debug_mode else 'false') + ',\n')
+            lines.append('  "timestamp": ' + str(int(time.time())) + ',\n')
+            lines.append('  "servers": [\n')
+            for idx, s in enumerate(servers):
+                comma = '' if idx == len(servers) - 1 else ','
+                lines.append('    {\n')
+                lines.append('      "id": '       + str(s.get('id', 0))           + ',\n')
+                lines.append('      "name": "'    + esc(s.get('name', ''))        + '",\n')
+                lines.append('      "url": "'     + esc(s.get('url', ''))         + '",\n')
+                lines.append('      "username": "' + esc(s.get('username', ''))   + '",\n')
+                lines.append('      "password": "' + esc(s.get('password', ''))   + '",\n')
+                lines.append('      "priority": ' + str(s.get('priority', 999))   + ',\n')
+                lines.append('      "source": "'  + esc(s.get('source', 'remote'))+ '",\n')
+                lines.append('      "enabled": true\n')
+                lines.append('    }' + comma + '\n')
+            lines.append('  ]\n')
+            lines.append('}\n')
+
             with open(self.cache_file, 'w', encoding='utf-8') as f:
-                json.dump(cache_data, f, ensure_ascii=False, indent=2)
-            
-            self.log(f"Cache salvo: {len(servers)} servidores")
+                f.writelines(lines)
+
+            self.log("Cache salvo: " + str(len(servers)) + " servidores, debug_mode=" + str(debug_mode))
         except Exception as e:
-            self.log(f"Erro ao salvar cache: {e}", xbmc.LOGERROR)
+            self.log("Erro ao salvar cache: " + str(e), xbmc.LOGERROR)

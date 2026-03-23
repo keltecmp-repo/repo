@@ -60,7 +60,8 @@
         
         <setting type="sep"/>
         <setting label="[B]Opções[/B]" type="lsep"/>
-        
+
+
         <setting id="tmdb_language" type="select" label="Idioma" default="pt-BR" enable="eq(-8,true)">
             <option label="Português (Brasil)">pt-BR</option>
             <option label="Português (Portugal)">pt-PT</option>

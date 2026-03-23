@@ -23,7 +23,8 @@ if not os.path.exists(profile):
     os.makedirs(profile)
 CACHE_FILE = os.path.join(profile, 'dns_cache.json')
 
-logging.basicConfig(level=logging.DEBUG)
+# Silencia o logger root para nao vazar dominios/IPs nos logs do Kodi
+logging.getLogger().setLevel(logging.CRITICAL)
 
 
 
@@ -184,5 +185,3 @@ class customdns:
                 logging.error("Erro no resolver para {}: {}".format(host, e))
 
         return self.original_getaddrinfo(host, port, *args, **kwargs)
-
-
