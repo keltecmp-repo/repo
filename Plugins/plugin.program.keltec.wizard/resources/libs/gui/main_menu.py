@@ -1,11 +1,181 @@
-# encoded by pyprotect
-# https://keltecmp.net/pyprotect
+################################################################################
 
-import base64, codecs
-magic = 'IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMNCiMgICAgICBDb3B5cmlnaHQgKEMpIDIwMTkgZHJpbmZlcm5vbyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjDQojICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIw0KIyAgVGhpcyBQcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkgICAgICAgICMNCiMgIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMgcHVibGlzaGVkIGJ5ICAgICAgICAjDQojICB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyLCBvciAoYXQgeW91ciBvcHRpb24pICAgICAgICAgIw0KIyAgYW55IGxhdGVyIHZlcnNpb24uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMNCiMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjDQojICBUaGlzIFByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwgICAgICAgICAgICAgIw0KIyAgYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YgICAgICAgICAgICAgICMNCiMgIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gU2VlIHRoZSAgICAgICAgICAgICAgICAjDQojICBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIw0KIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMNCiMgIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlICAgICAgICAgICAjDQojICBhbG9uZyB3aXRoIFhCTUM7IHNlZSB0aGUgZmlsZSBDT1BZSU5HLiAgSWYgbm90LCB3cml0ZSB0byAgICAgICAgICAgICAgICAgICAgIw0KIyAgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiwgNjc1IE1hc3MgQXZlLCBDYW1icmlkZ2UsIE1BIDAyMTM5LCBVU0EuICAgICAgICMNCiMgIGh0dHA6Ly93d3cuZ251Lm9yZy9jb3B5bGVmdC9ncGwuaHRtbCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjDQojIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIw0KIyAtKi0gY29kaW5nOiB1dGYtOCAtKi0NC'
-love = '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'
-god = '5mb3JtYXQoQ09ORklHLkFERE9OVElUTEUsIENPTkZJRy5BRERPTl9WRVJTSU9OKSwgdGhlbWVpdD1DT05GSUcuVEhFTUUyKQ0KICAgICAgICBpZiBsZW4oQ09ORklHLkJVSUxETkFNRSkgPiAwOg0KICAgICAgICAgICAgdmVyc2lvbiA9IGNoZWNrLmNoZWNrX2J1aWxkKENPTkZJRy5CVUlMRE5BTUUsICd2ZXJzaW9uJykNCiAgICAgICAgICAgIGJ1aWxkID0gJ3swfSAodnsxfSknLmZvcm1hdChDT05GSUcuQlVJTEROQU1FLCBDT05GSUcuQlVJTERWRVJTSU9OKQ0KICAgICAgICAgICAgaWYgdmVyc2lvbiA+IENPTkZJRy5CVUlMRFZFUlNJT046DQogICAgICAgICAgICAgICAgYnVpbGQgPSAnezB9IFtDT0xPUiByZWRdW0JdW1VQREFURSB2ezF9XVsvQl1bL0NPTE9SXScuZm9ybWF0KGJ1aWxkLCB2ZXJzaW9uKQ0KICAgICAgICAgICAgZGlyZWN0b3J5LmFkZF9kaXIoYnVpbGQsIHsnbW9kZSc6ICd2aWV3YnVpbGQnLCAnbmFtZSc6IENPTkZJRy5CVUlMRE5BTUV9LCB0aGVtZWl0PUNPTkZJRy5USEVNRTQpDQoNCiAgICAgICAgICAgIGZyb20gcmVzb3VyY2VzLmxpYnMuZ3VpLmJ1aWxkX21lbnUgaW1wb3J0IEJ1aWxkTWVudQ0KICAgICAgICAgICAgdGhlbWVmaWxlID0gQnVpbGRNZW51KCkudGhlbWVfY291bnQoQ09ORklHLkJVSUxETkFNRSkNCiAgICAgICAgICAgIGlmIHRoZW1lZmlsZToNCiAgICAgICAgICAgICAgICBkaXJlY3RvcnkuYWRkX2ZpbGUoJ05lbmh1bScgaWYgQ09ORklHLkJVSUxEVEhFTUUgPT0gIiIgZWxzZSBDT05GSUcuQlVJTERUSEVNRSwgeydtb2RlJzogJ3RoZW1lJywgJ25hbWUnOiBDT05GSUcuQlVJTEROQU1FfSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdGhlbWVpdD1DT05GSUcuVEhFTUU1KQ0KICAgICAgICBlbHNlOg0KICAgICAgICAgICAgZGlyZWN0b3J5LmFkZF9kaXIoJ05lbmh1bScsIHsnbW9kZSc6ICdidWlsZHMnfSwgdGhlbWVpdD1DT05GSUcuVEhFTUU0KQ0KICAgICAgICBkaXJlY3RvcnkuYWRkX3NlcGFyYXRvcigpDQogICAgICAgIGRpcmVjdG9yeS5hZGRfZGlyKCdCdWlsZHMnLCB7J21vZGUnOiAnYnVpbGRzJ30sIGljb249Q09ORklHLklDT05CVUlMRFMsIHRoZW1laXQ9Q09ORklHLlRIRU1FMSkNCiAgICAgICAgZGlyZWN0b3J5LmFkZF9kaXIoJ01hbnV0ZW7Dp8OjbyAmIEZlcnJhbWVudGFzJywgeydtb2RlJzogJ21haW50J30sIGljb249Q09ORklHLklDT05NQUlOVCwgdGhlbWVpdD1DT05GSUcuVEhFTUUxKQ0KICAgICAgICBpZiAodG9vbHMucGxhdGZvcm0oKSA9PSAnYW5kcm9pZCcgb3IgQ09ORklHLkRFVkVMT1BFUiA9PSAndHJ1ZScpOg0KICAgICAgICAgICAgZGlyZWN0b3J5LmFkZF9kaXIoJ0luc3RhbGFkb3IgZGUgQVBLJywgeydtb2RlJzogJ2Fwayd9LCBpY29uPUNPTkZJRy5JQ09OQVBLLCB0aGVtZWl0PUNPTkZJRy5USEVNRTEpDQogICAgICAgIGlmIHRvb2xzLm9wZW5fdXJsKENPTkZJRy5BRERPTkZJTEUsIGNoZWNrPVRydWUpIG9yIG9zLnBhdGguZXhpc3RzKG9zLnB'
-destiny = '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'
-joy = '\x72\x6f\x74\x31\x33'
-trust = eval('\x6d\x61\x67\x69\x63') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x6c\x6f\x76\x65\x2c\x20\x6a\x6f\x79\x29') + eval('\x67\x6f\x64') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x64\x65\x73\x74\x69\x6e\x79\x2c\x20\x6a\x6f\x79\x29')
-eval(compile(base64.b64decode(eval('\x74\x72\x75\x73\x74')),'<string>','exec'))
+#      Copyright (C) 2019 drinfernoo                                           #
+
+#                                                                              #
+
+#  This Program is free software; you can redistribute it and/or modify        #
+
+#  it under the terms of the GNU General Public License as published by        #
+
+#  the Free Software Foundation; either version 2, or (at your option)         #
+
+#  any later version.                                                          #
+
+#                                                                              #
+
+#  This Program is distributed in the hope that it will be useful,             #
+
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of              #
+
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                #
+
+#  GNU General Public License for more details.                                #
+
+#                                                                              #
+
+#  You should have received a copy of the GNU General Public License           #
+
+#  along with XBMC; see the file COPYING.  If not, write to                    #
+
+#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.       #
+
+#  http://www.gnu.org/copyleft/gpl.html                                        #
+
+################################################################################
+
+# -*- coding: utf-8 -*-
+
+
+
+import os
+
+
+
+from resources.libs.common import directory
+
+from resources.libs.common.config import CONFIG
+
+
+
+
+
+class MainMenu:
+
+
+
+    def get_listing(self):
+
+        from resources.libs import check
+
+        from resources.libs.common import logging
+
+        from resources.libs.common import tools
+
+
+
+        errors = int(logging.error_checking(count=True))
+
+        errorsfound = str(errors) + ' Error(s) Found' if errors > 0 else 'None Found'
+
+
+
+        if CONFIG.AUTOUPDATE == 'Yes':
+
+            response = tools.open_url(CONFIG.BUILDFILE, check=True)
+
+
+
+            if response:
+
+                ver = check.check_wizard('version')
+
+                if ver:
+
+                    if ver > CONFIG.ADDON_VERSION:
+
+                        directory.add_file(
+
+                            '{0} [v{1}] [COLOR red][B][UPDATE v{2}][/B][/COLOR]'.format(CONFIG.ADDONTITLE,
+
+                                                                                        CONFIG.ADDON_VERSION, ver),
+
+                            {'mode': 'wizardupdate'}, themeit=CONFIG.THEME2)
+
+                    else:
+
+                        directory.add_file('{0} [v{1}]'.format(CONFIG.ADDONTITLE, CONFIG.ADDON_VERSION),
+
+                                           themeit=CONFIG.THEME2)
+
+            else:
+
+                directory.add_file('{0} [v{1}]'.format(CONFIG.ADDONTITLE, CONFIG.ADDON_VERSION),
+
+                                   themeit=CONFIG.THEME2)
+
+        else:
+
+            directory.add_file('{0} [v{1}]'.format(CONFIG.ADDONTITLE, CONFIG.ADDON_VERSION), themeit=CONFIG.THEME2)
+
+        if len(CONFIG.BUILDNAME) > 0:
+
+            version = check.check_build(CONFIG.BUILDNAME, 'version')
+
+            build = '{0} (v{1})'.format(CONFIG.BUILDNAME, CONFIG.BUILDVERSION)
+
+            if version > CONFIG.BUILDVERSION:
+
+                build = '{0} [COLOR red][B][UPDATE v{1}][/B][/COLOR]'.format(build, version)
+
+            directory.add_dir(build, {'mode': 'viewbuild', 'name': CONFIG.BUILDNAME}, themeit=CONFIG.THEME4)
+
+
+
+            from resources.libs.gui.build_menu import BuildMenu
+
+            themefile = BuildMenu().theme_count(CONFIG.BUILDNAME)
+
+            if themefile:
+
+                directory.add_file('Nenhum' if CONFIG.BUILDTHEME == "" else CONFIG.BUILDTHEME, {'mode': 'theme', 'name': CONFIG.BUILDNAME},
+
+                                   themeit=CONFIG.THEME5)
+
+        else:
+
+            directory.add_dir('Nenhum', {'mode': 'builds'}, themeit=CONFIG.THEME4)
+
+        directory.add_separator()
+
+        directory.add_dir('Builds', {'mode': 'builds'}, icon=CONFIG.ICONBUILDS, themeit=CONFIG.THEME1)
+
+        directory.add_dir('Manutenção & Ferramentas', {'mode': 'maint'}, icon=CONFIG.ICONMAINT, themeit=CONFIG.THEME1)
+
+        if (tools.platform() == 'android' or CONFIG.DEVELOPER == 'true'):
+
+            directory.add_dir('Instalador de APK', {'mode': 'apk'}, icon=CONFIG.ICONAPK, themeit=CONFIG.THEME1)
+
+        if tools.open_url(CONFIG.ADDONFILE, check=True) or os.path.exists(os.path.join(CONFIG.ADDON_PATH, 'resources', 'text', 'addons.json')):
+
+            directory.add_dir('Instalador de Addon', {'mode': 'addons'}, icon=CONFIG.ICONADDONS, themeit=CONFIG.THEME1)
+
+        if tools.open_url(CONFIG.YOUTUBEFILE, check=True) and not CONFIG.YOUTUBETITLE == '':
+
+            directory.add_dir(CONFIG.YOUTUBETITLE, {'mode': 'youtube'}, icon=CONFIG.ICONYOUTUBE, themeit=CONFIG.THEME1)
+
+        directory.add_dir('Guardar dados', {'mode': 'savedata'}, icon=CONFIG.ICONSAVE, themeit=CONFIG.THEME1)
+
+        if CONFIG.HIDECONTACT == 'No':
+
+            directory.add_file('Contato', {'mode': 'contact'}, icon=CONFIG.ICONCONTACT, themeit=CONFIG.THEME1)
+
+        directory.add_separator()
+
+        directory.add_file('Carregar arquivo de log', {'mode': 'uploadlog'}, icon=CONFIG.ICONMAINT, themeit=CONFIG.THEME1)
+
+        directory.add_file('Ver Erros no Log: {0}'.format(errorsfound), {'mode': 'viewerrorlog'}, icon=CONFIG.ICONMAINT,
+
+                           themeit=CONFIG.THEME1)
+
+        if errors > 0:
+
+            directory.add_file('Ver o último erro no log', {'mode': 'viewerrorlast'}, icon=CONFIG.ICONMAINT, themeit=CONFIG.THEME1)
+
+        directory.add_separator()
+
+        directory.add_file('Configurações', {'mode': 'settings', 'name': CONFIG.ADDON_ID}, icon=CONFIG.ICONSETTINGS, themeit=CONFIG.THEME1)
+
+        if CONFIG.DEVELOPER == 'true':
+
+            directory.add_dir('Menu do desenvolvedor', {'mode': 'developer'}, icon=CONFIG.ADDON_ICON, themeit=CONFIG.THEME1)

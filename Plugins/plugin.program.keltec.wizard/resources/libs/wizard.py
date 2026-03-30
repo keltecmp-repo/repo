@@ -1,11 +1,687 @@
-# encoded by pyprotect
-# https://keltecmp.net/pyprotect
+################################################################################
 
-import base64, codecs
-magic = 'IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMNCiMgICAgICBDb3B5cmlnaHQgKEMpIDIwMTkgZHJpbmZlcm5vbyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjDQojICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIw0KIyAgVGhpcyBQcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkgICAgICAgICMNCiMgIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMgcHVibGlzaGVkIGJ5ICAgICAgICAjDQojICB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyLCBvciAoYXQgeW91ciBvcHRpb24pICAgICAgICAgIw0KIyAgYW55IGxhdGVyIHZlcnNpb24uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMNCiMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjDQojICBUaGlzIFByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwgICAgICAgICAgICAgIw0KIyAgYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YgICAgICAgICAgICAgICMNCiMgIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gU2VlIHRoZSAgICAgICAgICAgICAgICAjDQojICBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIw0KIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMNCiMgIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlICAgICAgICAgICAjDQojICBhbG9uZyB3aXRoIFhCTUM7IHNlZSB0aGUgZmlsZSBDT1BZSU5HLiAgSWYgbm90LCB3cml0ZSB0byAgICAgICAgICAgICAgICAgICAgIw0KIyAgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiwgNjc1IE1hc3MgQXZlLCBDYW1icmlkZ2UsIE1BIDAyMTM5LCBVU0EuICAgICAgICMNCiMgIGh0dHA6Ly93d3cuZ251Lm9yZy9jb3B5bGVmdC9ncGwuaHRtbCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjDQojIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIw0KDQppbXBvcnQgeGJtYw0KaW1wb3J0IHhibWNndWkNCg0KaW1wb3J0IG9zDQoNCmZyb20gcmVzb3VyY2VzLmxpYnMgaW1wb3J0IGNoZWNrDQpmcm9tIHJlc291cmNlcy5saWJzIGltcG9ydCBkYg0KZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgZXh0cmFjdA0KZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgaW5zdGFsbA0KZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgc2tpbg0KZnJvbSByZXNvdXJjZXMubGlicy5jb21tb24gaW1wb3J0IGxvZ2dpbmcNCmZyb20gcmVzb3VyY2VzLmxpYnMuY29tbW9uIGltcG9ydCB0b29scw0KZnJvbSByZXNvdXJjZXMubGlicy5jb21tb24uY29uZmlnIGltcG9ydCBDT05GSUcNCmZyb20gcmVzb3VyY2VzLmxpYnMuZG93bmxvYWRlciBpbXBvcnQgRG93bmxvYWRlcg0KDQoNCmNsYXNzIFdpemFyZDoNCg0KICAgIGRlZiBfX2luaXRfXyhzZWxmKToNCiAgICAgICAgdG9vbHMuZW5zdXJlX2ZvbGRlcnMoQ09ORklHLlBBQ0tBR0VTKQ0KICAgICAgICANCiAgICAgICAgc2VsZi5kaWFsb2cgPSB4Ym1jZ3VpLkRpYWxvZygpDQogICAgICAgIHNlbGYuZGlhbG9nUHJvZ3Jlc3MgPSB4Ym1jZ3VpLkRpYWxvZ1Byb2dyZXNzKCkNCg0KICAgIGRlZiBfcHJvbXB0X2Zvcl93aXBlKHNlbGYpOg0KICAgICAgICAjIFNob3VsZCB3ZSB3aXBlIGZpcnN0Pw0KICAgICAgICBpZiBzZWxmLmRpYWxvZy55ZXNubyhDT05GSUcuQURET05USVRMRSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICJbQ09MT1IgezB9XVZvY8OqIGRlc2VqYSByZXN0YXVyYXIgc2V1Ii5mb3JtYXQoQ09ORklHLkNPTE9SMikgKydcbicgKyAiQ29uZmlndXJhw6fDo28gZG8gS29kaSBwYXJhIGFzIGNvbmZpZ3VyYcOnw7VlcyBwYWRyw6NvIiArICdcbicgKyAiQW50ZXMgZGUgaW5zdGFsYXIgbyBiYWNrdXAgZGUgY29tcGlsYcOnw6NvP1svQ09MT1JdIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgIG5vbGFiZWw9J1tCXVtDT0xPUiByZWRdTsOjb1svQ09MT1JdWy9CXScsDQogICAgICAgICAgICAgICAgICAgICAgICAgICB5ZXNsYWJlbD0nW0JdW0NPTE9SIHNwcmluZ2dyZWVuXVNpbVsvQ09MT1JdWy9CXScpOg0KICAgICAgICAgICAgaW5zdGFsbC53aXBlKCkNCg0KICAgIGRlZiBidWlsZChzZWxmLCBuYW1lLCBvdmVyPUZhbHNlKToNCiAgICAgICAgIyBpZiBhY3Rpb24gPT0gJ25vcm1hbCc6DQogICAgICAgICAgICAjIGlmIENPTkZJRy5LRUVQVFJBS1QgPT0gJ3RydWUnOg0KICAgICAgICAgICAgICAgICMgZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgdHJha3RpdA0KICAgICAgICAgICAgICAgICMgdHJha3RpdC5hdXRvX3VwZGF0ZSgnYWxsJykNCiAgICAgICAgICAgICAgICAjIENPTkZJRy5zZXRfc2V0dGluZygndHJha3RuZXh0c2F2ZScsIHRvb2xzLmdldF9kYXRlKGRheXM9MywgZm9ybWF0dGVkPVRydWUpKQ0KICAgICAgICAgICAgIyBpZiBDT05GSUcuS0VFUERFQlJJRCA9PSAndHJ1ZSc6DQogICAgICAgICAgICAgICAgIyBmcm9tIHJlc291cmNlcy5saWJzIGltcG9ydCBkZWJyaWRpdA0KICAgICAgICAgICAgICAgICMgZGVicmlkaXQuYXV0b191cGRhdGUoJ2FsbCcpDQogICAgICAgICAgICAgICAgIyBDT05GSUcuc2V0X3NldHRpbmcoJ2RlYnJpZG5leHRzYXZlJywgdG9vbHMuZ2V0X2RhdGUoZGF5cz0zLCBmb3JtYXR0ZWQ9VHJ1ZSkpDQogICAgICAgICAgICAjIGlmIENPTkZJRy5LRUVQTE9HSU4gPT0gJ3RydWUnOg0KICAgICAgICAgICAgICAgICMgZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgbG9naW5pdA0KICAgICAgICAgICAgICAgICMgbG9naW5pdC5hdXRvX3VwZGF0ZSgnYWxsJykNCiAgICAgICAgICAgICAgICAjIENPTkZJRy5zZXRfc2V0dGluZygnbG9naW5uZXh0c2F2ZScsIHRvb2xzLmdldF9kYXRlKGRheXM9MywgZm9ybWF0dGVkPVRydWUpKQ0KDQogICAgICAgIHRlbXBfa29kaXYgPSBpbnQoQ09ORklHLktPRElWKQ0KICAgICAgICBidWlsZHYgPSBpbnQoZmxvYXQoY2hlY2suY2hlY2tfYnVpbGQobmFtZSwgJ2tvZGknKSkpDQoNCiAgICAgICAgaWYgbm90IHRlbXBfa29kaXYgPT0gYnVpbGR2Og0KICAgICAgICAgICAgd2FybmluZyA9IFRydWUNCiAgICAgICAgZWxzZToNCiAgICAgICAgICAgIHdhcm5pbmcgPSBGYWxzZQ0KDQogICAgICAgIGlmIHdhcm5pbmc6DQogICAgICAgICAgICB5ZXNfcHJlc3NlZCA9IHNlbGYuZGlhbG9nLnllc25vKCJ7MH0gLSBbQ09MT1IgcmVkXUFWSVNPISFbL0NPTE9SXSIuZm9ybWF0KENPTkZJRy5BRERPTlRJVExFKSwgJ1tDT0xPUiB7MH1dRXhpc3RlIHVtYSBjaGFuY2UgZGUgcXVlIGEgcGVsZSBuw6NvIGFwYXJlw6dhIGNvcnJldGFtZW50ZScuZm9ybWF0KENPTkZJRy5DT0xPUjIpICsgJ1xuJyArICdBbyBpbnN0YWxhciB1bSB7MH0gYnVpbGQgZW0gdW1hIGluc3RhbGHDp8OjbyBLb2RpIHsxfScuZm9ybWF0KGNoZWNrLmNoZWNrX2J1aWxkKG5hbWUsICdrb2RpJyksIENPTkZJRy5LT0RJVikgKyAnXG4nICsgJ1ZvY8OqIGFpbmRhIGdvc3RhcmlhIGRlIGluc3RhbGFyOiBbQ09MT1IgezB9XXsxfSB2ezJ9Wy9DT0xPUl0/Wy9DT0xPUl0nLmZvcm1hdChDT05GSUcuQ09MT1IxLCBuYW1lLCBjaGVjay5jaGVja19idWlsZChuYW1lLCAndmVyc2lvbicpKSwgbm9sYWJlbD0nW0JdW0NPTE9SIHJlZF1Ow6NvLCBDYW5jZWxhclsvQ09MT1JdWy9CXScsIHllc2xhYmVsPSdbQl1bQ09MT1Igc3ByaW5nZ3JlZW5dU2ltICwgSW5zdGFsYXJbL0NPTE9SXVsvQl0nKQ0KICAgICAgICBlbHNlOg0KICAgICAgICAgICAgaWYgb3ZlcjoNCiAgICAgICAgICAgICAgICB5ZXNfcHJlc3NlZCA9IDENCiAgICAgICAgICAgIGVsc2U6DQogICAgICAgICAgICAgICAgeWVzX3ByZXNzZWQgPSBzZWxmLmRpYWxvZy55ZXNubyhDT05GSUcuQURET05USVRMRSwgJ1tDT0xPUiB7MH1dVm9jw6ogZ29zdGFyaWEgZGUgYmFpeGFyIGUgaW5zdGFsYXI6ICcuZm9ybWF0KENPTkZJRy5DT0xPUjIpICsgJ1tDT0xPUiB7MH1dezF9IHZ7Mn1bL0NPTE9SXT9bL0NPTE9SXScuZm9ybWF0KENPTkZJRy5DT0xPUjEsIG5hbWUsIGNoZWNrLmNoZWNrX2J1aWxkKG5hbWUsJ3ZlcnNpb24nKSksIG5vbGFiZWw9J1tCXVtDT0xPUiByZWRdTsOjbywgQ2FuY2VsYXJbL0NPT'
-love = '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'
-god = 'FwbGljYXIgbyBndWlmaXggcGFyYTonLmZvcm1hdChDT05GSUcuQ09MT1IyKSArICdcbicgKyAnW0NPTE9SIHswfV17MX1bL0NPTE9SXT9bL0NPTE9SXScuZm9ybWF0KENPTkZJRy5DT0xPUjEsIG5hbWUpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBub2xhYmVsPSdbQl1bQ09MT1IgcmVkXU7Do28sIENhbmNlbGFyWy9DT0xPUl1bL0JdJywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeWVzbGFiZWw9J1tCXVtDT0xPUiBzcHJpbmdncmVlbl1BcGxpY2FyIEZpeFsvQ09MT1JdWy9CXScpDQogICAgICAgIGVsc2U6DQogICAgICAgICAgICB5ZXNfcHJlc3NlZCA9IHNlbGYuZGlhbG9nLnllc25vKCJ7MH0gLSBbQ09MT1IgcmVkXUFWSVNPISFbL0NPTE9SXSIuZm9ybWF0KENPTkZJRy5BRERPTlRJVExFKSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiW0NPTE9SIHswfV1bQ09MT1IgezF9XXsyfVsvQ09MT1JdIG8gYnVpbGQgZGEgY29tdW5pZGFkZSBuw6NvIGVzdMOhIGluc3RhbGFkbyBubyBtb21lbnRvLiIuZm9ybWF0KENPTkZJRy5DT0xPUjIsIENPTkZJRy5DT0xPUjEsIG5hbWUpICsgJ1xuJyArICJWb2PDqiBnb3N0YXJpYSBkZSBhcGxpY2FyIG8gZ3VpRml4IG1lc21vIGFzc2ltPy5bL0NPTE9SXSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbm9sYWJlbD0nW0JdW0NPTE9SIHJlZF1Ow6NvLCBDYW5jZWxhclsvQ09MT1JdWy9CXScsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeWVzbGFiZWw9J1tCXVtDT0xPUiBzcHJpbmdncmVlbl1BcGxpY2FyIEZpeFsvQ09MT1JdWy9CXScpDQogICAgICAgIGlmIHllc19wcmVzc2VkOg0KICAgICAgICAgICAgZ3VpemlwID0gY2hlY2suY2hlY2tfYnVpbGQobmFtZSwgJ2d1aScpDQogICAgICAgICAgICB6aXBuYW1lID0gbmFtZS5yZXBsYWNlKCdcXCcsICcnKS5yZXBsYWNlKCcvJywgJycpLnJlcGxhY2UoJzonLCAnJykucmVwbGFjZSgnKicsICcnKS5yZXBsYWNlKCc/JywgJycpLnJlcGxhY2UoJyInLCAnJykucmVwbGFjZSgnPCcsICcnKS5yZXBsYWNlKCc+JywgJycpLnJlcGxhY2UoJ3wnLCAnJykNCg0KICAgICAgICAgICAgcmVzcG9uc2UgPSB0b29scy5vcGVuX3VybChndWl6aXAsIGNoZWNrPVRydWUpDQogICAgICAgICAgICBpZiBub3QgcmVzcG9uc2U6DQogICAgICAgICAgICAgICAgbG9nZ2luZy5sb2dfbm90aWZ5KENPTkZJRy5BRERPTlRJVExFLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnW0NPTE9SIHswfV1HdWlGaXg6IFVybCBaaXAgSW52w6FsaWRvIVsvQ09MT1JdJy5mb3JtYXQoQ09ORklHLkNPTE9SMikpDQogICAgICAgICAgICAgICAgcmV0dXJuDQoNCiAgICAgICAgICAgIHNlbGYuZGlhbG9nUHJvZ3Jlc3MuY3JlYXRlKENPTkZJRy5BRERPTlRJVExFLCAnW0NPTE9SIHswfV1bQl1CYWl4YW5kbyBHdWlGaXg6Wy9CXVsvQ09MT1JdIFtDT0xPUiB7MX1dezJ9Wy9DT0xPUl0nLmZvcm1hdChDT05GSUcuQ09MT1IyLCBDT05GSUcuQ09MT1IxLCBuYW1lKSwgJycsICdQb3IgZmF2b3IsIGFndWFyZGUnKQ0KDQogICAgICAgICAgICBsaWIgPSBvcy5wYXRoLmpvaW4oQ09ORklHLlBBQ0tBR0VTLCAnezB9X2d1aXNldHRpbmdzLnppcCcuZm9ybWF0KHppcG5hbWUpKQ0KICAgICAgICAgICAgDQogICAgICAgICAgICB0cnk6DQogICAgICAgICAgICAgICAgb3MucmVtb3ZlKGxpYikNCiAgICAgICAgICAgIGV4Y2VwdDoNCiAgICAgICAgICAgICAgICBwYXNzDQoNCiAgICAgICAgICAgIERvd25sb2FkZXIoKS5kb3dubG9hZChndWl6aXAsIGxpYikNCiAgICAgICAgICAgIHhibWMuc2xlZXAoNTAwKQ0KICAgICAgICAgICAgDQogICAgICAgICAgICBpZiBvcy5wYXRoLmdldHNpemUobGliKSA9PSAwOg0KICAgICAgICAgICAgICAgIHRyeToNCiAgICAgICAgICAgICAgICAgICAgb3MucmVtb3ZlKGxpYikNCiAgICAgICAgICAgICAgICBleGNlcHQ6DQogICAgICAgICAgICAgICAgICAgIHBhc3MNCiAgICAgICAgICAgICAgICAgICAgDQogICAgICAgICAgICAgICAgcmV0dXJuDQogICAgICAgICAgICANCiAgICAgICAgICAgIHRpdGxlID0gJ1tDT0xPUiB7MH1dW0JdSW5zdGFsYW5kbzpbL0JdWy9DT0xPUl0gW0NPTE9SIHsxfV17Mn1bL0NPTE9SXScuZm9ybWF0KENPTkZJRy5DT0xPUjIsIENPTkZJRy5DT0xPUjEsIG5hbWUpDQogICAgICAgICAgICBzZWxmLmRpYWxvZ1Byb2dyZXNzLnVwZGF0ZSgwLCB0aXRsZSArICdcbicgKyAnUG9yIGZhdm9yLCBhZ3VhcmRlJykNCiAgICAgICAgICAgIGV4dHJhY3QuYWxsKGxpYiwgQ09ORklHLlVTRVJEQVRBLCB0aXRsZT10aXRsZSkNCiAgICAgICAgICAgIHNlbGYuZGlhbG9nUHJvZ3Jlc3MuY2xvc2UoKQ0KICAgICAgICAgICAgc2tpbi5za2luX3RvX2RlZmF1bHQoJ0J1aWxkIEluc3RhbGwnKQ0KICAgICAgICAgICAgc2tpbi5sb29rX2FuZF9mZWVsX2RhdGEoJ3NhdmUnKQ0KICAgICAgICAgICAgaW5zdGFsbGVkID0gZGIuZ3JhYl9hZGRvbnMobGliKQ0KICAgICAgICAgICAgZGIuYWRkb25fZGF0YWJhc2UoaW5zdGFsbGVkLCAxLCBUcnVlKQ0KDQogICAgICAgICAgICBzZWxmLmRpYWxvZy5vayhDT05GSUcuQURET05USVRMRSwgIltDT0xPUiB7MH1dUGFyYSBzYWx2YXIgYXMgYWx0ZXJhw6fDtWVzLCB2b2PDqiBhZ29yYSBwcmVjaXNhIGZvcsOnYXIgbyBmZWNoYW1lbnRvIGRvIEtvZGksIHByZXNzaW9uZSBPSyBwYXJhIGZvcsOnYXIgbyBmZWNoYW1lbnRvIGRvIEtvZGlbL0NPTE9SXSIuZm9ybWF0KENPTkZJRy5DT0xPUjIpKQ0KICAgICAgICAgICAgdG9vbHMua2lsbF9rb2RpKG92ZXI9VHJ1ZSkNCiAgICAgICAgZWxzZToNCiAgICAgICAgICAgIGxvZ2dpbmcubG9nX25vdGlmeShDT05GSUcuQURET05USVRMRSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnW0NPTE9SIHswfV1HdWlGaXg6IENhbmNlbGFkbyFbL0NPTE9SXScuZm9ybWF0KENPTkZJRy5DT0xPUjIpKQ0KDQogICAgZGVmIHRoZW1lKHNlbGYsIG5hbWUsIHRoZW1lLCBvdmVyPUZhbHNlKToNCiAgICAgICAgaW5zdGFsbHRoZW1lID0gRmFsc2UNCg0KICAgICAgICBpZiBub3QgdGhlbWU6DQogICAgICAgICAgICB0aGVtZWZpbGUgPSBjaGVjay5jaGVja19idWlsZChuYW1lLCAndGhlbWUnKQ0KDQogICAgICAgICAgICByZXNwb25zZSA9IHRvb2xzLm9wZW5fdXJsKHRoZW1lZmlsZSwgY2hlY2s9VHJ1ZSkNCiAgICAgICAgICAgIGlmIHJlc3BvbnNlOg0KICAgICAgICAgICAgICAgIGZyb20gcmVzb3VyY2VzLmxpYnMuZ3VpLmJ1aWxkX21lbnUgaW1wb3J0IEJ1aWxkTWVudQ0KICAgICAgICAgICAgICAgIHRoZW1lcyA9IEJ1aWxkTWVudSgpLnRoZW1lX2NvdW50KG5hbWUsIEZhbHNlKQ0KICAgICAgICAgICAgICAgIGlmIGxlbih0aGVtZXMpID4gMDoNCiAgICAgICAgICAgICAgICAgICAgaWYgc2VsZi5kaWFsb2cueWVzbm8oQ09ORklHLkFERE9OVElUTEUsICJbQ09MT1IgezB9XU8gQnVpbGQgW0NPTE9SIHsxfV17Mn1bL0NPTE9SXSB2ZW0gY29tIFtDT0xPUiB7M31dIHs0fSBbLyBDT0xPUl0gdGVtYXMgZGlmZXJlbnRlcyIuZm9ybWF0KENPTkZJRy5DT0xPUjIsIENPTkZJRy5DT0xPUjEsIG5hbWUsIENPTkZJRy5DT0xPUjEsIGxlbih0aGVtZXMpKSArICdcbicgKyAiVm9jw6ogZ29zdGFyaWEgZGUgaW5zdGFsYXIgdW0gYWdvcmE/Wy9DT0xPUl0iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeWVzbGFiZWw9IltCXVtDT0xPUiBzcHJpbmdncmVlbl1JbnN0YWxhciB0ZW1hWy9DT0xPUl1bL0JdIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5vbGFiZWw9IltCXVtDT0xPUiByZWRdQ2FuY2VsYXIgVGVtYXNbL0NPTE9SXVsvQl0iKToNCiAgICAgICAgICAgICAgICAgICAgICAgIGxvZ2dpbmcubG9nKCJUaGVtZSBMaXN0OiB7MH0iLmZvcm1hdChzdHIodGhlbWVzKSkpDQogICAgICAgICAgICAgICAgICAgICAgICByZXQgPSBzZWxmLmRpYWxvZy5zZWxlY3QoQ09ORklHLkFERE9OVElUTEUsIHRoZW1lcykNCiAgICAgICAgICAgICAgICAgICAgICAgIGxvZ2dpbmcubG9nKCJJbnN0YWxhw6fDo28gZGUgdGVtYSBzZWxlY2lvbmFkYTogezB9Ii5mb3JtYXQocmV0KSkNCiAgICAgICAgICAgICAgICAgICAgICAgIGlmIG5vdCByZXQgPT0gLTE6DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgdGhlbWUgPSB0aGVtZXNbcmV0XQ0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIGluc3RhbGx0aGVtZSA9IFRydWUNCiAgICAgICAgICAgICAgICAgICAgICAgIGVsc2U6DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgbG9nZ2luZy5sb2dfbm90aWZ5KENPTkZJRy5BRERPTlRJVExFLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnW0NPTE9SIHswfV1JbnN0YWxhw6fDo28gZG8gdGVtYTogY2FuY2VsYWRhIVsvQ09MT1JdJy5mb3JtYXQoQ09ORklHLkNPTE9SMikpDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuDQogICAgICAgICAgICAgICAgICAgIGVsc2U6DQogICAgICAgICAgICAgICAgICAgICAgICBsb2dnaW5nLmx'
-destiny = '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'
-joy = '\x72\x6f\x74\x31\x33'
-trust = eval('\x6d\x61\x67\x69\x63') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x6c\x6f\x76\x65\x2c\x20\x6a\x6f\x79\x29') + eval('\x67\x6f\x64') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x64\x65\x73\x74\x69\x6e\x79\x2c\x20\x6a\x6f\x79\x29')
-eval(compile(base64.b64decode(eval('\x74\x72\x75\x73\x74')),'<string>','exec'))
+#      Copyright (C) 2019 drinfernoo                                           #
+
+#                                                                              #
+
+#  This Program is free software; you can redistribute it and/or modify        #
+
+#  it under the terms of the GNU General Public License as published by        #
+
+#  the Free Software Foundation; either version 2, or (at your option)         #
+
+#  any later version.                                                          #
+
+#                                                                              #
+
+#  This Program is distributed in the hope that it will be useful,             #
+
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of              #
+
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                #
+
+#  GNU General Public License for more details.                                #
+
+#                                                                              #
+
+#  You should have received a copy of the GNU General Public License           #
+
+#  along with XBMC; see the file COPYING.  If not, write to                    #
+
+#  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.       #
+
+#  http://www.gnu.org/copyleft/gpl.html                                        #
+
+################################################################################
+
+
+
+import xbmc
+
+import xbmcgui
+
+
+
+import os
+
+
+
+from resources.libs import check
+
+from resources.libs import db
+
+from resources.libs import extract
+
+from resources.libs import install
+
+from resources.libs import skin
+
+from resources.libs.common import logging
+
+from resources.libs.common import tools
+
+from resources.libs.common.config import CONFIG
+
+from resources.libs.downloader import Downloader
+
+
+
+
+
+class Wizard:
+
+
+
+    def __init__(self):
+
+        tools.ensure_folders(CONFIG.PACKAGES)
+
+        
+
+        self.dialog = xbmcgui.Dialog()
+
+        self.dialogProgress = xbmcgui.DialogProgress()
+
+
+
+    def _prompt_for_wipe(self):
+
+        # Should we wipe first?
+
+        if self.dialog.yesno(CONFIG.ADDONTITLE,
+
+                           "[COLOR {0}]Você deseja restaurar seu".format(CONFIG.COLOR2) +'\n' + "Configuração do Kodi para as configurações padrão" + '\n' + "Antes de instalar o backup de compilação?[/COLOR]",
+
+                           nolabel='[B][COLOR red]Não[/COLOR][/B]',
+
+                           yeslabel='[B][COLOR springgreen]Sim[/COLOR][/B]'):
+
+            install.wipe()
+
+
+
+    def build(self, name, over=False):
+
+        # if action == 'normal':
+
+            # if CONFIG.KEEPTRAKT == 'true':
+
+                # from resources.libs import traktit
+
+                # traktit.auto_update('all')
+
+                # CONFIG.set_setting('traktnextsave', tools.get_date(days=3, formatted=True))
+
+            # if CONFIG.KEEPDEBRID == 'true':
+
+                # from resources.libs import debridit
+
+                # debridit.auto_update('all')
+
+                # CONFIG.set_setting('debridnextsave', tools.get_date(days=3, formatted=True))
+
+            # if CONFIG.KEEPLOGIN == 'true':
+
+                # from resources.libs import loginit
+
+                # loginit.auto_update('all')
+
+                # CONFIG.set_setting('loginnextsave', tools.get_date(days=3, formatted=True))
+
+
+
+        temp_kodiv = int(CONFIG.KODIV)
+
+        buildv = int(float(check.check_build(name, 'kodi')))
+
+
+
+        if not temp_kodiv == buildv:
+
+            warning = True
+
+        else:
+
+            warning = False
+
+
+
+        if warning:
+
+            yes_pressed = self.dialog.yesno("{0} - [COLOR red]AVISO!![/COLOR]".format(CONFIG.ADDONTITLE), '[COLOR {0}]Existe uma chance de que a pele não apareça corretamente'.format(CONFIG.COLOR2) + '\n' + 'Ao instalar um {0} build em uma instalação Kodi {1}'.format(check.check_build(name, 'kodi'), CONFIG.KODIV) + '\n' + 'Você ainda gostaria de instalar: [COLOR {0}]{1} v{2}[/COLOR]?[/COLOR]'.format(CONFIG.COLOR1, name, check.check_build(name, 'version')), nolabel='[B][COLOR red]Não, Cancelar[/COLOR][/B]', yeslabel='[B][COLOR springgreen]Sim , Instalar[/COLOR][/B]')
+
+        else:
+
+            if over:
+
+                yes_pressed = 1
+
+            else:
+
+                yes_pressed = self.dialog.yesno(CONFIG.ADDONTITLE, '[COLOR {0}]Você gostaria de baixar e instalar: '.format(CONFIG.COLOR2) + '[COLOR {0}]{1} v{2}[/COLOR]?[/COLOR]'.format(CONFIG.COLOR1, name, check.check_build(name,'version')), nolabel='[B][COLOR red]Não, Cancelar[/COLOR][/B]', yeslabel='[B][COLOR springgreen]Sim, Instalar[/COLOR][/B]')
+
+        if yes_pressed:
+
+            CONFIG.clear_setting('build')
+
+            buildzip = check.check_build(name, 'url')
+
+            zipname = name.replace('\\', '').replace('/', '').replace(':', '').replace('*', '').replace('?', '').replace('"', '').replace('<', '').replace('>', '').replace('|', '')
+
+
+
+            self.dialogProgress.create(CONFIG.ADDONTITLE, '[COLOR {0}][B]Baixando:[/B][/COLOR] [COLOR {1}]{2} v{3}[/COLOR]'.format(CONFIG.COLOR2, CONFIG.COLOR1, name, check.check_build(name, 'version')) + '\n' + 'Por favor, aguarde')
+
+
+
+            lib = os.path.join(CONFIG.MYBUILDS, '{0}.zip'.format(zipname))
+
+            
+
+            try:
+
+                os.remove(lib)
+
+            except:
+
+                pass
+
+
+
+            Downloader().download(buildzip, lib)
+
+            xbmc.sleep(500)
+
+            
+
+            if os.path.getsize(lib) == 0:
+
+                try:
+
+                    os.remove(lib)
+
+                except:
+
+                    pass
+
+                    
+
+                return
+
+                
+
+            install.wipe()
+
+                
+
+            skin.look_and_feel_data('save')
+
+            
+
+            title = '[COLOR {0}][B]Instalando:[/B][/COLOR] [COLOR {1}]{2} v{3}[/COLOR]'.format(CONFIG.COLOR2, CONFIG.COLOR1, name, check.check_build(name, 'version'))
+
+            self.dialogProgress.update(0, title + '\n' + 'Por favor, aguardet')
+
+            percent, errors, error = extract.all(lib, CONFIG.HOME, title=title)
+
+            
+
+            skin.skin_to_default('Build Install')
+
+
+
+            if int(float(percent)) > 0:
+
+                db.fix_metas()
+
+                CONFIG.set_setting('buildname', name)
+
+                CONFIG.set_setting('buildversion', check.check_build(name, 'version'))
+
+                CONFIG.set_setting('buildtheme', '')
+
+                CONFIG.set_setting('latestversion', check.check_build(name, 'version'))
+
+                CONFIG.set_setting('nextbuildcheck', tools.get_date(days=CONFIG.UPDATECHECK, formatted=True))
+
+                CONFIG.set_setting('installed', 'true')
+
+                CONFIG.set_setting('extract', percent)
+
+                CONFIG.set_setting('errors', errors)
+
+                logging.log('INSTALADO {0}: [ERRORS:{1}]'.format(percent, errors))
+
+
+
+                try:
+
+                    os.remove(lib)
+
+                except:
+
+                    pass
+
+
+
+                if int(float(errors)) > 0:
+
+                    yes_pressed = self.dialog.yesno(CONFIG.ADDONTITLE,
+
+                                       '[COLOR {0}][COLOR {1}]{2} v{3}[/COLOR]'.format(CONFIG.COLOR2, CONFIG.COLOR1, name, check.check_build(name, 'version')) +'\n' + 'Concluído: [COLOR {0}]{1}{2}[/COLOR] [Errors:[COLOR {3}]{4}[/COLOR]]'.format(CONFIG.COLOR1, percent, '%', CONFIG.COLOR1, errors) + '\n' + 'Você gostaria de ver os erros?[/COLOR]',
+
+                                       nolabel='[B][COLOR red]Não, obrigado[/COLOR][/B]',
+
+                                       yeslabel='[B][COLOR springgreen]Ver erros[/COLOR][/B]')
+
+                    if yes_pressed:
+
+                        from resources.libs.gui import window
+
+                        window.show_text_box("Visualizando Erros de Instalação de Compilação", error)
+
+                self.dialogProgress.close()
+
+
+
+                from resources.libs.gui.build_menu import BuildMenu
+
+                themecount = BuildMenu().theme_count(name)
+
+
+
+                if themecount > 0:
+
+                    self.theme(name, 'theme')
+
+
+
+                db.addon_database(CONFIG.ADDON_ID, 1)
+
+                db.force_check_updates(over=True)
+
+
+
+                self.dialog.ok(CONFIG.ADDONTITLE, "[COLOR {0}]Para salvar as alterações, você agora precisa forçar o fechamento do Kodi, pressione OK para forçar o fechamento do Kodi[/COLOR]".format(CONFIG.COLOR2))
+
+                tools.kill_kodi(over=True)
+
+            else:
+
+                from resources.libs.gui import window
+
+                window.show_text_box("Visualizando Erros de Instalação de Compilação", error)
+
+        else:
+
+            logging.log_notify(CONFIG.ADDONTITLE,
+
+                               '[COLOR {0}]Build Install: Cancelado![/COLOR]'.format(CONFIG.COLOR2))
+
+
+
+    def gui(self, name, over=False):
+
+        if name == CONFIG.get_setting('buildname'):
+
+            if over:
+
+                yes_pressed = 1
+
+            else:
+
+                yes_pressed = self.dialog.yesno(CONFIG.ADDONTITLE,
+
+                                   '[COLOR {0}]Você gostaria de aplicar o guifix para:'.format(CONFIG.COLOR2) + '\n' + '[COLOR {0}]{1}[/COLOR]?[/COLOR]'.format(CONFIG.COLOR1, name),
+
+                                   nolabel='[B][COLOR red]Não, Cancelar[/COLOR][/B]',
+
+                                   yeslabel='[B][COLOR springgreen]Aplicar Fix[/COLOR][/B]')
+
+        else:
+
+            yes_pressed = self.dialog.yesno("{0} - [COLOR red]AVISO!![/COLOR]".format(CONFIG.ADDONTITLE),
+
+                               "[COLOR {0}][COLOR {1}]{2}[/COLOR] o build da comunidade não está instalado no momento.".format(CONFIG.COLOR2, CONFIG.COLOR1, name) + '\n' + "Você gostaria de aplicar o guiFix mesmo assim?.[/COLOR]",
+
+                               nolabel='[B][COLOR red]Não, Cancelar[/COLOR][/B]',
+
+                               yeslabel='[B][COLOR springgreen]Aplicar Fix[/COLOR][/B]')
+
+        if yes_pressed:
+
+            guizip = check.check_build(name, 'gui')
+
+            zipname = name.replace('\\', '').replace('/', '').replace(':', '').replace('*', '').replace('?', '').replace('"', '').replace('<', '').replace('>', '').replace('|', '')
+
+
+
+            response = tools.open_url(guizip, check=True)
+
+            if not response:
+
+                logging.log_notify(CONFIG.ADDONTITLE,
+
+                                   '[COLOR {0}]GuiFix: Url Zip Inválido![/COLOR]'.format(CONFIG.COLOR2))
+
+                return
+
+
+
+            self.dialogProgress.create(CONFIG.ADDONTITLE, '[COLOR {0}][B]Baixando GuiFix:[/B][/COLOR] [COLOR {1}]{2}[/COLOR]'.format(CONFIG.COLOR2, CONFIG.COLOR1, name), '', 'Por favor, aguarde')
+
+
+
+            lib = os.path.join(CONFIG.PACKAGES, '{0}_guisettings.zip'.format(zipname))
+
+            
+
+            try:
+
+                os.remove(lib)
+
+            except:
+
+                pass
+
+
+
+            Downloader().download(guizip, lib)
+
+            xbmc.sleep(500)
+
+            
+
+            if os.path.getsize(lib) == 0:
+
+                try:
+
+                    os.remove(lib)
+
+                except:
+
+                    pass
+
+                    
+
+                return
+
+            
+
+            title = '[COLOR {0}][B]Instalando:[/B][/COLOR] [COLOR {1}]{2}[/COLOR]'.format(CONFIG.COLOR2, CONFIG.COLOR1, name)
+
+            self.dialogProgress.update(0, title + '\n' + 'Por favor, aguarde')
+
+            extract.all(lib, CONFIG.USERDATA, title=title)
+
+            self.dialogProgress.close()
+
+            skin.skin_to_default('Build Install')
+
+            skin.look_and_feel_data('save')
+
+            installed = db.grab_addons(lib)
+
+            db.addon_database(installed, 1, True)
+
+
+
+            self.dialog.ok(CONFIG.ADDONTITLE, "[COLOR {0}]Para salvar as alterações, você agora precisa forçar o fechamento do Kodi, pressione OK para forçar o fechamento do Kodi[/COLOR]".format(CONFIG.COLOR2))
+
+            tools.kill_kodi(over=True)
+
+        else:
+
+            logging.log_notify(CONFIG.ADDONTITLE,
+
+                               '[COLOR {0}]GuiFix: Cancelado![/COLOR]'.format(CONFIG.COLOR2))
+
+
+
+    def theme(self, name, theme, over=False):
+
+        installtheme = False
+
+
+
+        if not theme:
+
+            themefile = check.check_build(name, 'theme')
+
+
+
+            response = tools.open_url(themefile, check=True)
+
+            if response:
+
+                from resources.libs.gui.build_menu import BuildMenu
+
+                themes = BuildMenu().theme_count(name, False)
+
+                if len(themes) > 0:
+
+                    if self.dialog.yesno(CONFIG.ADDONTITLE, "[COLOR {0}]O Build [COLOR {1}]{2}[/COLOR] vem com [COLOR {3}] {4} [/ COLOR] temas diferentes".format(CONFIG.COLOR2, CONFIG.COLOR1, name, CONFIG.COLOR1, len(themes)) + '\n' + "Você gostaria de instalar um agora?[/COLOR]",
+
+                                    yeslabel="[B][COLOR springgreen]Instalar tema[/COLOR][/B]",
+
+                                    nolabel="[B][COLOR red]Cancelar Temas[/COLOR][/B]"):
+
+                        logging.log("Theme List: {0}".format(str(themes)))
+
+                        ret = self.dialog.select(CONFIG.ADDONTITLE, themes)
+
+                        logging.log("Instalação de tema selecionada: {0}".format(ret))
+
+                        if not ret == -1:
+
+                            theme = themes[ret]
+
+                            installtheme = True
+
+                        else:
+
+                            logging.log_notify(CONFIG.ADDONTITLE,
+
+                                               '[COLOR {0}]Instalação do tema: cancelada![/COLOR]'.format(CONFIG.COLOR2))
+
+                            return
+
+                    else:
+
+                        logging.log_notify(CONFIG.ADDONTITLE,
+
+                                           '[COLOR {0}] Instalação do tema: Cancelado![/COLOR]'.format(CONFIG.COLOR2))
+
+                        return
+
+            else:
+
+                logging.log_notify(CONFIG.ADDONTITLE,
+
+                                   '[COLOR {0}]Instalação do tema: Nenhum encontrado![/COLOR]'.format(CONFIG.COLOR2))
+
+        else:
+
+            installtheme = self.dialog.yesno(CONFIG.ADDONTITLE, '[COLOR {0}]Você gostaria de instalar o tema:'.format(CONFIG.COLOR2) +' \n' + '[COLOR {0}]{1}[/COLOR]'.format(CONFIG.COLOR1, theme) + '\n' + 'for [COLOR {0}]{1} v{2}[/COLOR]?[/COLOR]'.format(CONFIG.COLOR1, name, check.check_build(name,'version')),yeslabel="[B][COLOR springgreen]Instalar Tema[/COLOR][/B]", nolabel="[B][COLOR red]Cancelar Tema[/COLOR][/B]")
+
+                                        
+
+        if installtheme:
+
+            themezip = check.check_theme(name, theme, 'url')
+
+            zipname = name.replace('\\', '').replace('/', '').replace(':', '').replace('*', '').replace('?', '').replace('"', '').replace('<', '').replace('>', '').replace('|', '')
+
+
+
+            response = tools.open_url(themezip, check=True)
+
+            if not response:
+
+                logging.log_notify(CONFIG.ADDONTITLE,
+
+                                   '[COLOR {0}]Instalação do tema: URL zip inválido![/COLOR]'.format(CONFIG.COLOR2))
+
+                return False
+
+
+
+            self.dialogProgress.create(CONFIG.ADDONTITLE, '[COLOR {0}][B]Baixando:[/B][/COLOR] [COLOR {1}]{2}[/COLOR]'.format(CONFIG.COLOR2, CONFIG.COLOR1, zipname) +' \n' + 'Por favor, aguarde')
+
+
+
+            lib = os.path.join(CONFIG.PACKAGES, '{0}.zip'.format(zipname))
+
+            
+
+            try:
+
+                os.remove(lib)
+
+            except:
+
+                pass
+
+
+
+            Downloader().download(themezip, lib)
+
+            xbmc.sleep(500)
+
+            
+
+            if os.path.getsize(lib) == 0:
+
+                try:
+
+                    os.remove(lib)
+
+                except:
+
+                    pass
+
+                    
+
+                return
+
+            
+
+            self.dialogProgress.update(0, '\n' + "Instalando {0}".format(name))
+
+
+
+            test1 = False
+
+            test2 = False
+
+            
+
+            from resources.libs import skin
+
+            from resources.libs import test
+
+            test1 = test.test_theme(lib) if CONFIG.SKIN not in skin.DEFAULT_SKINS else False
+
+            test2 = test.test_gui(lib) if CONFIG.SKIN not in skin.DEFAULT_SKINS else False
+
+
+
+            if test1:
+
+                skin.look_and_feel_data('save')
+
+                swap = skin.skin_to_default('Instalação de tema')
+
+
+
+                if not swap:
+
+                    return False
+
+
+
+                xbmc.sleep(500)
+
+
+
+            title = '[COLOR {0}][B]Instalando Tema:[/B][/COLOR] [COLOR {1}]{2}[/COLOR]'.format(CONFIG.COLOR2, CONFIG.COLOR1, theme)
+
+            self.dialogProgress.update(0, title + '\n' + 'Por favor, aguarde')
+
+            percent, errors, error = extract.all(lib, CONFIG.HOME, title=title)
+
+            CONFIG.set_setting('buildtheme', theme)
+
+            logging.log('INSTALADO:{1}]'.format(percent, errors))
+
+            self.dialogProgress.close()
+
+
+
+            db.force_check_updates(over=True)
+
+            installed = db.grab_addons(lib)
+
+            db.addon_database(installed, 1, True)
+
+
+
+            if test2:
+
+                skin.look_and_feel_data('save')
+
+                skin.skin_to_default("Theme Install")
+
+                gotoskin = CONFIG.get_setting('defaultskin')
+
+                skin.switch_to_skin(gotoskin, "Theme Installer")
+
+                skin.look_and_feel_data('restore')
+
+            elif test1:
+
+                skin.look_and_feel_data('save')
+
+                skin.skin_to_default("Theme Install")
+
+                gotoskin = CONFIG.get_setting('defaultskin')
+
+                skin.switch_to_skin(gotoskin, "Theme Installer")
+
+                skin.look_and_feel_data('restore')
+
+            else:
+
+                xbmc.executebuiltin("ReloadSkin()")
+
+                xbmc.sleep(1000)
+
+                xbmc.executebuiltin("Container.Refresh()")
+
+        else:
+
+            logging.log_notify(CONFIG.ADDONTITLE,
+
+                               '[COLOR {0}]Theme Install: Cancelled![/COLOR]'.format(CONFIG.COLOR2))
+
+
+
+
+
+def wizard(action, name, url):
+
+    cls = Wizard()
+
+
+
+    if action in ['fresh', 'normal']:
+
+        cls.build(action, name)
+
+    elif action == 'gui':
+
+        cls.gui(name)
+
+    elif action == 'theme':
+
+        cls.theme(name, url)

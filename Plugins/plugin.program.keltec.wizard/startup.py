@@ -1,11 +1,407 @@
-﻿# encoded by pyprotect
-# https://keltecmp.net/pyprotect
+﻿# -*- coding: utf-8 -*-
 
-import base64, codecs
-magic = '77u/IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMKIyAgICAgIENvcHlyaWdodCAoQykgMjAxOSBkcmluZmVybm9vICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKIyAgVGhpcyBQcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkgICAgICAgICMKIyAgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkgICAgICAgICMKIyAgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiwgb3IgKGF0IHlvdXIgb3B0aW9uKSAgICAgICAgICMKIyAgYW55IGxhdGVyIHZlcnNpb24uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKIyAgVGhpcyBQcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsICAgICAgICAgICAgICMKIyAgYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YgICAgICAgICAgICAgICMKIyAgTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiBTZWUgdGhlICAgICAgICAgICAgICAgICMKIyAgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKIyAgWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgICAgICAgICAgICMKIyAgYWxvbmcgd2l0aCBYQk1DOyBzZWUgdGhlIGZpbGUgQ09QWUlORy4gIElmIG5vdCwgd3JpdGUgdG8gICAgICAgICAgICAgICAgICAgICMKIyAgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiwgNjc1IE1hc3MgQXZlLCBDYW1icmlkZ2UsIE1BIDAyMTM5LCBVU0EuICAgICAgICMKIyAgaHR0cDovL3d3dy5nbnUub3JnL2NvcHlsZWZ0L2dwbC5odG1sICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMKIyAtKi0gY29kaW5nOiB1dGYtOCAtKi0KCmltcG9ydCB4Ym1jCmltcG9ydCB4Ym1jZ3VpCgppbXBvcnQgdGltZQpmcm9tIGRhdGV0aW1lIGltcG9ydCBkYXRldGltZQpmcm9tIGRhdGV0aW1lIGltcG9ydCB0aW1lZGVsdGEKCmltcG9ydCBvcwppbXBvcnQgc3lzCgp0cnk6ICAjIFB5dGhvbiAzCiAgICBmcm9tIHVybGxpYi5wYXJzZSBpbXBvcnQgcXVvdGVfcGx1cwpleGNlcHQgSW1wb3J0RXJyb3I6ICAjIFB5dGhvbiAyCiAgICBmcm9tIHVybGxpYiBpbXBvcnQgcXVvdGVfcGx1cwoKZnJvbSByZXNvdXJjZXMubGlicy5jb21tb24uY29uZmlnIGltcG9ydCBDT05GSUcKZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgY2xlYXIKZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgY2hlY2sKZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgZGIKZnJvbSByZXNvdXJjZXMubGlicy5ndWkgaW1wb3J0IHdpbmRvdwpmcm9tIHJlc291cmNlcy5saWJzLmNvbW1vbiBpbXBvcnQgbG9nZ2luZwpmcm9tIHJlc291cmNlcy5saWJzLmNvbW1vbiBpbXBvcnQgdG9vbHMKZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgc2tpbgpmcm9tIHJlc291cmNlcy5saWJzIGltcG9ydCB1cGRhdGUKCgpkZWYgYXV0b19pbnN0YWxsX3JlcG8oKToKICAgIGlmIG5vdCBvcy5wYXRoLmV4aXN0cyhvcy5wYXRoLmpvaW4oQ09ORklHLkFERE9OUywgQ09ORklHLlJFUE9JRCkpOgogICAgICAgIHJlc3BvbnNlID0gdG9vbHMub3Blbl91cmwoQ09ORklHLlJFUE9BRERPTlhNTCkKCiAgICAgICAgaWYgcmVzcG9uc2U6CiAgICAgICAgICAgIGZyb20geG1sLmV0cmVlIGltcG9ydCBFbGVtZW50VHJlZQogICAgICAgICAgICAKICAgICAgICAgICAgcm9vdCA9IEVsZW1lbnRUcmVlLmZyb21zdHJpbmcocmVzcG9uc2UudGV4dCkKICAgICAgICAgICAgcmVwb2FkZG9uID0gcm9vdC5maW5kYWxsKCdhZGRvbicpCiAgICAgICAgICAgIHJlcG92ZXJzaW9uID0gW3RhZy5nZXQoJ3ZlcnNpb24nKSBmb3IgdGFnIGluIHJlcG9hZGRvbiBpZiB0YWcuZ2V0KCdpZCcpID09IENPTkZJRy5SRVBPSURdCiAgICAgICAgICAgIAogICAgICAgICAgICBpZiByZXBvdmVyc2lvbjoKICAgICAgICAgICAgICAgIGluc3RhbGx6aXAgPSAnezB9LXsxfS56aXAnLmZvcm1hdChDT05GSUcuUkVQT0lELCByZXBvdmVyc2lvblswXSkKICAgICAgICAgICAgICAgIHVybCA9IENPTkZJRy5SRVBPWklQVVJMICsgaW5zdGFsbHppcAogICAgICAgICAgICAgICAgcmVwb19yZXNwb25zZSA9IHRvb2xzLm9wZW5fdXJsKHVybCwgY2hlY2s9VHJ1ZSkKCiAgICAgICAgICAgICAgICBpZiByZXBvX3Jlc3BvbnNlOgogICAgICAgICAgICAgICAgICAgIHByb2dyZXNzX2RpYWxvZyA9IHhibWNndWkuRGlhbG9nUHJvZ3Jlc3MoKQogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIHByb2dyZXNzX2RpYWxvZy5jcmVhdGUoQ09ORklHLkFERE9OVElUTEUsICdCYWl4YW5kbyBSZXBvIC4uLicgKyAnXG4nICsgJ1BsZWFzZSBXYWl0JykKICAgICAgICAgICAgICAgICAgICB0b29scy5lbnN1cmVfZm9sZGVycyhDT05GSUcuUEFDS0FHRVMpCiAgICAgICAgICAgICAgICAgICAgbGliID0gb3MucGF0aC5qb2luKENPTkZJRy5QQUNLQUdFUywgaW5zdGFsbHppcCkKCiAgICAgICAgICAgICAgICAgICAgIyBSZW1vdmUgdGhlIG9sZCB6aXAgaWYgdGhlcmUgaXMgb25lCiAgICAgICAgICAgICAgICAgICAgdG9vbHMucmVtb3ZlX2ZpbGUobGliKQoKICAgICAgICAgICAgICAgICAgICBmcm9tIHJlc291cmNlcy5saWJzLmRvd25sb2FkZXIgaW1wb3J0IERvd25sb2FkZXIKICAgICAgICAgICAgICAgICAgICBmcm9tIHJlc291cmNlcy5saWJzIGltcG9ydCBleHRyYWN0CiAgICAgICAgICAgICAgICAgICAgRG93bmxvYWRlcigpLmRvd25sb2FkKHVybCwgbGliKQogICAgICAgICAgICAgICAgICAgIGV4dHJhY3QuYWxsKGxpYiwgQ09ORklHLkFERE9OUykKCiAgICAgICAgICAgICAgICAgICAgdHJ5OgogICAgICAgICAgICAgICAgICAgICAgICByZXBveG1sID0gb3MucGF0aC5qb2luKENPTkZJRy5BRERPTlMsIENPTkZJRy5SRVBPSUQsICdhZGRvbi54bWwnKQogICAgICAgICAgICAgICAgICAgICAgICByb290ID0gRWxlbWVudFRyZWUucGFyc2UocmVwb3htbCkuZ2V0cm9vdCgpCiAgICAgICAgICAgICAgICAgICAgICAgIHJlcG9uYW1lID0gcm9vdC5nZXQoJ25hbWUnKQogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgbG9nZ2luZy5sb2dfbm90aWZ5KCJ7MX0iLmZvcm1hdChDT05GSUcuQ09MT1IxLCByZXBvbmFtZSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiW0NPTE9SIHswfV1BZGQtb24gYXR1YWxpemFkb1svQ09MT1JdIi5mb3JtYXQoQ09ORklHLkNPTE9SMiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpY29uPW9zLnBhdGguam9pbihDT05GSUcuQURET05TLCBDT05GSUcuUkVQT0lELCAnaWNvbi5wbmcnKSkKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIGV4Y2VwdCBFeGNlcHRpb24gYXMgZToKICAgICAgICAgICAgICAgICAgICAgICAgbG9nZ2luZy5sb2coc3RyKGUpLCBsZXZlbD14Ym1jLkxPR0VSUk9SKQoKICAgICAgICAgICAgICAgICAgICAjIEFkZCB3aXphcmQgdG8gYWRkLW9uIGRhdGFiYXNlCiAgICAgICAgICAgICAgICAgICAgZGIuYWRkb25fZGF0YWJhc2UoQ09ORklHLlJFUE9JRCwgMSkKCiAgICAgICAgICAgICAgICAgICAgcHJvZ3Jlc3NfZGlhbG9nLmNsb3NlKCkKICAgICAgICAgICAgICAgICAgICB4Ym1jLnNsZWVwKDUwMCkKCiAgICAgICAgICAgICAgICAgICAgbG9nZ2luZy5sb2coIltSZXBvIGRlIGluc3RhbGHDp8OjbyBhdXRvbcOhdGljYV0gSW5zdGFsYWRvIGNvbSBzdWNlc3NvIiwgbGV2ZWw9eGJtYy5MT0dJTkZPKQogICAgICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgICAgICBsb2dnaW5nLmxvZ19ub3RpZnkoIltDT0xPUiB7MH1dRXJybyBkZSBpbnN0YWxhw6fDo28gZG8gUmVwb1svQ09MT1JdIi5mb3JtYXQoQ09ORklHLkNPTE9SMSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJbQ09MT1IgezB9XVVSTCBpbnbDoWxpZG8gcGFyYSB6aXAhWy9DT0xPUl0iLmZvcm1hdChDT05GSUcuQ09MT1IyKSkKICAgICAgICAgICAgICAgICAgICBsb2dnaW5nLmxvZygiW1JlcG8gZGUgaW5zdGFsYcOnw6NvIGF1dG9tw6F0aWNhXSBOw6NvIGZvaSBwb3Nzw612ZWwgY3JpYXIgdW0gVVJMIGZ1bmNpb25hbCBwYXJhIG8gcmVwb3NpdMOzcmlvLiB7MH0iLmZvcm1hdCgKICAgICAgICAgICAgICAgICAgICAgICAgdXJsKSwgbGV2ZWw9eGJtYy5MT0dFUlJPUikKICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgIGxvZ2dpbmcubG9nKCJVUkwgaW52w6FsaWRvIHBhcmEgcmVwb3NpdMOzcmlvIHppcCIsIGxldmVsPXhibWMuTE9HRVJST1IpCiAgICAgICAgZWxzZToKICAgICAgICAgICAgbG9nZ2luZy5sb2dfbm90aWZ5KCJbQ09MT1IgezB9XSBFcnJvIGRlIGluc3RhbGHDp8OjbyBkbyByZXBvc2l0w7NyaW8gWy8gQ09MT1JdIi5mb3JtYXQoQ09ORklHLkNPTE9SMSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiW0NPTE9SIHswfV0gQXJxdWl2byBhZGRvbi54b'
-love = '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'
-god = 'AgICAgICAgICAgIGxvZ2dpbmcubG9nKCJbQnVpbGQgaW5zdGFsYWRvLENoZWNrXSBHdWlmaXggdGVudGFuZG8gaW5zdGFsYXIiKQogICAgICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgICAgICBsb2dnaW5nLmxvZygnW0J1aWxkIGluc3RhbGFkbyxDaGVja10gVVJMIGRvIEd1aWZpeCBmdW5jaW9uYW5kbywgbWFzIGNhbmNlbGFkbzogezB9Jy5mb3JtYXQoZ3VpX3htbCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGV2ZWw9eGJtYy5MT0dJTkZPKQogICAgZWxzZToKICAgICAgICBsb2dnaW5nLmxvZygnW0J1aWxkIGluc3RhbGFkbyxDaGVja10gQSBpbnN0YWxhw6fDo28gcGFyZWNlIHRlciBzaWRvIGNvbmNsdcOtZGEgY29ycmV0YW1lbnRlJywgbGV2ZWw9eGJtYy5MT0dJTkZPKQogICAgICAgIAogICAgaWYgQ09ORklHLmdldF9zZXR0aW5nKCdpbnN0YWxsZWQnKSA9PSAndHJ1ZSc6CiAgICAgICAgaWYgQ09ORklHLmdldF9zZXR0aW5nKCdrZWVwdHJha3QnKSA9PSAndHJ1ZSc6CiAgICAgICAgICAgIGZyb20gcmVzb3VyY2VzLmxpYnMgaW1wb3J0IHRyYWt0aXQKICAgICAgICAgICAgbG9nZ2luZy5sb2coJ1tCdWlsZCBpbnN0YWxhZG8sQ2hlY2tdIFJlc3RhdXJhbmRvIERhZG9zIFRyYWt0JywgbGV2ZWw9eGJtYy5MT0dJTkZPKQogICAgICAgICAgICB0cmFrdGl0LnRyYWt0X2l0KCdyZXN0b3JlJywgJ2FsbCcpCiAgICAgICAgaWYgQ09ORklHLmdldF9zZXR0aW5nKCdrZWVwZGVicmlkJykgPT0gJ3RydWUnOgogICAgICAgICAgICBmcm9tIHJlc291cmNlcy5saWJzIGltcG9ydCBkZWJyaWRpdAogICAgICAgICAgICBsb2dnaW5nLmxvZygnW0J1aWxkIGluc3RhbGFkbyxDaGVja10gUmVzdGF1cmFuZG8gRGFkb3MgUmVhbCBEZXNicmlkYWRvcycsIGxldmVsPXhibWMuTE9HSU5GTykKICAgICAgICAgICAgZGVicmlkaXQuZGVicmlkX2l0KCdyZXN0b3JlJywgJ2FsbCcpCiAgICAgICAgaWYgQ09ORklHLmdldF9zZXR0aW5nKCdrZWVwbG9naW4nKSA9PSAndHJ1ZSc6CiAgICAgICAgICAgIGZyb20gcmVzb3VyY2VzLmxpYnMgaW1wb3J0IGxvZ2luaXQKICAgICAgICAgICAgbG9nZ2luZy5sb2coJ1tCdWlsZCBpbnN0YWxhZG8sQ2hlY2tdIFJlc3RhdXJhbmRvIGRhZG9zIGRlIGxvZ2luJywgbGV2ZWw9eGJtYy5MT0dJTkZPKQogICAgICAgICAgICBsb2dpbml0LmxvZ2luX2l0KCdyZXN0b3JlJywgJ2FsbCcpCgogICAgICAgIENPTkZJRy5jbGVhcl9zZXR0aW5nKCdpbnN0YWxsJykKCgpkZWYgYnVpbGRfdXBkYXRlX2NoZWNrKCk6CiAgICByZXNwb25zZSA9IHRvb2xzLm9wZW5fdXJsKENPTkZJRy5CVUlMREZJTEUsIGNoZWNrPVRydWUpCgogICAgaWYgbm90IHJlc3BvbnNlOgogICAgICAgIGxvZ2dpbmcubG9nKCJbQnVpbGQgQ2hlY2tdIE7Do28gw6kgdW0gVVJMIHbDoWxpZG8gcGFyYSBvIGFycXVpdm8gZGUgY29tcGlsYcOnw6NvOiB7MH0iLmZvcm1hdChDT05GSUcuQlVJTERGSUxFKSwgbGV2ZWw9eGJtYy5MT0dJTkZPKQogICAgZWxpZiBub3QgQ09ORklHLkJVSUxETkFNRSA9PSAnJzoKICAgICAgICBpZiBDT05GSUcuU0tJTiBpbiBbJ3NraW4uY29uZmx1ZW5jZScsICdza2luLmVzdHVhcnknLCAnc2tpbi5lc3RvdWNoeSddIGFuZCBub3QgQ09ORklHLkRFRkFVTFRJR05PUkUgPT0gJ3RydWUnOgogICAgICAgICAgICBjaGVjay5jaGVja19za2luKCkKCiAgICAgICAgbG9nZ2luZy5sb2coIltCdWlsZCBDaGVja10gQ29tcGlsYcOnw6NvIGluc3RhbGFkYTogdmVyaWZpY2FuZG8gYXR1YWxpemHDp8O1ZXMiLCBsZXZlbD14Ym1jLkxPR0lORk8pCiAgICAgICAgY2hlY2suY2hlY2tfYnVpbGRfdXBkYXRlKCkKCiAgICBDT05GSUcuc2V0X3NldHRpbmcoJ25leHRidWlsZGNoZWNrJywgdG9vbHMuZ2V0X2RhdGUoZGF5cz1DT05GSUcuVVBEQVRFQ0hFQ0ssIGZvcm1hdHRlZD1UcnVlKSkKCgpkZWYgc2F2ZV90cmFrdCgpOgogICAgY3VycmVudF90aW1lID0gdGltZS5ta3RpbWUodGltZS5zdHJwdGltZSh0b29scy5nZXRfZGF0ZShmb3JtYXR0ZWQ9VHJ1ZSksICIlWS0lbS0lZCAlSDolTTolUyIpKQogICAgbmV4dF9zYXZlID0gdGltZS5ta3RpbWUodGltZS5zdHJwdGltZShDT05GSUcuZ2V0X3NldHRpbmcoJ3RyYWt0bmV4dHNhdmUnKSwgIiVZLSVtLSVkICVIOiVNOiVTIikpCiAgICAKICAgIGlmIG5leHRfc2F2ZSA8PSBjdXJyZW50X3RpbWU6CiAgICAgICAgZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgdHJha3RpdAogICAgICAgIGxvZ2dpbmcubG9nKCJbVHJha3QgRGF0YV0gU2FsdmFuZG8gdG9kb3Mgb3MgZGFkb3MiLCBsZXZlbD14Ym1jLkxPR0lORk8pCiAgICAgICAgdHJha3RpdC5hdXRvX3VwZGF0ZSgnYWxsJykKICAgICAgICBDT05GSUcuc2V0X3NldHRpbmcoJ3RyYWt0bmV4dHNhdmUnLCB0b29scy5nZXRfZGF0ZShkYXlzPTMsIGZvcm1hdHRlZD1UcnVlKSkKICAgIGVsc2U6CiAgICAgICAgbG9nZ2luZy5sb2coIltUcmFrdCBEYXRhXU8gcHLDs3hpbW8gc2FsdmFtZW50byBhdXRvbcOhdGljbyBuw6NvIG9jb3JyZXLDoSBhdMOpOiB7MH0gLyBIb2plIMOpOiB7MX0iLmZvcm1hdChDT05GSUcuZ2V0X3NldHRpbmcoJ3RyYWt0bmV4dHNhdmUnKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdG9vbHMuZ2V0X2RhdGUoZm9ybWF0dGVkPVRydWUpKSwKICAgICAgICAgICAgICAgICAgICBsZXZlbD14Ym1jLkxPR0lORk8pCgoKZGVmIHNhdmVfZGVicmlkKCk6CiAgICBjdXJyZW50X3RpbWUgPSB0aW1lLm1rdGltZSh0aW1lLnN0cnB0aW1lKHRvb2xzLmdldF9kYXRlKGZvcm1hdHRlZD1UcnVlKSwgIiVZLSVtLSVkICVIOiVNOiVTIikpCiAgICBuZXh0X3NhdmUgPSB0aW1lLm1rdGltZSh0aW1lLnN0cnB0aW1lKENPTkZJRy5nZXRfc2V0dGluZygnZGVicmlkbmV4dHNhdmUnKSwgIiVZLSVtLSVkICVIOiVNOiVTIikpCiAgICAKICAgIGlmIG5leHRfc2F2ZSA8PSBjdXJyZW50X3RpbWU6CiAgICAgICAgZnJvbSByZXNvdXJjZXMubGlicyBpbXBvcnQgZGVicmlkaXQKICAgICAgICBsb2dnaW5nLmxvZygiW0RlYnJpZCBEYXRhXSBTYXZpbmcgYWxsIERhdGEiLCBsZXZlbD14Ym1jLkxPR0lORk8pCiAgICAgICAgZGVicmlkaXQuYXV0b191cGRhdGUoJ2FsbCcpCiAgICAgICAgQ09ORklHLnNldF9zZXR0aW5nKCdkZWJyaWRuZXh0c2F2ZScsIHRvb2xzLmdldF9kYXRlKGRheXM9MywgZm9ybWF0dGVkPVRydWUpKQogICAgZWxzZToKICAgICAgICBsb2dnaW5nLmxvZygiW0RlYnJpZCBEYXRhXSBPIHByw7N4aW1vIHNhbHZhbWVudG8gYXV0b23DoXRpY28gbsOjbyBvY29ycmVyw6EgYXTDqTogezB9IC8gSG9qZSDDqTogezF9Ii5mb3JtYXQoQ09ORklHLmdldF9zZXR0aW5nKCdkZWJyaWRuZXh0c2F2ZScpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdG9vbHMuZ2V0X2RhdGUoZm9ybWF0dGVkPVRydWUpKSwKICAgICAgICAgICAgICAgICAgICBsZXZlbD14Ym1jLkxPR0lORk8pCgoKZGVmIHNhdmVfbG9naW4oKToKICAgIGN1cnJlbnRfdGltZSA9IHRpbWUubWt0aW1lKHRpbWUuc3RycHRpbWUodG9vbHMuZ2V0X2RhdGUoZm9ybWF0dGVkPVRydWUpLCAiJVktJW0tJWQgJUg6JU06JVMiKSkKICAgIG5leHRfc2F2ZSA9IHRpbWUubWt0aW1lKHRpbWUuc3RycHRpbWUoQ09ORklHLmdldF9zZXR0aW5nKCdsb2dpbm5leHRzYXZlJyksICIlWS0lbS0lZCAlSDolTTolUyIpKQogICAgCiAgICBpZiBuZXh0X3NhdmUgPD0gY3VycmVudF90aW1lOgogICAgICAgIGZyb20gcmVzb3VyY2VzLmxpYnMgaW1wb3J0IGxvZ2luaXQKICAgICAgICBsb2dnaW5nLmxvZygiW0xvZ2luIEluZm9dIFNhdmluZyBhbGwgRGF0YSIsIGxldmVsPXhibWMuTE9HSU5GTykKICAgICAgICBsb2dpbml0LmF1dG9fdXBkYXRlKCdhbGwnKQogICAgICAgIENPTkZJRy5zZXRfc2V0dGluZygnbG9naW5uZXh0c2F2ZScsIHRvb2xzLmdldF9kYXRlKGRheXM9MywgZm9ybWF0dGVkPVRydWUpKQogICAgZWxzZToKICAgICAgICBsb2dnaW5nLmxvZygiW0luZm9ybWHDp8O1ZXMgZGUgbG9naW5dIE8gcHLDs3hpbW8gc2FsdmFtZW50byBhdXRvbcOhdGljbyBuw6NvIG9jb3JyZXLDoSBhdMOpOiB7MH0gLyBIb2plIMOpOiB7MX0iLmZvcm1hdChDT05GSUcuZ2V0X3NldHRpbmcoJ2xvZ2lubmV4dHNhdmUnKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdG9vbHMuZ2V0X2RhdGUoZm9ybWF0dGVkPVRydWUpKSwKICAgICAgICAgICAgICAgICAgICBsZXZlbD14Ym1jLkxPR0lORk8pCgoKZGVmIGF1dG9fY2xlYW4oKToKICAgIHNlcnZpY2UgPSBGYWxzZQogICAgZGF5cyA9IFt0b29scy5nZXRfZGF0ZShmb3JtYXR0ZWQ9VHJ1ZSksIHRvb2xzLmdldF9kYXRlKGRheXM9MSwgZm9ybWF0dGVkPVRydWUpLCB0b29scy5nZXRfZGF0ZShkYXlzPTMsIGZvcm1hdHRlZD1UcnVlKSwgdG9vbHMuZ2V0X2RhdGUoZGF5cz03LCBmb3JtYXR0ZWQ9VHJ1ZSksCiAgICAgICAgICAgIHRvb2xzLmdldF9kYXRlKGRheXM9MzAsIGZvcm1hdHRlZD1UcnVlKV0KCiAgICBmcmVxID0gaW50KENPTkZJRy5BVVRPRlJFUSkKICAgIG5leHRfY2xlYW51cCA9IHRpbWUubWt0aW1lKHRpbWUuc3RycHRpbWUoQ09ORklHLk5FWFRDTEVBTkRBVEUsICIlWS0lbS0lZCAlSDolTTolUyIpKQoKICAgIGlmIG5leHRfY2xlYW51cCA8PSB0b29scy5nZXRfZGF0ZSgpIG9yIGZyZXEgPT0gMDoKICAgICAgICBzZXJ2aWNlID0gVHJ1ZQogICAgICAgIG5leHRfcnVuID0gZGF5c1tmcmVxXQogICAgICAgIENPTkZJRy5zZXRfc2V0dGluZygnbmV4dGF1dG9jbGVhbnVwJywgbmV4dF9ydW4pCiAgICBlbHNlOgogICAgICAgIGxvZ2dpbmcubG9nKCJbTGltcGV6YSBBdXRvbcOhdGljYV0gUHLDs3hpbWEgTGltcGV6YSB7MH0iLmZvcm1hdChDT05GSUcuTkVYVENMRUFOREFURSksCiAgICAgICAgICAgICAgICAgICAgbGV2ZWw9eGJtYy5MT0dJTkZPKQogICAgaWYgc2VydmljZToKICAgICAgICBpZiBDT05GSUcuQVVUT0NBQ0hFID09ICd0cnVlJzoKICA'
-destiny = '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'
-joy = '\x72\x6f\x74\x31\x33'
-trust = eval('\x6d\x61\x67\x69\x63') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x6c\x6f\x76\x65\x2c\x20\x6a\x6f\x79\x29') + eval('\x67\x6f\x64') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x64\x65\x73\x74\x69\x6e\x79\x2c\x20\x6a\x6f\x79\x29')
-eval(compile(base64.b64decode(eval('\x74\x72\x75\x73\x74')),'<string>','exec'))
+import xbmc
+import xbmcgui
+
+import time
+from datetime import datetime
+from datetime import timedelta
+
+import os
+import sys
+
+try:  # Python 3
+    from urllib.parse import quote_plus
+except ImportError:  # Python 2
+    from urllib import quote_plus
+
+from resources.libs.common.config import CONFIG
+from resources.libs import clear
+from resources.libs import check
+from resources.libs import db
+from resources.libs.gui import window
+from resources.libs.common import logging
+from resources.libs.common import tools
+from resources.libs import skin
+from resources.libs import update
+
+
+def auto_install_repo():
+    if not os.path.exists(os.path.join(CONFIG.ADDONS, CONFIG.REPOID)):
+        response = tools.open_url(CONFIG.REPOADDONXML)
+
+        if response:
+            from xml.etree import ElementTree
+            
+            root = ElementTree.fromstring(response.text)
+            repoaddon = root.findall('addon')
+            repoversion = [tag.get('version') for tag in repoaddon if tag.get('id') == CONFIG.REPOID]
+            
+            if repoversion:
+                installzip = '{0}-{1}.zip'.format(CONFIG.REPOID, repoversion[0])
+                url = CONFIG.REPOZIPURL + installzip
+                repo_response = tools.open_url(url, check=True)
+
+                if repo_response:
+                    progress_dialog = xbmcgui.DialogProgress()
+                    
+                    progress_dialog.create(CONFIG.ADDONTITLE, 'Baixando Repo ...' + '\n' + 'Please Wait')
+                    tools.ensure_folders(CONFIG.PACKAGES)
+                    lib = os.path.join(CONFIG.PACKAGES, installzip)
+
+                    # Remove the old zip if there is one
+                    tools.remove_file(lib)
+
+                    from resources.libs.downloader import Downloader
+                    from resources.libs import extract
+                    Downloader().download(url, lib)
+                    extract.all(lib, CONFIG.ADDONS)
+
+                    try:
+                        repoxml = os.path.join(CONFIG.ADDONS, CONFIG.REPOID, 'addon.xml')
+                        root = ElementTree.parse(repoxml).getroot()
+                        reponame = root.get('name')
+                        
+                        logging.log_notify("{1}".format(CONFIG.COLOR1, reponame),
+                                           "[COLOR {0}]Add-on atualizado[/COLOR]".format(CONFIG.COLOR2),
+                                           icon=os.path.join(CONFIG.ADDONS, CONFIG.REPOID, 'icon.png'))
+                                           
+                    except Exception as e:
+                        logging.log(str(e), level=xbmc.LOGERROR)
+
+                    # Add wizard to add-on database
+                    db.addon_database(CONFIG.REPOID, 1)
+
+                    progress_dialog.close()
+                    xbmc.sleep(500)
+
+                    logging.log("[Repo de instalação automática] Instalado com sucesso", level=xbmc.LOGINFO)
+                else:
+                    logging.log_notify("[COLOR {0}]Erro de instalação do Repo[/COLOR]".format(CONFIG.COLOR1),
+                                       "[COLOR {0}]URL inválido para zip![/COLOR]".format(CONFIG.COLOR2))
+                    logging.log("[Repo de instalação automática] Não foi possível criar um URL funcional para o repositório. {0}".format(
+                        url), level=xbmc.LOGERROR)
+            else:
+                logging.log("URL inválido para repositório zip", level=xbmc.LOGERROR)
+        else:
+            logging.log_notify("[COLOR {0}] Erro de instalação do repositório [/ COLOR]".format(CONFIG.COLOR1),
+                               "[COLOR {0}] Arquivo addon.xml inválido![/COLOR]".format(CONFIG.COLOR2))
+            logging.log("[Repo de instalação automática] Não é possível ler o arquivo addon.xml.", level=xbmc.LOGERROR)
+    elif not CONFIG.AUTOINSTALL == 'Yes':
+        logging.log("[Repo de instalação automática] Não ativado", level=xbmc.LOGINFO)
+    elif os.path.exists(os.path.join(CONFIG.ADDONS, CONFIG.REPOID)):
+        logging.log("[Repositório de instalação automática] Repositório já instalado")
+
+
+def show_notification():
+    note_id, msg = window.split_notify(CONFIG.NOTIFICATION)
+    
+    if note_id:
+        if note_id == CONFIG.NOTEID:
+            if CONFIG.NOTEDISMISS == 'false':
+                window.show_notification(msg)
+            else:
+                logging.log('[Notificações] Sem novas notificações.', level=xbmc.LOGINFO)
+        elif note_id > CONFIG.NOTEID:
+            logging.log('[Notificações] Mostrando notificação {0}'
+                        .format(note_id))
+            CONFIG.set_setting('noteid', note_id)
+            CONFIG.set_setting('notedismiss', 'false')
+            window.show_notification(msg)
+    else:
+        logging.log('[Notificações] Arquivo de notificações em {0} não formatado corretamente.'
+                    .format(CONFIG.NOTIFICATION),
+                    level=xbmc.LOGINFO)
+
+
+def installed_build_check():
+    dialog = xbmcgui.Dialog()
+
+    if not CONFIG.EXTRACT == '100' and CONFIG.EXTERROR > 0:
+        logging.log("[Verificação de versão instalada] A versão foi extraída em {0} / 100 com [ERRORS: {1}]".format(CONFIG.EXTRACT,
+                                                                                                    CONFIG.EXTERROR),
+                    level=xbmc.LOGINFO)
+        yes = dialog.yesno(CONFIG.ADDONTITLE,
+                           '[COLOR {0}]{2}[/COLOR] [COLOR {1}]não foi instalado corretamente![/COLOR]'.format(CONFIG.COLOR1,
+                                                                                                   CONFIG.COLOR2,
+                                                                                                   CONFIG.BUILDNAME)
+                           +'\n'+('Instalado: [COLOR {0}]{1}[/COLOR] / '
+                            'Error Count: [COLOR {2}]{3}[/COLOR]').format(CONFIG.COLOR1, CONFIG.EXTRACT, CONFIG.COLOR1,
+                                                                          CONFIG.EXTERROR)
+                           +'\n'+'Você gostaria de tentar de novo?[/COLOR]', nolabel='[B]Não, obrigado![/B]',
+                           yeslabel='[B]Retry Install[/B]')
+        CONFIG.clear_setting('build')
+        if yes:
+            xbmc.executebuiltin("PlayMedia(plugin://{0}/?mode=install&name={1}&url=fresh)".format(CONFIG.ADDON_ID,
+                                                                                                  quote_plus(CONFIG.BUILDNAME)))
+            logging.log("[Verificação de versão instalada] Nova instalação reativada", level=xbmc.LOGINFO)
+        else:
+            logging.log("[Verificação de versão instalada] Reinstalar ignorado")
+    elif CONFIG.SKIN in ['skin.confluence', 'skin.estuary', 'skin.estouchy']:
+        logging.log("[Verificação da versão instalada] Skin incorreto: {0}".format(CONFIG.SKIN), level=xbmc.LOGINFO)
+        defaults = CONFIG.get_setting('defaultskin')
+        if not defaults == '':
+            if os.path.exists(os.path.join(CONFIG.ADDONS, defaults)):
+                if skin.skin_to_default(defaults):
+                    skin.look_and_feel_data('restore')
+        if not CONFIG.SKIN == defaults and not CONFIG.BUILDNAME == "":
+            gui_xml = check.check_build(CONFIG.BUILDNAME, 'gui')
+
+            response = tools.open_url(gui_xml, check=True)
+            if not response:
+                logging.log("[Verificação de instalação da versão] Guifix foi definido como http: //", level=xbmc.LOGINFO)
+                dialog.ok(CONFIG.ADDONTITLE,
+                          "[COLOR {0}]Parece que as configurações de skin não foram aplicadas à construção.".format(CONFIG.COLOR2)
+                          +'\n'+"Infelizmente, nenhuma correção de GUI foi anexada ao buildSadly, nenhuma correção de GUI foi anexada à compilação"
+                          +'\n'+"Você precisará reinstalar a compilação e certificar-se de fazer um fechamento forçado[/COLOR]")
+            else:
+                yes = dialog.yesno(CONFIG.ADDONTITLE,
+                                       '{0} não foi instalado corretamente!'.format(CONFIG.BUILDNAME)
+                                       +'\n'+'Parece que as configurações de skin não foram aplicadas à construção.'
+                                       +'\n'+'Você gostaria de aplicar o GuiFix?',
+                                       nolabel='[B]Não, Cancelar[/B]', yeslabel='[B]Aplicar correção[/B]')
+                if yes:
+                    xbmc.executebuiltin("PlayMedia(plugin://{0}/?mode=install&name={1}&url=gui)".format(CONFIG.ADDON_ID,
+                                                                                                        quote_plus(CONFIG.BUILDNAME)))
+                    logging.log("[Build instalado,Check] Guifix tentando instalar")
+                else:
+                    logging.log('[Build instalado,Check] URL do Guifix funcionando, mas cancelado: {0}'.format(gui_xml),
+                                level=xbmc.LOGINFO)
+    else:
+        logging.log('[Build instalado,Check] A instalação parece ter sido concluída corretamente', level=xbmc.LOGINFO)
+        
+    if CONFIG.get_setting('installed') == 'true':
+        if CONFIG.get_setting('keeptrakt') == 'true':
+            from resources.libs import traktit
+            logging.log('[Build instalado,Check] Restaurando Dados Trakt', level=xbmc.LOGINFO)
+            traktit.trakt_it('restore', 'all')
+        if CONFIG.get_setting('keepdebrid') == 'true':
+            from resources.libs import debridit
+            logging.log('[Build instalado,Check] Restaurando Dados Real Desbridados', level=xbmc.LOGINFO)
+            debridit.debrid_it('restore', 'all')
+        if CONFIG.get_setting('keeplogin') == 'true':
+            from resources.libs import loginit
+            logging.log('[Build instalado,Check] Restaurando dados de login', level=xbmc.LOGINFO)
+            loginit.login_it('restore', 'all')
+
+        CONFIG.clear_setting('install')
+
+
+def build_update_check():
+    response = tools.open_url(CONFIG.BUILDFILE, check=True)
+
+    if not response:
+        logging.log("[Build Check] Não é um URL válido para o arquivo de compilação: {0}".format(CONFIG.BUILDFILE), level=xbmc.LOGINFO)
+    elif not CONFIG.BUILDNAME == '':
+        if CONFIG.SKIN in ['skin.confluence', 'skin.estuary', 'skin.estouchy'] and not CONFIG.DEFAULTIGNORE == 'true':
+            check.check_skin()
+
+        logging.log("[Build Check] Compilação instalada: verificando atualizações", level=xbmc.LOGINFO)
+        check.check_build_update()
+
+    CONFIG.set_setting('nextbuildcheck', tools.get_date(days=CONFIG.UPDATECHECK, formatted=True))
+
+
+def save_trakt():
+    current_time = time.mktime(time.strptime(tools.get_date(formatted=True), "%Y-%m-%d %H:%M:%S"))
+    next_save = time.mktime(time.strptime(CONFIG.get_setting('traktnextsave'), "%Y-%m-%d %H:%M:%S"))
+    
+    if next_save <= current_time:
+        from resources.libs import traktit
+        logging.log("[Trakt Data] Salvando todos os dados", level=xbmc.LOGINFO)
+        traktit.auto_update('all')
+        CONFIG.set_setting('traktnextsave', tools.get_date(days=3, formatted=True))
+    else:
+        logging.log("[Trakt Data]O próximo salvamento automático não ocorrerá até: {0} / Hoje é: {1}".format(CONFIG.get_setting('traktnextsave'),
+                                                                                          tools.get_date(formatted=True)),
+                    level=xbmc.LOGINFO)
+
+
+def save_debrid():
+    current_time = time.mktime(time.strptime(tools.get_date(formatted=True), "%Y-%m-%d %H:%M:%S"))
+    next_save = time.mktime(time.strptime(CONFIG.get_setting('debridnextsave'), "%Y-%m-%d %H:%M:%S"))
+    
+    if next_save <= current_time:
+        from resources.libs import debridit
+        logging.log("[Debrid Data] Saving all Data", level=xbmc.LOGINFO)
+        debridit.auto_update('all')
+        CONFIG.set_setting('debridnextsave', tools.get_date(days=3, formatted=True))
+    else:
+        logging.log("[Debrid Data] O próximo salvamento automático não ocorrerá até: {0} / Hoje é: {1}".format(CONFIG.get_setting('debridnextsave'),
+                                                                                           tools.get_date(formatted=True)),
+                    level=xbmc.LOGINFO)
+
+
+def save_login():
+    current_time = time.mktime(time.strptime(tools.get_date(formatted=True), "%Y-%m-%d %H:%M:%S"))
+    next_save = time.mktime(time.strptime(CONFIG.get_setting('loginnextsave'), "%Y-%m-%d %H:%M:%S"))
+    
+    if next_save <= current_time:
+        from resources.libs import loginit
+        logging.log("[Login Info] Saving all Data", level=xbmc.LOGINFO)
+        loginit.auto_update('all')
+        CONFIG.set_setting('loginnextsave', tools.get_date(days=3, formatted=True))
+    else:
+        logging.log("[Informações de login] O próximo salvamento automático não ocorrerá até: {0} / Hoje é: {1}".format(CONFIG.get_setting('loginnextsave'),
+                                                                                          tools.get_date(formatted=True)),
+                    level=xbmc.LOGINFO)
+
+
+def auto_clean():
+    service = False
+    days = [tools.get_date(formatted=True), tools.get_date(days=1, formatted=True), tools.get_date(days=3, formatted=True), tools.get_date(days=7, formatted=True),
+            tools.get_date(days=30, formatted=True)]
+
+    freq = int(CONFIG.AUTOFREQ)
+    next_cleanup = time.mktime(time.strptime(CONFIG.NEXTCLEANDATE, "%Y-%m-%d %H:%M:%S"))
+
+    if next_cleanup <= tools.get_date() or freq == 0:
+        service = True
+        next_run = days[freq]
+        CONFIG.set_setting('nextautocleanup', next_run)
+    else:
+        logging.log("[Limpeza Automática] Próxima Limpeza {0}".format(CONFIG.NEXTCLEANDATE),
+                    level=xbmc.LOGINFO)
+    if service:
+        if CONFIG.AUTOCACHE == 'true':
+            logging.log('[Limpeza Automática] Cache: Ligado', level=xbmc.LOGINFO)
+            clear.clear_cache(True)
+        else:
+            logging.log('[Limpeza Automática] Cache: Desligado', level=xbmc.LOGINFO)
+        if CONFIG.AUTOTHUMBS == 'true':
+            logging.log('[Limpeza Automática] Antigo Thumbs: On', level=xbmc.LOGINFO)
+            clear.old_thumbs()
+        else:
+            logging.log('[Limpeza Automática] Antigo Thumbs: Off', level=xbmc.LOGINFO)
+        if CONFIG.AUTOPACKAGES == 'true':
+            logging.log('[Limpeza Automática] Packages: On', level=xbmc.LOGINFO)
+            clear.clear_packages_startup()
+        else:
+            logging.log('[Limpeza Automática] Packages: Off', level=xbmc.LOGINFO)
+
+
+def stop_if_duplicate():
+    NOW = time.time()
+    temp = CONFIG.get_setting('time_started')
+    
+    if temp:
+        if temp > NOW - (60 * 2):
+            logging.log('Killing Script de inicialização')
+            sys.exit()
+            
+    logging.log("{0}".format(NOW))
+    CONFIG.set_setting('time_started', NOW)
+    xbmc.sleep(1000)
+    
+    if not CONFIG.get_setting('time_started') == NOW:
+        logging.log('Killing Script de inicialização')
+        sys.exit()
+    else:
+        logging.log('Continuando Script de inicialização')
+
+
+def check_for_video():
+    while xbmc.Player().isPlayingVideo():
+        xbmc.sleep(1000)
+
+
+# Don't run the script while video is playing :)
+check_for_video()
+# Ensure that any needed folders are created
+tools.ensure_folders()
+# Stop this script if it's been run more than once
+# if CONFIG.KODIV < 18:
+    # stop_if_duplicate()
+# Ensure that the wizard's name matches its folder
+check.check_paths()
+
+
+# FIRST RUN SETTINGS
+if CONFIG.get_setting('first_install') == 'true':
+    logging.log("[Primeira execução] Mostrando configurações de salvamento de dados", level=xbmc.LOGINFO)
+    window.show_save_data_settings()
+else:
+    logging.log("[Primeira execução] Ignorando configurações de salvamento de dados", level=xbmc.LOGINFO)
+
+# BUILD INSTALL PROMPT
+if tools.open_url(CONFIG.BUILDFILE, check=True) and CONFIG.get_setting('installed') == 'false':
+    logging.log("[Verificação de compilação atual] Compilação não instalada", level=xbmc.LOGINFO)
+    window.show_build_prompt()
+else:
+    logging.log("[Verificação da versão atual] Versão instalada: {0}".format(CONFIG.BUILDNAME), level=xbmc.LOGINFO)
+    
+# BUILD UPDATE CHECK
+buildcheck = CONFIG.get_setting('nextbuildcheck')
+if CONFIG.get_setting('buildname'):
+    current_time = time.time()
+    epoch_check = time.mktime(time.strptime(buildcheck, "%Y-%m-%d %H:%M:%S"))
+    
+    if current_time >= epoch_check:
+        logging.log("[Verificação de atualização de Build] Iniciada", level=xbmc.LOGINFO)
+        build_update_check()
+else:
+    logging.log("[Verificar atualização da Build ] Próxima verificação: {0}".format(buildcheck), level=xbmc.LOGINFO)
+
+# AUTO INSTALL REPO
+if CONFIG.AUTOINSTALL == 'Yes':
+    logging.log("[Repo de instalação automática] Iniciado", level=xbmc.LOGINFO)
+    auto_install_repo()
+else:
+    logging.log("[Repo de instalação automática] Não ativado", level=xbmc.LOGINFO)
+
+# REINSTALL ELIGIBLE BINARIES
+binarytxt = os.path.join(CONFIG.USERDATA, 'build_binaries.txt')
+if os.path.exists(binarytxt):
+    logging.log("[Detecção binária] Reinstalando Add-ons binários qualificados", level=xbmc.LOGINFO)
+    from resources.libs import restore
+    restore.restore('binaries')
+else:
+    logging.log("[Detecção binária] Add-ons binários qualificados para reinstalar", level=xbmc.LOGINFO)
+    
+# AUTO UPDATE WIZARD
+if CONFIG.AUTOUPDATE == 'Yes':
+    logging.log("[Assistente de atualização automática] iniciado", level=xbmc.LOGINFO)
+    update.wizard_update()
+else:
+    logging.log("[Assistente de atualização automática] Não habilitado", level=xbmc.LOGINFO)
+
+# SHOW NOTIFICATIONS
+if CONFIG.ENABLE_NOTIFICATION == 'Yes':
+    show_notification()
+else:
+    logging.log('[Notifications] Não habilitado', level=xbmc.LOGINFO)
+
+# INSTALLED BUILD CHECK
+if CONFIG.get_setting('installed') == 'true':
+    logging.log("[Build instalado,Check] Iniciado", level=xbmc.LOGINFO)
+    installed_build_check()
+else:
+    logging.log("[Build instalado,Check] Não habilitado", level=xbmc.LOGINFO)
+
+# SAVE TRAKT
+if CONFIG.get_setting('keeptrakt') == 'true':
+    logging.log("[Trakt Data] Iniciado", level=xbmc.LOGINFO)
+    save_trakt()
+else:
+    logging.log("[Trakt Data] Não habilitado", level=xbmc.LOGINFO)
+
+# SAVE DEBRID
+if CONFIG.get_setting('keepdebrid') == 'true':
+    logging.log("[Debrid Data] Iniciado", level=xbmc.LOGINFO)
+    save_debrid()
+else:
+    logging.log("[Debrid Data] Não habilitado", level=xbmc.LOGINFO)
+
+# SAVE LOGIN
+if CONFIG.get_setting('keeplogin') == 'true':
+    logging.log("[Login Info] Iniciado", level=xbmc.LOGINFO)
+    save_login()
+else:
+    logging.log("[Login Info] Não habilitado", level=xbmc.LOGINFO)
+
+# AUTO CLEAN
+if CONFIG.get_setting('autoclean') == 'true':
+    logging.log("[Limpeza Automática] Iniciado", level=xbmc.LOGINFO)
+    auto_clean()
+else:
+    logging.log('[Limpeza Automática] Não habilitado', level=xbmc.LOGINFO)
