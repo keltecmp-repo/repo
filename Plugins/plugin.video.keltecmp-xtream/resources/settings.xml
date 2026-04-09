@@ -1,124 +1,142 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
+
     <!-- ========================================== -->
-    <!-- CONFIGURAÇÕES DE SERVIDOR -->
+    <!-- CONFIGURAÇÕES DE SERVIDOR PRINCIPAL        -->
     <!-- ========================================== -->
     <category label="Configuração do Servidor">
-        <setting id="base_url" type="text" label="URL do Servidor" default="http://"/>
-        <setting id="username" type="text" label="Nome de Usuário" default=""/>
-        <setting id="password" type="text" label="Senha" default="" option="hidden"/>
-        
+        <setting type="sep"/>
+        <setting id="active_server" type="number" label="Servidor Ativo (ID)"                  default="0"    visible="true"/>
+        <setting id="auto_fallback" type="bool"   label="Fallback automático entre servidores" default="true"/>
+	
+        <setting label="Servidor Principal (Legado)" type="lsep"/>
+        <setting label="Usado como fallback se nenhum servidor estiver ativo" type="lsep"/>
+
+        <setting id="base_url"  type="text" label="URL do Servidor"   default="http://"/>
+        <setting id="username"  type="text" label="Nome de Usuário"   default=""/>
+        <setting id="password"  type="text" label="Senha"             default="" option="hidden"/>
+
         <setting type="sep"/>
         <setting label="Múltiplos Servidores" type="lsep"/>
         <setting label="Configure até 5 servidores diferentes" type="lsep"/>
-        
-        <setting id="server1_name" type="text" label="Servidor 1 - Nome" default=""/>
-        <setting id="server1_url" type="text" label="Servidor 1 - URL" default=""/>
+
+        <setting id="server1_name" type="text" label="Servidor 1 - Nome"    default=""/>
+        <setting id="server1_url"  type="text" label="Servidor 1 - URL"     default=""/>
         <setting id="server1_user" type="text" label="Servidor 1 - Usuário" default=""/>
-        <setting id="server1_pass" type="text" label="Servidor 1 - Senha" default="" option="hidden"/>
-        
+        <setting id="server1_pass" type="text" label="Servidor 1 - Senha"   default="" option="hidden"/>
+
         <setting type="sep"/>
-        <setting id="server2_name" type="text" label="Servidor 2 - Nome" default=""/>
-        <setting id="server2_url" type="text" label="Servidor 2 - URL" default=""/>
+        <setting id="server2_name" type="text" label="Servidor 2 - Nome"    default=""/>
+        <setting id="server2_url"  type="text" label="Servidor 2 - URL"     default=""/>
         <setting id="server2_user" type="text" label="Servidor 2 - Usuário" default=""/>
-        <setting id="server2_pass" type="text" label="Servidor 2 - Senha" default="" option="hidden"/>
-        
+        <setting id="server2_pass" type="text" label="Servidor 2 - Senha"   default="" option="hidden"/>
+
         <setting type="sep"/>
-        <setting id="server3_name" type="text" label="Servidor 3 - Nome" default=""/>
-        <setting id="server3_url" type="text" label="Servidor 3 - URL" default=""/>
+        <setting id="server3_name" type="text" label="Servidor 3 - Nome"    default=""/>
+        <setting id="server3_url"  type="text" label="Servidor 3 - URL"     default=""/>
         <setting id="server3_user" type="text" label="Servidor 3 - Usuário" default=""/>
-        <setting id="server3_pass" type="text" label="Servidor 3 - Senha" default="" option="hidden"/>
-        
+        <setting id="server3_pass" type="text" label="Servidor 3 - Senha"   default="" option="hidden"/>
+
         <setting type="sep"/>
-        <setting id="server4_name" type="text" label="Servidor 4 - Nome" default=""/>
-        <setting id="server4_url" type="text" label="Servidor 4 - URL" default=""/>
+        <setting id="server4_name" type="text" label="Servidor 4 - Nome"    default=""/>
+        <setting id="server4_url"  type="text" label="Servidor 4 - URL"     default=""/>
         <setting id="server4_user" type="text" label="Servidor 4 - Usuário" default=""/>
-        <setting id="server4_pass" type="text" label="Servidor 4 - Senha" default="" option="hidden"/>
-        
+        <setting id="server4_pass" type="text" label="Servidor 4 - Senha"   default="" option="hidden"/>
+
         <setting type="sep"/>
-        <setting id="server5_name" type="text" label="Servidor 5 - Nome" default=""/>
-        <setting id="server5_url" type="text" label="Servidor 5 - URL" default=""/>
+        <setting id="server5_name" type="text" label="Servidor 5 - Nome"    default=""/>
+        <setting id="server5_url"  type="text" label="Servidor 5 - URL"     default=""/>
         <setting id="server5_user" type="text" label="Servidor 5 - Usuário" default=""/>
-        <setting id="server5_pass" type="text" label="Servidor 5 - Senha" default="" option="hidden"/>
-        
-        <setting type="sep"/>
-        <setting id="active_server" type="number" label="Servidor Ativo (ID)" default="0" visible="false"/>
-        <setting id="auto_fallback" type="bool" label="Fallback automático entre servidores" default="true"/>
+        <setting id="server5_pass" type="text" label="Servidor 5 - Senha"   default="" option="hidden"/>
     </category>
 
+
     <!-- ========================================== -->
-    <!-- TMDB - THE MOVIE DATABASE -->
+    <!-- TMDB - THE MOVIE DATABASE                  -->
     <!-- ========================================== -->
     <category label="TMDB - Metadados">
         <setting label="The Movie Database (TMDB)" type="lsep"/>
-        <setting label="Adiciona posters, plots, ratings e mais!" type="lsep"/>
-        
+        <setting label="Adiciona posters, plots, ratings, elenco e mais!" type="lsep"/>
+
         <setting id="tmdb_enabled" type="bool" label="Habilitar TMDB" default="true"/>
-        
+
         <setting type="sep"/>
         <setting label="Configuração da API" type="lsep"/>
         <setting label="Obtenha sua API Key GRÁTIS em:" type="lsep"/>
         <setting label="https://www.themoviedb.org/settings/api" type="lsep"/>
-        
-        <setting id="tmdb_api_key" type="text" label="API Key" default="fc168650632c6597038cf7072a7c20da"/>
-        
-        <setting type="sep"/>
-        <setting label="Opções" type="lsep"/>
 
-        <setting id="tmdb_language" type="select" label="Idioma dos metadados" values="Português (Brasil)|pt-BR|Português (Portugal)|pt-PT|Inglês|en-US|Espanhol|es-ES|Francês|fr-FR" default="pt-BR"/>
-        
-        <setting id="tmdb_cache_days" type="slider" label="Dias de cache" default="7" range="1,1,30" option="int"/>
-        
-        <setting id="tmdb_use_fanart" type="bool" label="Usar Fanart (fundos)" default="true"/>
-        <setting id="tmdb_use_cast" type="bool" label="Mostrar elenco" default="true"/>
-        <setting id="tmdb_use_trailer" type="bool" label="Incluir trailers" default="true"/>
-        
+        <setting id="tmdb_api_key" type="text" label="API Key" default="fc168650632c6597038cf7072a7c20da"/>
+
         <setting type="sep"/>
-        <setting label="Cache" type="lsep"/>
-        <setting label="Limpar cache do TMDB (força atualização)" type="action" action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=tmdb_clear_cache)"/>
+        <setting label="Opções de Metadados" type="lsep"/>
+
+        <setting id="tmdb_language"    type="select" label="Idioma dos metadados"
+                 values="Português (Brasil)|pt-BR|Português (Portugal)|pt-PT|Inglês|en-US|Espanhol|es-ES|Francês|fr-FR"
+                 default="pt-BR"/>
+
+        <setting id="tmdb_cache_days"  type="slider" label="Dias de cache do TMDB" default="7" range="1,1,30" option="int"/>
+
+        <setting id="tmdb_use_fanart"  type="bool" label="Usar Fanart (fundos)"  default="true"/>
+        <setting id="tmdb_use_cast"    type="bool" label="Mostrar elenco"         default="true"/>
+        <setting id="tmdb_use_trailer" type="bool" label="Incluir trailers"       default="true"/>
+
+        <setting type="sep"/>
+        <setting label="Manutenção do Cache" type="lsep"/>
+        <setting label="Limpar cache do TMDB (força atualização)" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=tmdb_clear_cache)"/>
     </category>
 
+
     <!-- ========================================== -->
-    <!-- PLAYER E PROXY -->
+    <!-- PLAYER E PROXY                             -->
     <!-- ========================================== -->
-    <category label="Player e Proxy">
-        <setting label="Configurações de Player" type="lsep"/>
-        
+    <category label="Player e EPG">
+        <setting label="Configurações de Reprodução" type="lsep"/>
+
         <setting id="use_f4mtester" type="bool" label="Usar F4MTESTER para canais ao vivo" default="true"/>
-        <setting id="proxy_http" type="bool" label="Usar Proxy HTTP" default="false"/>
-        
+        <setting id="proxy_http"    type="bool" label="Usar Proxy HTTP"                    default="false"/>
+
         <setting type="sep"/>
         <setting label="Configurações do EPG" type="lsep"/>
-        <setting id="enable_epg" type="bool" label="Ativar EPG" default="true"/>
+
+        <setting id="enable_epg"    type="bool" label="Ativar EPG (Guia de Programação)"  default="true"/>
     </category>
 
+
     <!-- ========================================== -->
-    <!-- CONTROLE PARENTAL -->
+    <!-- CONTROLE PARENTAL                          -->
     <!-- ========================================== -->
     <category label="Controle Parental">
         <setting label="Controle de Conteúdo Adulto" type="lsep"/>
-        <setting label="Protege conteúdo +18 com PIN" type="lsep"/>
-        
-        <setting id="parental_enabled" type="bool" label="Ativar Controle Parental" default="true"/>
-        <setting id="parental_pin" type="text" label="PIN de Segurança (4 dígitos)" default="0000" option="hidden"/>
-        
+        <setting label="Protege conteúdo [18+] com PIN numérico" type="lsep"/>
+
+        <setting id="parental_enabled"        type="bool" label="Ativar Controle Parental"         default="true"/>
+        <setting id="parental_pin"            type="text" label="PIN de Segurança (4 dígitos)"     default="0000" option="hidden"/>
+        <setting id="parental_pin_configured" type="text" label="PIN já configurado (interno)"     default="false" visible="false"/>
+
         <setting type="sep"/>
-        <setting label="Palavras-chave bloqueadas:" type="lsep"/>
-        <setting label="adult, xxx, 18+, porn, sexo, nude, hentai" type="lsep"/>
+        <setting label="Palavras-chave bloqueadas (automático):" type="lsep"/>
+        <setting label="adult, xxx, 18+, porn, sexo, nude, hentai, lesbica, trans, hardcore" type="lsep"/>
     </category>
 
+
     <!-- ========================================== -->
-    <!-- AVANÇADO -->
+    <!-- AVANÇADO                                   -->
     <!-- ========================================== -->
     <category label="Avançado">
         <setting label="Opções Avançadas" type="lsep"/>
-        
-        <setting id="debug_mode" type="bool" label="Modo Debug (logs detalhados)" default="false"/>
-        <setting id="retry" type="bool" label="Tentar novamente em falhas" default="true"/>
-        
+
+        <setting id="debug_mode" type="bool" label="Modo Debug (logs detalhados no Kodi)" default="false"/>
+        <setting id="retry"      type="bool" label="Tentar novamente em falhas"            default="true"/>
+
         <setting type="sep"/>
-        <setting label="Reset" type="lsep"/>
-        <setting label="Limpar todos os caches" type="action" action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=clear_all_cache)"/>
-        <setting label="Forçar atualização de servidores remotos" type="action" action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=reload_servers)"/>
+        <setting label="Manutenção" type="lsep"/>
+        <setting label="Limpar todos os caches" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=clear_all_cache)"/>
+        <setting label="Forçar atualização de servidores remotos" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=reload_servers)"/>
+        <setting label="Ver fontes dos servidores carregados" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=server_sources)"/>
     </category>
+
 </settings>
