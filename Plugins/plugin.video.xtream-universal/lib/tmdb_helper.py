@@ -19,6 +19,7 @@ import os
 import json
 import time
 import re
+import threading
 import requests
 from datetime import datetime, timedelta
 
@@ -58,6 +59,7 @@ class TMDBHelper:
         self.language = language
         self.cache_days = cache_days
         self.cache_file = os.path.join(cache_dir, 'tmdb_cache.json')
+        self._cache_lock = threading.Lock()
         self.cache = self._load_cache()
         
         # Garante que diretório existe
@@ -85,8 +87,10 @@ class TMDBHelper:
     def _save_cache(self):
         """Salva cache no disco"""
         try:
+            with self._cache_lock:
+                cache_copy = dict(self.cache)
             with open(self.cache_file, 'w', encoding='utf-8') as f:
-                json.dump(self.cache, f, ensure_ascii=False, indent=2)
+                json.dump(cache_copy, f, ensure_ascii=False, indent=2)
         except Exception as e:
             self.log(f"Erro ao salvar cache: {e}", xbmc.LOGERROR)
     
