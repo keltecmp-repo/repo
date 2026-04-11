@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.plutotv.br" version="2.0.0" name="Pluto TV Brasil" provider-name="Team KelTec Media Play">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+        <import addon="script.module.requests" version="2.7.0"/> 
+        <import addon="script.module.simplecache" version="1.0.0"/>
+        <import addon="script.module.routing" version="0.2.3"/>
+        <import addon="script.module.inputstreamhelper" version="0.3.3"/>
+        <import addon="service.iptv.manager" version="0.2.2" optional="true"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.service" library="pseudotv_recommended.py"/>
+    <extension point="xbmc.addon.metadata">
+        <reuselanguageinvoker>true</reuselanguageinvoker>
+        <platform>all</platform>
+        <license>GPL-3.0-or-later</license>
+        <source>https://github.com/keltecmp-repo/plugin.video.plutotv.br</source>
+        <website>https://pluto.tv/br</website>
+        <forum>https://github.com/keltecmp-repo</forum>
+        <news>v2.0.0 - Versão Brasil - Team KelTec Media Play</news>
+        <assets>
+            <icon>resources/images/icon.png</icon>
+            <fanart>resources/images/fanart.jpg</fanart>
+            <screenshot>resources/images/screenshot01.jpg</screenshot>
+            <screenshot>resources/images/screenshot02.jpg</screenshot>
+        </assets>   
+        <summary lang="pt_BR">Canais de TV gratuitos dedicados ao que você mais gosta, com filmes, notícias, esportes e muito mais. “O gênio do Pluto TV: televisão real pela internet”.</summary>
+        <summary lang="en_GB">TV channels devoted to your favorite things, made from blockbuster movies from Paramount, ... “The genius of Pluto TV: This is real internet television”.</summary>
+        <description lang="pt_BR">Assista TV grátis no Kodi! Transmita mais de 100 canais do Pluto TV com notícias, esportes, filmes e o melhor da internet, completamente grátis no seu dispositivo Kodi. Versão adaptada para o Brasil pela Team KelTec Media Play.</description>
+        <description lang="en_GB">Watch Free TV on Kodi! Stream Pluto TV's 100+ channels of news, sports, and the Internet's best, completely free on your Kodi device. Brazilian version by Team KelTec Media Play.</description>
+    </extension>
+    <extension point="xbmc.addon.repository" name="KelTecMP Repo">
+        <dir>
+            <info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
+            <hashes>false</hashes>
+        </dir>
+    </extension>
+</addon>
