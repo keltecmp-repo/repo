@@ -3,32 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KelTec Media Play — Documentação Técnica</title>
+<title>KelTec Media Play — Documentação Técnica v2.0</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Barlow:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:        #080c10;
-    --bg2:       #0d1219;
-    --bg3:       #111820;
-    --border:    #1e2d3d;
-    --accent:    #e8291c;
-    --accent2:   #ff6b35;
-    --gold:      #f0a500;
-    --cyan:      #00d4ff;
-    --green:     #00e676;
-    --purple:    #b388ff;
-    --text:      #c8d8e8;
-    --text-dim:  #5a7a94;
+    --bg:          #080c10;
+    --bg2:         #0d1219;
+    --bg3:         #111820;
+    --border:      #1e2d3d;
+    --accent:      #e8291c;
+    --accent2:     #ff6b35;
+    --gold:        #f0a500;
+    --cyan:        #00d4ff;
+    --green:       #00e676;
+    --purple:      #b388ff;
+    --teal:        #00bfa5;
+    --text:        #c8d8e8;
+    --text-dim:    #5a7a94;
     --text-bright: #eaf4ff;
-    --glow-r:    0 0 20px rgba(232,41,28,0.4);
-    --glow-c:    0 0 20px rgba(0,212,255,0.4);
-    --glow-g:    0 0 20px rgba(0,230,118,0.3);
+    --glow-r:      0 0 20px rgba(232,41,28,0.4);
+    --glow-c:      0 0 20px rgba(0,212,255,0.4);
+    --glow-g:      0 0 20px rgba(0,230,118,0.3);
+    --glow-p:      0 0 20px rgba(179,136,255,0.3);
   }
-
   * { margin:0; padding:0; box-sizing:border-box; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--bg);
     color: var(--text);
@@ -37,186 +36,155 @@
     line-height: 1.7;
     overflow-x: hidden;
   }
-
-  /* ── SCANLINES OVERLAY ── */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.08) 2px,
-      rgba(0,0,0,0.08) 4px
-    );
-    pointer-events: none;
-    z-index: 9999;
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none; z-index: 9999;
   }
-
-  /* ── NOISE TEXTURE ── */
   body::after {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9998;
-    opacity: 0.4;
+    pointer-events: none; z-index: 9998; opacity: 0.4;
   }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-brand {
+    font-family: 'Orbitron', monospace; font-weight: 900;
+    font-size: 1rem; letter-spacing: 0.05em;
+  }
+  .nav-brand .kel { color: var(--text-bright); }
+  .nav-brand .tec { color: var(--accent); text-shadow: var(--glow-r); }
+  .nav-links {
+    display: flex; gap: 1.8rem; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    color: var(--text-dim); text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  @media(max-width:900px){ .nav-links { display:none; } }
 
   /* ── HERO ── */
   .hero {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 4rem 2rem;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 4rem 2rem;
     position: relative;
     background:
       radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,41,28,0.12) 0%, transparent 70%),
       radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,212,255,0.06) 0%, transparent 60%),
       var(--bg);
   }
-
   .hero-grid {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background-image:
       linear-gradient(rgba(30,45,61,0.3) 1px, transparent 1px),
       linear-gradient(90deg, rgba(30,45,61,0.3) 1px, transparent 1px);
     background-size: 60px 60px;
     mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
   }
-
   .hero-badge {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    color: var(--accent);
-    text-transform: uppercase;
+    font-size: 0.7rem; letter-spacing: 0.3em;
+    color: var(--accent); text-transform: uppercase;
     border: 1px solid rgba(232,41,28,0.4);
-    padding: 0.3rem 1rem;
-    margin-bottom: 2rem;
+    padding: 0.3rem 1rem; margin-bottom: 2rem;
     animation: pulse-border 3s infinite;
   }
-
   @keyframes pulse-border {
-    0%, 100% { border-color: rgba(232,41,28,0.4); box-shadow: none; }
+    0%,100% { border-color: rgba(232,41,28,0.4); box-shadow: none; }
     50% { border-color: rgba(232,41,28,0.9); box-shadow: var(--glow-r); }
   }
-
   .hero-logo {
-    font-family: 'Orbitron', monospace;
-    font-weight: 900;
+    font-family: 'Orbitron', monospace; font-weight: 900;
     font-size: clamp(2.8rem, 8vw, 6rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.5rem;
-    position: relative;
+    line-height: 1; letter-spacing: -0.02em;
+    margin-bottom: 0.5rem; position: relative;
   }
-
   .hero-logo .kel { color: var(--text-bright); }
   .hero-logo .tec { color: var(--accent); text-shadow: var(--glow-r); }
   .hero-logo .media { color: var(--text-dim); font-weight: 400; font-size: 0.45em; display: block; letter-spacing: 0.15em; margin-top: 0.3rem; }
   .hero-logo .play { color: var(--cyan); font-size: 0.45em; font-weight: 700; letter-spacing: 0.1em; }
-
   .hero-sub {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--text-dim);
-    letter-spacing: 0.2em;
-    margin: 1.5rem 0 3rem;
+    font-size: 0.85rem; color: var(--text-dim);
+    letter-spacing: 0.2em; margin: 1.5rem 0 3rem;
   }
-
   .hero-sub span { color: var(--cyan); }
-
   .hero-stats {
-    display: flex;
-    gap: 3rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 2rem;
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    justify-content: center; margin-top: 2rem;
   }
-
-  .stat {
-    text-align: center;
-  }
-
+  .stat { text-align: center; }
   .stat-num {
-    font-family: 'Orbitron', monospace;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--accent);
-    text-shadow: var(--glow-r);
-    display: block;
+    font-family: 'Orbitron', monospace; font-size: 2rem;
+    font-weight: 700; color: var(--accent);
+    text-shadow: var(--glow-r); display: block;
   }
-
   .stat-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: var(--text-dim);
-    text-transform: uppercase;
+    font-size: 0.7rem; letter-spacing: 0.2em;
+    color: var(--text-dim); text-transform: uppercase;
   }
 
   /* ── SECTION ── */
   section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 5rem 2rem;
-    position: relative;
+    max-width: 1100px; margin: 0 auto;
+    padding: 5rem 2rem; position: relative;
   }
-
   .section-tag {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.35em;
-    color: var(--cyan);
-    text-transform: uppercase;
+    font-size: 0.65rem; letter-spacing: 0.35em;
+    color: var(--cyan); text-transform: uppercase;
     margin-bottom: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
+    display: flex; align-items: center; gap: 0.8rem;
   }
-
   .section-tag::before {
-    content: '';
-    display: inline-block;
-    width: 30px;
-    height: 1px;
-    background: var(--cyan);
-    box-shadow: var(--glow-c);
+    content: ''; display: inline-block;
+    width: 30px; height: 1px;
+    background: var(--cyan); box-shadow: var(--glow-c);
   }
-
+  .section-tag.gold { color: var(--gold); }
+  .section-tag.gold::before { background: var(--gold); box-shadow: 0 0 20px rgba(240,165,0,0.4); }
+  .section-tag.purple { color: var(--purple); }
+  .section-tag.purple::before { background: var(--purple); box-shadow: var(--glow-p); }
+  .section-tag.green { color: var(--green); }
+  .section-tag.green::before { background: var(--green); box-shadow: var(--glow-g); }
+  .section-tag.teal { color: var(--teal); }
+  .section-tag.teal::before { background: var(--teal); }
   h2 {
     font-family: 'Orbitron', monospace;
     font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 700;
-    color: var(--text-bright);
-    margin-bottom: 3rem;
-    line-height: 1.2;
+    font-weight: 700; color: var(--text-bright);
+    margin-bottom: 3rem; line-height: 1.2;
   }
-
-  h2 em {
-    font-style: normal;
-    color: var(--accent);
-  }
-
+  h2 em { font-style: normal; color: var(--accent); }
+  h2 em.c { color: var(--cyan); }
+  h2 em.g { color: var(--green); }
+  h2 em.p { color: var(--purple); }
+  h2 em.t { color: var(--teal); }
+  h2 em.gold { color: var(--gold); }
   h3 {
-    font-family: 'Orbitron', monospace;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-bright);
-    margin-bottom: 1rem;
-    letter-spacing: 0.05em;
+    font-family: 'Orbitron', monospace; font-size: 1rem;
+    font-weight: 700; color: var(--text-bright);
+    margin-bottom: 1rem; letter-spacing: 0.05em;
   }
-
-  /* ── DIVIDER ── */
   .divider {
-    width: 100%;
-    height: 1px;
+    width: 100%; height: 1px;
     background: linear-gradient(90deg, transparent, var(--border), var(--accent), var(--border), transparent);
     margin: 0;
   }
@@ -225,834 +193,842 @@
   .feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    overflow: hidden;
+    gap: 1.5px; background: var(--border);
+    border: 1px solid var(--border); overflow: hidden;
   }
-
   .feature-card {
-    background: var(--bg2);
-    padding: 2rem;
-    position: relative;
-    transition: background 0.3s;
+    background: var(--bg2); padding: 2rem;
+    position: relative; transition: background 0.3s;
     overflow: hidden;
   }
-
   .feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 0;
-    background: var(--accent);
-    transition: height 0.4s;
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0; transition: opacity 0.3s;
   }
-
   .feature-card:hover { background: var(--bg3); }
-  .feature-card:hover::before { height: 100%; }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon { font-size: 1.8rem; display: block; margin-bottom: 1rem; }
+  .feature-card p { color: var(--text); font-size: 0.9rem; line-height: 1.6; }
 
-  .feature-icon {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    display: block;
+  /* ── CATALOG MENUS ── */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem; margin-bottom: 2.5rem;
   }
-
-  .feature-card p {
-    font-size: 0.88rem;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-
-  /* ── ARCHITECTURE ── */
-  .arch-diagram {
+  .menu-item {
+    border: 1px solid var(--border);
     background: var(--bg2);
-    border: 1px solid var(--border);
-    padding: 2.5rem;
-    position: relative;
-    overflow: hidden;
+    padding: 1.2rem 1.5rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    transition: border-color 0.2s, background 0.2s;
   }
+  .menu-item:hover { border-color: rgba(0,212,255,0.3); background: var(--bg3); }
+  .menu-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 0.55rem;
+  }
+  .menu-dot.gold { background: var(--gold); box-shadow: 0 0 8px rgba(240,165,0,0.5); }
+  .menu-dot.lime { background: var(--green); box-shadow: 0 0 8px rgba(0,230,118,0.5); }
+  .menu-dot.cyan { background: var(--cyan); box-shadow: 0 0 8px rgba(0,212,255,0.5); }
+  .menu-dot.orange { background: var(--accent2); box-shadow: 0 0 8px rgba(255,107,53,0.5); }
+  .menu-dot.blue { background: #4fc3f7; box-shadow: 0 0 8px rgba(79,195,247,0.5); }
+  .menu-dot.purple { background: var(--purple); box-shadow: var(--glow-p); }
+  .menu-item h4 {
+    font-family: 'Orbitron', monospace; font-size: 0.75rem;
+    font-weight: 700; color: var(--text-bright);
+    margin-bottom: 0.3rem; letter-spacing: 0.05em;
+  }
+  .menu-item p { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; }
 
-  .arch-diagram::before {
-    content: 'ARQUITETURA DO SISTEMA';
-    position: absolute;
-    top: 1rem; right: 1.5rem;
+  /* ── TMDB FLOW ── */
+  .flow-row {
+    display: flex; align-items: center; gap: 1rem;
+    flex-wrap: wrap; margin: 2rem 0;
+  }
+  .flow-box {
+    background: var(--bg2); border: 1px solid var(--border);
+    padding: 1rem 1.5rem; flex: 1; min-width: 160px;
+    text-align: center;
+  }
+  .flow-box .fb-title {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem;
+    font-weight: 700; letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .flow-box p { font-size: 0.75rem; color: var(--text-dim); }
+  .flow-arrow {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.3em;
-    color: var(--border);
+    color: var(--cyan); font-size: 1.4rem; flex-shrink: 0;
   }
 
-  .arch-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+  /* ── GENRE GRID ── */
+  .genre-grid {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    margin: 1.5rem 0 2.5rem;
   }
-
-  .arch-box {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    padding: 0.6rem 1.2rem;
+  .genre-pill {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text);
-    white-space: nowrap;
-    position: relative;
-    transition: border-color 0.3s, color 0.3s;
-    cursor: default;
-  }
-
-  .arch-box:hover {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    box-shadow: var(--glow-c);
-  }
-
-  .arch-box.red { border-color: rgba(232,41,28,0.4); }
-  .arch-box.red:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow-r); }
-  .arch-box.green { border-color: rgba(0,230,118,0.3); }
-  .arch-box.green:hover { border-color: var(--green); color: var(--green); box-shadow: var(--glow-g); }
-  .arch-box.gold { border-color: rgba(240,165,0,0.3); }
-  .arch-box.gold:hover { border-color: var(--gold); color: var(--gold); }
-
-  .arch-arrow {
+    font-size: 0.7rem; letter-spacing: 0.1em;
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.9rem;
     color: var(--text-dim);
-    font-size: 1rem;
-    font-family: 'Share Tech Mono', monospace;
+    transition: all 0.2s; cursor: default;
   }
+  .genre-pill:hover { border-color: var(--cyan); color: var(--cyan); }
+  .genre-pill.movie { border-color: rgba(240,165,0,0.3); color: var(--gold); }
+  .genre-pill.tv { border-color: rgba(179,136,255,0.3); color: var(--purple); }
 
-  .arch-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    padding-left: 0.2rem;
-  }
-
-  /* ── FILE TREE ── */
-  .file-tree {
-    background: var(--bg2);
+  /* ── PARENTAL ── */
+  .parental-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1px; background: var(--border);
     border: 1px solid var(--border);
-    padding: 2rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.82rem;
-    line-height: 2;
+    margin-bottom: 3rem;
   }
+  .parental-card {
+    background: var(--bg2); padding: 1.8rem;
+    position: relative;
+  }
+  .parental-card::after {
+    content: attr(data-state);
+    position: absolute; top: 1rem; right: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    padding: 0.2rem 0.6rem; border-radius: 2px;
+  }
+  .parental-card[data-state="ATIVO"]::after { background: rgba(0,230,118,0.15); color: var(--green); border: 1px solid rgba(0,230,118,0.3); }
+  .parental-card[data-state="BLOQUEADO"]::after { background: rgba(232,41,28,0.15); color: var(--accent); border: 1px solid rgba(232,41,28,0.3); }
+  .parental-card[data-state="PIN"]::after { background: rgba(240,165,0,0.15); color: var(--gold); border: 1px solid rgba(240,165,0,0.3); }
+  .parental-card[data-state="SESSÃO"]::after { background: rgba(0,212,255,0.15); color: var(--cyan); border: 1px solid rgba(0,212,255,0.3); }
 
-  .file-tree .dir { color: var(--cyan); }
-  .file-tree .file { color: var(--text); }
-  .file-tree .file.main { color: var(--accent); font-weight: bold; }
-  .file-tree .file.mod { color: var(--gold); }
-  .file-tree .comment { color: var(--text-dim); font-size: 0.72rem; }
-  .file-tree .indent { padding-left: 1.5rem; }
-  .file-tree .indent2 { padding-left: 3rem; }
-
-  /* ── CODE BLOCK ── */
+  /* ── CODE ── */
   .code-block {
-    background: #050810;
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--cyan);
-    padding: 1.5rem;
+    background: var(--bg2); border: 1px solid var(--border);
+    padding: 1.5rem 2rem; margin: 1.5rem 0;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem;
-    line-height: 1.8;
-    overflow-x: auto;
-    color: var(--text);
+    font-size: 0.82rem; line-height: 1.8;
+    overflow-x: auto; position: relative;
   }
-
-  .code-block .key { color: var(--purple); }
-  .code-block .val { color: var(--green); }
-  .code-block .str { color: var(--gold); }
-  .code-block .comment { color: var(--text-dim); }
-  .code-block .bool-true { color: var(--green); }
-  .code-block .bool-false { color: var(--accent); }
-
-  /* ── FLOW ── */
-  .flow {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  .code-block::before {
+    content: attr(data-label);
+    position: absolute; top: 0; right: 0;
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    color: var(--text-dim); padding: 0.3rem 0.8rem;
+    background: var(--bg3); border-left: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
   }
+  .key { color: var(--cyan); }
+  .str { color: var(--green); }
+  .val { color: var(--gold); }
+  .bool-true { color: var(--green); }
+  .bool-false { color: var(--accent); }
+  .comment { color: var(--text-dim); font-style: italic; }
+  .fn { color: var(--purple); }
 
-  .flow-step {
-    display: flex;
-    gap: 2rem;
-    align-items: stretch;
-    position: relative;
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    border-left: 3px solid var(--cyan);
+    background: rgba(0,212,255,0.04);
+    padding: 1.2rem 1.5rem; margin: 2rem 0;
+    font-size: 0.9rem; line-height: 1.7;
   }
-
-  .flow-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 40px;
-    flex-shrink: 0;
-  }
-
-  .flow-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: var(--glow-r);
-    flex-shrink: 0;
-    margin-top: 0.4rem;
-  }
-
-  .flow-dot.cyan { background: var(--cyan); box-shadow: var(--glow-c); }
-  .flow-dot.green { background: var(--green); box-shadow: var(--glow-g); }
-  .flow-dot.gold { background: var(--gold); }
-  .flow-dot.purple { background: var(--purple); }
-
-  .flow-line {
-    width: 1px;
-    flex: 1;
-    background: linear-gradient(var(--border), var(--border));
-    margin: 4px 0;
-    min-height: 30px;
-  }
-
-  .flow-content {
-    padding: 0.5rem 0 2rem;
-    flex: 1;
-  }
-
-  .flow-title {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.85rem;
-    color: var(--text-bright);
-    margin-bottom: 0.4rem;
-  }
-
-  .flow-desc {
-    font-size: 0.85rem;
-    color: var(--text-dim);
-  }
+  .highlight-box.gold { border-left-color: var(--gold); background: rgba(240,165,0,0.04); }
+  .highlight-box.green { border-left-color: var(--green); background: rgba(0,230,118,0.04); }
+  .highlight-box.red { border-left-color: var(--accent); background: rgba(232,41,28,0.04); }
+  .highlight-box.purple { border-left-color: var(--purple); background: rgba(179,136,255,0.04); }
 
   /* ── TABLE ── */
   .data-table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%; border-collapse: collapse;
     font-size: 0.85rem;
   }
-
   .data-table th {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--cyan);
-    padding: 1rem 1.2rem;
-    text-align: left;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    color: var(--cyan); text-transform: uppercase;
+    text-align: left; padding: 0.8rem 1rem;
     border-bottom: 1px solid var(--border);
-    background: var(--bg2);
   }
-
   .data-table td {
-    padding: 0.9rem 1.2rem;
+    padding: 0.8rem 1rem;
     border-bottom: 1px solid rgba(30,45,61,0.5);
     color: var(--text);
     vertical-align: top;
   }
+  .data-table tr:hover td { background: rgba(30,45,61,0.3); }
+  .mono { font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; color: var(--gold); }
+  .tag {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; padding: 0.15rem 0.5rem;
+    border: 1px solid var(--border); color: var(--text-dim);
+  }
+  .tag.cyan { border-color: rgba(0,212,255,0.4); color: var(--cyan); }
+  .tag.gold { border-color: rgba(240,165,0,0.4); color: var(--gold); }
+  .tag.green { border-color: rgba(0,230,118,0.4); color: var(--green); }
+  .tag.purple { border-color: rgba(179,136,255,0.4); color: var(--purple); }
+  .tag.red { border-color: rgba(232,41,28,0.4); color: var(--accent); }
 
-  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
-
-  .data-table .mono {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem;
+  /* ── ARCHITECTURE ── */
+  .arch-layer {
+    border: 1px solid var(--border); margin-bottom: 1px;
+    position: relative; overflow: hidden;
+  }
+  .arch-layer-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.5rem; background: var(--bg2);
+    cursor: pointer;
+  }
+  .arch-layer-num {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem;
+    font-weight: 700; color: var(--text-dim);
+    width: 28px; height: 28px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .arch-layer-title {
+    font-family: 'Orbitron', monospace; font-size: 0.85rem;
+    font-weight: 700; color: var(--text-bright); flex: 1;
+  }
+  .arch-layer-desc { font-size: 0.8rem; color: var(--text-dim); flex: 2; }
+  .arch-layer-files {
+    padding: 0 1.5rem 1.2rem 4.5rem;
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .arch-file {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    background: var(--bg3); border: 1px solid var(--border);
     color: var(--gold);
   }
 
-  .data-table .tag {
-    display: inline-block;
-    background: rgba(232,41,28,0.15);
-    border: 1px solid rgba(232,41,28,0.3);
-    color: var(--accent);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    padding: 0.15rem 0.5rem;
-    border-radius: 2px;
-  }
-
-  .data-table .tag.cyan {
-    background: rgba(0,212,255,0.1);
-    border-color: rgba(0,212,255,0.3);
-    color: var(--cyan);
-  }
-
-  .data-table .tag.green {
-    background: rgba(0,230,118,0.1);
-    border-color: rgba(0,230,118,0.3);
-    color: var(--green);
-  }
-
-  /* ── HIGHLIGHT BOX ── */
-  .highlight-box {
-    border: 1px solid rgba(240,165,0,0.3);
-    background: rgba(240,165,0,0.05);
-    padding: 1.5rem 2rem;
+  /* ── WHAT'S NEW ── */
+  .changelog {
     position: relative;
-    margin: 2rem 0;
+    padding-left: 2rem;
+    margin-bottom: 3rem;
   }
-
-  .highlight-box::before {
-    content: '⚡ DESTAQUE';
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    position: absolute;
-    top: -0.6rem;
-    left: 1rem;
-    background: var(--bg);
-    padding: 0 0.5rem;
+  .changelog::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(180deg, var(--accent) 0%, var(--cyan) 50%, transparent 100%);
   }
+  .changelog-item {
+    position: relative; margin-bottom: 2.5rem;
+  }
+  .changelog-item::before {
+    content: ''; position: absolute;
+    left: -2.35rem; top: 0.45rem;
+    width: 10px; height: 10px; border-radius: 50%;
+    border: 1px solid; flex-shrink: 0;
+  }
+  .changelog-item.new::before { background: var(--green); border-color: var(--green); box-shadow: var(--glow-g); }
+  .changelog-item.fix::before { background: var(--cyan); border-color: var(--cyan); box-shadow: var(--glow-c); }
+  .changelog-item.update::before { background: var(--gold); border-color: var(--gold); }
+  .changelog-item.security::before { background: var(--accent); border-color: var(--accent); box-shadow: var(--glow-r); }
+  .changelog-badge {
+    display: inline-block; font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    padding: 0.15rem 0.5rem; margin-bottom: 0.4rem;
+    border: 1px solid;
+  }
+  .changelog-item.new .changelog-badge { color: var(--green); border-color: rgba(0,230,118,0.4); background: rgba(0,230,118,0.07); }
+  .changelog-item.fix .changelog-badge { color: var(--cyan); border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.07); }
+  .changelog-item.update .changelog-badge { color: var(--gold); border-color: rgba(240,165,0,0.4); background: rgba(240,165,0,0.07); }
+  .changelog-item.security .changelog-badge { color: var(--accent); border-color: rgba(232,41,28,0.4); background: rgba(232,41,28,0.07); }
+  .changelog-item h4 {
+    font-family: 'Orbitron', monospace; font-size: 0.85rem;
+    font-weight: 700; color: var(--text-bright); margin-bottom: 0.4rem;
+  }
+  .changelog-item p { font-size: 0.85rem; color: var(--text); line-height: 1.6; }
 
-  .highlight-box p { font-size: 0.9rem; color: var(--text); }
-  .highlight-box strong { color: var(--gold); }
+  /* ── DETAIL CARDS ── */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem; margin: 2rem 0;
+  }
+  .detail-card {
+    border: 1px solid var(--border); background: var(--bg2);
+    padding: 1.4rem; text-align: center;
+  }
+  .detail-card .dc-icon {
+    font-size: 2rem; display: block; margin-bottom: 0.8rem;
+  }
+  .detail-card h4 {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem;
+    font-weight: 700; color: var(--text-bright);
+    margin-bottom: 0.4rem; letter-spacing: 0.08em;
+  }
+  .detail-card p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
+
+  /* ── SECURITY MATRIX ── */
+  .sec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); margin-bottom: 3rem;
+  }
+  .sec-card {
+    background: var(--bg2); padding: 1.8rem;
+    position: relative;
+  }
+  .sec-card .sc-num {
+    font-family: 'Orbitron', monospace; font-size: 2rem;
+    font-weight: 900; color: var(--border);
+    position: absolute; top: 1rem; right: 1.2rem;
+    line-height: 1;
+  }
+  .sec-card h4 {
+    font-family: 'Orbitron', monospace; font-size: 0.8rem;
+    font-weight: 700; color: var(--text-bright);
+    margin-bottom: 0.8rem; padding-right: 3rem;
+    letter-spacing: 0.05em;
+  }
+  .sec-card p { font-size: 0.82rem; color: var(--text); line-height: 1.6; }
+  .sec-card code {
+    font-family: 'Share Tech Mono', monospace; font-size: 0.78rem;
+    color: var(--gold); background: var(--bg3);
+    padding: 0.1rem 0.4rem;
+  }
 
   /* ── CREDITS ── */
   .credits {
-    text-align: center;
-    padding: 5rem 2rem;
+    text-align: center; padding: 5rem 2rem;
     background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(232,41,28,0.08) 0%, transparent 70%);
-    border-top: 1px solid var(--border);
+    position: relative;
   }
-
   .credits-logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
+    font-family: 'Orbitron', monospace; font-weight: 900;
+    font-size: 3rem; margin-bottom: 0.5rem;
   }
-
   .credits-logo .kel { color: var(--text-bright); }
   .credits-logo .tec { color: var(--accent); text-shadow: var(--glow-r); }
-
   .credits-line {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
-    color: var(--text-dim);
-    margin: 0.5rem 0;
+    font-size: 0.7rem; letter-spacing: 0.3em;
+    color: var(--text-dim); text-transform: uppercase;
   }
-
   .credits-date {
+    margin-top: 3rem;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--cyan);
-    margin-top: 2rem;
+    font-size: 0.65rem; letter-spacing: 0.2em; color: var(--text-dim);
   }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: rgba(8,12,16,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0.8rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .nav-brand {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.9rem;
-    font-weight: 900;
-    color: var(--text-bright);
-  }
-
-  .nav-brand span { color: var(--accent); }
-
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    color: var(--text-dim);
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--cyan); }
-
-  /* ── VERSION BADGE ── */
   .version-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    color: var(--green);
-    border: 1px solid rgba(0,230,118,0.3);
-    padding: 0.2rem 0.8rem;
-    margin-left: 1rem;
-  }
-
-  .version-badge::before {
-    content: '●';
-    font-size: 0.5rem;
-    animation: blink 1.5s infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--accent); }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero > * { animation: fadeInUp 0.8s ease both; }
-  .hero-badge  { animation-delay: 0.1s; }
-  .hero-logo   { animation-delay: 0.3s; }
-  .hero-sub    { animation-delay: 0.5s; }
-  .hero-stats  { animation-delay: 0.7s; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .nav-links { display: none; }
-    .hero-stats { gap: 1.5rem; }
-    .arch-row { gap: 0.5rem; }
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.2em; padding: 0.2rem 0.8rem;
+    border: 1px solid rgba(0,212,255,0.3); color: var(--cyan);
+    margin-left: 1rem; vertical-align: middle;
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-brand">Kel<span>Tec</span> Docs</div>
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-brand"><span class="kel">Kel</span><span class="tec">Tec</span></div>
   <ul class="nav-links">
-    <li><a href="#visao-geral">Visão Geral</a></li>
+    <li><a href="#overview">Visão Geral</a></li>
+    <li><a href="#tmdb">TMDB</a></li>
+    <li><a href="#catalogos">Catálogos</a></li>
+    <li><a href="#generos">Gêneros</a></li>
+    <li><a href="#parental">Parental</a></li>
     <li><a href="#arquitetura">Arquitetura</a></li>
-    <li><a href="#modulos">Módulos</a></li>
-    <li><a href="#integrações">Integrações</a></li>
-    <li><a href="#segurança">Segurança</a></li>
-    <li><a href="#configuração">Config</a></li>
+    <li><a href="#seguranca">Segurança</a></li>
+    <li><a href="#configuracao">Config</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
+<!-- ── HERO ── -->
+<div class="hero" style="padding-top:80px;">
   <div class="hero-grid"></div>
-  <div class="hero-badge">Documentação Técnica Oficial — v22.03.2026</div>
-  <div class="hero-logo">
+  <div class="hero-badge">Documentação Técnica — v2.0 · Abril 2026</div>
+  <div class="hero-logo" style="position:relative;z-index:1;">
     <span class="kel">Kel</span><span class="tec">Tec</span>
-    <span class="media">Media Play &nbsp;<span class="play">Xtream</span></span>
+    <span class="media">Media</span>
+    <span class="play">PLAY XTREAM</span>
   </div>
-  <div class="hero-sub">
-    Add-on Kodi · Python 3 · Xtream API · <span>TMDB · EPG · F4M Proxy</span>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-num">7</span><span class="stat-label">Módulos Core</span></div>
-    <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Servidores</span></div>
-    <div class="stat"><span class="stat-num">3</span><span class="stat-label">APIs Integradas</span></div>
-    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Canais / VOD</span></div>
+  <p class="hero-sub" style="position:relative;z-index:1;">
+    Add-on Kodi · Protocolo Xtream Codes · <span>TMDB Integration</span> · Python 3
+  </p>
+  <div class="hero-stats" style="position:relative;z-index:1;">
+    <div class="stat"><span class="stat-num">13</span><span class="stat-label">Servidores</span></div>
+    <div class="stat"><span class="stat-num">30+</span><span class="stat-label">Módulos de Roteamento</span></div>
+    <div class="stat"><span class="stat-num">TMDB</span><span class="stat-label" style="color:var(--gold)">Integração Nativa</span></div>
+    <div class="stat"><span class="stat-num">8089</span><span class="stat-label">Proxy Local</span></div>
+    <div class="stat"><span class="stat-num">v5.0</span><span class="stat-label">ServerLoader</span></div>
   </div>
 </div>
 
 <div class="divider"></div>
 
-<!-- VISÃO GERAL -->
-<section id="visao-geral">
+<!-- ── 01 VISÃO GERAL ── -->
+<section id="overview">
   <div class="section-tag">01 — Visão Geral</div>
-  <h2>O que é o <em>KelTec Media Play</em>?</h2>
-
-  <p style="font-size:1rem; color:var(--text); max-width:800px; margin-bottom:3rem; line-height:1.9;">
-    KelTec Media Play Xtream é um add-on para <strong style="color:var(--text-bright)">Kodi 21 (Omega)</strong> 
-    desenvolvido do zero em Python 3, que integra listas IPTV no padrão 
-    <strong style="color:var(--cyan)">Xtream Codes API</strong> com metadados ricos do 
-    <strong style="color:var(--gold)">TMDB (The Movie Database)</strong>, guia de programação 
-    <strong style="color:var(--green)">EPG/XMLTV</strong> e um proxy reverso HLS de alta resiliência 
-    baseado no <strong style="color:var(--accent)">F4MTESTER</strong>. 
-    Distribuído gratuitamente para usuários do mundo inteiro, com servidores gerenciados remotamente 
-    via JSON seguro.
-  </p>
-
-  <div class="feature-grid">
-    <div class="feature-card">
-      <span class="feature-icon">📡</span>
-      <h3>TV ao Vivo</h3>
-      <p>Canais IPTV com stream HLS/M3U8 via proxy F4M com cache e reconexão automática. Buffer inteligente evita quedas de sinal.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🎬</span>
-      <h3>Filmes & Séries</h3>
-      <p>VOD completo com metadados TMDB: poster HD, fanart, plot em português, elenco, diretor, rating e gênero.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">📺</span>
-      <h3>EPG Integrado</h3>
-      <p>Guia de programação XMLTV com atualização automática por dia. Mostra o programa atual e o próximo em cada canal.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🌐</span>
-      <h3>Multi-Servidor</h3>
-      <p>Até 10+ servidores gerenciados remotamente via JSON. Fallback automático quando um servidor cai, sem expor credenciais.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🔒</span>
-      <h3>Segurança Total</h3>
-      <p>Logs controlados por debug_mode. Erros genéricos ao usuário. URLs, usuários e senhas jamais expostos nos logs do Kodi.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🎭</span>
-      <h3>TMDB Live</h3>
-      <p>Metadados do programa atual em canais ao vivo. Cruzamento automático EPG + TMDB para poster e plot do show.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🎨</span>
-      <h3>Modos Visuais</h3>
-      <p>Suporte a todos os modos do Kodi: lista, grade, miniaturas, poster view. Compatible com qualquer skin.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🔄</span>
-      <h3>DNS Customizado</h3>
-      <p>Resolver DNS próprio com cache de 4h usando OpenDNS, Cloudflare e Google DNS. Contorna bloqueios de ISP.</p>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🛡️</span>
-      <h3>Proxy HTTP</h3>
-      <p>Suporte opcional a proxies HTTP rotativos para mascarar origem das requisições via lista pública scraped.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ARQUITETURA -->
-<section id="arquitetura">
-  <div class="section-tag">02 — Arquitetura</div>
-  <h2>Estrutura <em>Técnica</em> do Sistema</h2>
-
-  <div class="arch-diagram">
-    <div class="arch-label">Camada de Entrada</div>
-    <div class="arch-row">
-      <div class="arch-box red">Kodi UI</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box red">main.py</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box">Router de Modos</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box">build_menu()</div>
-    </div>
-
-    <br>
-    <div class="arch-label">Camada de Dados</div>
-    <div class="arch-row">
-      <div class="arch-box cyan">Xtream API</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box cyan">get_json()</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box cyan">get_items()</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box cyan">get_seasons()</div>
-    </div>
-
-    <br>
-    <div class="arch-label">Camada de Metadados</div>
-    <div class="arch-row">
-      <div class="arch-box gold">TMDB API</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box gold">tmdb_helper.py</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box gold">Thread Async</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box gold">Cache JSON</div>
-    </div>
-
-    <br>
-    <div class="arch-label">Camada de Streaming</div>
-    <div class="arch-row">
-      <div class="arch-box green">Player Kodi</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box green">f4m_proxy.py</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box green">Flask :8088</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box green">HLS/TS Origin</div>
-    </div>
-
-    <br>
-    <div class="arch-label">Camada de Rede</div>
-    <div class="arch-row">
-      <div class="arch-box">dns.py</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box">doh.py</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box">proxy_http_scraper.py</div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-box">server_loader.py</div>
-    </div>
-  </div>
-
-  <br><br>
-
-  <!-- FILE TREE -->
-  <h3>Estrutura de Arquivos</h3>
-  <div class="file-tree">
-    <div><span class="dir">plugin.video.keltecmp-xtream/</span></div>
-    <div class="indent"><span class="file main">main.py</span> <span class="comment">← núcleo do add-on, roteador principal</span></div>
-    <div class="indent"><span class="file mod">service.py</span> <span class="comment">← inicia F4M proxy como serviço Kodi</span></div>
-    <div class="indent"><span class="file mod">f4m_proxy.py</span> <span class="comment">← proxy Flask HLS/TS porta 8088</span></div>
-    <div class="indent"><span class="file mod">dns.py</span> <span class="comment">← resolver DNS customizado com cache</span></div>
-    <div class="indent"><span class="file mod">doh.py</span> <span class="comment">← DNS over HTTPS via Cloudflare</span></div>
-    <div class="indent"><span class="file mod">proxy_http_scraper.py</span> <span class="comment">← proxy HTTP rotativo com cache</span></div>
-    <div class="indent"><span class="file">addon.xml</span></div>
-    <div class="indent"><span class="file">icon.gif / fanart.jpg</span></div>
-    <div class="indent"><span class="dir">lib/</span></div>
-    <div class="indent2"><span class="file main">server_loader.py</span> <span class="comment">← carrega servidores JSON/XML remoto</span></div>
-    <div class="indent2"><span class="file mod">tmdb_helper.py</span> <span class="comment">← integração TMDB API completa</span></div>
-    <div class="indent2"><span class="file">servers_config.py</span> <span class="comment">← servidores locais de backup</span></div>
-    <div class="indent"><span class="dir">resources/</span></div>
-    <div class="indent2"><span class="file">settings.xml</span> <span class="comment">← configurações do add-on</span></div>
-    <div class="indent2"><span class="dir">art/</span> <span class="comment">← ícones e imagens</span></div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- MÓDULOS -->
-<section id="modulos">
-  <div class="section-tag">03 — Módulos</div>
-  <h2>Descrição dos <em>Módulos</em></h2>
-
-  <div style="overflow-x:auto; margin-bottom:3rem;">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Arquivo</th>
-          <th>Função Principal</th>
-          <th>Tecnologia</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="mono">main.py</td>
-          <td>Núcleo do add-on. Roteamento de modos, menus, EPG, reprodução, TMDB, múltiplos servidores.</td>
-          <td>Python 3 · Kodi API · xbmcplugin</td>
-          <td><span class="tag green">CORE</span></td>
-        </tr>
-        <tr>
-          <td class="mono">server_loader.py</td>
-          <td>Carrega servidores de JSON remoto via parser próprio (sem json.loads), com cache e suporte a debug_mode.</td>
-          <td>Python 3 · re · requests</td>
-          <td><span class="tag green">CORE</span></td>
-        </tr>
-        <tr>
-          <td class="mono">tmdb_helper.py</td>
-          <td>Integração com TMDB API v3. Busca filmes, séries, episódios. Cache local JSON. Retorna metadados formatados para Kodi.</td>
-          <td>TMDB API v3 · requests · JSON cache</td>
-          <td><span class="tag cyan">INTEGRAÇÃO</span></td>
-        </tr>
-        <tr>
-          <td class="mono">f4m_proxy.py</td>
-          <td>Proxy reverso Flask na porta 8088. Rotas /hlsretry e /tsdownloader. Cache de chunks TS. Reconexão automática com User-Agent rotation.</td>
-          <td>Flask · requests · urllib3</td>
-          <td><span class="tag cyan">PROXY</span></td>
-        </tr>
-        <tr>
-          <td class="mono">dns.py</td>
-          <td>Substitui socket.getaddrinfo() por resolver DNS customizado. Suporte a IPv4/IPv6. Cache em disco com TTL de 4h.</td>
-          <td>socket · struct · UDP DNS</td>
-          <td><span class="tag">REDE</span></td>
-        </tr>
-        <tr>
-          <td class="mono">doh.py</td>
-          <td>DNS over HTTPS via Cloudflare (cloudflare-dns.com). Usado pelo F4M proxy para resolver hostnames de CDNs.</td>
-          <td>HTTPS · Cloudflare DoH API</td>
-          <td><span class="tag">REDE</span></td>
-        </tr>
-        <tr>
-          <td class="mono">proxy_http_scraper.py</td>
-          <td>Scraper de lista pública de proxies HTTP com seleção aleatória e cache de 4h. Uso opcional.</td>
-          <td>requests · JSON cache</td>
-          <td><span class="tag">OPCIONAL</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- FLUXO DE REPRODUÇÃO -->
-  <h3 style="margin-bottom:2rem;">Fluxo de Reprodução — Canal Ao Vivo</h3>
-  <div class="flow">
-    <div class="flow-step">
-      <div class="flow-left"><div class="flow-dot"></div><div class="flow-line"></div></div>
-      <div class="flow-content">
-        <div class="flow-title">Usuário seleciona canal</div>
-        <div class="flow-desc">main.py mode='play' → play_item() detecta content_type='live'</div>
-      </div>
-    </div>
-    <div class="flow-step">
-      <div class="flow-left"><div class="flow-dot cyan"></div><div class="flow-line"></div></div>
-      <div class="flow-content">
-        <div class="flow-title">Verifica F4MTESTER</div>
-        <div class="flow-desc">is_f4m_installed() + check_f4m_server() → popup HLSRETRY ou TSDOWNLOADER</div>
-      </div>
-    </div>
-    <div class="flow-step">
-      <div class="flow-left"><div class="flow-dot gold"></div><div class="flow-line"></div></div>
-      <div class="flow-content">
-        <div class="flow-title">URL via F4M Proxy</div>
-        <div class="flow-desc">http://127.0.0.1:8088/hlsretry?url=ENCODED_URL → Flask recebe a requisição</div>
-      </div>
-    </div>
-    <div class="flow-step">
-      <div class="flow-left"><div class="flow-dot green"></div><div class="flow-line"></div></div>
-      <div class="flow-content">
-        <div class="flow-title">Proxy baixa e retransmite</div>
-        <div class="flow-desc">DNSOverrideDoH() → requests.get() → rewrite_m3u8_urls() → stream_response() com cache de chunks</div>
-      </div>
-    </div>
-    <div class="flow-step">
-      <div class="flow-left"><div class="flow-dot purple"></div><div class="flow-line"></div></div>
-      <div class="flow-content">
-        <div class="flow-title">Kodi reproduz</div>
-        <div class="flow-desc">ListItem com is_realtime_stream=true + buffer aumentado. Reconexão automática em falhas.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- INTEGRAÇÕES -->
-<section id="integrações">
-  <div class="section-tag">04 — Integrações</div>
-  <h2>APIs e <em>Integrações</em> Externas</h2>
+  <h2>O que é o <em>KelTec MP</em>?</h2>
 
   <div class="feature-grid" style="margin-bottom:3rem;">
     <div class="feature-card">
-      <span class="feature-icon">🎬</span>
-      <h3>TMDB API v3</h3>
-      <p>Busca automática de metadados para filmes, séries, temporadas e episódios. Também cruza programa atual do EPG para enriquecer canais ao vivo. Cache local de 7 dias.</p>
-      <br>
-      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--gold);">api.themoviedb.org/3</span>
-    </div>
-    <div class="feature-card">
       <span class="feature-icon">📡</span>
-      <h3>Xtream Codes API</h3>
-      <p>API padrão de IPTV para autenticação, listagem de canais, VOD e séries. Suporta múltiplos servidores simultâneos com fallback automático.</p>
-      <br>
-      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--gold);">player_api.php · xmltv.php</span>
+      <h3>Multi-Servidor Xtream</h3>
+      <p>Suporte a 13+ servidores simultâneos com fallback automático. Troca transparente de servidor quando um falha — sem interrupção para o usuário. Prioridade configurável por servidor.</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">☁️</span>
-      <h3>JSON Remoto de Servidores</h3>
-      <p>Arquivo JSON hospedado em servidor próprio com lista de servidores, prioridades e flag debug_mode. Parser próprio sem json.loads (workaround bug Kodi).</p>
-      <br>
-      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--gold);">portalbot.ebj.re/addon/server.json</span>
+      <span class="feature-icon">🎬</span>
+      <h3>Catálogo TMDB Nativo</h3>
+      <p>Browser próprio integrado ao TMDB. Navegue por filmes e séries com metadados completos, filtros por gênero, busca por título e resolução automática no servidor Xtream.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔒</span>
+      <h3>Controle Parental PIN</h3>
+      <p>Sistema completo de controle parental com PIN de 4+ dígitos. Proteção por sessão — desbloqueio único por sessão Kodi. Detecção automática de categorias adultas por palavra-chave.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🛡️</span>
+      <h3>Proxy Local Seguro</h3>
+      <p>Servidor HTTP interno na porta 8089. Retransmite streams com User-Agent correto sem expor URLs originais no kodi.log. Tokenização XOR+Base64 para cada stream.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📺</span>
+      <h3>EPG / XMLTV</h3>
+      <p>Guia eletrônico de programação com atualização automática em background a cada 5 minutos. Thread daemon independente que não bloqueia a interface do usuário.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎭</span>
+      <h3>Trailers YouTube</h3>
+      <p>Integração com plugin.video.youtube para reprodução de trailers oficiais direto da tela de detalhes TMDB. Execução correta via PlayMedia — sem passar pelo proxy local.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📄</span>
+      <h3>Paginação Inteligente</h3>
+      <p>Catálogos com paginação automática. Botões "Página Anterior" e "Próxima Página" com indicação de progresso (ex: 3/47). Limite de itens por página configurável.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🌐</span>
-      <h3>Cloudflare DoH</h3>
-      <p>DNS over HTTPS via cloudflare-dns.com para resolução segura de nomes no proxy F4M. Contorna bloqueios de DNS de ISPs e evita vazamento de consultas.</p>
-      <br>
-      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--gold);">cloudflare-dns.com/dns-query</span>
+      <h3>DNS Customizado</h3>
+      <p>DNS over HTTPS via Cloudflare com cache de 4 horas. Contorna bloqueios de ISP, evita vazamento de consultas DNS e garante resolução confiável de nomes em qualquer rede.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">☁️</span>
+      <h3>Servidores Remotos</h3>
+      <p>JSON de servidores hospedado remotamente com cache local protegido. Atualizações sem reinstalação do add-on. Parser JSON próprio sem dependências do módulo padrão do Kodi.</p>
     </div>
   </div>
 
-  <!-- JSON CONFIG FORMAT -->
-  <h3 style="margin-bottom:1rem;">Formato do JSON Remoto de Servidores</h3>
-  <div class="code-block">
-<span class="comment">// server.json — hospedado em servidor próprio</span>
-{
-  <span class="key">"debug_mode"</span>: <span class="bool-false">false</span>,  <span class="comment">// true = logs detalhados no Kodi</span>
-  <span class="key">"servers"</span>: [
-    {
-      <span class="key">"id"</span>: <span class="val">1</span>,
-      <span class="key">"name"</span>: <span class="str">"Servidor BR-1"</span>,
-      <span class="key">"url"</span>: <span class="str">"http://servidor.exemplo.com:80"</span>,
-      <span class="key">"username"</span>: <span class="str">"usuario"</span>,
-      <span class="key">"password"</span>: <span class="str">"senha"</span>,
-      <span class="key">"priority"</span>: <span class="val">1</span>,
-      <span class="key">"enabled"</span>: <span class="bool-true">true</span>
-    }
-  ]
-}
-  </div>
-
-  <div class="highlight-box">
-    <p>
-      <strong>Bug exclusivo do Kodi:</strong> O módulo <code style="color:var(--cyan)">json</code> do Python nativo 
-      lança internamente um <code style="color:var(--accent)">ValueError</code> ao falhar o parse, mas no ambiente 
-      Kodi esse nome não está no escopo global, resultando em <code style="color:var(--accent)">NameError: name 'ValueError' is not defined</code>. 
-      A solução foi criar um <strong>parser JSON próprio</strong> usando apenas <code style="color:var(--cyan)">re</code> 
-      e manipulação de string — sem nenhuma dependência do módulo json.
-    </p>
+  <!-- WHAT'S NEW -->
+  <h3 style="margin-bottom:2rem;">O que há de <span style="color:var(--green)">Novo</span> — Atualização Abril 2026</h3>
+  <div class="changelog">
+    <div class="changelog-item new">
+      <span class="changelog-badge">NOVO</span>
+      <h4>TMDB Browser com Catálogos Completos</h4>
+      <p>Filmes e Séries agora têm catálogos próprios via TMDB Browser: Em Alta, Mais Bem Avaliados, Em Cartaz, Em Breve (filmes) e Episódio Hoje, Na Grade Esta Semana (séries). Todos com paginação.</p>
+    </div>
+    <div class="changelog-item new">
+      <span class="changelog-badge">NOVO</span>
+      <h4>Navegação por Gênero (Filmes e Séries)</h4>
+      <p>Explore o catálogo TMDB filtrado por qualquer gênero — Ação, Drama, Terror, Sci-Fi, Documentários e mais. Lista de gêneros carregada dinamicamente da API TMDB em pt-BR.</p>
+    </div>
+    <div class="changelog-item new">
+      <span class="changelog-badge">NOVO</span>
+      <h4>Página de Detalhes TMDB</h4>
+      <p>Tela completa com trailer oficial (YouTube), sinopse, ficha técnica, elenco com personagens, filmes semelhantes e acesso a coleções. Tudo integrado ao servidor Xtream para reprodução direta.</p>
+    </div>
+    <div class="changelog-item new">
+      <span class="changelog-badge">NOVO</span>
+      <h4>Hub de Navegação (movies_hub / series_hub)</h4>
+      <p>Tela de escolha entre Catálogo do Servidor (Xtream direto) e Catálogo TMDB. Usuário decide a forma de navegação a cada sessão.</p>
+    </div>
+    <div class="changelog-item fix">
+      <span class="changelog-badge">CORREÇÃO</span>
+      <h4>Trailers YouTube não Abriam</h4>
+      <p>URLs <code>plugin://plugin.video.youtube/...</code> eram incorretamente roteadas pelo proxy interno (porta 8089). Agora são detectadas e executadas via <code>xbmc.executebuiltin('PlayMedia')</code> diretamente.</p>
+    </div>
+    <div class="changelog-item update">
+      <span class="changelog-badge">MELHORIA</span>
+      <h4>Resolução TMDB → Servidor Xtream</h4>
+      <p>Algoritmo de matching por similaridade de título (Jaccard normalizado) com filtro de qualidade. Reutilização de detalhes entre variantes (Dual, Legendado, etc.) do mesmo título.</p>
+    </div>
+    <div class="changelog-item security">
+      <span class="changelog-badge">SEGURANÇA</span>
+      <h4>Cache de Servidores Criptografado</h4>
+      <p>Cache local migrado de JSON em texto puro para formato binário cifrado com XOR+Base64. Chave de 16 bytes. Remove automaticamente a versão legível anterior.</p>
+    </div>
+    <div class="changelog-item security">
+      <span class="changelog-badge">SEGURANÇA</span>
+      <h4>Detecção de Add-ons Parasitas</h4>
+      <p>Verifica na inicialização se add-ons conhecidos (lista configurável) estão usando as mesmas credenciais do KelTec. Alerta o usuário com recomendações de ação — sem modificar dados automaticamente.</p>
+    </div>
+    <div class="changelog-item security">
+      <span class="changelog-badge">SEGURANÇA</span>
+      <h4>Bloqueio Total de URLs nos Logs</h4>
+      <p>Filtro de logging intercepta qualquer mensagem contendo http://, https://, credenciais, IPs ou padrões de stream antes que cheguem ao kodi.log. Proteção completa de privacidade.</p>
+    </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- SEGURANÇA -->
-<section id="segurança">
-  <div class="section-tag">05 — Segurança</div>
-  <h2>Modelo de <em>Segurança</em></h2>
+<!-- ── 02 TMDB METADADOS ── -->
+<section id="tmdb">
+  <div class="section-tag gold">02 — TMDB · Metadados</div>
+  <h2>Integração <em class="gold">TMDB</em> Profunda</h2>
 
-  <div style="overflow-x:auto; margin-bottom:3rem;">
+  <p style="max-width:700px; margin-bottom:3rem; font-size:0.95rem;">
+    O add-on integra dois módulos TMDB independentes: o <strong style="color:var(--text-bright)">TMDB Helper</strong> 
+    enriquece metadados de itens do servidor Xtream em tempo real; o <strong style="color:var(--text-bright)">TMDB Browser</strong> 
+    oferece catálogos completos da base TMDB resolúveis no servidor.
+  </p>
+
+  <div class="feature-grid" style="margin-bottom:3rem;">
+    <div class="feature-card">
+      <span class="feature-icon">🔍</span>
+      <h3>TMDB Helper — Enriquecimento</h3>
+      <p>Busca automática de metadados para cada item do servidor Xtream. Poster, fanart, sinopse, classificação, elenco, diretor, duração e gênero carregados em thread de segundo plano sem travar a interface.</p>
+      <br>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-dim);">lib/tmdb_helper.py</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🗂️</span>
+      <h3>TMDB Browser — Catálogo</h3>
+      <p>Módulo de navegação TMDB independente do servidor. Listas populares, avaliação, gêneros, busca por texto. Resolve automaticamente qual stream do servidor corresponde a cada título TMDB.</p>
+      <br>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-dim);">lib/tmdb_browser.py</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <h3>Cache em Memória + Disco</h3>
+      <p>Cache TMDB em dois níveis: dicionário em memória para a sessão atual (acesso imediato) e arquivos JSON em disco com TTL configurável (padrão 7 dias). Thread-safe com RLock.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🌍</span>
+      <h3>Idioma Configurável</h3>
+      <p>Todos os metadados — sinopse, título, gêneros, elenco — retornados no idioma configurado nas preferências. Padrão pt-BR com suporte a qualquer locale IANA.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎯</span>
+      <h3>Similaridade Jaccard</h3>
+      <p>Algoritmo de normalização e similaridade para casar títulos do servidor (com sufixos como [Dual], [4K], (2026)) com os títulos exatos do TMDB. Limiar configurável, sim=1.00 indica match perfeito.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔄</span>
+      <h3>Reutilização de Detalhes</h3>
+      <p>Variantes do mesmo título (ex: "Filme (2026)" e "Filme (2026) [Dual]") compartilham o mesmo objeto de detalhes TMDB. Evita chamadas duplicadas à API e reduz uso de cota.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box gold">
+    <strong style="color:var(--gold);">Requisito:</strong> Configure sua API Key TMDB gratuita em 
+    <span style="font-family:'Share Tech Mono',monospace;color:var(--cyan)">themoviedb.org/settings/api</span> 
+    e insira nas configurações do add-on. Sem a chave, o TMDB Browser e o TMDB Helper ficam desativados automaticamente.
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── 03 CATÁLOGOS TMDB ── -->
+<section id="catalogos">
+  <div class="section-tag purple">03 — Catálogos TMDB</div>
+  <h2>Catálogos de <em class="p">Filmes</em> e <em class="p">Séries</em></h2>
+
+  <p style="max-width:700px; margin-bottom:3rem; font-size:0.95rem;">
+    Cada categoria de conteúdo possui um <strong style="color:var(--text-bright)">Hub de Navegação</strong> que permite 
+    escolher entre o catálogo nativo do servidor Xtream e o catálogo enriquecido do TMDB. 
+    O catálogo TMDB resolve automaticamente qual stream do servidor reproduzir.
+  </p>
+
+  <!-- FILMES -->
+  <h3 style="margin-bottom:1.5rem; color:var(--gold);">🎬 Catálogo de Filmes (TMDB)</h3>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <span class="menu-dot gold"></span>
+      <div>
+        <h4>Em Alta Agora</h4>
+        <p>Filmes mais populares do momento no TMDB. Ranking atualizado diariamente via endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">movie/popular</code>.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot gold"></span>
+      <div>
+        <h4>Mais Bem Avaliados</h4>
+        <p>Filmes com maiores notas de todos os tempos. Endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">movie/top_rated</code> com vote_count mínimo.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot lime"></span>
+      <div>
+        <h4>Em Cartaz</h4>
+        <p>Lançamentos em exibição nas salas de cinema agora. Endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">movie/now_playing</code> com janela de datas.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot cyan"></span>
+      <div>
+        <h4>Em Breve</h4>
+        <p>Estreias futuras confirmadas com data de lançamento programada. Endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">movie/upcoming</code>.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot orange"></span>
+      <div>
+        <h4>Explorar por Gênero</h4>
+        <p>Lista dinâmica de gêneros carregada da API. Cada gênero abre catálogo paginado via <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">discover/movie?with_genres=</code>.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot blue"></span>
+      <div>
+        <h4>Buscar Filme</h4>
+        <p>Teclado virtual do Kodi para digitação. Pesquisa via <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">search/movie</code> e resolve no servidor.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SÉRIES -->
+  <h3 style="margin-bottom:1.5rem; color:var(--purple);">📺 Catálogo de Séries (TMDB)</h3>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <span class="menu-dot gold"></span>
+      <div>
+        <h4>Em Alta Agora</h4>
+        <p>Séries mais populares do momento. Endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">tv/popular</code> atualizado diariamente.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot gold"></span>
+      <div>
+        <h4>Mais Bem Avaliadas</h4>
+        <p>Séries com maiores notas históricas. Endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">tv/top_rated</code> com filtro de votos mínimos.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot lime"></span>
+      <div>
+        <h4>Episódio Hoje</h4>
+        <p>Séries com episódio exibido hoje. Endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">tv/airing_today</code> — ideal para acompanhar o que passa agora.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot cyan"></span>
+      <div>
+        <h4>Na Grade Esta Semana</h4>
+        <p>Séries em exibição nos próximos 7 dias. Endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">tv/on_the_air</code> com janela semanal.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot orange"></span>
+      <div>
+        <h4>Explorar por Gênero</h4>
+        <p>Gêneros de séries carregados via <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">genre/tv/list</code>. Catálogo filtrado por <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">discover/tv?with_genres=</code>.</p>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-dot blue"></span>
+      <div>
+        <h4>Buscar Série</h4>
+        <p>Pesquisa textual via <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">search/tv</code>. Resolve automaticamente no servidor Xtream após seleção.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESOLUÇÃO -->
+  <h3 style="margin-bottom:1.5rem;">Fluxo de Resolução TMDB → Servidor</h3>
+  <div class="flow-row">
+    <div class="flow-box">
+      <div class="fb-title" style="color:var(--purple)">TMDB Browser</div>
+      <p>Usuário navega catálogo TMDB e seleciona título</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">
+      <div class="fb-title" style="color:var(--gold)">tmdb_resolve</div>
+      <p>Busca título em todos os 13 servidores simultaneamente</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">
+      <div class="fb-title" style="color:var(--cyan)">Matching Jaccard</div>
+      <p>Normaliza e compara títulos. Agrupa variantes (Dual, 4K…)</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">
+      <div class="fb-title" style="color:var(--green)">Reprodução</div>
+      <p>Lista resultados por % de match. Usuário escolhe e reproduz</p>
+    </div>
+  </div>
+
+  <div class="highlight-box purple" style="margin-top:2rem;">
+    <strong style="color:var(--purple);">tmdb_detail</strong> → Ao selecionar um item do catálogo TMDB, abre uma tela intermediária completa com 
+    trailer, sinopse expandida, elenco, filmes semelhantes e coleção — antes de resolver no servidor.
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── 04 PÁGINA DE DETALHES ── -->
+<section id="detalhes">
+  <div class="section-tag teal">04 — Detalhes TMDB</div>
+  <h2>Página de <em class="t">Detalhes</em> Completa</h2>
+
+  <p style="max-width:700px; margin-bottom:2.5rem; font-size:0.95rem;">
+    Ao selecionar qualquer título no catálogo TMDB, o modo <strong style="color:var(--teal)">tmdb_detail</strong> 
+    exibe uma página rica com todas as informações disponíveis na API, integradas ao servidor Xtream para reprodução.
+  </p>
+
+  <div class="detail-grid">
+    <div class="detail-card">
+      <span class="dc-icon">▶️</span>
+      <h4>Trailer Oficial</h4>
+      <p>Trailer do YouTube como primeiro item. Abre via plugin.video.youtube sem proxy. Exibido apenas quando disponível na API.</p>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">▶▶</span>
+      <h4>Reproduzir</h4>
+      <p>Botão principal em destaque com título, ano, classificação e nota. Resolve e reproduz o stream diretamente do servidor.</p>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">📖</span>
+      <h4>Sinopse Completa</h4>
+      <p>Sinopse completa do TMDB com tagline em itálico. Exibida como item de informação sem ação de reprodução.</p>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">🎭</span>
+      <h4>Elenco Principal</h4>
+      <p>Lista dos primeiros atores com nome do personagem. Cada ator como item navegável com foto de perfil do TMDB.</p>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">🎞️</span>
+      <h4>Filmes Semelhantes</h4>
+      <p>Títulos relacionados via endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">similar</code>. Cada item abre seus próprios detalhes — navegação encadeada.</p>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">📦</span>
+      <h4>Coleção</h4>
+      <p>Para filmes que fazem parte de uma saga (ex: Vingadores), exibe todos os títulos da coleção via <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">tmdb_collection</code>.</p>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">⭐</span>
+      <h4>Ficha Técnica</h4>
+      <p>Nota TMDB, votos totais, ano, classificação etária, duração, gênero, diretor, estúdio e status de produção.</p>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">🔗</span>
+      <h4>Hub de Resolução</h4>
+      <p>Após visualizar detalhes, o botão Reproduzir dispara <code style="color:var(--teal);font-family:'Share Tech Mono',monospace">tmdb_resolve</code> para encontrar o stream nos servidores.</p>
+    </div>
+  </div>
+
+  <div class="code-block" data-label="ROTEAMENTO">
+<span class="comment">// Fluxo de modos — detalhes TMDB</span>
+<span class="fn">tmdb_movies_menu</span>  →  lista de categorias (Em Alta, Gênero, Busca...)
+<span class="fn">tmdb_detail</span>        →  página de detalhes completa (trailer, elenco, similar)
+<span class="fn">tmdb_collection</span>   →  lista todos os filmes da saga/coleção
+<span class="fn">tmdb_resolve</span>      →  busca título em todos os servidores e lista resultados
+<span class="fn">tmdb_open_series</span>  →  abre temporadas da série no servidor específico encontrado
+<span class="fn">play</span>              →  reproduz stream (detecta plugin:// → PlayMedia, http → proxy)
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── 05 CATEGORIAS & GÊNEROS ── -->
+<section id="generos">
+  <div class="section-tag gold">05 — Categorias & Gêneros</div>
+  <h2>Navegação por <em class="gold">Gêneros</em></h2>
+
+  <p style="max-width:700px; margin-bottom:2.5rem; font-size:0.95rem;">
+    Gêneros de filmes e séries são carregados dinamicamente da API TMDB no idioma configurado 
+    (pt-BR por padrão). Cada gênero abre um catálogo paginado via endpoint <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">discover</code>.
+  </p>
+
+  <h3 style="margin-bottom:1rem;">Gêneros de Filmes</h3>
+  <div class="genre-grid">
+    <span class="genre-pill movie">Ação</span>
+    <span class="genre-pill movie">Aventura</span>
+    <span class="genre-pill movie">Animação</span>
+    <span class="genre-pill movie">Comédia</span>
+    <span class="genre-pill movie">Crime</span>
+    <span class="genre-pill movie">Documentário</span>
+    <span class="genre-pill movie">Drama</span>
+    <span class="genre-pill movie">Família</span>
+    <span class="genre-pill movie">Fantasia</span>
+    <span class="genre-pill movie">Ficção Científica</span>
+    <span class="genre-pill movie">Guerra</span>
+    <span class="genre-pill movie">História</span>
+    <span class="genre-pill movie">Horror</span>
+    <span class="genre-pill movie">Música</span>
+    <span class="genre-pill movie">Mistério</span>
+    <span class="genre-pill movie">Romance</span>
+    <span class="genre-pill movie">Terror</span>
+    <span class="genre-pill movie">Thriller</span>
+    <span class="genre-pill movie">Western</span>
+  </div>
+
+  <h3 style="margin-bottom:1rem;">Gêneros de Séries</h3>
+  <div class="genre-grid">
+    <span class="genre-pill tv">Ação e Aventura</span>
+    <span class="genre-pill tv">Animação</span>
+    <span class="genre-pill tv">Comédia</span>
+    <span class="genre-pill tv">Crime</span>
+    <span class="genre-pill tv">Documentário</span>
+    <span class="genre-pill tv">Drama</span>
+    <span class="genre-pill tv">Família</span>
+    <span class="genre-pill tv">Infantil</span>
+    <span class="genre-pill tv">Mistério</span>
+    <span class="genre-pill tv">News</span>
+    <span class="genre-pill tv">Reality</span>
+    <span class="genre-pill tv">Sci-Fi & Fantasy</span>
+    <span class="genre-pill tv">Soap</span>
+    <span class="genre-pill tv">Talk</span>
+    <span class="genre-pill tv">War & Politics</span>
+    <span class="genre-pill tv">Western</span>
+  </div>
+
+  <div class="highlight-box">
+    <strong style="color:var(--cyan)">Nota de Implementação:</strong> Os IDs de gênero são retornados pela API TMDB 
+    (<code style="color:var(--gold)">genre/movie/list</code> e <code style="color:var(--gold)">genre/tv/list</code>) 
+    e passados via parâmetro <code style="color:var(--gold)">genre_id</code> ao modo 
+    <code style="color:var(--gold)">tmdb_movie_by_genre</code> / <code style="color:var(--gold)">tmdb_tv_by_genre</code>. 
+    Não há lista estática — todos os gêneros são dinâmicos e respeitem o idioma configurado.
+  </div>
+
+  <h3 style="margin-bottom:1.5rem; margin-top:3rem;">Paginação de Catálogos</h3>
+  <div style="overflow-x:auto;">
     <table class="data-table">
       <thead>
         <tr>
-          <th>Proteção</th>
-          <th>Implementação</th>
-          <th>Onde</th>
+          <th>Modo</th>
+          <th>Endpoint TMDB</th>
+          <th>Paginação</th>
+          <th>Itens/Pág.</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong style="color:var(--text-bright)">Controle de Logs</strong></td>
-          <td>Campo <code style="color:var(--gold)">debug_mode</code> no JSON remoto. Quando false, todos os logs LOGDEBUG são suprimidos — sem URLs, usuários, senhas ou IPs nos logs do Kodi.</td>
-          <td class="mono">main.py · server_loader.py</td>
+          <td class="mono">discover_movies_popular</td>
+          <td><code style="color:var(--cyan);font-family:'Share Tech Mono',monospace">movie/popular</code></td>
+          <td>Sim — botões anterior/próxima</td>
+          <td>20 (TMDB padrão)</td>
         </tr>
         <tr>
-          <td><strong style="color:var(--text-bright)">Erros Genéricos</strong></td>
-          <td>Popups de erro ao usuário nunca expõem host, porta, usuário ou senha. Mensagens como "Servidor Offline" ou "Conectando no próximo..."</td>
-          <td class="mono">main.py get_json()</td>
+          <td class="mono">tmdb_movie_by_genre</td>
+          <td><code style="color:var(--cyan);font-family:'Share Tech Mono',monospace">discover/movie</code></td>
+          <td>Sim — multi-página</td>
+          <td>20 (TMDB padrão)</td>
         </tr>
         <tr>
-          <td><strong style="color:var(--text-bright)">Fallback Silencioso</strong></td>
-          <td>Troca de servidor automática sem revelar qual servidor estava em uso. Popup mostra apenas posição numérica (ex: 2/10).</td>
-          <td class="mono">main.py try_next_server()</td>
+          <td class="mono">tmdb_search_movie</td>
+          <td><code style="color:var(--cyan);font-family:'Share Tech Mono',monospace">search/movie</code></td>
+          <td>Resultados únicos</td>
+          <td>Até 20</td>
         </tr>
         <tr>
-          <td><strong style="color:var(--text-bright)">Silenciamento urllib3</strong></td>
-          <td>Loggers do urllib3, requests e root definidos como CRITICAL, impedindo vazamento de URLs e IPs nas conexões HTTP.</td>
-          <td class="mono">server_loader.py</td>
-        </tr>
-        <tr>
-          <td><strong style="color:var(--text-bright)">DNS Seguro</strong></td>
-          <td>Uso de DoH (DNS over HTTPS) no proxy F4M para evitar vazamento de consultas DNS ao ISP.</td>
-          <td class="mono">doh.py · f4m_proxy.py</td>
-        </tr>
-        <tr>
-          <td><strong style="color:var(--text-bright)">Cache Criptografado</strong></td>
-          <td>Senhas dos servidores ficam em cache local apenas pelo TTL configurado. Não há transmissão de credenciais em texto além do protocolo Xtream padrão.</td>
-          <td class="mono">server_loader.py</td>
+          <td class="mono">movie_items</td>
+          <td>Xtream API <code style="color:var(--cyan);font-family:'Share Tech Mono',monospace">get_vod_streams</code></td>
+          <td>Sim — botões anterior/próxima</td>
+          <td>Configurável</td>
         </tr>
       </tbody>
     </table>
@@ -1061,31 +1037,298 @@
 
 <div class="divider"></div>
 
-<!-- CONFIGURAÇÃO -->
-<section id="configuração">
-  <div class="section-tag">06 — Configuração</div>
-  <h2>Guia de <em>Configuração</em></h2>
+<!-- ── 06 CONTROLE PARENTAL ── -->
+<section id="parental">
+  <div class="section-tag" style="color:var(--accent);">06 — Controle Parental</div>
+  <h2>Sistema de <em>Controle</em> Parental</h2>
+
+  <p style="max-width:700px; margin-bottom:3rem; font-size:0.95rem;">
+    O controle parental é um sistema completo de bloqueio por PIN integrado diretamente ao 
+    fluxo de navegação. Detecta categorias adultas automaticamente e protege conteúdo 18+ 
+    sem configuração manual por categoria.
+  </p>
+
+  <div class="parental-grid" style="margin-bottom:3rem;">
+    <div class="parental-card" data-state="PIN">
+      <h3>Proteção por PIN</h3>
+      <p style="font-size:0.85rem;color:var(--text);line-height:1.6;">PIN de 4+ dígitos configurado pelo usuário. Armazenado em <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">settings.xml</code> do Kodi. Para desativar o controle parental, o PIN atual é exigido — protege contra burla por crianças.</p>
+    </div>
+    <div class="parental-card" data-state="SESSÃO">
+      <h3>Desbloqueio por Sessão</h3>
+      <p style="font-size:0.85rem;color:var(--text);line-height:1.6;">Uma vez digitado o PIN correto, o acesso adulto fica liberado para toda a sessão Kodi atual. Sem necessidade de redigitar a cada categoria. Reiniciar o Kodi exige nova autenticação.</p>
+    </div>
+    <div class="parental-card" data-state="ATIVO">
+      <h3>Detecção Automática</h3>
+      <p style="font-size:0.85rem;color:var(--text);line-height:1.6;">Função <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">is_adult_category()</code> analisa o nome da categoria por palavras-chave (ex: "adulto", "18+", "xxx"). Intercepta automaticamente ao entrar na categoria.</p>
+    </div>
+    <div class="parental-card" data-state="BLOQUEADO">
+      <h3>Bloqueio Granular</h3>
+      <p style="font-size:0.85rem;color:var(--text);line-height:1.6;">Proteção em todos os pontos: entrada em categorias (live, vod, séries), reprodução direta de conteúdo marcado como adulto, e acesso ao menu de configurações parentais.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:1.5rem;">Menu de Controle Parental</h3>
+  <div class="code-block" data-label="MENU PARENTAL">
+<span class="comment">// Opções disponíveis no menu parental_menu</span>
+[1] <span class="fn">Ativar / Desativar</span>    → toggle com exigência de PIN para desativar
+[2] <span class="fn">Alterar PIN</span>           → exige PIN atual + confirmação do novo
+[3] <span class="fn">Desbloquear Sessão</span>    → exige PIN → libera acesso até reiniciar Kodi
+[4] <span class="fn">Bloquear Sessão</span>       → força novo PIN na próxima categoria adulta
+[5] <span class="fn">Voltar</span>                → fecha menu sem alterações
+  </div>
+
+  <div style="overflow-x:auto; margin-top:2rem;">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Ponto de Interceptação</th>
+          <th>Modo</th>
+          <th>Comportamento com Parental Ativo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Entrada em categoria live adulta</td>
+          <td class="mono">live_items</td>
+          <td>Exibe popup de PIN. Após autenticação, lista os canais.</td>
+        </tr>
+        <tr>
+          <td>Entrada em categoria filmes adulta</td>
+          <td class="mono">movie_items</td>
+          <td>Exibe popup de PIN. Após autenticação, lista filmes com paginação.</td>
+        </tr>
+        <tr>
+          <td>Entrada em categoria séries adulta</td>
+          <td class="mono">adult_category_enter</td>
+          <td>Detecta tipo pelo endpoint e lista conteúdo após PIN.</td>
+        </tr>
+        <tr>
+          <td>Reprodução direta de item adulto</td>
+          <td class="mono">play (is_adult=true)</td>
+          <td>Bloqueia play e exige PIN antes de chamar play_item().</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── 07 ARQUITETURA ── -->
+<section id="arquitetura">
+  <div class="section-tag">07 — Arquitetura</div>
+  <h2>Arquitetura <em class="c">Técnica</em></h2>
+
+  <div style="margin-bottom:3rem;">
+    <div class="arch-layer">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num" style="color:var(--accent);border-color:var(--accent);">01</div>
+        <div class="arch-layer-title" style="color:var(--accent);">Ponto de Entrada</div>
+        <div class="arch-layer-desc">Roteamento por parâmetro <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">mode=</code> — 30+ rotas mapeadas</div>
+      </div>
+      <div class="arch-layer-files">
+        <span class="arch-file">main.py</span>
+        <span class="arch-file">addon.xml</span>
+        <span class="arch-file">settings.xml</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num" style="color:var(--gold);border-color:var(--gold);">02</div>
+        <div class="arch-layer-title" style="color:var(--gold);">TMDB Layer</div>
+        <div class="arch-layer-desc">Metadados, catálogo, detalhes, gêneros, busca e resolução de streams</div>
+      </div>
+      <div class="arch-layer-files">
+        <span class="arch-file">lib/tmdb_helper.py</span>
+        <span class="arch-file">lib/tmdb_browser.py</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num" style="color:var(--cyan);border-color:var(--cyan);">03</div>
+        <div class="arch-layer-title" style="color:var(--cyan);">Server Layer</div>
+        <div class="arch-layer-desc">Carregamento, cache e fallback de servidores Xtream</div>
+      </div>
+      <div class="arch-layer-files">
+        <span class="arch-file">server_loader.py</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num" style="color:var(--purple);border-color:var(--purple);">04</div>
+        <div class="arch-layer-title" style="color:var(--purple);">Proxy Layer</div>
+        <div class="arch-layer-desc">Proxy KelTec interno (8089) + proxy F4M externo (8088) + DNS customizado</div>
+      </div>
+      <div class="arch-layer-files">
+        <span class="arch-file">proxy.py (F4M)</span>
+        <span class="arch-file">dns/customdns.py</span>
+        <span class="arch-file">proxy_http_scraper.py</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num" style="color:var(--green);border-color:var(--green);">05</div>
+        <div class="arch-layer-title" style="color:var(--green);">Kodi API</div>
+        <div class="arch-layer-desc">Interface com xbmc*, EPG thread, player e resolução de URLs</div>
+      </div>
+      <div class="arch-layer-files">
+        <span class="arch-file">xbmc</span>
+        <span class="arch-file">xbmcgui</span>
+        <span class="arch-file">xbmcplugin</span>
+        <span class="arch-file">xbmcaddon</span>
+        <span class="arch-file">xbmcvfs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROXY KELTEC -->
+  <h3 style="margin-bottom:1.5rem;">Proxy KelTec Interno — Porta 8089</h3>
+  <div class="feature-grid" style="margin-bottom:2rem;">
+    <div class="feature-card">
+      <span class="feature-icon">🔁</span>
+      <h3>Thread Daemon</h3>
+      <p>Servidor HTTP iniciado em thread daemon no boot do add-on. Roda dentro do processo Kodi — sem processos externos. Nome da thread: <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">KelTecProxy</code>.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔑</span>
+      <h3>Tokenização XOR</h3>
+      <p>Cada URL de stream é substituída por um token gerado via XOR+Base64. O proxy mapeia token → URL original internamente. URL real nunca aparece em logs do Kodi.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎬</span>
+      <h3>Filmes e Séries</h3>
+      <p>Filmes e séries usam o proxy KelTec por padrão (<code style="color:var(--gold);font-family:'Share Tech Mono',monospace">use_keltec_proxy=true</code>). Canais live usam F4M (porta 8088). Pode ser desabilitado nas configurações.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🚫</span>
+      <h3>Bypass plugin://</h3>
+      <p>URLs <code style="color:var(--cyan);font-family:'Share Tech Mono',monospace">plugin://</code> (como trailers YouTube) são detectadas antes do proxy e executadas via <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">PlayMedia()</code> diretamente.</p>
+    </div>
+  </div>
+
+  <div class="code-block" data-label="PROXY INTERNO">
+<span class="comment">// Lógica de seleção de proxy em play_item()</span>
+<span class="key">if</span> url_clean.<span class="fn">startswith</span>(<span class="str">'plugin://'</span>):
+    <span class="comment">→ URL de plugin externo (YouTube, etc.)</span>
+    xbmcplugin.<span class="fn">setResolvedUrl</span>(handle, <span class="bool-false">False</span>, ListItem())
+    xbmc.<span class="fn">executebuiltin</span>(<span class="str">f'PlayMedia({url_clean})'</span>)
+    <span class="key">return</span>
+
+<span class="key">elif</span> content_type <span class="key">in</span> [<span class="str">'movie'</span>, <span class="str">'series'</span>]:
+    <span class="key">if</span> use_proxy == <span class="str">'true'</span> <span class="key">and</span> _keltec_proxy_running():
+        url_final = <span class="fn">_keltec_proxy_url</span>(url_clean)   <span class="comment">// token XOR</span>
+    <span class="key">else</span>:
+        li.<span class="fn">setProperty</span>(<span class="str">'customHeaders'</span>, <span class="str">f'User-Agent={UA}'</span>)
+
+<span class="key">elif</span> content_type == <span class="str">'live'</span>:
+    <span class="comment">→ Usa F4MTESTER (porta 8088) ou player direto</span>
+  </div>
+
+  <!-- SERVERLOADER -->
+  <h3 style="margin-bottom:1.5rem; margin-top:3rem;">ServerLoader v5.0</h3>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="feature-icon">☁️</span>
+      <h3>JSON Remoto</h3>
+      <p>Arquivo JSON hospedado remotamente com lista de servidores. Baixado e cacheado localmente. Parser próprio sem dependência do módulo <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">json</code> (workaround bug Kodi).</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <h3>Cache Criptografado</h3>
+      <p>Cache salvo em <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">keltec_srv_data.bin</code> com cifra XOR+Base64. TTL configurável. Remove automaticamente versões legíveis antigas.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔄</span>
+      <h3>Fallback Automático</h3>
+      <p>Ordena servidores por prioridade. Em caso de falha, tenta o próximo transparentemente. Usuário vê apenas "Servidor 2/13" — sem URLs expostas.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── 08 SEGURANÇA ── -->
+<section id="seguranca">
+  <div class="section-tag" style="color:var(--accent);">08 — Segurança</div>
+  <h2>Modelo de <em>Segurança</em> Multicamada</h2>
+
+  <div class="sec-grid" style="margin-bottom:3rem;">
+    <div class="sec-card">
+      <span class="sc-num">01</span>
+      <h4>🔐 Cache Criptografado XOR+Base64</h4>
+      <p>Cache de servidores salvo em formato binário cifrado. Chave de 16 bytes <code>_CACHE_KEY</code> configurável. Descriptografado apenas em memória durante a sessão. Remove versão JSON em texto puro se encontrada.</p>
+    </div>
+    <div class="sec-card">
+      <span class="sc-num">02</span>
+      <h4>🚫 Bloqueio Total de URLs em Logs</h4>
+      <p>Filtro <code>_KeltecURLFilter</code> instalado em todos os loggers Python (root, werkzeug, urllib3, requests). Intercepta qualquer mensagem contendo <code>http://</code>, <code>https://</code>, <code>username=</code>, <code>.m3u8</code>, IPs e padrões de stream antes de chegar ao kodi.log.</p>
+    </div>
+    <div class="sec-card">
+      <span class="sc-num">03</span>
+      <h4>🛡️ Proxy Token — Oculta URLs de Stream</h4>
+      <p>Cada URL de stream real é substituída por um token XOR+Base64 antes de ser passada ao Kodi. O kodi.log registra apenas o token — nunca a URL do servidor. O proxy interno decodifica e retransmite.</p>
+    </div>
+    <div class="sec-card">
+      <span class="sc-num">04</span>
+      <h4>🦠 Detecção de Add-ons Parasitas</h4>
+      <p>Na inicialização, verifica se add-ons listados em <code>_PARASITAS_IDS</code> estão usando as mesmas credenciais (URL + usuário). Se detectado, alerta o usuário com recomendações. Não modifica dados automaticamente.</p>
+    </div>
+    <div class="sec-card">
+      <span class="sc-num">05</span>
+      <h4>🌐 DNS over HTTPS</h4>
+      <p>Módulo <code>customdns</code> redireciona resoluções DNS via Cloudflare DoH (<code>cloudflare-dns.com/dns-query</code>) com cache de 4 horas. Contorna bloqueios de ISP e evita vazamento de consultas DNS.</p>
+    </div>
+    <div class="sec-card">
+      <span class="sc-num">06</span>
+      <h4>🔕 Silenciamento de Loggers HTTP</h4>
+      <p>Loggers <code>urllib3</code>, <code>requests</code>, <code>werkzeug</code> e <code>root</code> configurados como <code>CRITICAL</code> e desabilitados. Nenhuma URL de conexão HTTP vaza para os logs do sistema.</p>
+    </div>
+    <div class="sec-card">
+      <span class="sc-num">07</span>
+      <h4>🔒 Controle Parental por PIN</h4>
+      <p>PIN armazenado em <code>settings.xml</code> (settings do Kodi). Verificação obrigatória para desativar proteção, alterar PIN ou entrar em categorias adultas. Sessão de acesso adulto não persiste entre reinicializações.</p>
+    </div>
+    <div class="sec-card">
+      <span class="sc-num">08</span>
+      <h4>📋 Erros Genéricos ao Usuário</h4>
+      <p>Mensagens de erro nunca expõem host, porta, usuário ou senha. Popups mostram apenas "Servidor Offline" ou "Conectando no próximo servidor (2/13)" — sem informação técnica sensível.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box red">
+    <strong style="color:var(--accent);">Aviso de Segurança:</strong> O sistema de detecção de parasitas verifica apenas add-ons da lista 
+    <code style="color:var(--gold)">_PARASITAS_IDS</code>. Se suspeitar de uso não autorizado das suas credenciais por outros add-ons, 
+    altere sua senha no painel do servidor Xtream imediatamente.
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── 09 CONFIGURAÇÃO ── -->
+<section id="configuracao">
+  <div class="section-tag">09 — Configuração</div>
+  <h2>Guia de <em class="c">Configuração</em></h2>
 
   <div class="feature-grid" style="margin-bottom:3rem;">
     <div class="feature-card">
       <span class="feature-icon">⚙️</span>
       <h3>settings.xml</h3>
-      <p>Configurações do add-on via interface Kodi: API key TMDB, idioma, cache, EPG on/off, proxy HTTP, F4MTESTER on/off, servidores manuais (até 5).</p>
+      <p>Configurações do add-on via interface nativa do Kodi. Inclui credenciais TMDB, opções de proxy, controle parental, EPG, F4MTESTER e servidores manuais (até 5 entradas).</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🌐</span>
-      <h3>JSON Remoto</h3>
-      <p>Hospede um arquivo server.json com a lista de servidores. Atualize quando quiser — os clientes baixam automaticamente ao expirar o cache (5 min padrão).</p>
+      <h3>JSON Remoto de Servidores</h3>
+      <p>Hospede um arquivo <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">server.json</code> com a lista de servidores. Atualizações aplicadas automaticamente ao expirar o cache sem reinstalar o add-on.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">🔧</span>
       <h3>debug_mode</h3>
-      <p>Mude <code>"debug_mode": true</code> no JSON para ver logs detalhados durante manutenção. Volte para false quando terminar — os clientes aplicam na próxima atualização do cache.</p>
+      <p>Ative <code style="color:var(--gold);font-family:'Share Tech Mono',monospace">"debug_mode": true</code> no JSON remoto para logs detalhados durante manutenção. Clientes aplicam na próxima atualização do cache.</p>
     </div>
   </div>
 
-  <h3 style="margin-bottom:1rem;">Configurações do settings.xml</h3>
-  <div style="overflow-x:auto;">
+  <h3 style="margin-bottom:1rem;">Tabela de Configurações — settings.xml</h3>
+  <div style="overflow-x:auto; margin-bottom:3rem;">
     <table class="data-table">
       <thead>
         <tr>
@@ -1099,53 +1342,107 @@
         <tr>
           <td class="mono">tmdb_enabled</td>
           <td><span class="tag cyan">bool</span></td>
-          <td>Ativa busca de metadados TMDB para filmes, séries e live</td>
+          <td>Ativa busca de metadados TMDB e TMDB Browser</td>
           <td class="mono">false</td>
         </tr>
         <tr>
           <td class="mono">tmdb_api_key</td>
           <td><span class="tag">string</span></td>
-          <td>Chave da API TMDB (gratuita em themoviedb.org)</td>
+          <td>Chave da API TMDB (gratuita em themoviedb.org/settings/api)</td>
           <td class="mono">—</td>
         </tr>
         <tr>
           <td class="mono">tmdb_language</td>
           <td><span class="tag">select</span></td>
-          <td>Idioma dos metadados retornados pelo TMDB</td>
+          <td>Idioma dos metadados TMDB (sinopse, gêneros, título)</td>
           <td class="mono">pt-BR</td>
+        </tr>
+        <tr>
+          <td class="mono">tmdb_cache_days</td>
+          <td><span class="tag gold">int</span></td>
+          <td>Dias de validade do cache TMDB em disco</td>
+          <td class="mono">7</td>
+        </tr>
+        <tr>
+          <td class="mono">use_keltec_proxy</td>
+          <td><span class="tag cyan">bool</span></td>
+          <td>Usa proxy interno (porta 8089) para ocultar URLs de filmes/séries nos logs</td>
+          <td class="mono">true</td>
         </tr>
         <tr>
           <td class="mono">enable_epg</td>
           <td><span class="tag cyan">bool</span></td>
-          <td>Ativa EPG/XMLTV nos canais ao vivo</td>
+          <td>Ativa EPG/XMLTV nos canais ao vivo com atualização automática a cada 5 min</td>
           <td class="mono">false</td>
         </tr>
         <tr>
           <td class="mono">use_f4mtester</td>
           <td><span class="tag cyan">bool</span></td>
-          <td>Usa F4MTESTER proxy para canais ao vivo</td>
+          <td>Usa F4MTESTER proxy (porta 8088) para canais ao vivo</td>
           <td class="mono">true</td>
         </tr>
         <tr>
           <td class="mono">auto_fallback</td>
           <td><span class="tag cyan">bool</span></td>
-          <td>Fallback automático para próximo servidor em caso de falha</td>
+          <td>Fallback automático para próximo servidor em caso de falha de conexão</td>
           <td class="mono">true</td>
         </tr>
         <tr>
           <td class="mono">proxy_http</td>
           <td><span class="tag cyan">bool</span></td>
-          <td>Usa proxy HTTP rotativo para requisições</td>
+          <td>Usa proxy HTTP rotativo externo para requisições à API Xtream</td>
           <td class="mono">false</td>
+        </tr>
+        <tr>
+          <td class="mono">parental_enabled</td>
+          <td><span class="tag cyan">bool</span></td>
+          <td>Ativa controle parental com bloqueio de categorias adultas por PIN</td>
+          <td class="mono">false</td>
+        </tr>
+        <tr>
+          <td class="mono">parental_pin</td>
+          <td><span class="tag red">secret</span></td>
+          <td>PIN de desbloqueio de conteúdo adulto (4+ dígitos)</td>
+          <td class="mono">0000</td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <h3 style="margin-bottom:1rem;">Formato do JSON Remoto de Servidores</h3>
+  <div class="code-block" data-label="server.json">
+<span class="comment">// Hospedado em servidor próprio — atualize quando quiser</span>
+{
+  <span class="key">"debug_mode"</span>: <span class="bool-false">false</span>,  <span class="comment">// true = logs detalhados no Kodi</span>
+  <span class="key">"servers"</span>: [
+    {
+      <span class="key">"id"</span>:       <span class="val">1</span>,
+      <span class="key">"name"</span>:     <span class="str">"Servidor BR-1"</span>,
+      <span class="key">"url"</span>:      <span class="str">"http://servidor.exemplo.com:80"</span>,
+      <span class="key">"username"</span>: <span class="str">"usuario"</span>,
+      <span class="key">"password"</span>: <span class="str">"senha"</span>,
+      <span class="key">"priority"</span>: <span class="val">1</span>,          <span class="comment">// menor = maior prioridade</span>
+      <span class="key">"enabled"</span>:  <span class="bool-true">true</span>
+    }
+    <span class="comment">// ... até 13 servidores</span>
+  ]
+}
+  </div>
+
+  <div class="highlight-box">
+    <p>
+      <strong style="color:var(--cyan);">Bug exclusivo do Kodi:</strong> O módulo <code style="color:var(--cyan)">json</code> do Python 
+      lança <code style="color:var(--accent)">ValueError</code> ao falhar o parse, mas no ambiente Kodi esse nome pode não estar 
+      no escopo global, resultando em <code style="color:var(--accent)">NameError: name 'ValueError' is not defined</code>. 
+      A solução é um <strong>parser JSON próprio</strong> usando apenas <code style="color:var(--cyan)">re</code> e 
+      manipulação de string — sem dependências externas.
+    </p>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- CRÉDITOS -->
+<!-- ── CRÉDITOS ── -->
 <div class="credits">
   <div class="credits-logo">
     <span class="kel">Kel</span><span class="tec">Tec</span>
@@ -1154,48 +1451,64 @@
   <div class="credits-line" style="color:var(--text-dim); margin-top:1.5rem; max-width:600px; margin-left:auto; margin-right:auto; line-height:2;">
     Desenvolvido com dedicação e atenção a cada detalhe.<br>
     Distribuído gratuitamente para usuários do mundo inteiro.<br>
-    Construído sobre Python 3 · Kodi API · Flask · TMDB · Xtream Codes
+    Construído sobre Python 3 · Kodi API · TMDB · Xtream Codes · Flask
   </div>
   <div class="credits-date">
-    DOCUMENTAÇÃO GERADA EM 22 DE MARÇO DE 2026
-    <span class="version-badge">v22.03.2026 STABLE</span>
+    DOCUMENTAÇÃO ATUALIZADA EM ABRIL DE 2026
+    <span class="version-badge">v2.0 STABLE</span>
   </div>
 </div>
 
 <script>
-  // Highlight ativo na nav ao scrollar
+  // Nav highlight no scroll
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
-
   window.addEventListener('scroll', () => {
     let current = '';
     sections.forEach(s => {
       if (window.scrollY >= s.offsetTop - 100) current = s.id;
     });
     navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current
-        ? 'var(--cyan)' : '';
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--cyan)' : '';
     });
   });
 
-  // Contador animado nas stats
+  // Contadores animados
   document.querySelectorAll('.stat-num').forEach(el => {
-    const target = el.textContent;
-    if (!isNaN(parseInt(target))) {
-      const end = parseInt(target);
-      let current = 0;
-      const step = Math.ceil(end / 30);
+    const raw = el.textContent.trim();
+    const num = parseInt(raw);
+    if (!isNaN(num)) {
+      let cur = 0;
+      const step = Math.ceil(num / 30);
+      const suffix = raw.replace(/[0-9]/g, '');
       const timer = setInterval(() => {
-        current = Math.min(current + step, end);
-        el.textContent = current + (target.includes('+') ? '+' : '');
-        if (current >= end) clearInterval(timer);
+        cur = Math.min(cur + step, num);
+        el.textContent = cur + suffix;
+        if (cur >= num) clearInterval(timer);
       }, 40);
     }
   });
-</script>
-<div style = "display: none;">
-<tr> <td valign = "top"> </td> <td> <a href="KeltecMP.repository-0.1.0.zip"> KeltecMP.repository-0.1.0.zip</a> </td> </ tr >
 
+  // Smooth reveal nas seções
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.05 });
+
+  document.querySelectorAll('.feature-card, .menu-item, .parental-card, .sec-card, .detail-card, .changelog-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    observer.observe(el);
+  });
+</script>
+
+<div style="display:none;">
+<tr><td valign="top"></td><td><a href="KeltecMP.repository-0.1.0.zip">KeltecMP.repository-0.1.0.zip</a></td></tr>
 </div>
 </body>
 </html>
