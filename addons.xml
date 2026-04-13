@@ -124,7 +124,7 @@ v1.0.0 (01/04/2026)
 
 <addon id="plugin.video.keltecmp-xtream"
        name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play [COLOR silver]Xtream[/COLOR][/B]"
-       version="2.0.9"
+       version="2.1.0"
        provider-name="Team KelTec)">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
