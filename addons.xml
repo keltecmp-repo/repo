@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
 
-<addon id="plugin.video.plutotv.br" version="2.0.0" name="Pluto TV Brasil" provider-name="Team KelTec Media Play">
+<addon id="plugin.video.plutotv.br" version="2.0.1" name="Pluto TV Brasil" provider-name="Team KelTec Media Play">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests" version="2.7.0"/> 
@@ -45,7 +45,7 @@
 
 <addon id="plugin.video.xtream-universal"
        name="[B][COLOR silver]Xtream Universal IPTV[/COLOR][/B]"
-       version="1.0.3"
+       version="1.0.4"
        provider-name="[B]Team KelTec Media Play[/B]">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>

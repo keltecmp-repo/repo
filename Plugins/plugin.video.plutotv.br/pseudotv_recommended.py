@@ -24,7 +24,7 @@ from simplecache import use_cache, SimpleCache
 import xbmc, xbmcaddon, xbmcgui, xbmcvfs
 
 # Plugin Info
-ADDON_ID      = 'plugin.video.plutotv'
+ADDON_ID      = 'plugin.video.plutotv.br'
 PROP_KEY      = 'PseudoTV_Recommended.%s'%(ADDON_ID)
 REAL_SETTINGS = xbmcaddon.Addon(id=ADDON_ID)
 ADDON_NAME    = REAL_SETTINGS.getAddonInfo('name')

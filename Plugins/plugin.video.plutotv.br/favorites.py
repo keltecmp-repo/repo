@@ -23,7 +23,7 @@ import urllib.parse
 import xbmcaddon, xbmcgui, xbmc
 
 # Plugin Info
-ADDON_ID      = 'plugin.video.plutotv'
+ADDON_ID      = 'plugin.video.plutotv.br'
 REAL_SETTINGS = xbmcaddon.Addon(id=ADDON_ID)
 ADDON_NAME    = REAL_SETTINGS.getAddonInfo('name')
 ICON          = REAL_SETTINGS.getAddonInfo('icon')
