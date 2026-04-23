@@ -75,13 +75,18 @@ class TMDBHelper:
     # =========================
     
     def _load_cache(self):
-        """Carrega cache do disco"""
+        """Carrega cache do disco. Se corrompido, apaga e começa do zero."""
         try:
             if os.path.exists(self.cache_file):
                 with open(self.cache_file, 'r', encoding='utf-8') as f:
                     return json.load(f)
         except Exception as e:
-            self.log(f"Erro ao carregar cache: {e}", xbmc.LOGWARNING)
+            self.log(f"Erro ao carregar cache (arquivo corrompido, sera resetado): {e}", xbmc.LOGWARNING)
+            try:
+                os.remove(self.cache_file)
+                self.log("Cache TMDB corrompido removido com sucesso.", xbmc.LOGINFO)
+            except Exception:
+                pass
         return {}
     
     def _save_cache(self):

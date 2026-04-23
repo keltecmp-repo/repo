@@ -23,28 +23,32 @@ if not os.path.exists(profile):
     os.makedirs(profile)
 CACHE_FILE = os.path.join(profile, 'dns_cache.json')
 
-# Silencia o logger root para nao vazar dominios/IPs nos logs do Kodi
-logging.getLogger().setLevel(logging.CRITICAL)
 
+_DNS_PATCH_STATE = {'installed': False, 'original_getaddrinfo': socket.getaddrinfo}
 
 
 class customdns:
     def __init__(self, cache_file=CACHE_FILE, cache_ttl=3600):
         self.dns_server = [
+            '94.140.14.140', # adguard
+            '94.140.14.141', # adguard
             '208.67.222.222',# OpenDNS
             '208.67.220.220',# OpenDNS
             '1.1.1.1',       # Cloudflare
             '8.8.8.8'        # Google DNS
         ]
-        self.original_getaddrinfo = socket.getaddrinfo
+        self.original_getaddrinfo = _DNS_PATCH_STATE.get('original_getaddrinfo', socket.getaddrinfo)
         self.cache_file = cache_file
         self.cache_ttl = cache_ttl  # Tempo de expiração em segundos
         self.cache = self._load_cache()
         self.debug_mode = False
-        self.mode_logger = True
+        self.mode_logger = False
 
-        # Override DNS
-        socket.getaddrinfo = self._resolver
+        # Override DNS only once per runtime
+        if not _DNS_PATCH_STATE.get('installed'):
+            _DNS_PATCH_STATE['original_getaddrinfo'] = socket.getaddrinfo
+            socket.getaddrinfo = self._resolver
+            _DNS_PATCH_STATE['installed'] = True
 
     def _load_cache(self):
         """Carrega o cache do arquivo JSON, se existir"""
@@ -185,3 +189,5 @@ class customdns:
                 logging.error("Erro no resolver para {}: {}".format(host, e))
 
         return self.original_getaddrinfo(host, port, *args, **kwargs)
+
+
