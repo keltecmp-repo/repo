@@ -45,7 +45,7 @@
 
 <addon id="plugin.video.xtream-universal"
        name="[B][COLOR silver]Xtream Universal IPTV[/COLOR][/B]"
-       version="1.0.4"
+       version="1.1.1"
        provider-name="[B]Team KelTec Media Play[/B]">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
@@ -70,6 +70,10 @@ Features:
 - F4M Proxy for better streaming
 - Parental Control with PIN
 - Global search
+- Watch History (last watched channels/movies/series)
+- PVR Sync (pvr.iptvsimple integration with EPG guide)
+- PVR Favorites (favorites accessible via Kodi TV guide)
+- External Add-ons Launcher (shortcuts to other addons)
 
 Configure your DNS, username and password to start using!
         </description>
@@ -85,6 +89,10 @@ Recursos:
 - Proxy F4M para melhor streaming
 - Controle Parental com PIN
 - Busca global
+- Histórico de Reprodução (últimos vistos por tipo)
+- Sincronização com PVR (pvr.iptvsimple + Guia EPG)
+- Favoritos PVR (canais favoritos acessíveis pelo TV Guide do Kodi)
+- Launcher de Add-ons Externos (atalhos para outros add-ons)
 
 Configure seu DNS, usuário e senha para começar a usar!
         </description>
@@ -105,15 +113,21 @@ Os autores deste add-on não hospedam ou distribuem nenhum conteúdo.
         <website>https://keltecmp.ebj.re</website>
         <source></source>
         <news>
+v1.1.0 (18/04/2026)
+- NOVO: Histórico de Reprodução (últimos vistos por canal/filme/série)
+- NOVO: Sincronização com PVR do Kodi (pvr.iptvsimple)
+- NOVO: Guia EPG via PVR (TV Guide nativo do Kodi)
+- NOVO: Favoritos PVR (2ª instância do pvr.iptvsimple)
+- NOVO: Launcher de Add-ons Externos (grupos de atalhos)
+- NOVO: Menu de contexto "Adicionar ao Favoritos PVR" nos canais ao vivo
+- NOVO: Keymap PVR (setas esq/dir abrem canais/guia durante reprodução)
+- NOVO: Configurações PVR no painel de configurações
+
+v1.0.4 (14/04/2026)
+- Correções e melhorias gerais
+
 v1.0.0 (01/04/2026)
-- Initial release
-- Universal Xtream Codes support
-- Live TV, Movies, Series
-- EPG support
-- TMDB integration
-- F4M Proxy
-- Parental Control
-- Global search
+- Lançamento inicial
         </news>
         <assets>
             <icon>icon.png</icon>
@@ -124,7 +138,7 @@ v1.0.0 (01/04/2026)
 
 <addon id="plugin.video.keltecmp-xtream"
        name="[B][COLOR dimgrey]KelTec[/COLOR] [COLOR crimson]Media Play [COLOR silver]Xtream[/COLOR][/B]"
-       version="2.1.2"
+       version="2.1.3"
        provider-name="Team KelTec)">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
