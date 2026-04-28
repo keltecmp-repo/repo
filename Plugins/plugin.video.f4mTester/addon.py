@@ -5,10 +5,27 @@ import xbmcaddon
 import xbmcvfs
 import os
 from urllib.parse import urlparse, parse_qs, parse_qsl, quote, unquote, quote_plus, unquote_plus, urlencode #python 3
-from app import PORT
+import tempfile
 
-URL_HLSRETRY = f"http://127.0.0.1:{PORT}/hlsretry?url="
-URL_TS_DOWNLOADER = f"http://127.0.0.1:{PORT}/tsdownloader?url="
+def _get_port():
+    """Le a porta atual do arquivo temporario. Fallback: 8088."""
+    try:
+        port_file = tempfile.gettempdir() + '/f4mtester_port.tmp'
+        with open(port_file, 'r') as f:
+            return int(f.read().strip())
+    except Exception:
+        return 8088
+
+try:
+    from app import PORT as _INITIAL_PORT
+except Exception:
+    _INITIAL_PORT = _get_port()
+
+def _hlsretry_url(url):
+    return "http://127.0.0.1:%d/hlsretry?url=" % _get_port() + url
+
+def _tsdownloader_url(url):
+    return "http://127.0.0.1:%d/tsdownloader?url=" % _get_port() + url
 
 addon = xbmcaddon.Addon()
 addonName = addon.getAddonInfo('name')
@@ -82,7 +99,7 @@ def player_hlsretry(name,url,iconimage,description):
     url = url.split('%7C')[0] if '%7C' in url else url
     url = url.split('|')[0] if '|' in url else url    
     url = convert_to_m3u8(url)
-    url = URL_HLSRETRY + quote(url)
+    url = _hlsretry_url(quote(url))
     li=xbmcgui.ListItem(name)
     iconimage = iconimage if iconimage else ''
     li.setArt({"icon": "DefaultVideo.png", "thumb": iconimage})
@@ -103,7 +120,7 @@ def player_tsdownloader(name,url,iconimage,description):
     url = url.split('%7C')[0] if '%7C' in url else url
     url = url.split('|')[0] if '|' in url else url
     url = url.replace('live/', '').replace('.m3u8', '')
-    url = URL_TS_DOWNLOADER + quote(url)
+    url = _tsdownloader_url(quote(url))
     li=xbmcgui.ListItem(name)
     iconimage = iconimage if iconimage else ''
     li.setArt({"icon": "DefaultVideo.png", "thumb": iconimage})

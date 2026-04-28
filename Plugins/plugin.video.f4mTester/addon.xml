@@ -1,9 +1,7 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.f4mTester" version="4.2.5" name="f4mTester" provider-name="Joel">
+<?xml version="5.1.3" encoding="UTF-8"?>
+<addon id="plugin.video.f4mTester" version="5.1.3" name="f4mTester" provider-name="KelTec Media Play">
   <requires>
-    <import addon="script.module.flask" version="0.12"/>
     <import addon="script.module.requests"/>
-    <import addon="script.module.netunblock"/>    	
     <import addon="xbmc.json" version="6.0.0"/>
     <import addon="xbmc.python" version="3.0.0"/>
   </requires>
@@ -12,7 +10,7 @@
       <provides>video</provides>
   </extension>  
   <extension point="xbmc.addon.metadata">
-    <summary lang="en">f4mTester</summary>
+    <summary lang="en">f4mTester StreamProxy Engine v5.1.3</summary>
     <description lang="en"></description>
     <platform>all</platform>
     <assets>
