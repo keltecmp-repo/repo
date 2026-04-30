@@ -4,13 +4,31 @@ import xbmcgui
 import xbmcaddon
 import xbmcvfs
 import os
-from urllib.parse import urlparse, parse_qs, parse_qsl, quote, unquote, quote_plus, unquote_plus, urlencode #python 3
 import tempfile
+from urllib.parse import urlparse, parse_qs, parse_qsl, quote, unquote, quote_plus, unquote_plus, urlencode #python 3
+
+def _get_kodi_temp_dir():
+    """Retorna o diretorio temporario compativel com todas as plataformas,
+    incluindo Android onde /tmp nao existe.
+    Prioridade: special://temp/ (Kodi/Android) > tempfile > pasta do addon."""
+    try:
+        tmp = xbmcvfs.translatePath('special://temp/')
+        if tmp and os.path.isdir(tmp):
+            return tmp
+    except Exception:
+        pass
+    try:
+        tmp = tempfile.gettempdir()
+        if tmp and os.path.isdir(tmp):
+            return tmp
+    except Exception:
+        pass
+    return os.path.dirname(os.path.abspath(__file__))
 
 def _get_port():
     """Le a porta atual do arquivo temporario. Fallback: 8088."""
     try:
-        port_file = tempfile.gettempdir() + '/f4mtester_port.tmp'
+        port_file = os.path.join(_get_kodi_temp_dir(), 'f4mtester_port.tmp')
         with open(port_file, 'r') as f:
             return int(f.read().strip())
     except Exception:
@@ -20,6 +38,23 @@ try:
     from app import PORT as _INITIAL_PORT
 except Exception:
     _INITIAL_PORT = _get_port()
+
+def _wait_server(timeout=12):
+    """Aguarda o proxy local estar pronto.
+    Re-le a porta do arquivo a cada tentativa pois o server_run
+    pode ter mudado de porta apos o bind bem-sucedido."""
+    import socket as _socket
+    import time as _time
+    deadline = _time.time() + timeout
+    while _time.time() < deadline:
+        port = _get_port()  # re-le sempre -- porta pode mudar apos bind
+        try:
+            s = _socket.create_connection(('127.0.0.1', port), timeout=0.5)
+            s.close()
+            return True
+        except Exception:
+            _time.sleep(0.5)
+    return False
 
 def _hlsretry_url(url):
     return "http://127.0.0.1:%d/hlsretry?url=" % _get_port() + url
@@ -99,6 +134,9 @@ def player_hlsretry(name,url,iconimage,description):
     url = url.split('%7C')[0] if '%7C' in url else url
     url = url.split('|')[0] if '|' in url else url    
     url = convert_to_m3u8(url)
+    if not _wait_server():
+        xbmcgui.Dialog().ok('F4MTESTER', 'Proxy nao esta respondendo. Tente reiniciar o Kodi.')
+        return
     url = _hlsretry_url(quote(url))
     li=xbmcgui.ListItem(name)
     iconimage = iconimage if iconimage else ''
@@ -120,6 +158,9 @@ def player_tsdownloader(name,url,iconimage,description):
     url = url.split('%7C')[0] if '%7C' in url else url
     url = url.split('|')[0] if '|' in url else url
     url = url.replace('live/', '').replace('.m3u8', '')
+    if not _wait_server():
+        xbmcgui.Dialog().ok('F4MTESTER', 'Proxy nao esta respondendo. Tente reiniciar o Kodi.')
+        return
     url = _tsdownloader_url(quote(url))
     li=xbmcgui.ListItem(name)
     iconimage = iconimage if iconimage else ''
