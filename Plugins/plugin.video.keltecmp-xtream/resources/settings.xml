@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
 
+
+    <!-- ========================================== -->
+    <!-- VIP - ACESSO COLABORADOR                   -->
+    <!-- ========================================== -->
+    <category label="KelTec VIP">
+        <setting label="Acesso VIP — Colaboradores KelTec Media Play" type="lsep"/>
+        <setting label="Autentique para acessar servidores e conteudos exclusivos" type="lsep"/>
+
+        <setting type="sep"/>
+        <setting label="Autenticacao" type="lsep"/>
+        <setting label="Fazer login VIP" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=vip_login)"/>
+        <setting label="Ver status da conta VIP" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=vip_status)"/>
+        <setting label="Como adquirir acesso VIP" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=vip_contact)"/>
+
+        <setting type="sep"/>
+        <setting label="Dados internos VIP (nao editar manualmente)" type="lsep"/>
+        <setting id="vip_username"   type="text" label="Usuario VIP"         default="" visible="false"/>
+        <setting id="vip_plan"       type="text" label="Plano VIP"           default="" visible="false"/>
+        <setting id="vip_expires_at" type="text" label="Validade VIP"        default="" visible="false"/>
+        <setting id="vip_is_active"  type="bool" label="VIP Ativo"           default="false" visible="false"/>
+    </category>
+
+
+
     <!-- ========================================== -->
     <!-- CONFIGURACOES DE SERVIDOR PRINCIPAL        -->
     <!-- ========================================== -->
@@ -60,9 +87,8 @@
 
         <setting type="sep"/>
         <setting label="Conteudo" type="lsep"/>
-        <setting id="menu_show_vip"           type="bool" label="Mostrar Acesso VIP"           default="true"/>
-        <setting id="menu_show_doar"          type="bool" label="Mostrar Area de Doacoes"       default="true"/>
-        <setting id="menu_show_account"       type="bool" label="Mostrar Informacoes da Conta"  default="true"/>
+        <setting id="menu_show_doar"          type="bool" label="Mostrar Area de Doacoes"       default="false"/>
+        <setting id="menu_show_account"       type="bool" label="Mostrar Informacoes da Conta"  default="false"/>
         <setting id="menu_show_search"        type="bool" label="Mostrar Pesquisa Global"        default="true"/>
         <setting id="menu_show_tv"            type="bool" label="Mostrar TV ao Vivo"             default="true"/>
         <setting id="menu_show_movies"        type="bool" label="Mostrar Filmes"                 default="true"/>
@@ -74,10 +100,9 @@
         <setting id="menu_show_history"       type="bool" label="Mostrar Ultimos Vistos"         default="true"/>
 
         <setting type="sep"/>
-        <setting label="PVR" type="lsep"/>
-        <setting id="menu_show_pvr_sync"      type="bool" label="Mostrar Sincronizar PVR"        default="true"/>
-        <setting id="menu_show_pvr_guide"     type="bool" label="Mostrar Guia de Programacao"    default="true"/>
-        <setting id="menu_show_pvr_fav"       type="bool" label="Mostrar Favoritos PVR"          default="true"/>
+        <setting label="Trakt e Estatisticas" type="lsep"/>
+        <setting id="menu_show_trakt"         type="bool" label="Mostrar Trakt.tv"                default="true"/>
+        <setting id="menu_show_stats"         type="bool" label="Mostrar Dashboard de Estatisticas" default="true"/>
 
         <setting type="sep"/>
         <setting label="Add-ons e Outros" type="lsep"/>
@@ -122,8 +147,54 @@
 
 
     <!-- ========================================== -->
+    <!-- TRAKT.TV - SCROBBLE E WATCHLIST            -->
+    <!-- ========================================== -->
+    <category label="Trakt.tv">
+        <setting label="Integracao com Trakt.tv" type="lsep"/>
+        <setting label="Scrobble automatico, watchlist e historico sincronizado" type="lsep"/>
+
+        <setting id="trakt_enabled" type="bool" label="Ativar integracao Trakt.tv" default="false"/>
+
+        <setting type="sep"/>
+        <setting label="Credenciais da API" type="lsep"/>
+        <setting label="Crie sua aplicacao em: trakt.tv/oauth/applications/new" type="lsep"/>
+        <setting label="Redirect URI obrigatorio: urn:ietf:wg:oauth:2.0:oob" type="lsep"/>
+
+        <setting id="trakt_client_id"     type="text" label="Client ID"     default="7790012fe4684af427bc39b712a1050c4e813ed0edec72d46fbce0dd1dc4fedb"/>
+        <setting id="trakt_client_secret" type="text" label="Client Secret" default="2f3bcc98ed7bc2f2a5a337267c1d4c0734886e6db8c220dd9d2a6e7156c716d1" option="hidden"/>
+
+        <setting type="sep"/>
+        <setting label="Autenticacao" type="lsep"/>
+        <setting label="Conectar conta Trakt (abre tela de ativacao)" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_auth)"/>
+        <setting label="Desconectar conta Trakt" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_disconnect)"/>
+
+        <setting type="sep"/>
+        <setting label="Acoes" type="lsep"/>
+        <setting label="Ver minha Watchlist" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_watchlist)"/>
+        <setting label="Sincronizar historico local com o Trakt agora" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_sync_history)"/>
+
+        <setting type="sep"/>
+        <setting label="Dados internos (nao editar manualmente)" type="lsep"/>
+        <setting id="trakt_access_token"  type="text" label="Access Token"  default="" option="hidden" visible="false"/>
+        <setting id="trakt_refresh_token" type="text" label="Refresh Token" default="" option="hidden" visible="false"/>
+        <setting id="trakt_token_expiry"  type="text" label="Token Expiry"  default=""                 visible="false"/>
+    </category>	
+
+
+    <!-- ========================================== -->
     <!-- PLAYER E EPG                               -->
     <!-- ========================================== -->
+    <!--category label="Legendas em Breve">
+        <setting id="subtitles_enabled" type="bool" label="Legendas automaticas (OpenSubtitles)" default="false"/>
+        <setting id="subtitle_lang" type="select" label="Idioma preferido"
+                  values="Portugues (Brasil)|Portugues (Portugal)|Ingles|Espanhol|Frances|Italiano|Alemao|Japones|Coreano|Chines"
+                  default="0"/>
+        <setting id="opensubtitles_api_key" type="text" label="API Key OpenSubtitles (opcional)" default="qo2wQs1PXwIHJsXvIiWXu1ZbVjaboPh6"/>
+    </category-->	
     <category label="Player e EPG">
         <setting label="Configuracoes de Reproducao" type="lsep"/>
 
@@ -135,38 +206,6 @@
 
         <setting id="enable_epg" type="bool" label="Ativar EPG (Guia de Programacao)" default="true"/>
     </category>
-
-
-    <!-- ========================================== -->
-    <!-- PVR - IPTV SIMPLE CLIENT                   -->
-    <!-- ========================================== -->
-    <category label="PVR - IPTV Simple">
-        <setting label="Integracao com pvr.iptvsimple" type="lsep"/>
-        <setting label="Sincronize canais, EPG e favoritos com o PVR do Kodi" type="lsep"/>
-
-        <setting type="sep"/>
-        <setting label="EPG do PVR" type="lsep"/>
-        <setting id="pvr_epg_url" type="text" label="URL do EPG (XMLTV)" default=""/>
-        <setting label="Deixe vazio para usar o EPG automatico do servidor Xtream" type="lsep"/>
-
-        <setting type="sep"/>
-        <setting label="Configuracoes avancadas do PVR" type="lsep"/>
-        <setting id="pvr_addon_control"     type="bool" label="Controlar configuracoes do pvr.iptvsimple" default="false"/>
-        <setting id="pvr_favorites_enabled" type="bool" label="Habilitar Favoritos PVR (instancia 2)"     default="false"/>
-        <setting id="pvr_catchup_enabled"   type="bool" label="Habilitar Catchup (TV ao Vivo gravada)"    default="false"/>
-        <setting id="pvr_catchup_days"      type="slider" label="Dias de Catchup" default="7" range="1,1,30" option="int"/>
-        <setting id="pvr_osd_navigation"    type="bool" label="Navegacao OSD com setas (canal +/-)"       default="false"/>
-
-        <setting type="sep"/>
-        <setting label="Acoes do PVR" type="lsep"/>
-        <setting label="Sincronizar canais com o PVR agora" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=pvr_sync)"/>
-        <setting label="Abrir Guia de Programacao (TV Guide)" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=pvr_guide)"/>
-        <setting label="Gerenciar Favoritos PVR" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=pvr_favorites_menu)"/>
-    </category>
-
 
     <!-- ========================================== -->
     <!-- FAVORITOS DO SERVIDOR                      -->
@@ -220,6 +259,20 @@
         <setting label="adult, xxx, 18+, porn, sexo, nude, hentai, lesbica, trans, hardcore" type="lsep"/>
     </category>
 
+    <!-- ========================================== -->
+    <!-- ESTATISTICAS DE VISUALIZACAO               -->
+    <!-- ========================================== -->
+    <category label="Estatisticas">
+        <setting label="Dashboard de Visualizacoes" type="lsep"/>
+        <setting label="Resumo de horas, generos, streaks e titulos mais assistidos" type="lsep"/>
+
+        <setting type="sep"/>
+        <setting label="Abrir Dashboard de Estatisticas" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=stats_dashboard)"/>
+        <setting label="Ver historico completo de reproducao" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=history)"/>
+    </category>
+
 
     <!-- ========================================== -->
     <!-- AVANCADO                                   -->
@@ -232,12 +285,16 @@
 
         <setting type="sep"/>
         <setting label="Manutencao" type="lsep"/>
-        <setting label="Limpar todos os caches" type="action"
+        <setting label="Limpar todos os caches (TMDB, EPG, Servidores, Trakt, DNS)" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=clear_all_cache)"/>
         <setting label="Forcar atualizacao de servidores remotos" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=reload_servers)"/>
         <setting label="Ver fontes dos servidores carregados" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=server_sources)"/>
+        <setting label="Limpar cache TMDB" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=tmdb_clear_cache)"/>
+        <setting label="Limpar cache Trakt.tv" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_clear_cache)"/>
 
         <!-- IDs internos Meus Add-ons -->
         <setting id="ag_1_enabled" type="bool" label="Grupo 1 habilitado" default="false" visible="false"/>
