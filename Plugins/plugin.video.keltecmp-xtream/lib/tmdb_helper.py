@@ -75,11 +75,18 @@ class TMDBHelper:
     # =========================
     
     def _load_cache(self):
-        """Carrega cache do disco. Se corrompido, apaga e começa do zero."""
+        """Carrega cache do disco. Se corrompido ou incompleto, apaga e começa do zero."""
+        if not os.path.exists(self.cache_file):
+            return {}
         try:
-            if os.path.exists(self.cache_file):
-                with open(self.cache_file, 'r', encoding='utf-8') as f:
-                    return json.load(f)
+            with open(self.cache_file, 'r', encoding='utf-8') as f:
+                raw = f.read()
+            # Verifica integridade básica antes de parsear
+            # Um JSON válido de dict começa com { e termina com }
+            raw_stripped = raw.strip()
+            if not (raw_stripped.startswith('{') and raw_stripped.endswith('}')):
+                raise ValueError(f"JSON incompleto: {len(raw_stripped)} bytes, nao termina com '}}'")
+            return json.loads(raw_stripped)
         except Exception as e:
             self.log(f"Erro ao carregar cache (arquivo corrompido, sera resetado): {e}", xbmc.LOGWARNING)
             try:
@@ -90,12 +97,35 @@ class TMDBHelper:
         return {}
     
     def _save_cache(self):
-        """Salva cache no disco"""
+        """
+        Salva cache no disco usando escrita atomica.
+        Escreve em arquivo .tmp e faz rename apenas quando finalizado —
+        evita cache corrompido se o Kodi for fechado no meio da escrita.
+        """
+        import tempfile
         try:
             with self._cache_lock:
                 cache_copy = dict(self.cache)
-            with open(self.cache_file, 'w', encoding='utf-8') as f:
-                json.dump(cache_copy, f, ensure_ascii=False, indent=2)
+            # Cria arquivo temporário no mesmo diretório (necessário para rename atômico)
+            tmp_fd, tmp_path = tempfile.mkstemp(
+                suffix='.tmp',
+                prefix='tmdb_cache_',
+                dir=self.cache_dir
+            )
+            try:
+                with os.fdopen(tmp_fd, 'w', encoding='utf-8') as f:
+                    json.dump(cache_copy, f, ensure_ascii=False, indent=2)
+                    f.flush()
+                    os.fsync(f.fileno())  # garante flush para disco antes do rename
+                # Rename atômico — se o Kodi fechar aqui, o arquivo original fica intacto
+                os.replace(tmp_path, self.cache_file)
+            except Exception:
+                # Limpa arquivo temporário em caso de erro
+                try:
+                    os.unlink(tmp_path)
+                except Exception:
+                    pass
+                raise
         except Exception as e:
             self.log(f"Erro ao salvar cache: {e}", xbmc.LOGERROR)
     
