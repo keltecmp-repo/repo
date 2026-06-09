@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KelTec Media Play — Documentação Técnica v3.0.0</title>
+<title>KelTec Media Play — Documentação Técnica v2.1.8</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -603,7 +603,7 @@ p.lead{
   <div class="nav-brand">
     <span class="dot"></span>
     <span class="k">Kel</span><span class="t">Tec</span> Media Play
-    <span class="nav-ver">v3.0.0</span>
+    <span class="nav-ver">v2.1.8</span>
   </div>
   <ul class="nav-links">
     <li><a href="#overview">Visão Geral</a></li>
@@ -614,6 +614,7 @@ p.lead{
     <li><a href="#parental">Parental</a></li>
     <li><a href="#arch">Arquitetura</a></li>
     <li><a href="#seguranca">Segurança</a></li>
+    <li><a href="#trakt">Trakt</a></li>
     <li><a href="#config">Config</a></li>
   </ul>
 </nav>
@@ -710,7 +711,7 @@ p.lead{
   </div>
 
   <!-- NOVIDADES -->
-  <h3 style="margin-bottom:2rem">Principais <span style="color:var(--green)">Novidades</span> — v3.0.0</h3>
+  <h3 style="margin-bottom:2rem">Principais <span style="color:var(--green)">Novidades</span> — v2.1.8</h3>
   <div class="changelog">
     <div class="cl-item rem reveal">
       <span class="cl-badge">REMOVIDO</span>
@@ -957,7 +958,7 @@ p.lead{
 
   <h3 style="margin-bottom:1.5rem;margin-top:3rem">Logout Automático com 4 Camadas de Cache</h3>
   <div class="hl green reveal">
-    <strong style="color:var(--green)">Novo em v3.0.0:</strong> ao fazer logout no add-on, as 4 camadas de cache do Kodi são limpas automaticamente com barra de progresso discreta — sem necessidade de ferramenta externa.<br><br>
+    <strong style="color:var(--green)">Novo em v2.1.8:</strong> ao fazer logout no add-on, as 4 camadas de cache do Kodi são limpas automaticamente com barra de progresso discreta — sem necessidade de ferramenta externa.<br><br>
     <strong style="color:var(--bright)">Camada 1:</strong> Cache cifrado do ServerLoader (keltec_srv_data.bin)<br>
     <strong style="color:var(--bright)">Camada 2:</strong> Arquivos .bin e _cache.json da pasta do add-on (preserva device_id, token VIP e favoritos)<br>
     <strong style="color:var(--bright)">Camada 3:</strong> Pasta special://temp/plugin.video.keltecmp-xtream/<br>
@@ -1083,7 +1084,7 @@ p.lead{
 
   <h3 style="margin-bottom:1rem">Visualização Automática por Tipo</h3>
   <div class="hl reveal">
-    <strong style="color:var(--cyan)">Novo em v3.0.0:</strong> o modo de visualização é definido automaticamente sem configuração manual.<br>
+    <strong style="color:var(--cyan)">Novo em v2.1.8:</strong> o modo de visualização é definido automaticamente sem configuração manual.<br>
     <strong style="color:var(--bright)">Poster/Grade (500):</strong> Filmes, Séries, Temporadas — grade de capas grandes no Estuary<br>
     <strong style="color:var(--bright)">Lista (50):</strong> Menus, Categorias, TV ao Vivo, Episódios, Favoritos, Histórico
   </div>
@@ -1317,9 +1318,206 @@ p.lead{
 
 <div class="divider"></div>
 
-<!-- 09 CONFIG -->
+<!-- 09 TRAKT -->
+<section id="trakt">
+  <div class="s-tag orange">09 — Trakt.tv</div>
+  <h2>Integração <span class="o">Trakt.tv</span> Completa</h2>
+
+  <p class="lead">
+    Sincronização completa com Trakt.tv sem nenhuma configuração manual. O app KelTec já está registrado no Trakt — basta conectar com seu usuário via Device Flow e pronto.
+  </p>
+
+  <div class="removed-box reveal" style="border-color:rgba(255,107,53,.25);background:rgba(255,107,53,.04)">
+    <span class="rb-icon">🎯</span>
+    <div>
+      <h4 style="color:var(--orange)">Zero Configuração — App KelTec já registrado</h4>
+      <p>Não é necessário criar conta de desenvolvedor no Trakt nem configurar Client ID e Secret. As credenciais do app KelTec estão embutidas no add-on. O usuário só precisa clicar em <strong style="color:var(--bright)">"Conectar Trakt"</strong>, acessar <span style="font-family:JetBrains Mono,monospace;color:var(--cyan)">trakt.tv/activate</span> e digitar o código exibido.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:1.5rem">Autenticação via Device Flow</h3>
+  <div class="flow reveal">
+    <div class="flow-step">
+      <div class="fs-num">01</div>
+      <h4>Conectar Trakt</h4>
+      <p>Clica em "Conectar Trakt" no menu do add-on</p>
+    </div>
+    <div class="flow-step">
+      <div class="fs-num">02</div>
+      <h4>Código Exibido</h4>
+      <p>Add-on mostra um código de 8 letras na tela do Kodi</p>
+    </div>
+    <div class="flow-step">
+      <div class="fs-num">03</div>
+      <h4>trakt.tv/activate</h4>
+      <p>Acessa no browser do celular/PC e digita o código</p>
+    </div>
+    <div class="flow-step">
+      <div class="fs-num">04</div>
+      <h4>Confirmação</h4>
+      <p>Add-on detecta automaticamente a autorização — conectado!</p>
+    </div>
+    <div class="flow-step">
+      <div class="fs-num">05</div>
+      <h4>Token Salvo</h4>
+      <p>Access + Refresh token salvos. Renovação automática ao expirar.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:1.5rem;margin-top:3rem">Funcionalidades Disponíveis</h3>
+  <div class="grid">
+    <div class="card reveal">
+      <span class="card-icon">📡</span>
+      <h3>Scrobble Automático</h3>
+      <p>Marca automaticamente filmes e séries como assistidos no Trakt ao reproduzir. Scrobble de início (progress 1%) e de conclusão (progress 90%) — compatível com a API de scrobble do Trakt.</p>
+      <span class="tag-file">scrobble_start() · scrobble_stop()</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">📋</span>
+      <h3>Watchlist Completa</h3>
+      <p>Visualize, adicione e remova itens da sua Watchlist. Cache local de 5 minutos para não repetir chamadas desnecessárias. Funciona para filmes e séries separadamente.</p>
+      <span class="tag-file">get_watchlist() · add_to_watchlist() · remove_from_watchlist()</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">🔄</span>
+      <h3>Sincronização de Histórico</h3>
+      <p>Envia o histórico local do add-on (watch_history) para o Trakt em lote. Itens já sincronizados não são reenviados. Suporte a filmes e episódios de séries.</p>
+      <span class="tag-file">sync_local_history()</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">⭐</span>
+      <h3>Recomendações Pessoais</h3>
+      <p>Filmes e séries recomendados pelo algoritmo do Trakt baseados no seu histórico. Paginação automática com headers X-Pagination do Trakt.</p>
+      <span class="tag-file">get_recommendations()</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">❤️</span>
+      <h3>Favoritos e Avaliações</h3>
+      <p>Acesso à lista de favoritos e itens avaliados com filtro por nota mínima (1-10). Separado por tipo: filmes ou séries.</p>
+      <span class="tag-file">get_favorites() · get_ratings()</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">📚</span>
+      <h3>Coleção e Progresso</h3>
+      <p>Visualize sua coleção de filmes e séries salvos no Trakt, e o progresso de reprodução de itens iniciados mas não finalizados.</p>
+      <span class="tag-file">get_collection() · get_playback_progress()</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">📅</span>
+      <h3>Calendário de Lançamentos</h3>
+      <p>Séries com episódios nos próximos 7 dias e filmes em lançamento nos próximos 30 dias. Integrado ao calendário Trakt em tempo real.</p>
+      <span class="tag-file">get_calendar_shows(days=7) · get_calendar_movies(days=30)</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">🕐</span>
+      <h3>Histórico Assistido</h3>
+      <p>Lista completa do que foi assistido no Trakt com timestamps. Limite configurável de itens. Suporte a filmes e episódios de séries.</p>
+      <span class="tag-file">get_watched_history(limit=100)</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">🔑</span>
+      <h3>Renovação Automática de Token</h3>
+      <p>O token Trakt é verificado a cada uso. Se estiver a menos de 1 hora do vencimento, é renovado automaticamente via refresh_token sem intervenção do usuário.</p>
+      <span class="tag-file">_refresh_token() · is_authenticated()</span>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:1.5rem;margin-top:1rem">Catálogos Públicos Trakt — Sem Login</h3>
+  <div class="hl purple reveal">
+    <strong style="color:var(--purple)">Acesso sem autenticação:</strong> os catálogos públicos do Trakt funcionam mesmo sem estar conectado a uma conta Trakt. Apenas scrobble, watchlist, histórico e recomendações exigem login.
+  </div>
+
+  <div style="overflow-x:auto;margin-bottom:2rem">
+    <table class="tbl">
+      <thead><tr><th>Catálogo</th><th>Filmes</th><th>Séries</th><th>Período</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>🔥 Em Alta (Trending)</td>
+          <td><span class="tag g">✓</span></td>
+          <td><span class="tag g">✓</span></td>
+          <td class="mono">tempo real</td>
+        </tr>
+        <tr>
+          <td>⭐ Mais Populares</td>
+          <td><span class="tag g">✓</span></td>
+          <td><span class="tag g">✓</span></td>
+          <td class="mono">all time</td>
+        </tr>
+        <tr>
+          <td>👁️ Mais Assistidos</td>
+          <td><span class="tag g">✓</span></td>
+          <td><span class="tag g">✓</span></td>
+          <td class="mono">diário · semanal · mensal · anual</td>
+        </tr>
+        <tr>
+          <td>🎯 Mais Antecipados</td>
+          <td><span class="tag g">✓</span></td>
+          <td><span class="tag g">✓</span></td>
+          <td class="mono">—</td>
+        </tr>
+        <tr>
+          <td>🎬 Box Office</td>
+          <td><span class="tag g">✓</span></td>
+          <td><span class="tag">—</span></td>
+          <td class="mono">semanal</td>
+        </tr>
+        <tr>
+          <td>🏆 IMDB Top 250</td>
+          <td><span class="tag g">✓</span></td>
+          <td><span class="tag g">✓</span></td>
+          <td class="mono">lista curada</span></td>
+        </tr>
+        <tr>
+          <td>🎭 Por Gênero</td>
+          <td><span class="tag g">✓</span></td>
+          <td><span class="tag g">✓</span></td>
+          <td class="mono">filtro + ordenação</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-bottom:1.5rem">Navegação por Gêneros Trakt</h3>
+  <div class="pills">
+    <span class="pill tv">Ação</span><span class="pill tv">Aventura</span>
+    <span class="pill tv">Animação</span><span class="pill tv">Anime</span>
+    <span class="pill tv">Comédia</span><span class="pill tv">Crime</span>
+    <span class="pill tv">Documentário</span><span class="pill tv">Drama</span>
+    <span class="pill tv">Fantasia</span><span class="pill tv">Faroeste</span>
+    <span class="pill tv">Ficção Científica</span><span class="pill tv">Horror</span>
+    <span class="pill tv">Mistério</span><span class="pill tv">Musical</span>
+    <span class="pill tv">Reality</span><span class="pill tv">Romance</span>
+    <span class="pill tv">Suspense</span><span class="pill tv">Super-Herói</span>
+    <span class="pill tv">War</span>
+  </div>
+
+  <div class="code" data-l="MENU TRAKT (mode=trakt_menu)">
+<span class="cc">// Itens disponíveis no menu Trakt do add-on</span>
+<span class="cs">── Filmes</span>
+   ├── 🔥 Em Alta · ⭐ Populares · 👁️ Mais Assistidos (4 períodos)
+   ├── 🎯 Mais Antecipados · 🎬 Box Office · 🏆 IMDB Top 250
+   ├── 🎭 Navegar por Gênero
+   <span class="ck">└── [requer login]</span> Watchlist · Recomendações · Histórico · Coleção · Favoritos
+
+<span class="cs">── Séries</span>
+   ├── 🔥 Em Alta · ⭐ Populares · 👁️ Mais Assistidas (4 períodos)
+   ├── 🎯 Mais Antecipadas · 🏆 IMDB Top 250
+   ├── 📅 Calendário (próximos 7 dias)
+   <span class="ck">└── [requer login]</span> Watchlist · Recomendações · Progresso · Favoritos
+
+<span class="cs">── Conta</span>
+   ├── 🔌 Conectar / Desconectar Trakt
+   ├── 🔄 Sincronizar Histórico Local → Trakt
+   <span class="cf">└── 🗑️ Limpar Cache Trakt</span>
+  </div>
+</section>
+
+
+<div class="divider"></div>
+
+<!-- 10 CONFIG -->
 <section id="config">
-  <div class="s-tag">09 — Configuração</div>
+  <div class="s-tag">10 — Configuração</div>
   <h2>Guia de <span class="c">Configuração</span></h2>
 
   <div class="hl green reveal">
@@ -1350,7 +1548,7 @@ p.lead{
 <span class="cc">// Hospedado remotamente — atualizações sem reinstalar o add-on</span>
 {
   <span class="ck">"debug_mode"</span>: <span class="cs">false</span>,
-  <span class="ck">"version"</span>: <span class="cv">"3.0.0"</span>,
+  <span class="ck">"version"</span>: <span class="cv">"2.1.8"</span>,
   <span class="ck">"servers"</span>: [
     {
       <span class="ck">"id"</span>:       <span class="cv">1</span>,
@@ -1386,7 +1584,7 @@ p.lead{
   </p>
   <div class="credits-ver">
     DOCUMENTAÇÃO — JUNHO 2026
-    <span class="vb">v3.0.0</span>
+    <span class="vb">v2.1.8</span>
   </div>
 </div>
 
