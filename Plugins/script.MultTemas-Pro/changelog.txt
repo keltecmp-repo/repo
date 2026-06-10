@@ -1,0 +1,14 @@
+v1.0.1 (2026-06)
+- CORRECAO CRITICA: removido xbmcvfs.exists() por tema no loop de montagem da lista
+  (era o causador real dos 30-50 segundos — fazia uma request HTTP para cada tema)
+- Dialog de selecao de temas agora abre instantaneamente apos carregar o indice
+- Apos download concluido, exibe popup automatico "Deseja ativar o tema agora?"
+- Removidos todos os emojis e caracteres especiais incompativeis com o Kodi
+- Menu principal com labels limpos sem caracteres Unicode fora do ASCII basico
+
+v1.0.0 (2026-06)
+- Unificacao de script.Aeon-Mult.Temas + script.Start-Mult.Temas
+- Carregamento do indice via threading assincrono com barra de progresso
+- Eliminacao da chamada bloqueante ao contador (whos.amung.us)
+- Timeout reduzido de 30s para 10s
+- Chunks de download maiores (32KB)

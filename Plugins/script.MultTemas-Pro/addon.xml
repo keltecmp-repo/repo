@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.MultTemas-Pro"
+  name="MultTemas-Pro"
+  version="1.0.0"
+  provider-name="Team KelTecMP">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0" />
+    <import addon="xbmc.gui" version="5.17.0" />
+    <import addon="script.skinshortcuts" version="2.0.1" />
+    <import addon="resource.images.recordlabels.white" version="0.0.1" />
+  </requires>
+  <extension point="xbmc.python.script" library="multtemas.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="pt">Instalador + Ativador de Temas Unificado (Aeon Nox Silvio)</summary>
+    <summary lang="en">Unified Theme Installer + Activator (Aeon Nox Silvio)</summary>
+    <description lang="pt">
+      MultTemas-Pro unifica o script.Aeon-Mult.Temas e o script.Start-Mult.Temas
+      em um único add-on. A tela de seleção de temas abre instantaneamente
+      graças ao carregamento assíncrono via threading. Baixe novos temas do
+      GitHub e ative temas instalados localmente — tudo em um só lugar.
+    </description>
+    <description lang="en">
+      MultTemas-Pro merges script.Aeon-Mult.Temas and script.Start-Mult.Temas
+      into one add-on. The theme selection screen opens instantly thanks to
+      async background loading via threading. Download new themes from GitHub
+      and activate locally installed ones — all in one place.
+    </description>
+    <disclaimer>Team KelTecMP</disclaimer>
+    <assets>
+      <icon>icon.png</icon>
+      <fanart>fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>

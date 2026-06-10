@@ -181,6 +181,94 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
     </extension>
 </addon>
 
+<addon id="plugin.video.cumination" name="Cumination" provider-name="Cumination" version="1.1.27">
+    <requires>
+        <import addon="script.module.six" />
+        <import addon="script.module.kodi-six" />
+        <import addon="script.module.resolveurl" version="5.0.00" />
+        <import addon="script.module.resolveurl.xxx" version="2.0.1" />
+        <import addon="script.common.plugin.cache" />
+        <import addon="script.module.websocket" version="0.50.0" />
+        <import addon="script.module.requests" optional="true" />
+    </requires>
+    <extension library="default.py" point="xbmc.python.pluginsource">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <license>GPL 2.0</license>
+        <summary lang="en_GB">Cumination, the culmination of adult sites on Kodi</summary>
+        <description lang="en_GB">Cumination, the culmination of adult sites on Kodi</description>
+        <disclaimer lang="en_GB">The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the sites offered. Click on About from the contextmenu on each site to check for contact details.</disclaimer>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
+<addon id="script.MultTemas-Pro"
+  name="MultTemas-Pro"
+  version="1.0.0"
+  provider-name="Team KelTecMP">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0" />
+    <import addon="xbmc.gui" version="5.17.0" />
+    <import addon="script.skinshortcuts" version="2.0.1" />
+    <import addon="resource.images.recordlabels.white" version="0.0.1" />
+  </requires>
+  <extension point="xbmc.python.script" library="multtemas.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="pt">Instalador + Ativador de Temas Unificado (Aeon Nox Silvio)</summary>
+    <summary lang="en">Unified Theme Installer + Activator (Aeon Nox Silvio)</summary>
+    <description lang="pt">
+      MultTemas-Pro unifica o script.Aeon-Mult.Temas e o script.Start-Mult.Temas
+      em um único add-on. A tela de seleção de temas abre instantaneamente
+      graças ao carregamento assíncrono via threading. Baixe novos temas do
+      GitHub e ative temas instalados localmente — tudo em um só lugar.
+    </description>
+    <description lang="en">
+      MultTemas-Pro merges script.Aeon-Mult.Temas and script.Start-Mult.Temas
+      into one add-on. The theme selection screen opens instantly thanks to
+      async background loading via threading. Download new themes from GitHub
+      and activate locally installed ones — all in one place.
+    </description>
+    <disclaimer>Team KelTecMP</disclaimer>
+    <assets>
+      <icon>icon.png</icon>
+      <fanart>fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>
+
+<addon id="script.keltecpinguard" name="Keltec Pin Guard" version="1.0.0" provider-name="Keltec Media Play">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="plugin.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.service" library="service.py" start="login"/>
+    <extension point="xbmc.python.script" library="default.py"/>
+    <extension point="xbmc.ui.screensaver" library="screensaver.py"/>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Protect Kodi Content With A Pin Code</summary>
+        <summary lang="pt_BR">Proteger Conteúdo do Kodi com Código PIN</summary>
+        <description lang="en">Force users to enter the correct PIN code to access protected content. Press Back to cancel PIN entry and continue browsing freely. Developed by Keltec Media Play for Kodi 19+ (Matrix, Nexus, Omega).</description>
+        <description lang="pt_BR">Exige o código PIN correto para acessar conteúdos protegidos. Pressione Voltar para cancelar e continuar navegando livremente. Desenvolvido pela Keltec Media Play para Kodi 19+.</description>
+        <language></language>
+        <platform>all</platform>
+        <license>GPL v2</license>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
+
 <addon id="plugin.program.keltecmpleiawizard" name="[B]KelTecMP Leia Wizard Builds[/B]" version="0.0.7" provider-name="Team KelTec-MP">
   <requires>
     <import addon="xbmc.python" version="2.24.0"/>

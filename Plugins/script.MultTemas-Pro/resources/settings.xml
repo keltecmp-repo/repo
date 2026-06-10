@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <category label="Geral">
+    <setting id="show_test_topics" type="bool" label="Mostrar temas de teste" default="false"/>
+    <setting id="network_timeout"  type="number" label="Timeout de rede (segundos)" default="10"/>
+    <setting id="force_shutdown"   type="bool" label="Force Shutdown" default="true"/>
+  </category>
+</settings>
