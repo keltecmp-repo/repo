@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-# KelTec MediaPlay 
+# KelTec MediaPlay — Fenix Format
+# Gerado em: 2026-06-24
+# Camadas: 5
 
 _lx0_0 = 795099 ^ 319375
 _lx1_1 = len("ccd1df")
