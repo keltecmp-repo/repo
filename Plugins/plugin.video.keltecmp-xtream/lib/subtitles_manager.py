@@ -1,29 +1,293 @@
 # -*- coding: utf-8 -*-
-# KelTec MediaPlay 
+from __future__ import unicode_literals
 
-_lx0_0 = 200609 ^ 925716
-_lx1_1 = len("3ca426")
-import zlib as _z,base64 as _b,hashlib as _h,sys as _s,os as _o
-_lx2_2 = abs(-312518)
-_lx3_3 = 592484 * 0
-_lx4_4 = 963703 ^ 155383
-_K = 'cb6c67bceb62a80aefb1e5bdc3ec8f7c2d6360a1d3ca9d398ffdba22b15c79bf'
-_M = 'GC17VNSv38Nsb/bcGXtULFiz+qeOVjmEHUmqgRkKzOwVfjtP2uHBmmdqqdNDKQx4VbD5qIFYP4hPSPvYSV/I4Bl4bB/f4MbKYzv0'
-_D = '==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'
+import os
 
-def _xr(d,k):
-    kl=len(k);return bytes(d[i]^k[i%kl] for i in range(len(d)))
-def _dk(sd,c):
-    return _h.sha256((_K+sd+str(c)).encode('utf-8')).digest()
-def _dc(s,c,sd):
-    r=_b.b64decode(s[::-1]);return _z.decompress(_xr(r,_dk(sd,c))).decode('utf-8')
-def _run():
-    mk=_h.sha256(_K.encode('utf-8')).digest()
-    meta=_xr(_b.b64decode(_M),mk).decode('utf-8').split(':',2)
-    sd=meta[0];nc=int(meta[1])
-    d=_D
-    for c in range(nc-1,-1,-1):d=_dc(d,c,sd)
-    idx=d.find('||')
-    src=d[idx+2:] if idx!=-1 else d
-    exec(compile(src,'<mediaplay>','exec'),{'__name__':'__main__','__file__':__file__})
-_run()
+try:
+    from kodi_six import xbmc, xbmcaddon, xbmcvfs
+except ImportError:
+    import xbmc
+    import xbmcaddon
+    import xbmcvfs
+
+try:
+    import requests as _req
+    _HAS_REQUESTS = True
+except ImportError:
+    _HAS_REQUESTS = False
+
+_HAS_KODI = (xbmc is not None)
+_DEFAULT_TIMEOUT = 20
+_API_TEMPLATE = 'https://opensubtitles.stremio.homes/{lang}/ai-translated=false%7Cfrom=all%7CCauto-adjustment=true'
+_USER_AGENT = 'KelTecMediaPlay/3.0'
+
+
+# ---------------------------------------------------------------------------
+# Helpers internos (substitutos do módulo common)
+# ---------------------------------------------------------------------------
+
+def _log(msg, level=None):
+    if _HAS_KODI:
+        lvl = level if level is not None else xbmc.LOGDEBUG
+        xbmc.log('[KelTec-Subs] {}'.format(msg), lvl)
+
+
+def _log_debug(msg):
+    _log(msg, xbmc.LOGDEBUG)
+
+
+def _get_addon(addon=None):
+    if addon is not None:
+        return addon
+    try:
+        return xbmcaddon.Addon()
+    except Exception:
+        return None
+
+
+def _ensure_dir(path):
+    try:
+        if not os.path.exists(path):
+            os.makedirs(path)
+    except Exception:
+        pass
+    return path
+
+
+def _make_session():
+    if not _HAS_REQUESTS:
+        return None
+    s = _req.Session()
+    s.headers.update({'User-Agent': _USER_AGENT})
+    return s
+
+
+def _get_setting_bool(setting_id, default=True, addon=None):
+    addon = _get_addon(addon)
+    if addon is None:
+        return default
+    try:
+        return addon.getSetting(setting_id) == 'true'
+    except Exception:
+        return default
+
+
+def _get_setting_enum_value(setting_id, options, default, addon=None):
+    addon = _get_addon(addon)
+    if addon is None:
+        return default
+    try:
+        idx = int(addon.getSetting(setting_id) or '0')
+        idx = max(0, min(idx, len(options) - 1))
+        return options[idx]
+    except Exception:
+        return default
+
+
+# ---------------------------------------------------------------------------
+# Cache / diretório de legendas
+# ---------------------------------------------------------------------------
+
+def _get_subtitle_dir(addon=None):
+    addon = _get_addon(addon)
+    if addon is None:
+        return _ensure_dir(os.path.join(os.getcwd(), 'subtitles'))
+    profile_dir = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
+    return _ensure_dir(os.path.join(profile_dir, 'subtitles'))
+
+
+def clear_subtitles_cache(addon=None):
+    addon = _get_addon(addon)
+    subtitle_dir = _get_subtitle_dir(addon)
+    removed = 0
+    try:
+        if os.path.isdir(subtitle_dir):
+            for filename in os.listdir(subtitle_dir):
+                path = os.path.join(subtitle_dir, filename)
+                try:
+                    if os.path.isfile(path):
+                        os.remove(path)
+                        removed += 1
+                except Exception as exc:
+                    _log('Falha ao remover {}: {}'.format(path, exc), xbmc.LOGWARNING)
+    except Exception as exc:
+        _log('Erro limpando cache: {}'.format(exc), xbmc.LOGWARNING)
+    return removed
+
+
+def get_subtitle_language_candidates(addon=None):
+    addon = _get_addon(addon)
+    preferred = _get_setting_enum_value('idioma_legenda', ['pt-br', 'en', 'es'], 'pt-br', addon=addon)
+    fallback = _get_setting_enum_value('fallback_legenda', ['', 'pt-pt', 'en', 'es'], '', addon=addon)
+    candidates = []
+    for code in (preferred, fallback):
+        if code and code not in candidates:
+            candidates.append(code)
+    return candidates or ['pt-br']
+
+
+# ---------------------------------------------------------------------------
+# API Stremio
+# ---------------------------------------------------------------------------
+
+def build_subtitles_api_url(imdb_id, media_type, lang, season=None, episode=None):
+    base = _API_TEMPLATE.format(lang=lang)
+    if media_type == 'series' and season and episode:
+        return '{}/subtitles/series/{}:{}:{}.json'.format(base, imdb_id, season, episode)
+    return '{}/subtitles/movie/{}.json'.format(base, imdb_id)
+
+
+def fetch_subtitles_metadata(imdb_id, media_type, lang, season=None, episode=None, session=None):
+    session = session or _SESSION
+    url = build_subtitles_api_url(imdb_id, media_type, lang, season=season, episode=episode)
+    _log('URL: {}'.format(url), xbmc.LOGINFO)
+    response = session.get(url, timeout=_DEFAULT_TIMEOUT)
+    response.raise_for_status()
+    payload = response.json()
+    subtitles = payload.get('subtitles') or []
+    _log('API retornou {} legenda(s) para {} imdb={}'.format(len(subtitles), lang, imdb_id), xbmc.LOGINFO)
+    return subtitles
+
+
+def download_subtitle(url, destination_path, session=None):
+    session = session or _SESSION
+    response = session.get(url, timeout=_DEFAULT_TIMEOUT)
+    response.raise_for_status()
+    with open(destination_path, 'wb') as fh:
+        fh.write(response.content)
+    _log('Download OK: {}'.format(os.path.basename(destination_path)), xbmc.LOGINFO)
+    return destination_path
+
+
+# ---------------------------------------------------------------------------
+# Interface principal: busca e baixa automaticamente (sem menu)
+# ---------------------------------------------------------------------------
+
+def get_and_download_subtitles(imdb_id, media_type, season=None, episode=None,
+                                addon=None, clear_before=True):
+    addon = _get_addon(addon)
+    if not imdb_id or not media_type:
+        _log_debug('Busca ignorada: imdb_id ou media_type ausente.')
+        return []
+
+    if media_type == 'series' and (not season or not episode):
+        _log_debug('Busca para serie ignorada: season/episode ausentes.')
+        return []
+
+    if not _get_setting_bool('legendasauto', True, addon=addon):
+        _log_debug('Legendas automaticas desativadas pelo usuario.')
+        return []
+
+    if clear_before and _get_setting_bool('limparlegendas', True, addon=addon):
+        clear_subtitles_cache(addon)
+
+    candidates = get_subtitle_language_candidates(addon)
+    local_paths = []
+
+    for lang in candidates:
+        try:
+            subtitles = fetch_subtitles_metadata(
+                imdb_id, media_type, lang,
+                season=season, episode=episode,
+                session=_SESSION,
+            )
+        except Exception as exc:
+            _log('Erro consultando {} para {}: {}'.format(lang, imdb_id, exc), xbmc.LOGWARNING)
+            continue
+
+        if not subtitles:
+            _log_debug('Nenhuma legenda para {} em {}.'.format(imdb_id, lang))
+            continue
+
+        for idx, sub in enumerate(subtitles):
+            url = sub.get('url')
+            if not url:
+                continue
+            dest = os.path.join(
+                _get_subtitle_dir(addon),
+                'sub_{}_{}.vtt'.format(lang.replace('-', '_'), idx))
+            try:
+                download_subtitle(url, dest, session=_SESSION)
+                local_paths.append(dest)
+            except Exception as exc:
+                _log('Falha ao baixar {}: {}'.format(url, exc), xbmc.LOGWARNING)
+
+        if local_paths:
+            _log_debug('Legendas obtidas com idioma {}.'.format(lang))
+            return local_paths
+
+    return []
+
+
+def get_stremio_subtitle(imdb_id, season=None, episode=None, lang='pt-br', addon=None):
+    media_type = 'series' if season and episode else 'movie'
+    try:
+        subtitles = fetch_subtitles_metadata(
+            imdb_id, media_type, lang,
+            season=season, episode=episode,
+            session=_SESSION,
+        )
+        if not subtitles:
+            _log('Nenhuma legenda para {}'.format(imdb_id))
+            return None
+        url = subtitles[0].get('url')
+        if not url:
+            return None
+        dest = os.path.join(
+            _get_subtitle_dir(addon),
+            '{}_{}.vtt'.format(imdb_id, lang))
+        return download_subtitle(url, dest, session=_SESSION)
+    except Exception as exc:
+        _log('Erro subtitle: {}'.format(exc), xbmc.LOGWARNING)
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Sessao global
+# ---------------------------------------------------------------------------
+_SESSION = _make_session() if _HAS_REQUESTS else None
+
+
+# ---------------------------------------------------------------------------
+# Compatibilidade: get_subtitles_manager() retorna um wrapper de objeto
+# para nao quebrar chamadas existentes em main.py
+# ---------------------------------------------------------------------------
+
+class _SubtitlesCompat:
+    """Wrapper de compatibilidade para codigo legado que usa get_subtitles_manager()."""
+
+    def __init__(self, addon):
+        self._addon = addon
+
+    def get_and_download(self, imdb_id, media_type, season=None, episode=None):
+        return get_and_download_subtitles(
+            imdb_id, media_type,
+            season=season, episode=episode,
+            addon=self._addon, clear_before=False)
+
+    def prompt_and_download(self, imdb_id=None, media_type=None,
+                             season=None, episode=None, display_title=None,
+                             **kwargs):
+        _log('prompt_and_download chamado — delegando para get_and_download_subtitles')
+        paths = get_and_download_subtitles(
+            imdb_id=imdb_id or kwargs.get('imdb_id'),
+            media_type=media_type or kwargs.get('media_type'),
+            season=season, episode=episode,
+            addon=self._addon, clear_before=False)
+        return paths[0] if paths else ''
+
+    def clear_cache(self):
+        return clear_subtitles_cache(self._addon)
+
+
+def get_subtitles_manager(addon, profile_dir=None):
+    if not _HAS_REQUESTS:
+        if _HAS_KODI:
+            xbmc.log('[KelTec-Subs] requests nao disponivel.', xbmc.LOGWARNING)
+        return None
+    try:
+        return _SubtitlesCompat(addon)
+    except Exception as exc:
+        if _HAS_KODI:
+            xbmc.log('[KelTec-Subs] Erro ao criar manager: {}'.format(exc), xbmc.LOGERROR)
+        return None
