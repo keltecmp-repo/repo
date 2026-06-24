@@ -1,32 +1,22 @@
 import requests
 import random
 import os
-import sys
 import json
 import time
 import logging
 
-try:
-    from kodi_six import xbmc, xbmcplugin, xbmcgui, xbmcaddon, xbmcvfs
-except ImportError:
-    import xbmc
-    import xbmcplugin
-    import xbmcgui
-    import xbmcaddon
-    import xbmcvfs
-from dns import customdns
+import xbmc
+import xbmcaddon
+import xbmcvfs
 
-PY2 = sys.version_info[0] == 2
 ADDON_ = xbmcaddon.Addon()
-TRANSLATE_ = xbmc.translatePath if PY2 else xbmcvfs.translatePath
+TRANSLATE_ = xbmcvfs.translatePath
 profile = TRANSLATE_(ADDON_.getAddonInfo('profile'))
 if not os.path.exists(profile):
     os.makedirs(profile)
 
 CACHE_FILE = os.path.join(profile, 'proxy_cache.json')
 logging.basicConfig(level=logging.DEBUG)
-
-customdns(cache_ttl=14400)  # Ativa DNS customizado com cache de 4 horas
 
 # URL para pegar a lista de proxies
 BASE_PROXIES_URL = 'https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt'

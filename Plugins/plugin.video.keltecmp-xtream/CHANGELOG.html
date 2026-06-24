@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KelTec Media Play - Changelog</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-card: #181825;
+    --bg-card-hover: #1e1e30;
+    --border: #2a2a3e;
+    --border-accent: #3a3a5e;
+    --text-primary: #e8e8f0;
+    --text-secondary: #9090a8;
+    --text-muted: #58587a;
+    --accent-gold: #f0c040;
+    --accent-gold-dim: #806820;
+    --accent-cyan: #40c0f0;
+    --accent-cyan-dim: #206880;
+    --accent-lime: #60f0a0;
+    --accent-lime-dim: #208050;
+    --accent-crimson: #f04060;
+    --accent-crimson-dim: #802030;
+    --accent-orange: #f09040;
+    --accent-purple: #a060f0;
+    --accent-purple-dim: #503080;
+    --tag-added: #60f0a0;
+    --tag-added-bg: rgba(96,240,160,0.12);
+    --tag-fixed: #40c0f0;
+    --tag-fixed-bg: rgba(64,192,240,0.12);
+    --tag-security: #f04060;
+    --tag-security-bg: rgba(240,64,96,0.12);
+    --tag-enhanced: #f0c040;
+    --tag-enhanced-bg: rgba(240,192,64,0.12);
+    --tag-restructured: #a060f0;
+    --tag-restructured-bg: rgba(160,96,240,0.12);
+    --radius: 12px;
+    --radius-sm: 6px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── Background effects ── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(160,96,240,0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(240,192,64,0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(64,192,240,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Header ── */
+  header {
+    text-align: center;
+    padding: 60px 0 50px;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  }
+
+  .logo {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent-crimson);
+    margin-bottom: 12px;
+  }
+
+  .logo span { color: var(--text-primary); }
+
+  h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  .subtitle strong { color: var(--accent-cyan); font-weight: 500; }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 32px 0 48px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent-gold);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ── Timeline ── */
+  .timeline { position: relative; padding-left: 32px; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent-gold-dim), var(--accent-cyan-dim), var(--accent-purple-dim), transparent);
+  }
+
+  .timeline-section {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .timeline-section:last-child { margin-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -32px;
+    top: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--border-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    z-index: 2;
+  }
+
+  .timeline-section:nth-child(1) .timeline-dot { border-color: var(--accent-gold); }
+  .timeline-section:nth-child(2) .timeline-dot { border-color: var(--accent-cyan); }
+  .timeline-section:nth-child(3) .timeline-dot { border-color: var(--accent-lime); }
+  .timeline-section:nth-child(4) .timeline-dot { border-color: var(--accent-crimson); }
+  .timeline-section:nth-child(5) .timeline-dot { border-color: var(--accent-purple); }
+  .timeline-section:nth-child(6) .timeline-dot { border-color: var(--accent-orange); }
+  .timeline-section:nth-child(7) .timeline-dot { border-color: var(--accent-cyan); }
+  .timeline-section:nth-child(8) .timeline-dot { border-color: var(--accent-lime); }
+
+  .section-header {
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .section-date {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--border-accent);
+    background: var(--bg-card-hover);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .card-desc code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(255,255,255,0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent-cyan);
+  }
+
+  .card-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .file-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--text-muted);
+  }
+
+  /* ── Tags ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0; }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .tag-added       { background: var(--tag-added-bg);       color: var(--tag-added); }
+  .tag-fixed       { background: var(--tag-fixed-bg);       color: var(--tag-fixed); }
+  .tag-security    { background: var(--tag-security-bg);    color: var(--tag-security); }
+  .tag-enhanced    { background: var(--tag-enhanced-bg);    color: var(--tag-enhanced); }
+  .tag-restructured{ background: var(--tag-restructured-bg);color: var(--tag-restructured); }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 48px 0 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  footer a {
+    color: var(--accent-cyan);
+    text-decoration: none;
+  }
+
+  footer a:hover { text-decoration: underline; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 48px; }
+    h1 { font-size: 28px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stat-value { font-size: 22px; }
+    .timeline { padding-left: 24px; }
+    .timeline-dot { left: -24px; width: 20px; height: 20px; }
+    .card { padding: 16px; }
+    .card-header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <header>
+    <div class="logo"><span>KeTec</span> Media Play</div>
+    <h1>Changelog de Melhorias</h1>
+    <p class="subtitle">Registro completo de todas as modifica&ccedil;&otilde;es &mdash; <strong>Junho 2026</strong></p>
+  </header>
+
+  <!-- ═══════════ STATS ═══════════ -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-value">44</div>
+      <div class="stat-label">Commits / Alteracoes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">9</div>
+      <div class="stat-label">Arquivos Modificados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">3</div>
+      <div class="stat-label">Novos Arquivos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">10</div>
+      <div class="stat-label">Categorias</div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TIMELINE ═══════════ -->
+  <div class="timeline">
+
+    <!-- ── 1. Seguranca ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Seguranca &amp; Privacidade</div>
+        <div class="section-date">Remocao de vazamento de credenciais em settings.xml</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Credenciais de servidor removidas do settings.xml</div>
+          <div class="tags"><span class="tag tag-security">SEGURANCA</span></div>
+        </div>
+        <div class="card-desc">
+          A fun&ccedil;&atilde;o <code>_apply_server_credentials()</code> parou de salvar <code>base_url</code>, <code>username</code> e <code>password</code> no <code>settings.xml</code> do Kodi. Servidores descobertos via token VIP permanecem apenas em mem&oacute;ria e no cache cifrado em disco.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:1625</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Limpeza de credenciais legadas no logout</div>
+          <div class="tags"><span class="tag tag-security">SEGURANCA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>_clear_server_credentials()</code> agora tamb&eacute;m zera <code>base_url</code>, <code>username</code> e <code>password</code> no settings.xml, apagando dados eventualmente residuais de sess&otilde;es anteriores.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:1635</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Detector de add-ons parasitas</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Sistema que detecta outros add-ons copiando credenciais do KelTec MP e alerta o usu&aacute;rio. Apenas notifica&ccedil;&atilde;o &mdash; n&atilde;o altera dados automaticamente.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:108</span></div>
+      </div>
+    </div>
+
+    <!-- ── 2. TMDB ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Metadados TMDB</div>
+        <div class="section-date">Enriquecimento completo da ficha tecnica</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Elenco expandido: de 5 para 15 atores</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>fetch_tmdb_metadata_async()</code> agora retorna at&eacute; 15 membros do elenco (antes 5), proporcionando uma ficha t&eacute;cnica mais completa.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/tmdb_helper.py:543</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">imdb_id, homepage e release_date adicionados</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Os metadados retornados por <code>get_full_movie_details()</code> e <code>get_full_tv_details()</code> agora incluem <code>imdb_id</code>, <code>homepage</code> e <code>release_date</code>. TV details usa <code>append_to_response</code> com <code>external_ids</code>.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/tmdb_browser.py:345</span> <span class="file-tag">lib/tmdb_browser.py:422</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Multi-page fetch: 50 itens por pagina</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Nova fun&ccedil;&atilde;o <code>_fetch_multi_page()</code> busca 3 p&aacute;ginas da API TMDB (20 itens cada) e mescla para exibir <strong>50 itens por p&aacute;gina</strong> no add-on. A pagina&ccedil;&atilde;o &eacute; recalculada automaticamente.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/tmdb_browser.py:189</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Cache de disco com lock e retry</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
+        </div>
+        <div class="card-desc">
+          <code>_DISK_WRITE_LOCK</code> global + retry 3x em caso de colis&atilde;o de escrita. Resolve race conditions quando m&uacute;ltiplas threads TMDB tentam salvar o cache simultaneamente.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/tmdb_helper.py</span></div>
+      </div>
+    </div>
+
+    <!-- ── 3. IMDB ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Integracao IMDB</div>
+        <div class="section-date">API GraphQL sem chave, trailers MP4 diretos</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Novo modulo: lib/imdb_helper.py</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          M&oacute;dulo completo para consulta &agrave; API GraphQL do IMDB (<code>graphql.prod.api.imdb.a2z.com</code>) sem necessidade de API key. Inclui fallback <code>urllib</code> quando <code>requests</code> n&atilde;o est&aacute; dispon&iacute;vel.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/imdb_helper.py</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Nota e votos do IMDB na ficha tecnica</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>fetch_imdb_data()</code> retorna rating, votos, certifica&ccedil;&atilde;o, g&ecirc;neros, diretores, roteiristas e elenco (10). Exibido como <code>TMDB: X/10 &nbsp; IMDb: Y/10</code> no bot&atilde;o REPRODUZIR e na ficha t&eacute;cnica.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/imdb_helper.py:73</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Trailers MP4 diretos do IMDB</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>fetch_imdb_trailer_url()</code> obt&eacute;m o <code>latestTrailer</code> via GraphQL e consulta o endpoint <code>VideoPlayback</code> para obter URLs MP4. Qualidade selecionada automaticamente (1080p &gt; 720p &gt; 480p &gt; 360p). Cache de 24h.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/imdb_helper.py:171</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Trailer IMDB como fallback no detail screen</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Quando o TMDB n&atilde;o possui trailer do YouTube, o add-on busca automaticamente o trailer do IMDB. Exibe <code>[ TRAILER IMDB ]</code> em amarelo quando proveniente do IMDB, <code>[ TRAILER ]</code> quando &eacute; do YouTube. Integrado tanto no <code>tmdb_detail</code> quanto no <code>tmdb_resolve</code>.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:8601</span> <span class="file-tag">main.py:9021</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Context menu &quot;Ver no IMDb&quot;</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Menu de contexto nos itens com <code>imdb_id</code> que abre o navegador na p&aacute;gina do IMDB via <code>mode=open_url</code>.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:3343</span></div>
+      </div>
+    </div>
+
+    <!-- ── 4. VIP / Servidores ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Servidores VIP &amp; Unificacao</div>
+        <div class="section-date">Merge inteligente sem duplicatas</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Merge VIP por ID (sem duplicatas)</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
+        </div>
+        <div class="card-desc">
+          <code>tmdb_resolve</code> usa <code>VIPManager.get_servers_from_api()</code> (parse JSON real) para preencher credenciais de servidores locked/sem URL na lista principal. Match por ID &mdash; sem append de novos servidores. Resultado: exatamente 27 servidores, sem duplicatas.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:tmdb_resolve</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Token VIP passado por parametro</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
+        </div>
+        <div class="card-desc">
+          <code>get_servers_config(force_refresh=is_vip)</code> e <code>_load_remote_servers(force, vip_token)</code> agora recebem o token diretamente do <code>VIP_MANAGER</code> em vez de ler de arquivo, eliminando inconsist&ecirc;ncias de path/toler&acirc;ncia.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:get_servers_config</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Tolerancia de cache unificada: 4h para 6h</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Toler&acirc;ncia de expira&ccedil;&atilde;o de cache de servidores aumentada de 4h para 6h, reduzindo requisi&ccedil;&otilde;es desnecess&aacute;rias ao servidor remoto.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:cache_ttl</span></div>
+      </div>
+    </div>
+
+    <!-- ── 5. Navegacao ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Navegacao &amp; Menu</div>
+        <div class="section-date">Reestruturacao completa do menu principal</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Menu TMDB unificado (estilo Trakt)</div>
+          <div class="tags"><span class="tag tag-restructured">REESTRUTURADO</span></div>
+        </div>
+        <div class="card-desc">
+          Novo <code>mode='tmdb_menu'</code> no menu principal, organizado como o Trakt.tv com se&ccedil;&otilde;es:<br>
+          <code>[FILMES]</code> Em Alta, Mais Bem Avaliados, Em Cartaz, Em Breve, Generos, Busca<br>
+          <code>[SERIES]</code> Em Alta, Mais Bem Avaliadas, Episodio Hoje, Na Grade, Generos, Busca
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:7925</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Filmes e Series: apenas catalogo do servidor</div>
+          <div class="tags"><span class="tag tag-restructured">REESTRUTURADO</span></div>
+        </div>
+        <div class="card-desc">
+          Os menus <code>Filmes</code> e <code>Series</code> agora apontam diretamente para o cat&aacute;logo do servidor Xtream (categorias), sem o cat&aacute;logo TMDB. Acesso ao TMDB exclusivamente pelo novo item <code>TMDB</code> no menu principal.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:7148</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Hubs movies_hub/series_hub removidos</div>
+          <div class="tags"><span class="tag tag-restructured">REESTRUTURADO</span></div>
+        </div>
+        <div class="card-desc">
+          Os modos <code>movies_hub</code> e <code>series_hub</code> (p&aacute;ginas intermedi&aacute;rias) foram substitu&iacute;dos por redirecionamento direto para <code>movies</code>/<code>series</code>. Mantidos para compatibilidade reversa.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:7661</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Trakt.tv no menu principal</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Item <code>Trakt.tv</code> adicionado ao menu principal (<code>mode='enter'</code>) para acesso r&aacute;pido.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:7464</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Trakt: limite aumentado para 60 itens/pagina</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>limit=30</code> &rarr; <code>limit=60</code> em todos os m&eacute;todos Trakt (<code>_paged_request</code>, <code>_public_paged_request</code>, <code>get_trending</code>, <code>get_popular</code>, etc). API do Trakt suporta at&eacute; 100 itens.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/trakt_manager.py</span></div>
+      </div>
+    </div>
+
+    <!-- ── 6. Suporte a Idiomas ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Suporte a Titulos Nao-Latinos</div>
+        <div class="section-date">Transliteracao de arabe, cirilico e outros</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">sanitize_title_for_kodi()</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Nova fun&ccedil;&atilde;o que detecta caracteres n&atilde;o-Latinos em t&iacute;tulos e aplica:<br>
+          1. Usa t&iacute;tulo TMDB (pt-BR) se dispon&iacute;vel<br>
+          2. Fallback de translitera&ccedil;&atilde;o com tabelas para &aacute;rabe (<code>_ARABIC_TO_LATIN</code>) e cir&iacute;lico (<code>_CYRILLIC_TO_LATIN</code>)
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:3748</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Integracao no build_menu</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Todo item exibido no Kodi passa por <code>sanitize_title_for_kodi()</code> no <code>build_menu()</code>, garantindo que t&iacute;tulos em &aacute;rabe ou cir&iacute;lico sejam exibidos corretamente em qualquer skin.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:3105</span></div>
+      </div>
+    </div>
+
+    <!-- ── 7. Limpeza ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Limpeza &amp; Compatibilidade</div>
+        <div class="section-date">Remocao de emojis, dead code e padronizacao</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Emojis substituidos por texto ASCII</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
+        </div>
+        <div class="card-desc">
+          <code>&#x1F4FD;</code> &rarr; <code>&gt;&gt;</code> e <code>&#x1F4CB;</code> &rarr; <code>&gt;&gt;</code> na fun&ccedil;&atilde;o <code>set_view_mode</code>. Setas Unicode (<code>&rarr;</code>) substitu&iacute;das por <code>-&gt;</code>. Emojis n&atilde;o s&atilde;o renderizados corretamente em skins Kodi.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:7526</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Deobfuscacao e remocao de dead code Python 2</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
+        </div>
+        <div class="card-desc">
+          <code>kpn.py</code> deobfuscado (StreamProxy Engine v5.3.0): removeu <code>@SECLEVEL=0</code> do SSL adapter, pollers HLS com TTL 90s. Removido tracker <code>contador()</code> substitu&iacute;do por <code>_ping_counter()</code>. Barras <code>except:</code> corrigidas para escopos espec&iacute;ficos.
+        </div>
+        <div class="card-files"><span class="file-tag">kpn.py</span> <span class="file-tag">main.py</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Semafaro de conexao: 6 para 12</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Sem&aacute;foro de conex&otilde;es simult&acirc;neas no proxy HLS aumentado de 6 para 12, melhorando o desempenho em carregamentos com m&uacute;ltiplos segmentos.
+        </div>
+        <div class="card-files"><span class="file-tag">kpn.py</span></div>
+      </div>
+    </div>
+
+    <!-- ── 8. Cancel Search ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Cancelamento de Busca &amp; Auto-Reload do Menu</div>
+        <div class="section-date">Threading com cancel event, timeout reduzido, refresh pos-login</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Cancelamento nativo no find_in_all_servers()</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>find_in_all_servers()</code> aceita <code>cancel_event</code> (threading.Event). Todas as threads verificam o evento antes de iniciar e antes de cada chamada HTTP. <code>time.sleep(0.3)</code> entre abertura de threads permite detectar cancelamento em segundos. Loop de <code>join</code> tamb&eacute;m verifica <code>cancel_event</code> para sair com resultados parciais.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/tmdb_browser.py:find_in_all_servers</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Timeout HTTP reduzido e deadline global menor</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Timeout HTTP por requisi&ccedil;&atilde;o reduzido de <strong>22s</strong> para <strong>10s</strong> &mdash; servidores lentos ou offline n&atilde;o travam a busca. Deadline global do lote reduzido de <strong>35s</strong> para <strong>25s</strong>.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/tmdb_browser.py</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Progress callback monitora cancelamento do usuario</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          No <code>main.py</code>, o <code>_prog_cb</code> passado para as fun&ccedil;&otilde;es de busca verifica <code>self._progress.iscanceled()</code> a cada itera&ccedil;&atilde;o e dispara <code>_cancel_event.set()</code> se o usu&aacute;rio apertar ESC ou Cancelar.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:search</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Auto-reload do menu apos login VIP</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Ap&oacute;s login VIP bem-sucedido (<code>vip_login</code> e <code>vip_status</code>): <code>Window.setProperty('keltec_logged_in', '1')</code> + <code>Container.Update(plugin://..., replace)</code> para refresh imediato do menu principal. Usu&aacute;rio n&atilde;o precisa mais recarregar manualmente.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:vip_login</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Servidor selecionado persiste entre recargas</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>show_server_selector()</code> salva <code>ADDON.setSetting('active_server_name', nome_srv)</code>. O menu principal l&ecirc; este setting como fallback caso a propriedade da janela n&atilde;o exista, garantindo que o servidor escolhido n&atilde;o se perca ap&oacute;s refresh.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:show_server_selector</span></div>
+      </div>
+    </div>
+
+    <!-- ── 9. Subtitles & Search ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">Legendas &amp; Busca Global</div>
+        <div class="section-date">Cache de API, progresso na busca e fallbacks removidos</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Cache em memoria para get_json() (60s TTL)</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>_JSON_CACHE</code> evita refetch da API Xtream em buscas repetidas. Na primeira pesquisa global os dados sao carregados do servidor; nas seguintes (dentro de 60s) o cache eh usado. Cache limpo automaticamente ao trocar de servidor via <code>_apply_server_credentials()</code>.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:2358</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">for_search=True agora pula EPG annotation</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          O parametro <code>for_search</code> em <code>get_items()</code> agora efetivamente impede a anotacao EPG em canais ao vivo durante a busca global, tornando a pesquisa mais rapida.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:3925</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Barra de progresso na Pesquisa Global</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>search_global()</code> agora exibe <code>DialogProgress</code> com etapas: "Buscando canais ao vivo...", "Buscando filmes...", "Buscando series...". Usuario pode cancelar a qualquer momento.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:4331</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Subtitles API: fallbacks removidos</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
+        </div>
+        <div class="card-desc">
+          Apos testes, constatou-se que apenas <code>opensubtitles.stremio.homes</code> retorna JSON valido com legendas. As alternativas testadas (<code>strem.io</code>, <code>baby-beamup.club</code>) retornam HTML ou JSON vazio. Fallbacks foram removidos para eliminar latencia desnecessaria.
+        </div>
+        <div class="card-files"><span class="file-tag">lib/subtitles_manager.py</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Series categories: TMDB agora usa cache em disco + async</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
+        </div>
+        <div class="card-desc">
+          <code>mode='series_items'</code> refatorado para usar <code>get_items_paged()</code> (mesmo caminho dos filmes). Antes fazia 50 chamadas TMDB <strong>sincronas</strong> (1-3s cada), travando a UI por at&eacute; 150s. Agora usa cache em disco + threads async. Na primeira visita exibe capas do servidor instantaneamente; nas seguintes os posters TMDB aparecem do cache.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:series_items</span> <span class="file-tag">main.py:get_items</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">get_items() para series: modo 'seasons' e plot do servidor</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>get_items('get_series')</code> agora inclui <code>mode: 'seasons'</code> nos itens, permitindo que <code>get_items_paged()</code> produza itens navegaveis diretamente. Tamb&eacute;m extrai <code>plot</code> do servidor quando dispon&iacute;vel.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:3942</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Metadados enriquecidos: cast, votes, studio, tagline, originaltitle</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>fetch_tmdb_metadata_disk_cached()</code> agora extrai 6 novos campos do TMDB que estavam dispon&iacute;veis mas eram descartados:
+          <ul>
+            <li><strong>votes</strong> (<code>vote_count</code>) &rarr; exibe total de votos no Kodi</li>
+            <li><strong>originaltitle</strong> (<code>original_title</code>/<code>original_name</code>) &rarr; t&iacute;tulo original</li>
+            <li><strong>tagline</strong> (<code>tagline</code>) + <strong>plotoutline</strong> &rarr; subt&iacute;tulo do filme/s&eacute;rie</li>
+            <li><strong>studio</strong> (<code>production_companies</code> para filmes, <code>networks</code> para s&eacute;ries) &rarr; exibido como est&uacute;dio</li>
+            <li><strong>cast</strong> (elenco com nome+personagem+foto) &rarr; agora passa via <code>InfoTagVideo.setCast()</code> (API moderna)</li>
+            <li><strong>creator</strong> (s&eacute;ries) &rarr; mapeado como <code>director</code> para o Kodi</li>
+          </ul>
+          Cast tamb&eacute;m foi adicionado ao path moderno <code>InfoTagVideo</code> no <code>build_menu</code>, n&atilde;o dependendo mais do fallback legado.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py:4076-4097</span> <span class="file-tag">main.py:3236-3242</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Correcao de bugs: navegacao, endOfDirectory, cache, e lint</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span> <span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <strong>Infinito no Boas-Vindas:</strong> <code>mode == 'bemvindo'</code> usava <code>Container.Refresh()</code> que recarregava o mesmo URL, causando loop. Substitu&iacute;do por <code>Container.Update(...,replace)</code> para navegar ao menu principal.
+          <br><br>
+          <strong>endOfDirectory ausente em 6 handlers:</strong> <code>clear_all_cache</code>, <code>server_sources</code>, <code>tmdb_clear_cache</code>, <code>set_view_mode</code>, <code>vip</code>, <code>doar</code>, <code>update</code>, <code>trakt_auth</code> n&atilde;o chamavam <code>endOfDirectory()</code>, causando "Working..." fantasma. Adicionado.
+          <br><br>
+          <strong>Cache de sess&atilde;o:</strong> <code>end_session()</code> nos logouts VIP era chamado sem <code>PROFILE_DIR</code>, pulando limpeza de cache de sess&atilde;o. Corrigido.
+          <br><br>
+          <strong>Deprecated API:</strong> Removido prefixo <code>XBMC.</code> obsoleto em <code>Container.Refresh</code> (incompat&iacute;vel com Kodi 21+).
+          <br><br>
+          <strong>Vari&aacute;vel morta:</strong> <code>ost = webbrowser.open(...)</code> removido em <code>INFO_bemvindo</code> e <code>INFO_init</code> (<code>ost</code> declarado mas nunca lido).
+        </div>
+        <div class="card-files">
+          <span class="file-tag">main.py:7575</span> <span class="file-tag">main.py:7325</span>
+          <span class="file-tag">main.py:7520-7558</span> <span class="file-tag">main.py:7580-7590</span>
+          <span class="file-tag">main.py:7382</span> <span class="file-tag">main.py:7429</span>
+          <span class="file-tag">main.py:7608</span> <span class="file-tag">main.py:4963-4994</span>
+          <span class="file-tag">main.py:5179-5218</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Catalogo TMDB: opcao de ocultar no menu principal</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Adicionado <code>menu_show_tmdb</code> no settings.xml, aba "Menu Principal" &rarr; "TMDB e Outros". Permite ocultar o "Catalogo TMDB" do menu principal sem desabilitar o TMDB. Padr&atilde;o: vis&iacute;vel.
+        </div>
+        <div class="card-files"><span class="file-tag">resources/settings.xml:109</span> <span class="file-tag">main.py:7242</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Dashboard de Estatisticas: versao 2.0 - mais dados e elegante</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          <code>lib/stats_manager.py</code> reescrito com novos indicadores e layout mais limpo:
+          <ul>
+            <li><strong>Dias unicos</strong> com atividade + media de reproducoes por dia</li>
+            <li><strong>Horas por tipo</strong> (live/movie/series) com barras visuais e percentuais</li>
+            <li><strong>Top 3 por tipo</strong> &mdash; canal ao vivo, filme e serie mais assistidos separadamente</li>
+            <li><strong>Dia da semana favorito</strong> (Seg a Dom) + horario favorito com periodo</li>
+            <li><strong>Atividade mensal</strong> &mdash; grafico de barras dos ultimos 6 meses</li>
+            <li><strong>Secoes com cabecalhos</strong> <code>=== TOP 5 ===</code> para navegacao visual mais clara</li>
+            <li><strong>Barras de progresso</strong> com <code>#</code> e <code>-</code> coloridos para melhor legibilidade</li>
+          </ul>
+        </div>
+        <div class="card-files"><span class="file-tag">lib/stats_manager.py</span></div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer>
+    <strong>KelTec Media Play</strong> &mdash; plugin.video.keltecmp-xtream<br>
+    Documentacao gerada em Junho de 2026 &bull; Kodi 21.2 Omega
+  </footer>
+
+</div><!-- /container -->
+
+</body>
+</html>

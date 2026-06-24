@@ -123,7 +123,7 @@ class TraktManager:
             _log(f'Erro HTTP {method} {endpoint}: {e}')
             return 0, None
 
-    def _paged_request(self, endpoint, page=1, limit=30, params=None):
+    def _paged_request(self, endpoint, page=1, limit=60, params=None):
         """
         Requisicao GET com suporte a paginacao via headers do Trakt.
         Retorna (data_list, total_pages, total_items).
@@ -583,7 +583,7 @@ class TraktManager:
             _log(f'Erro public_request {endpoint}: {e}')
             return None
 
-    def _public_paged_request(self, endpoint, page=1, limit=30, params=None):
+    def _public_paged_request(self, endpoint, page=1, limit=60, params=None):
         """
         Requisicao publica paginada - apenas client_id, sem token.
         Retorna (data_list, total_pages, total_items).
@@ -619,25 +619,25 @@ class TraktManager:
             _log(f'Erro _public_paged_request {endpoint}: {e}')
             return [], 1, 0
 
-    def get_trending(self, media_type='movies', limit=30, page=1):
+    def get_trending(self, media_type='movies', limit=60, page=1):
         """Em Alta - nao requer login. Retorna (items, total_pages)."""
         data, pages, _ = self._public_paged_request(
             f'/{media_type}/trending', page=page, limit=limit)
         return data, pages
 
-    def get_popular(self, media_type='movies', limit=30, page=1):
+    def get_popular(self, media_type='movies', limit=60, page=1):
         """Populares - nao requer login. Retorna (items, total_pages)."""
         data, pages, _ = self._public_paged_request(
             f'/{media_type}/popular', page=page, limit=limit)
         return data, pages
 
-    def get_most_watched(self, media_type='movies', period='weekly', limit=30, page=1):
+    def get_most_watched(self, media_type='movies', period='weekly', limit=60, page=1):
         """Mais Assistidos - nao requer login. period: daily/weekly/monthly/yearly/all"""
         data, pages, _ = self._public_paged_request(
             f'/{media_type}/watched/{period}', page=page, limit=limit)
         return data, pages
 
-    def get_most_anticipated(self, media_type='movies', limit=30, page=1):
+    def get_most_anticipated(self, media_type='movies', limit=60, page=1):
         """Mais Aguardados - nao requer login."""
         data, pages, _ = self._public_paged_request(
             f'/{media_type}/anticipated', page=page, limit=limit)
@@ -649,7 +649,7 @@ class TraktManager:
             '/movies/boxoffice', page=page, limit=limit)
         return data, pages
 
-    def get_imdb_top250(self, media_type='movies', limit=30, page=1):
+    def get_imdb_top250(self, media_type='movies', limit=60, page=1):
         """IMDB Top 250 via lista publica do Trakt (sem login). Com paginacao."""
         if media_type == 'movies':
             path = 'users/justin/lists/imdb-top-rated-movies/items/movies'
@@ -715,7 +715,7 @@ class TraktManager:
         _log(f'get_trakt_genres: usando fallback para {media_type}')
         return _fallback.get(media_type, [])
 
-    def get_by_genre(self, genre_slug, media_type='movies', limit=30, page=1, sort='popularity'):
+    def get_by_genre(self, genre_slug, media_type='movies', limit=60, page=1, sort='popularity'):
         """
         Filmes/series filtrados por genero via Trakt.
         genre_slug: slug do genero (ex: 'action', 'comedy', 'drama')

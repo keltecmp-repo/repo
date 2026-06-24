@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 # ============================================================================
-# KELTEC MEDIA PLAY - DASHBOARD DE ESTATISTICAS v1.0
+# KELTEC MEDIA PLAY - DASHBOARD DE ESTATISTICAS v2.0
 # ============================================================================
 # Arquivo: lib/stats_manager.py
 #
 # FUNCIONALIDADES:
 #   - Total de horas assistidas (filmes, series, ao vivo)
-#   - Generos mais assistidos (usa dados TMDB ja em cache)
+#   - Dias unicos com atividade + media por dia
 #   - Top 5 conteudos mais assistidos
-#   - Streaks de visualizacao (dias consecutivos)
-#   - Distribuicao por tipo (live / movie / series)
-#   - Hora do dia preferida para assistir
-#   - Exibicao no menu do Kodi como tela de estatisticas
+#   - Top 3 por tipo (ao vivo, filmes, series)
+#   - Generos mais assistidos (usa dados TMDB ja em cache)
+#   - Streak de dias consecutivos
+#   - Hora do dia e dia da semana preferidos
+#   - Atividade mensal (ultimos 6 meses)
+#   - Distribuicao por tipo com barras e horas estimadas
 # ============================================================================
 
 import json
@@ -36,36 +38,22 @@ def _log(msg):
 
 # ____________________________________________________________________________
 class StatsManager:
-    """
-    Calcula e exibe estatisticas de visualizacao a partir do WatchHistory.
 
-    Uso:
-        sm = StatsManager(profile_dir, watch_history)
-        sm.show_dashboard(addon_handle)
-    """
-
-    # Duracao estimada em minutos por tipo (para calcular horas sem timestamp fim)
     _DURATION_ESTIMATE = {
-        'live':   60,   # 1h estimada por canal ao vivo
-        'movie':  110,  # 1h50 estimada por filme
-        'series': 45,   # 45min estimada por episodio
+        'live':   60,
+        'movie':  110,
+        'series': 45,
     }
 
+    _DOW_NAMES = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom']
+
     def __init__(self, profile_dir, watch_history=None, tmdb_cache=None):
-        """
-        profile_dir   : caminho do PROFILE_DIR do Kodi (para salvar stats extras)
-        watch_history : instancia do WatchHistory do main.py
-        tmdb_cache    : dict de cache TMDB em memoria (opcional, para enriquecer generos)
-        """
         self._profile_dir   = profile_dir
         self._wh            = watch_history
         self._tmdb_cache    = tmdb_cache or {}
         self._stats_file    = os.path.join(profile_dir, 'keltec_stats_extra.json')
 
-    # -- Dados brutos ------------------------------------_____________________
-
     def _get_all_items(self):
-        """Retorna todos os itens do historico como lista de dicts."""
         if not self._wh:
             return []
         try:
@@ -74,22 +62,24 @@ class StatsManager:
             _log(f'Erro ao obter historico: {e}')
             return []
 
-    # -- Calculos principais ------------------------------------______________
+    # -- Calculos principais ------------------------------------------------
 
     def compute(self):
-        """
-        Calcula todas as estatisticas e retorna um dict com os resultados.
-        Seguro contra erros - nunca lanca excecao.
-        """
         items = self._get_all_items()
         result = {
             'total_items':   0,
             'total_minutes': 0,
             'by_type':       {'live': 0, 'movie': 0, 'series': 0},
+            'minutes_by_type': {'live': 0, 'movie': 0, 'series': 0},
             'top_titles':    [],
             'top_genres':    [],
             'streak_days':   0,
+            'unique_days':   0,
+            'avg_per_day':   0,
             'best_hour':     None,
+            'best_dow':      None,
+            'monthly':       [],
+            'top_by_type':   {'live': [], 'movie': [], 'series': []},
             'first_watch':   None,
             'last_watch':    None,
         }
@@ -100,12 +90,15 @@ class StatsManager:
         try:
             result['total_items'] = len(items)
 
-            # -- Contagem por tipo ------------------------------------________
-            type_counter = Counter()
-            title_counter = Counter()
-            hour_counter  = Counter()
-            days_seen     = set()
-            timestamps    = []
+            type_counter   = Counter()
+            title_counter  = Counter()
+            live_counter   = Counter()
+            movie_counter  = Counter()
+            series_counter = Counter()
+            hour_counter   = Counter()
+            dow_counter    = Counter()
+            days_seen      = set()
+            timestamps     = []
 
             for it in items:
                 stype = it.get('stype', 'live')
@@ -115,11 +108,18 @@ class StatsManager:
                 type_counter[stype] += 1
                 if name:
                     title_counter[name] += 1
+                    if stype == 'live':
+                        live_counter[name] += 1
+                    elif stype == 'movie':
+                        movie_counter[name] += 1
+                    elif stype == 'series':
+                        series_counter[name] += 1
                 if ts:
                     timestamps.append(ts)
                     try:
                         t = time.localtime(ts)
                         hour_counter[t.tm_hour] += 1
+                        dow_counter[t.tm_wday]  += 1
                         days_seen.add(time.strftime('%Y-%m-%d', t))
                     except Exception:
                         pass
@@ -130,32 +130,44 @@ class StatsManager:
                 'series': type_counter.get('series', 0),
             }
 
-            # -- Horas estimadas ------------------------------------__________
             total_min = 0
-            for stype, count in type_counter.items():
-                total_min += count * self._DURATION_ESTIMATE.get(stype, 60)
+            min_by_type = {}
+            for stype in ('live', 'movie', 'series'):
+                c = type_counter.get(stype, 0)
+                m = c * self._DURATION_ESTIMATE.get(stype, 60)
+                min_by_type[stype] = m
+                total_min += m
             result['total_minutes'] = total_min
+            result['minutes_by_type'] = min_by_type
 
-            # -- Top titulos ------------------------------------______________
             result['top_titles'] = [
                 {'name': n, 'count': c}
                 for n, c in title_counter.most_common(5)
             ]
 
-            # -- Hora preferida ------------------------------------___________
+            result['top_by_type'] = {
+                'live':   [{'name': n, 'count': c} for n, c in live_counter.most_common(3)],
+                'movie':  [{'name': n, 'count': c} for n, c in movie_counter.most_common(3)],
+                'series': [{'name': n, 'count': c} for n, c in series_counter.most_common(3)],
+            }
+
             if hour_counter:
-                best_h = hour_counter.most_common(1)[0][0]
-                result['best_hour'] = best_h
+                result['best_hour'] = hour_counter.most_common(1)[0][0]
 
-            # -- Streak de dias consecutivos __________________________________
+            if dow_counter:
+                result['best_dow'] = dow_counter.most_common(1)[0][0]
+
             result['streak_days'] = self._calc_streak(days_seen)
+            result['unique_days'] = len(days_seen)
 
-            # -- Primeira e ultima visualizacao _______________________________
+            if result['unique_days'] > 0:
+                result['avg_per_day'] = round(result['total_items'] / result['unique_days'], 1)
+
             if timestamps:
                 result['first_watch'] = min(timestamps)
                 result['last_watch']  = max(timestamps)
 
-            # -- Generos (via cache TMDB) ------------------------------------_
+            result['monthly'] = self._calc_monthly(items)
             result['top_genres'] = self._extract_top_genres(items)
 
         except Exception as e:
@@ -164,16 +176,11 @@ class StatsManager:
         return result
 
     def _calc_streak(self, days_set):
-        """
-        Calcula o streak atual de dias consecutivos assistindo.
-        Considera "hoje" e dias anteriores contiguos.
-        """
         if not days_set:
             return 0
         try:
             sorted_days = sorted(days_set, reverse=True)
             today_str   = time.strftime('%Y-%m-%d')
-            # Streak comeca so se assistiu hoje ou ontem
             if sorted_days[0] not in (today_str,
                                       time.strftime('%Y-%m-%d',
                                                     time.localtime(time.time() - 86400))):
@@ -191,11 +198,36 @@ class StatsManager:
         except Exception:
             return 0
 
+    def _calc_monthly(self, items):
+        monthly = Counter()
+        try:
+            for it in items:
+                ts = it.get('timestamp', 0)
+                if ts:
+                    try:
+                        t = time.localtime(ts)
+                        key = time.strftime('%Y-%m', t)
+                        monthly[key] += 1
+                    except Exception:
+                        pass
+        except Exception as e:
+            _log(f'Erro ao calcular mensal: {e}')
+        if not monthly:
+            return []
+        sorted_keys = sorted(monthly.keys(), reverse=True)[:6]
+        if not sorted_keys:
+            return []
+        max_c = monthly[sorted_keys[0]]
+        return [
+            {
+                'label': time.strftime('%b/%y', time.strptime(k + '-01', '%Y-%m-%d')),
+                'count': monthly[k],
+                'pct': int(monthly[k] / max_c * 100) if max_c else 0,
+            }
+            for k in sorted_keys
+        ]
+
     def _extract_top_genres(self, items, top_n=5):
-        """
-        Extrai generos mais assistidos cruzando o historico com o cache TMDB.
-        Retorna lista de {'genre': str, 'count': int}.
-        """
         genre_counter = Counter()
         try:
             for it in items:
@@ -216,11 +248,10 @@ class StatsManager:
 
         return [{'genre': g, 'count': c} for g, c in genre_counter.most_common(top_n)]
 
-    # -- Formatacao de exibicao ------------------------------------___________
+    # -- Formatacao de exibicao ---------------------------------------------
 
     @staticmethod
     def _fmt_hours(minutes):
-        """Converte minutos em string legivel: '2h 30min' ou '145h'."""
         if minutes < 60:
             return f'{minutes}min'
         h = minutes // 60
@@ -231,7 +262,6 @@ class StatsManager:
 
     @staticmethod
     def _fmt_date(ts):
-        """Formata timestamp em DD/MM/YYYY."""
         if not ts:
             return '-'
         try:
@@ -241,31 +271,30 @@ class StatsManager:
 
     @staticmethod
     def _fmt_hour(h):
-        """Formata hora no padrao BR: 22:00."""
         if h is None:
             return '-'
         return f'{h:02d}:00'
 
     @staticmethod
-    def _bar(value, total, width=10, fill='_', empty='_'):
-        """Gera barra de progresso de texto."""
+    def _bar(value, total, width=10):
         if total == 0:
-            return empty * width
+            return f'[COLOR gray]{"-" * width}[/COLOR]'
         filled = int(round(value / total * width))
-        return fill * filled + empty * (width - filled)
+        return f'[COLOR gold]{"#" * filled}[/COLOR][COLOR dimgray]{"-" * (width - filled)}[/COLOR]'
 
-    # -- Exibicao no Kodi ------------------------------------_________________
+    @staticmethod
+    def _pct(value, total):
+        if total <= 0:
+            return 0
+        return int(round(value / total * 100))
+
+    # -- Exibicao no Kodi ---------------------------------------------------
 
     def show_dashboard(self, addon_handle, addon_icon=None, addon_fanart=None):
-        """
-        Exibe o dashboard de estatisticas como lista de itens no Kodi.
-        Cada linha e um item nao reproduzivel - so visual.
-        """
         if not _HAS_KODI:
             return
 
         stats = self.compute()
-        items_raw = self._get_all_items()
 
         SEP   = '[B][COLOR orange] | [/COLOR][/B]'
         BRAND = '[B][COLOR white]KeTec[/COLOR] [COLOR crimson]Media Play[/COLOR][/B]'
@@ -273,13 +302,12 @@ class StatsManager:
         icon_use   = addon_icon   or 'DefaultFile.png'
         fanart_use = addon_fanart or ''
 
-        def _li(label, plot='', icon=None):
-            """Cria ListItem nao reproduzivel para o dashboard."""
+        def _li(label, plot=''):
             li = xbmcgui.ListItem(label=label)
             li.setProperty('IsPlayable', 'false')
             li.setArt({
-                'icon':   icon or icon_use,
-                'thumb':  icon or icon_use,
+                'icon':   icon_use,
+                'thumb':  icon_use,
                 'fanart': fanart_use,
             })
             if plot:
@@ -289,131 +317,177 @@ class StatsManager:
                     pass
             return li
 
-        def _add(label, plot='', icon=None, url=''):
-            li = _li(label, plot, icon)
+        def _add(label, plot=''):
+            li = _li(label, plot)
             xbmcplugin.addDirectoryItem(
                 handle=addon_handle,
-                url=url or 'plugin://dummy',
+                url='plugin://dummy',
                 listitem=li,
                 isFolder=False
             )
 
-        # ____________________________________________________________________
-        # CABECALHO
-        # ____________________________________________________________________
+        def _section(title):
+            _add(f'[B][COLOR gold]--- {title} ---[/COLOR][/B]')
+
+        def _sep():
+            _add(f'[COLOR dimgray]{"-" * 36}[/COLOR]')
+
+        # =====================================================================
+        # HEADER
+        # =====================================================================
         _add(
-            f'{BRAND}{SEP}[B][COLOR gold][ STATS ] Dashboard de Estatisticas[/COLOR][/B]',
-            plot='Resumo completo de visualizacoes do KelTec Media Play.'
+            f'{BRAND}{SEP}[B][COLOR gold]Dashboard de Estatisticas[/COLOR][/B]'
         )
+        _sep()
 
-        # Linha vazia visual
-        _add('[COLOR dimgray]------------------------------------[/COLOR]')
-
-        # ____________________________________________________________________
-        # RESUMO GERAL
-        # ____________________________________________________________________
-        total_h  = self._fmt_hours(stats['total_minutes'])
-        total_it = stats['total_items']
+        total_it  = stats['total_items']
+        total_h   = self._fmt_hours(stats['total_minutes'])
+        unique_d  = stats['unique_days']
+        avg_day   = stats['avg_per_day']
 
         _add(
-            f'[B][COLOR deepskyblue]>>[/COLOR]  Total assistido:[/B]  [COLOR gold]{total_h}[/COLOR]'
-            f'  [COLOR dimgray]({total_it} reproducoes)[/COLOR]',
-            plot=(
-                f'Tempo estimado total assistido: [B]{total_h}[/B]\n'
-                f'Total de reproducoes: {total_it}\n\n'
-                f'[COLOR gray](Estimativa: filmes ~110min, series ~45min, ao vivo ~60min)[/COLOR]'
+            f'[B]Total assistido:[/B]  [COLOR gold]{total_h}[/COLOR]'
+            f'  [COLOR dimgray]({total_it} reproducoes)[/COLOR]'
+        )
+        if unique_d > 0:
+            _add(
+                f'[B]Dias com atividade:[/B]  [COLOR deepskyblue]{unique_d}[/COLOR]'
+                f'  [COLOR dimgray](media: {avg_day}/dia)[/COLOR]'
             )
-        )
 
-        # ____________________________________________________________________
+        first = self._fmt_date(stats.get('first_watch'))
+        last  = self._fmt_date(stats.get('last_watch'))
+        if first != '-':
+            _add(
+                f'[B]Periodo:[/B]  [COLOR gray]{first}[/COLOR]'
+                f'  [COLOR orange]a[/COLOR]'
+                f'  [COLOR gray]{last}[/COLOR]'
+            )
+
+        # =====================================================================
         # DISTRIBUICAO POR TIPO
-        # ____________________________________________________________________
-        by_type = stats['by_type']
-        live_n  = by_type.get('live', 0)
-        movie_n = by_type.get('movie', 0)
-        ser_n   = by_type.get('series', 0)
-        total_t = max(live_n + movie_n + ser_n, 1)
+        # =====================================================================
+        _sep()
+        _section('POR TIPO')
+        _sep()
 
-        live_bar  = self._bar(live_n,  total_t)
-        movie_bar = self._bar(movie_n, total_t)
-        ser_bar   = self._bar(ser_n,   total_t)
+        by_type    = stats['by_type']
+        min_by_type = stats['minutes_by_type']
+        live_n     = by_type.get('live', 0)
+        movie_n    = by_type.get('movie', 0)
+        ser_n      = by_type.get('series', 0)
+        total_t    = max(live_n + movie_n + ser_n, 1)
 
-        _add('[COLOR dimgray]------------------------------------[/COLOR]')
-        _add(
-            f'[B][COLOR cyan][TV] Ao Vivo:[/COLOR][/B]  [COLOR cyan]{live_bar}[/COLOR] {live_n}',
-            plot=f'Canais ao vivo assistidos: {live_n} vezes\n'
-                 f'({int(live_n/total_t*100)}% do total)'
-        )
-        _add(
-            f'[B][COLOR gold][VOD] Filmes:[/COLOR][/B]  [COLOR gold]{movie_bar}[/COLOR] {movie_n}',
-            plot=f'Filmes assistidos: {movie_n} vezes\n'
-                 f'({int(movie_n/total_t*100)}% do total)'
-        )
-        _add(
-            f'[B][COLOR lime][SER] Series:[/COLOR][/B]  [COLOR lime]{ser_bar}[/COLOR] {ser_n}',
-            plot=f'Episodios de series assistidos: {ser_n} vezes\n'
-                 f'({int(ser_n/total_t*100)}% do total)'
-        )
+        if live_n:
+            bar = self._bar(live_n, total_t)
+            hh = self._fmt_hours(min_by_type.get('live', 0))
+            _add(
+                f'[B][COLOR cyan]TV[/COLOR][/B] {bar} [B]{live_n}[/B]'
+                f'  [COLOR dimgray]{hh}[/COLOR]'
+                f'  [COLOR gray]({self._pct(live_n, total_t)}%)[/COLOR]'
+            )
+        if movie_n:
+            bar = self._bar(movie_n, total_t)
+            hh = self._fmt_hours(min_by_type.get('movie', 0))
+            _add(
+                f'[B][COLOR gold]VOD[/COLOR][/B] {bar} [B]{movie_n}[/B]'
+                f'  [COLOR dimgray]{hh}[/COLOR]'
+                f'  [COLOR gray]({self._pct(movie_n, total_t)}%)[/COLOR]'
+            )
+        if ser_n:
+            bar = self._bar(ser_n, total_t)
+            hh = self._fmt_hours(min_by_type.get('series', 0))
+            _add(
+                f'[B][COLOR lime]SER[/COLOR][/B] {bar} [B]{ser_n}[/B]'
+                f'  [COLOR dimgray]{hh}[/COLOR]'
+                f'  [COLOR gray]({self._pct(ser_n, total_t)}%)[/COLOR]'
+            )
 
-        # ____________________________________________________________________
-        # TOP 5 TITULOS
-        # ____________________________________________________________________
+        # =====================================================================
+        # TOP 5 MAIS ASSISTIDOS
+        # =====================================================================
         if stats['top_titles']:
-            _add('[COLOR dimgray]------------------------------------[/COLOR]')
-            _add('[B][COLOR gold]--- Mais Assistidos ---[/COLOR][/B]')
-            medals = ['[COLOR gold]1.[/COLOR]', '[COLOR silver]2.[/COLOR]', '[COLOR orange]3.[/COLOR]', '4.', '5.']
+            _sep()
+            _section('TOP 5 MAIS ASSISTIDOS')
+            _sep()
+            medals = ['[COLOR gold]1[/COLOR]', '[COLOR silver]2[/COLOR]',
+                      '[COLOR orange]3[/COLOR]', '4', '5']
             for i, t in enumerate(stats['top_titles']):
-                medal = medals[i] if i < len(medals) else f'{i+1}.'
+                medal = medals[i] if i < len(medals) else f'{i+1}'
                 _add(
-                    f'  {medal}  [B]{t["name"]}[/B]'
-                    f'  [COLOR dimgray]({t["count"]}x)[/COLOR]',
-                    plot=f'"{t["name"]}" foi assistido {t["count"]} vez(es).'
+                    f'  {medal}. [B]{t["name"]}[/B]'
+                    f'  [COLOR dimgray]({t["count"]}x)[/COLOR]'
                 )
 
-        # ____________________________________________________________________
-        # GENEROS FAVORITOS
-        # ____________________________________________________________________
+        # =====================================================================
+        # TOP 3 POR TIPO
+        # =====================================================================
+        top_by_type = stats['top_by_type']
+        has_any_top = any(v for v in top_by_type.values())
+
+        if has_any_top:
+            _sep()
+            _section('TOP 3 POR TIPO')
+            _sep()
+
+            if top_by_type['live']:
+                _add(f'[B][COLOR cyan]Ao Vivo:[/COLOR][/B]')
+                for i, t in enumerate(top_by_type['live']):
+                    _add(
+                        f'   {i+1}. [B]{t["name"]}[/B]'
+                        f'  [COLOR dimgray]({t["count"]}x)[/COLOR]'
+                    )
+
+            if top_by_type['movie']:
+                _add(f'[B][COLOR gold]Filmes:[/COLOR][/B]')
+                for i, t in enumerate(top_by_type['movie']):
+                    _add(
+                        f'   {i+1}. [B]{t["name"]}[/B]'
+                        f'  [COLOR dimgray]({t["count"]}x)[/COLOR]'
+                    )
+
+            if top_by_type['series']:
+                _add(f'[B][COLOR lime]Series:[/COLOR][/B]')
+                for i, t in enumerate(top_by_type['series']):
+                    _add(
+                        f'   {i+1}. [B]{t["name"]}[/B]'
+                        f'  [COLOR dimgray]({t["count"]}x)[/COLOR]'
+                    )
+
+        # =====================================================================
+        # GENEROS
+        # =====================================================================
         if stats['top_genres']:
-            _add('[COLOR dimgray]------------------------------------[/COLOR]')
-            _add('[B][COLOR white]--- Generos Favoritos ---[/COLOR][/B]')
+            _sep()
+            _section('GENEROS FAVORITOS')
+            _sep()
             max_g = stats['top_genres'][0]['count'] if stats['top_genres'] else 1
             for g in stats['top_genres']:
                 bar = self._bar(g['count'], max_g, width=8)
                 _add(
-                    f'  [COLOR orange]{bar}[/COLOR]  [B]{g["genre"]}[/B]'
-                    f'  [COLOR dimgray]({g["count"]})[/COLOR]',
-                    plot=f'Genero "{g["genre"]}" - {g["count"]} conteudo(s) assistido(s).'
+                    f'  {bar}  [B]{g["genre"]}[/B]'
+                    f'  [COLOR dimgray]({g["count"]})[/COLOR]'
                 )
 
-        # ____________________________________________________________________
-        # STREAK E HABITOS
-        # ____________________________________________________________________
-        _add('[COLOR dimgray]------------------------------------[/COLOR]')
+        # =====================================================================
+        # HABITOS
+        # =====================================================================
+        _sep()
+        _section('HABITOS')
+        _sep()
 
         streak = stats['streak_days']
         if streak >= 7:
             streak_color = 'gold'
-            streak_emoji = '[FUE]'
         elif streak >= 3:
             streak_color = 'lime'
-            streak_emoji = '[BOA]'
         elif streak >= 1:
             streak_color = 'deepskyblue'
-            streak_emoji = '[OK]'
         else:
             streak_color = 'gray'
-            streak_emoji = '[---]'
 
         _add(
-            f'[B][COLOR white]{streak_emoji}  Streak atual:[/COLOR][/B]'
-            f'  [COLOR {streak_color}][B]{streak} dia(s) consecutivo(s)[/B][/COLOR]',
-            plot=(
-                f'Voce assistiu por [B]{streak} dia(s) seguido(s)[/B]!\n\n'
-                + ('INCRIVEL! Continue assim!' if streak >= 7 else
-                   'Boa sequencia!' if streak >= 3 else
-                   'Comecando bem!' if streak >= 1 else
-                   'Nenhum dia consecutivo recente.')
-            )
+            f'[B]Streak:[/B]  [COLOR {streak_color}]{streak} dia(s) consecutivo(s)[/COLOR]'
         )
 
         best_h = stats.get('best_hour')
@@ -423,33 +497,40 @@ class StatsManager:
                       'noite' if 18 <= best_h < 24 else
                       'madrugada')
             _add(
-                f'[B][COLOR deepskyblue][HR][/COLOR]  Hora favorita:[/B]'
+                f'[B]Horario favorito:[/B]'
                 f'  [COLOR deepskyblue]{self._fmt_hour(best_h)}[/COLOR]'
-                f'  [COLOR gray]({period})[/COLOR]',
-                plot=f'Voce costuma assistir mais as [B]{self._fmt_hour(best_h)}[/B] ({period}).'
+                f'  [COLOR gray]({period})[/COLOR]'
             )
 
-        # ____________________________________________________________________
-        # PRIMEIRA / ULTIMA VISUALIZACAO
-        # ____________________________________________________________________
-        first = self._fmt_date(stats.get('first_watch'))
-        last  = self._fmt_date(stats.get('last_watch'))
-        if first != '-':
+        best_dow = stats.get('best_dow')
+        if best_dow is not None and 0 <= best_dow <= 6:
             _add(
-                f'[B][COLOR white][CAL]  Periodo:[/COLOR][/B]'
-                f'  [COLOR gray]{first}[/COLOR]'
-                f'  [COLOR orange]-[/COLOR]'
-                f'  [COLOR gray]{last}[/COLOR]',
-                plot=f'Primeira visualizacao registrada: {first}\nUltima visualizacao: {last}'
+                f'[B]Dia favorito:[/B]'
+                f'  [COLOR deepskyblue]{self._DOW_NAMES[best_dow]}[/COLOR]'
             )
 
-        # ____________________________________________________________________
-        # RODAPE
-        # ____________________________________________________________________
-        _add('[COLOR dimgray]------------------------------------[/COLOR]')
+        # =====================================================================
+        # ATIVIDADE MENSAL
+        # =====================================================================
+        monthly = stats.get('monthly', [])
+        if monthly:
+            _sep()
+            _section('ATIVIDADE MENSAL')
+            _sep()
+            for m in monthly:
+                bar = self._bar(m['count'], monthly[0]['count'], width=6)
+                _add(
+                    f'  [B]{m["label"]}[/B]  {bar}'
+                    f'  [B]{m["count"]}[/B]'
+                    f'  [COLOR dimgray]({m["pct"]}%)[/COLOR]'
+                )
+
+        # =====================================================================
+        # FOOTER
+        # =====================================================================
+        _sep()
         _add(
-            '[COLOR dimgray]  Estatisticas baseadas no historico local do add-on[/COLOR]',
-            plot='Os dados sao calculados a partir do historico de reproducao armazenado localmente.'
+            f'[COLOR dimgray]Estatisticas baseadas no historico local[/COLOR]'
         )
 
         xbmcplugin.setContent(addon_handle, 'files')
@@ -461,10 +542,6 @@ class StatsManager:
 # ____________________________________________________________________________
 
 def get_stats_manager(profile_dir, watch_history=None, tmdb_cache=None):
-    """
-    Retorna instancia de StatsManager.
-    Nunca lanca excecao - retorna None em caso de erro.
-    """
     try:
         return StatsManager(
             profile_dir=profile_dir,

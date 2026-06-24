@@ -78,7 +78,7 @@ class _Cache:
         self._mem = {}
         if cache_dir and not os.path.exists(cache_dir):
             try: os.makedirs(cache_dir)
-            except: pass
+            except Exception: pass
 
     def _path(self, key):
         # Usa hash MD5 da chave completa para evitar colisao por truncamento
@@ -101,7 +101,7 @@ class _Cache:
                 if time.time() - obj['_ts'] < self.hours * 3600:
                     self._mem[key] = (obj['_ts'], obj['d'])
                     return obj['d']
-        except: pass
+        except Exception: pass
         return None
 
     def set(self, key, value):
@@ -109,7 +109,7 @@ class _Cache:
         try:
             with open(self._path(key), 'w', encoding='utf-8') as f:
                 json.dump({'_ts': time.time(), 'd': value}, f, ensure_ascii=False)
-        except: pass
+        except Exception: pass
 
 
 # ── Browser ───────────────────────────────────────────────────────────
@@ -175,33 +175,59 @@ class TMDBBrowser:
 
     # ── Listas ──────────────────────────────────────────────────────
 
-    def get_movies(self, list_type='popular', page=1, genre_id=None):
+    _API_PAGE_SIZE = 20
+
+    def _fetch_multi_page(self, ep, params, items_per_page=50):
+        """
+        Fetch multiple TMDB API pages to reach items_per_page.
+        Returns (items_list, total_api_pages)
+        """
+        page = params.get('page', 1)
+        # Calculate which API pages we need: for display page N, we need
+        # to fetch enough API pages to cover N * items_per_page items.
+        # API returns 20 items/page. We need ceil(items_per_page / 20) pages.
+        apis_per_display = -(-items_per_page // self._API_PAGE_SIZE)  # ceil division
+        start_api_page = (page - 1) * apis_per_display + 1
+
+        all_results = []
+        total_api_pages = 1
+        for i in range(apis_per_display):
+            p = start_api_page + i
+            p_params = dict(params, page=p)
+            data = self._get(ep, p_params)
+            if not data:
+                break
+            all_results.extend(data.get('results', []))
+            total_api_pages = max(total_api_pages, int(data.get('total_pages', 1)))
+            # If this was the last available page, stop
+            if p >= total_api_pages:
+                break
+
+        sliced = all_results[:items_per_page]
+        total_display_pages = -(-total_api_pages // apis_per_display)  # ceil
+        return sliced, total_display_pages
+
+    def get_movies(self, list_type='popular', page=1, genre_id=None, items_per_page=50):
         ep_map = {'popular':'movie/popular','now_playing':'movie/now_playing',
                   'upcoming':'movie/upcoming','top_rated':'movie/top_rated'}
         params = {'page': page}
         if list_type == 'genre' and genre_id:
             ep = 'discover/movie'
-            # Exige que o genero escolhido seja o PRIMARIO (primeiro da lista)
-            # vote_count minimo evita filmes obscuros que distorcem a lista
             params.update({
-                'with_genres':    genre_id,       # deve conter este genero
+                'with_genres':    genre_id,
                 'sort_by':        'popularity.desc',
-                'vote_count.gte': 50,             # minimo de votos (evita lixo)
+                'vote_count.gte': 50,
             })
         else:
             ep = ep_map.get(list_type)
             if not ep: return [], 1
-        data = self._get(ep, params)
-        if not data: return [], 1
-        results = data.get('results', [])
-        # Filtro pos-requisicao: se buscando por genero, garante que o genero
-        # escolhido esta na lista de generos do item (TMDB pode trazer hybridos)
+        results, total_pages = self._fetch_multi_page(ep, params, items_per_page)
         if list_type == 'genre' and genre_id:
             gid = int(genre_id)
             results = [m for m in results if gid in (m.get('genre_ids') or [])]
-        return [self._norm(m) for m in results], int(data.get('total_pages', 1))
+        return [self._norm(m) for m in results], total_pages
 
-    def get_tv(self, list_type='popular', page=1, genre_id=None):
+    def get_tv(self, list_type='popular', page=1, genre_id=None, items_per_page=50):
         ep_map = {'popular':'tv/popular','airing_today':'tv/airing_today',
                   'on_the_air':'tv/on_the_air','top_rated':'tv/top_rated'}
         params = {'page': page}
@@ -215,21 +241,25 @@ class TMDBBrowser:
         else:
             ep = ep_map.get(list_type)
             if not ep: return [], 1
-        data = self._get(ep, params)
-        if not data: return [], 1
-        results = data.get('results', [])
+        results, total_pages = self._fetch_multi_page(ep, params, items_per_page)
         if list_type == 'genre' and genre_id:
             gid = int(genre_id)
             results = [t for t in results if gid in (t.get('genre_ids') or [])]
-        return [self._norm(t) for t in results], int(data.get('total_pages', 1))
+        return [self._norm(t) for t in results], total_pages
 
-    def search_movies(self, query, page=1):
-        data = self._get('search/movie', {'query': query, 'page': page})
+    def search_movies(self, query, page=1, year=None):
+        params = {'query': query, 'page': page}
+        if year and str(year).isdigit():
+            params['year'] = int(year)
+        data = self._get('search/movie', params)
         if not data: return [], 1
         return [self._norm(m) for m in data.get('results', [])], int(data.get('total_pages', 1))
 
-    def search_tv(self, query, page=1):
-        data = self._get('search/tv', {'query': query, 'page': page})
+    def search_tv(self, query, page=1, year=None):
+        params = {'query': query, 'page': page}
+        if year and str(year).isdigit():
+            params['first_air_date_year'] = int(year)
+        data = self._get('search/tv', params)
         if not data: return [], 1
         return [self._norm(t) for t in data.get('results', [])], int(data.get('total_pages', 1))
 
@@ -321,6 +351,7 @@ class TMDBBrowser:
             'title':          data.get('title', ''),
             'original_title': data.get('original_title', ''),
             'year':           (data.get('release_date') or '')[:4],
+            'release_date':   data.get('release_date', ''),
             'plot':           data.get('overview', ''),
             'tagline':        data.get('tagline', ''),
             'rating':         round(float(data.get('vote_average') or 0), 1),
@@ -342,6 +373,7 @@ class TMDBBrowser:
             'thumb':          self.img(data.get('backdrop_path'), IMG_THUMB),
             'popularity':     data.get('popularity', 0),
             'imdb_id':        data.get('imdb_id', ''),
+            'homepage':       data.get('homepage', ''),
         }
         self.cache.set(key, result)
         return result
@@ -358,7 +390,7 @@ class TMDBBrowser:
 
         data = self._get(
             f'tv/{tmdb_id}',
-            {'append_to_response': 'credits,videos,similar,content_ratings'}
+            {'append_to_response': 'credits,videos,similar,content_ratings,external_ids'}
         )
         if not data: return None
 
@@ -396,6 +428,7 @@ class TMDBBrowser:
             'title':          data.get('name', ''),
             'original_title': data.get('original_name', ''),
             'year':           (data.get('first_air_date') or '')[:4],
+            'release_date':   data.get('first_air_date', ''),
             'plot':           data.get('overview', ''),
             'tagline':        data.get('tagline', ''),
             'rating':         round(float(data.get('vote_average') or 0), 1),
@@ -415,13 +448,15 @@ class TMDBBrowser:
             'icon':           self.img(data.get('poster_path')),
             'fanart':         self.img(data.get('backdrop_path'), IMG_FANART),
             'thumb':          self.img(data.get('backdrop_path'), IMG_THUMB),
+            'homepage':       data.get('homepage', ''),
+            'imdb_id':        (data.get('external_ids') or {}).get('imdb_id', ''),
         }
         self.cache.set(key, result)
         return result
 
 #________________________________________________________________________________    
 
-    def discover_movies(self, with_genres=None, page=1, sort_by='popularity.desc'):
+    def discover_movies(self, with_genres=None, page=1, sort_by='popularity.desc', items_per_page=50):
         """
         Busca filmes por gênero usando discover/movie
         """
@@ -433,20 +468,13 @@ class TMDBBrowser:
         if with_genres:
             params['with_genres'] = with_genres
         
-        data = self._get('discover/movie', params)
-        if not data:
-            return [], 1
-        
-        results = data.get('results', [])
-        total_pages = int(data.get('total_pages', 1))
+        results, total_pages = self._fetch_multi_page('discover/movie', params, items_per_page)
         
         movies = []
         for m in results:
-            # Verifica se o gênero está presente (filtro extra)
             genre_ids = m.get('genre_ids', [])
             if with_genres and int(with_genres) not in genre_ids:
                 continue
-            
             movies.append({
                 'tmdb_id': m.get('id'),
                 'title': m.get('title', ''),
@@ -459,7 +487,7 @@ class TMDBBrowser:
         
         return movies, total_pages
         
-    def discover_tv(self, with_genres=None, page=1, sort_by='popularity.desc'):
+    def discover_tv(self, with_genres=None, page=1, sort_by='popularity.desc', items_per_page=50):
         """
         Busca séries por gênero usando discover/tv
         """
@@ -471,12 +499,7 @@ class TMDBBrowser:
         if with_genres:
             params['with_genres'] = with_genres
         
-        data = self._get('discover/tv', params)
-        if not data:
-            return [], 1
-        
-        results = data.get('results', [])
-        total_pages = int(data.get('total_pages', 1))
+        results, total_pages = self._fetch_multi_page('discover/tv', params, items_per_page)
         
         shows = []
         for t in results:
@@ -499,11 +522,12 @@ class TMDBBrowser:
 
     # ── Busca em todos os servidores (paralela) ──────────────────────
 
-    def find_in_all_servers(self, title, tmdb_type, servers, progress_cb=None, tmdb_year=''):
+    def find_in_all_servers(self, title, tmdb_type, servers, progress_cb=None, tmdb_year='', cancel_event=None):
         """
         Busca em TODOS os servidores Xtream em paralelo.
         progress_cb(pct, msg) - callback opcional para DialogProgress
         tmdb_year - ano do TMDB para penalizar resultados com ano diferente
+        cancel_event - threading.Event: quando setado, interrompe a busca
 
         Retorna lista de dicts ordenada por match_score desc.
         """
@@ -528,6 +552,9 @@ class TMDBBrowser:
                     done_count[0] += 1
                 return
 
+            if cancel_event and cancel_event.is_set():
+                return
+
             try:
                 # Tenta ambos: com e sem porta explicita
                 endpoint = 'get_vod_streams' if tmdb_type == 'movie' else 'get_series'
@@ -536,17 +563,21 @@ class TMDBBrowser:
 
                 try:
                     import requests as _r
+                    if cancel_event and cancel_event.is_set():
+                        return
                     resp = _r.get(api_url, params=params,
-                                  headers={'User-Agent': UA}, timeout=22)
+                                  headers={'User-Agent': UA}, timeout=10)
                     resp.raise_for_status()
                     data = resp.json()
                 except Exception:
+                    if cancel_event and cancel_event.is_set():
+                        return
                     # Fallback: urllib
                     import urllib.request, urllib.parse as _up
                     full_url = api_url + '?' + _up.urlencode(params)
                     req = urllib.request.Request(full_url,
                                                   headers={'User-Agent': UA})
-                    with urllib.request.urlopen(req, timeout=22) as r:
+                    with urllib.request.urlopen(req, timeout=10) as r:
                         data = json.loads(r.read().decode('utf-8'))
 
                 if not data or not isinstance(data, list):
@@ -602,36 +633,23 @@ class TMDBBrowser:
                         pct = int(10 + 85 * done_count[0] / total)
                         progress_cb(pct, f'Verificado {done_count[0]}/{total}: {s_name}')
 
-        threads  = [threading.Thread(target=_search_one, args=(s,), daemon=True) for s in servers]
-        deadline = time.time() + 35
-        for t in threads:
+        threads  = []
+        for s in servers:
+            if cancel_event and cancel_event.is_set():
+                break
+            t = threading.Thread(target=_search_one, args=(s,), daemon=True)
             t.start()
+            threads.append(t)
+            time.sleep(0.3)  # pausa para permitir cancelamento entre servidores
+        deadline = time.time() + 25
         for t in threads:
+            if cancel_event and cancel_event.is_set():
+                break
             remaining = max(0.3, deadline - time.time())
             t.join(timeout=remaining)
 
         results.sort(key=lambda x: (-x['match_score'], x['title'].lower()))
         return results[:25]
-
-def get_full_movie_details_by_title(self, title):
-    """Busca detalhes completos de um filme pelo título"""
-    try:
-        search_result = self.search_movies(title)
-        if search_result and search_result[0]:
-            return self.get_full_movie_details(search_result[0].get('tmdb_id'))
-    except:
-        pass
-    return None
-
-def get_full_tv_details_by_title(self, title):
-    """Busca detalhes completos de uma série pelo título"""
-    try:
-        search_result = self.search_tv(title)
-        if search_result and search_result[0]:
-            return self.get_full_tv_details(search_result[0].get('tmdb_id'))
-    except:
-        pass
-    return None
 
 # ── Fuzzy match ────────────────────────────────────────────────────────
 

@@ -105,7 +105,8 @@
         <setting id="menu_show_stats"         type="bool" label="Mostrar Dashboard de Estatisticas" default="true"/>
 
         <setting type="sep"/>
-        <setting label="Add-ons e Outros" type="lsep"/>
+        <setting label="TMDB e Outros" type="lsep"/>
+        <setting id="menu_show_tmdb"          type="bool" label="Mostrar Catalogo TMDB"          default="true"/>
         <setting id="menu_show_addons"        type="bool" label="Mostrar Meus Add-ons"           default="true"/>
         <setting id="menu_show_reload"        type="bool" label="Mostrar Atualizar Servidores"   default="false"/>
         <setting id="menu_show_parental"      type="bool" label="Mostrar Controle Parental"      default="true"/>
@@ -186,15 +187,34 @@
 
 
     <!-- ========================================== -->
+    <!-- LEGENDAS (OpenSubtitles / Stremio)         -->
+    <!-- ========================================== -->
+    <category label="Legendas">
+        <setting label="Legendas via Stremio/OpenSubtitles (sem API key)" type="lsep"/>
+
+        <setting type="sep"/>
+        <setting id="subtitles_enabled" type="bool" label="Ativar legendas" default="true"/>
+        <setting id="legendasauto" type="bool" label="Baixar automaticamente ao reproduzir" default="true"/>
+        <setting id="limparlegendas" type="bool" label="Limpar cache antes de baixar" default="true"/>
+
+        <setting type="sep"/>
+        <setting label="Idiomas" type="lsep"/>
+        <setting id="idioma_legenda" type="select" label="Idioma preferido"
+                  values="Portugues (Brasil)|Ingles|Espanhol"
+                  default="0"/>
+        <setting id="fallback_legenda" type="select" label="Idioma de fallback"
+                  values="Nenhum|Portugues (Portugal)|Ingles|Espanhol"
+                  default="0"/>
+
+        <setting type="sep"/>
+        <setting label="Manutencao" type="lsep"/>
+        <setting label="Limpar cache de legendas agora" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=subtitles_clear_cache)"/>
+    </category>
+
+    <!-- ========================================== -->
     <!-- PLAYER E EPG                               -->
     <!-- ========================================== -->
-    <!--category label="Legendas em Breve">
-        <setting id="subtitles_enabled" type="bool" label="Legendas automaticas (OpenSubtitles)" default="false"/>
-        <setting id="subtitle_lang" type="select" label="Idioma preferido"
-                  values="Portugues (Brasil)|Portugues (Portugal)|Ingles|Espanhol|Frances|Italiano|Alemao|Japones|Coreano|Chines"
-                  default="0"/>
-        <setting id="opensubtitles_api_key" type="text" label="API Key OpenSubtitles (opcional)" default="qo2wQs1PXwIHJsXvIiWXu1ZbVjaboPh6"/>
-    </category-->	
     <category label="Player e EPG">
         <setting label="Configuracoes de Reproducao" type="lsep"/>
 

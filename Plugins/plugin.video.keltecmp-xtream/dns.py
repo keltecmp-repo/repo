@@ -3,21 +3,14 @@ import socket
 import struct
 import random
 import logging
-import sys
 import json
 import time
 import os
-try:
-    from kodi_six import xbmc, xbmcplugin, xbmcgui, xbmcaddon, xbmcvfs
-except ImportError:
-    import xbmc
-    import xbmcplugin
-    import xbmcgui
-    import xbmcaddon
-    import xbmcvfs
-PY2 = sys.version_info[0] == 2
+import xbmc
+import xbmcaddon
+import xbmcvfs
 ADDON_ = xbmcaddon.Addon()
-TRANSLATE_ = xbmc.translatePath if PY2 else xbmcvfs.translatePath
+TRANSLATE_ = xbmcvfs.translatePath
 profile = TRANSLATE_(ADDON_.getAddonInfo('profile'))
 if not os.path.exists(profile):
     os.makedirs(profile)
@@ -97,10 +90,7 @@ class customdns:
         questions = 1
         header = struct.pack('>HHHHHH', transaction_id, flags, questions, 0, 0, 0)
 
-        if PY2:
-            qname = b''.join(chr(len(part)) + part for part in domain.split('.')) + b'\x00'
-        else:
-            qname = b''.join(bytes([len(part)]) + part.encode() for part in domain.split('.')) + b'\x00'
+        qname = b''.join(bytes([len(part)]) + part.encode() for part in domain.split('.')) + b'\x00'
 
         qtype = 1  # A record
         qclass = 1  # IN

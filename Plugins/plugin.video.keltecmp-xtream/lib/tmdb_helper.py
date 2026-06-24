@@ -23,12 +23,13 @@ import threading
 import requests
 from datetime import datetime, timedelta
 
-try:
-    from kodi_six import xbmc, xbmcaddon, xbmcvfs
-except ImportError:
-    import xbmc
-    import xbmcaddon
-    import xbmcvfs
+import xbmc
+import xbmcaddon
+import xbmcvfs
+
+# Lock global de escrita em disco — evita WinError 5 quando múltiplas instâncias
+# do TMDBHelper tentam escrever no mesmo arquivo simultaneamente
+_DISK_WRITE_LOCK = threading.Lock()
 
 
 class TMDBHelper:
@@ -97,16 +98,12 @@ class TMDBHelper:
         return {}
     
     def _save_cache(self):
-        """
-        Salva cache no disco usando escrita atomica.
-        Escreve em arquivo .tmp e faz rename apenas quando finalizado —
-        evita cache corrompido se o Kodi for fechado no meio da escrita.
-        """
+        """Salva cache no disco com lock global + retry para evitar WinError 5."""
         import tempfile
+        import time as _time
         try:
             with self._cache_lock:
                 cache_copy = dict(self.cache)
-            # Cria arquivo temporário no mesmo diretório (necessário para rename atômico)
             tmp_fd, tmp_path = tempfile.mkstemp(
                 suffix='.tmp',
                 prefix='tmdb_cache_',
@@ -116,11 +113,19 @@ class TMDBHelper:
                 with os.fdopen(tmp_fd, 'w', encoding='utf-8') as f:
                     json.dump(cache_copy, f, ensure_ascii=False, indent=2)
                     f.flush()
-                    os.fsync(f.fileno())  # garante flush para disco antes do rename
-                # Rename atômico — se o Kodi fechar aqui, o arquivo original fica intacto
-                os.replace(tmp_path, self.cache_file)
+                    os.fsync(f.fileno())
+                # Lock GLOBAL + retry para evitar WinError 5 em concorrência
+                with _DISK_WRITE_LOCK:
+                    for attempt in range(3):
+                        try:
+                            os.replace(tmp_path, self.cache_file)
+                            break
+                        except PermissionError:
+                            if attempt < 2:
+                                _time.sleep(0.05 * (attempt + 1))
+                            else:
+                                raise
             except Exception:
-                # Limpa arquivo temporário em caso de erro
                 try:
                     os.unlink(tmp_path)
                 except Exception:
@@ -298,7 +303,7 @@ class TMDBHelper:
             return cached
         
         data = self._request(f'movie/{movie_id}', {
-            'append_to_response': 'credits,videos'
+            'append_to_response': 'credits,videos,external_ids'
         })
         
         if data:
@@ -318,7 +323,7 @@ class TMDBHelper:
             return cached
         
         data = self._request(f'tv/{tv_id}', {
-            'append_to_response': 'credits,videos'
+            'append_to_response': 'credits,videos,external_ids'
         })
         
         if data:
@@ -393,16 +398,18 @@ class TMDBHelper:
             'votes': details.get('vote_count', 0),
             'plot': details.get('overview', ''),
             'tagline': details.get('tagline', ''),
-            'runtime': details.get('runtime', 0),  # minutos
+            'runtime': details.get('runtime', 0),
             'poster': self.get_image_url(details.get('poster_path'), self.POSTER_SIZE),
             'fanart': self.get_image_url(details.get('backdrop_path'), self.FANART_SIZE),
             'genres': [g['name'] for g in details.get('genres', [])],
             'studio': details.get('production_companies', [{}])[0].get('name', '') if details.get('production_companies') else '',
+            'homepage': details.get('homepage', ''),
+            'imdb_id': (details.get('external_ids') or {}).get('imdb_id', ''),
         }
-        
-        # Elenco (primeiros 5)
+
+        # Elenco (primeiros 15)
         credits = details.get('credits', {})
-        cast = credits.get('cast', [])[:5]
+        cast = credits.get('cast', [])[:15]
         metadata['cast'] = [
             {
                 'name': actor['name'],
@@ -458,16 +465,18 @@ class TMDBHelper:
             'tagline': details.get('tagline', ''),
             'seasons': details.get('number_of_seasons', 0),
             'episodes': details.get('number_of_episodes', 0),
-            'status': details.get('status', ''),  # Em exibição, Finalizada, etc.
+            'status': details.get('status', ''),
             'poster': self.get_image_url(details.get('poster_path'), self.POSTER_SIZE),
             'fanart': self.get_image_url(details.get('backdrop_path'), self.FANART_SIZE),
             'genres': [g['name'] for g in details.get('genres', [])],
             'networks': [n['name'] for n in details.get('networks', [])],
+            'homepage': details.get('homepage', ''),
+            'imdb_id': (details.get('external_ids') or {}).get('imdb_id', ''),
         }
-        
-        # Elenco
+
+        # Elenco (primeiros 15)
         credits = details.get('credits', {})
-        cast = credits.get('cast', [])[:5]
+        cast = credits.get('cast', [])[:15]
         metadata['cast'] = [
             {
                 'name': actor['name'],

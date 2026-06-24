@@ -27,10 +27,21 @@ except ImportError as e:
 except Exception as e:
     xbmc.log(f"[KelTec Proxy] ❌ Erro ao iniciar servidor: {e}", xbmc.LOGERROR)
 
-# Mantém o serviço vivo
+# Mantém o serviço vivo e encerra sessão VIP no shutdown
 monitor = xbmc.Monitor()
 while not monitor.abortRequested():
     if monitor.waitForAbort(10):
         break
+
+# Kodi está fechando — encerra sessão VIP corretamente
+try:
+    from lib.session_manager import end_session
+    from lib.vip_manager import get_vip_manager, _clear_token as _vip_clear_token
+    _addon_path = xbmc.translatePath(addon.getAddonInfo('profile'))
+    # Envia action=end para servidor liberar o dispositivo
+    end_session(_addon_path)
+    xbmc.log("[KelTec Proxy] Sessão VIP encerrada no shutdown", xbmc.LOGINFO)
+except Exception as _se:
+    xbmc.log(f"[KelTec Proxy] Erro ao encerrar sessão: {_se}", xbmc.LOGINFO)
 
 xbmc.log("[KelTec Proxy] Serviço encerrado", xbmc.LOGINFO)
