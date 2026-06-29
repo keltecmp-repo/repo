@@ -194,17 +194,23 @@ class TMDBHelper:
         Remove:
         - Ano entre parênteses
         - Qualidade (HD, 4K, etc.)
-        - Extras como [Dublado], (Legendado)
-        - Caracteres especiais
+        - Extras como [Dublado], (Legendado), [L], [LANÇAMENTOS]
+        - Conteúdo entre colchetes e parênteses
         """
         # Remove ano (1999), [2020], etc.
         title = re.sub(r'[\(\[]?\d{4}[\)\]]?', '', title)
         
-        # Remove qualidade
-        title = re.sub(r'\b(HD|4K|720p|1080p|BluRay|WEB-DL|DVDRip)\b', '', title, flags=re.IGNORECASE)
+        # Remove qualidade e tags comuns
+        title = re.sub(r'\b(HD|4K|720p|1080p|BluRay|WEB[\s-]?DL|DVDRip|WEBRip|BDRip|HDRip|CAM|TS|HDTC)\b', '', title, flags=re.IGNORECASE)
         
         # Remove extras
-        title = re.sub(r'[\(\[]?(Dublado|Legendado|Dual|Nacional)[\)\]]?', '', title, flags=re.IGNORECASE)
+        title = re.sub(r'[\(\[]?(Dublado|Legendado|Dual|Nacional|Lancamento|Lancamentos)[\)\]]?', '', title, flags=re.IGNORECASE)
+        
+        # Remove qualquer conteúdo entre colchetes [L] [D] [N] [4K] etc
+        title = re.sub(r'\[[^\]]*\]', '', title)
+        
+        # Remove qualquer conteúdo entre parênteses
+        title = re.sub(r'\([^)]*\)', '', title)
         
         # Remove múltiplos espaços
         title = re.sub(r'\s+', ' ', title)
