@@ -650,7 +650,7 @@ def export_pvr_favs_m3u(base_url, username, password):
             if not (base_url and username and password and sid):
                 continue
             url = f'{base_url.rstrip("/")}/live/{username}/{password}/{sid}.ts'
-            lines.append(f'#EXTINF:-1 tvg-id="{epg_id}" tvg-logo="{icon}" group-title="★ Favoritos PVR - {gname}",{name}')
+            lines.append(f'#EXTINF:-1 tvg-id="{epg_id}" tvg-logo="{icon}" group-title="[PVR] Favoritos - {gname}",{name}')
             lines.append(url)
 
     m3u_path = pvr_favs_m3u_path()

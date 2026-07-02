@@ -566,7 +566,7 @@ class TMDBBrowser:
                     if cancel_event and cancel_event.is_set():
                         return
                     resp = _r.get(api_url, params=params,
-                                  headers={'User-Agent': UA}, timeout=10)
+                                   headers={'User-Agent': UA}, timeout=15)
                     resp.raise_for_status()
                     data = resp.json()
                 except Exception:
@@ -577,7 +577,7 @@ class TMDBBrowser:
                     full_url = api_url + '?' + _up.urlencode(params)
                     req = urllib.request.Request(full_url,
                                                   headers={'User-Agent': UA})
-                    with urllib.request.urlopen(req, timeout=10) as r:
+                    with urllib.request.urlopen(req, timeout=15) as r:
                         data = json.loads(r.read().decode('utf-8'))
 
                 if not data or not isinstance(data, list):
@@ -633,22 +633,29 @@ class TMDBBrowser:
                         pct = int(10 + 85 * done_count[0] / total)
                         progress_cb(pct, f'Verificado {done_count[0]}/{total}: {s_name}')
 
-        threads  = []
+        if cancel_event and cancel_event.is_set():
+            return []
+
+        threads = []
         for s in servers:
             if cancel_event and cancel_event.is_set():
                 break
             t = threading.Thread(target=_search_one, args=(s,), daemon=True)
             t.start()
             threads.append(t)
-            time.sleep(0.3)  # pausa para permitir cancelamento entre servidores
-        deadline = time.time() + 25
+
+        deadline = time.time() + 60
         for t in threads:
             if cancel_event and cancel_event.is_set():
                 break
-            remaining = max(0.3, deadline - time.time())
-            t.join(timeout=remaining)
+            remaining = deadline - time.time()
+            if remaining > 0:
+                t.join(timeout=remaining)
+            else:
+                break
 
-        results.sort(key=lambda x: (-x['match_score'], x['title'].lower()))
+        with results_lock:
+            results.sort(key=lambda x: (-x['match_score'], x['title'].lower()))
         return results[:25]
 
 # ── Fuzzy match ────────────────────────────────────────────────────────

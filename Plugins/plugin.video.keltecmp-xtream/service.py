@@ -20,12 +20,12 @@ try:
 
     threading.Thread(target=server_run, daemon=True).start()
 
-    xbmc.log(f"[KelTec Proxy] ✅ Servidor nativo iniciado na porta {PORT}", xbmc.LOGINFO)
+    xbmc.log(f"[KelTec Proxy] Servidor nativo iniciado na porta {PORT}", xbmc.LOGINFO)
 
 except ImportError as e:
-    xbmc.log(f"[KelTec Proxy] ❌ Erro ao importar app: {e}", xbmc.LOGERROR)
+    xbmc.log(f"[KelTec Proxy] ERRO ao importar app: {e}", xbmc.LOGERROR)
 except Exception as e:
-    xbmc.log(f"[KelTec Proxy] ❌ Erro ao iniciar servidor: {e}", xbmc.LOGERROR)
+    xbmc.log(f"[KelTec Proxy] ERRO ao iniciar servidor: {e}", xbmc.LOGERROR)
 
 # Mantém o serviço vivo e encerra sessão VIP no shutdown
 monitor = xbmc.Monitor()
