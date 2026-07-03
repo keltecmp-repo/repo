@@ -585,8 +585,16 @@ class TMDBBrowser:
 
                 q = _norm_title(title)
 
+                # Pre-filter rapido: substring case-insensitive antes do fuzzy
+                _q_lower = title.lower().strip()
+                # Limite de resultados por servidor para nao travar
+                _max_per_srv = 12
+                _found_srv = 0
+
                 for item in data:
                     raw  = (item.get('name') or '').strip()
+                    if not raw or _q_lower not in raw.lower():
+                        continue
                     sc   = _match_with_year(title, raw, tmdb_year)
                     if sc < 0.60:  # threshold elevado — filtra titulos parciais
                         continue
@@ -623,6 +631,9 @@ class TMDBBrowser:
                                 'server_user':  s_user,
                                 'server_pass':  s_pass,
                             })
+                            _found_srv += 1
+                            if _found_srv >= _max_per_srv:
+                                break
 
             except Exception as e:
                 xbmc.log(f'[KelTec-TMDBv3] {s_name}: {type(e).__name__}: {e}', xbmc.LOGWARNING)

@@ -200,6 +200,8 @@ def get_and_download_subtitles(imdb_id, media_type, season=None, episode=None,
             continue
 
         for idx, sub in enumerate(subtitles):
+            if idx >= 1:
+                break
             url = sub.get('url')
             if not url:
                 continue

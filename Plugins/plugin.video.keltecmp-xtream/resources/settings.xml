@@ -225,6 +225,17 @@
         <setting label="Configuracoes do EPG" type="lsep"/>
 
         <setting id="enable_epg" type="bool" label="Ativar EPG (Guia de Programacao)" default="true"/>
+        <setting id="epg_refresh_minutes" type="slider" label="Intervalo entre atualizacoes (minutos)" default="720" range="60,60,1440" option="int"/>
+        <setting id="epg_offset_hours" type="slider" label="Ajuste manual de fuso horario (horas)" default="0" range="-12,1,12" option="int"/>
+
+        <setting type="sep"/>
+        <setting label="Proxy HTTP Externo" type="lsep"/>
+        <setting label="Roteia requisicoes por proxy anonimo (pode deixar lento)" type="lsep"/>
+        <setting id="proxy_http" type="bool" label="Ativar proxy externo (deprecado)" default="false" visible="false"/>
+
+        <!-- IDs internos salvos automaticamente -->
+        <setting id="active_server_name" type="text" label="Nome servidor ativo" default="" visible="false"/>
+        <setting id="active_server_id"   type="text" label="ID servidor ativo"   default="" visible="false"/>
     </category>
 
     <!-- ========================================== -->
@@ -320,6 +331,30 @@
         <setting id="ag_1_enabled" type="bool" label="Grupo 1 habilitado" default="false" visible="false"/>
         <setting id="ag_2_enabled" type="bool" label="Grupo 2 habilitado" default="false" visible="false"/>
         <setting id="ag_3_enabled" type="bool" label="Grupo 3 habilitado" default="false" visible="false"/>
+        <setting id="ag_4_enabled" type="bool" label="Grupo 4 habilitado" default="false" visible="false"/>
+        <setting id="ag_5_enabled" type="bool" label="Grupo 5 habilitado" default="false" visible="false"/>
+        <setting id="ag_1_name" type="text" label="Grupo 1 nome" default="" visible="false"/>
+        <setting id="ag_2_name" type="text" label="Grupo 2 nome" default="" visible="false"/>
+        <setting id="ag_3_name" type="text" label="Grupo 3 nome" default="" visible="false"/>
+        <setting id="ag_4_name" type="text" label="Grupo 4 nome" default="" visible="false"/>
+        <setting id="ag_5_name" type="text" label="Grupo 5 nome" default="" visible="false"/>
+        <setting id="ag_1_addons" type="text" label="Grupo 1 addons" default="" visible="false"/>
+        <setting id="ag_2_addons" type="text" label="Grupo 2 addons" default="" visible="false"/>
+        <setting id="ag_3_addons" type="text" label="Grupo 3 addons" default="" visible="false"/>
+        <setting id="ag_4_addons" type="text" label="Grupo 4 addons" default="" visible="false"/>
+        <setting id="ag_5_addons" type="text" label="Grupo 5 addons" default="" visible="false"/>
+
+        <!-- PVR (configuracao interna) -->
+        <setting id="pvr_addon_control"   type="bool" label="PVR: Addon Control"     default="false" visible="false"/>
+        <setting id="pvr_catchup_enabled" type="bool" label="PVR: Catchup"           default="false" visible="false"/>
+        <setting id="pvr_catchup_days"    type="number" label="PVR: Dias Catchup"    default="3"     visible="false"/>
+        <setting id="pvr_epg_refresh"     type="number" label="PVR: EPG Refresh (min)" default="60" visible="false"/>
+        <setting id="pvr_epg_url"         type="text"   label="PVR: EPG URL"          default=""     visible="false"/>
+        <setting id="pvr_osd_navigation"  type="bool"   label="PVR: OSD Navigation"   default="true" visible="false"/>
+        <setting id="pvr_favorites_enabled" type="bool" label="PVR: Favoritos"         default="false" visible="false"/>
+
+        <!-- Trakt interno -->
+        <setting id="trakt_username" type="text" label="Trakt Username" default="" visible="false"/>
     </category>
 
 </settings>
