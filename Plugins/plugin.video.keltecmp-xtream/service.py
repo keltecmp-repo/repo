@@ -16,7 +16,7 @@ sys.path.insert(0, addon_path)
 xbmc.log("[KelTec Proxy] Iniciando serviço...", xbmc.LOGINFO)
 
 try:
-    from app import server_run, PORT
+    from kpn import server_run, PORT
 
     threading.Thread(target=server_run, daemon=True).start()
 
