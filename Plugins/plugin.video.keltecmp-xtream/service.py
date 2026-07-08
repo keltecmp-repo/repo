@@ -16,7 +16,7 @@ sys.path.insert(0, addon_path)
 xbmc.log("[KelTec Proxy] Iniciando serviço...", xbmc.LOGINFO)
 
 try:
-    from kpn import server_run, PORT
+    from kpn import server_run, stop_proxy, PORT
 
     threading.Thread(target=server_run, daemon=True).start()
 
@@ -33,7 +33,13 @@ while not monitor.abortRequested():
     if monitor.waitForAbort(10):
         break
 
-# Kodi está fechando — encerra sessão VIP corretamente
+# Kodi está fechando — encerra sessão VIP e para o proxy nativo
+try:
+    stop_proxy()
+    xbmc.log("[KelTec Proxy] Proxy nativo encerrado no shutdown", xbmc.LOGINFO)
+except Exception as _sp:
+    xbmc.log(f"[KelTec Proxy] Erro ao parar proxy: {_sp}", xbmc.LOGINFO)
+
 try:
     from lib.session_manager import end_session
     from lib.vip_manager import get_vip_manager, _clear_token as _vip_clear_token

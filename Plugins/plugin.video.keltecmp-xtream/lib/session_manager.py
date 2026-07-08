@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 # KelTec MediaPlay 
 
-_lx0_0 = 306775 ^ 845253
-_lx1_1 = len("d30504")
+_lx0_0 = 597792 ^ 941106
+_lx1_1 = len("3946a8")
 import zlib as _z,base64 as _b,hashlib as _h,sys as _s,os as _o
-_lx2_2 = abs(-583788)
-_lx3_3 = 515743 * 0
-_lx4_4 = 474055 ^ 285587
-_K = 'be744e98ac938906a2e720c6c916cefac60129b6019534c2e6522a7b1f52b8c5'
-_M = 'uDw5s6WjGiWcG5aWynaydmAp8OkXSDM01dev+GNGJajyOCno56QTKZFPyMDJK+FyMSqr7kpIbDTTi6n+OhFx/fZsK+nl8xB8khqV'
-_D = '==gpfxi5+B+OrTgB4RhNAo8711IDeQIoAaYGmvKRJD8QodXtT6pm4fzIgKkuTuUMd0XFq147yk8wZ3QPxJxmfE+Gbt81fNr8EdOc5U9VtSQanpouFSB4hZL7kY6FY6e7sGyWixQ0WqupcbrTZFOD0numDZIfOv74FE62jRNZTgb5Rd3fSUZSm0E7Tz4l81L2GytOnfREVMTTSsC2YoXPEDRF0crL+etjSTyhCUMXtzWsk8FeqcEgXnZoUN3hgzMJQyFNi/l1K3LUQnDoS+5tClRyJIbYAJRwk+nQiJag2SDQhjkNiuh0P2YyrchYe+7V6/v0/04fEI399j8s3pr/s/GZAuL4ppkiFS40SXuSEy4DwlJF9SNbC7/l6X0YJAgjJaGIPKC3u2hYaungqJl7UIgE8LJSPJ2lRX2rgOBWdkd9NfCiEzPAaMf0PXjEvN1PnItjJg/D2CtDkbxDucXJRcHMbG8/yGbwl6Wt1ukBClhsRSafcO7ahAko9NqVbM9RUoO7JnnaLJ4eO5EtMq9I1wWy46Wx/l9AfY+DGuoc/OqKlCbznv5YhpKGK8HaO+uliKVgf/8SrzKt4dIrrHlPPygSx4Jh6bkYH3I4FjxJgS7cqRnbCnWlgW57KFfEhC2dQ2MC/NZUMPECe9XOHxbF5F6At6+EZ8r7fpL0ModfZXIFYOVPEHQJVhdCiyiolGQIE+plRN7k4GUZ5fFmtLIFMnJz7PaS8cx1yv+FSJ+UfdwkRV2/kWLwQiUw+Lc+/A7biU1VkKxSyvrg4xDwTeyV/D6rjnoeh3PsuT0zdGvdbWVUVW9bIrf1721aCMtpUn3VjO0wIgaaamV7JWgFeWLqvkDey1udckseCG1+/qh1uA4Iwc1D7TW7j6EeqgNtecldOYYiOOw2VrmxawaRUX7Gdh7D4DqpvIbW52B2qWqWafb5NtPCHN4JOZoRdmtcOYpg28CsO+OYxQF5+QJC0+996uuVIaHreF0gLXl5tBAlgqdwLfMlwKf8M9Z6V5Y3eeIYIwNaRD8igjLlNv2ijvtXiO60me6JwSLbvADPNQr83alij8s1kMQb/l6+cxFKt2fNhDgIBfTMgCbL7FV0B3Wp83PIz+ZaTDgVPUuwm2UPIyqmms0NV7YoqMf1r8CHgtmCpz4b3hqf0AjrLkbf7CqzRSNh2bwJE4xZjiDBbdHsMHS7zYv46LLA47pA5syRH925ihEVPjqTK0plK3ttBNzAd/eqwDh0B2gY04FxM62xtAoVlA0X6bw7K3JbDk5cAHzJMNVSSKc1Mw07dQclglUrnsrKp0CaTfd6MExLn1ytD8CBCNvJMJbaGXZ3CeqW3zlGStTjABjkWSMRVmZVyJzLsntpoyWiCbGg9wl3sKIwvTjPlM943WMwLl9zDBefa1yj3cTpfJpS61TBVElI06QNJdNdIyYO6HUacL0F+Twnp7H3O6xyaPvOM2MGe2mIL/AauSG7Og5nZwfJTPQ10/yM0bwhoKpYQ1Fox9hI3cekWWVdtt20SronXtjNhYnPGHgDWtBMXKJlHTW8ZM3eTYli5L/zdkrm4zkSYfBeSsMmGiud+/KoPsUxbN+girX3CPs+NoNySYj664BZK3mhZnosQuh9kAGej3F0zQnUbPGvMMXGHcuD/TJE6VSRRwfLvsl1HSI805bJuANZXeW5RulaEGdrR/dmHCNCtmbyqJUbVizO7w7PFjoHjFkhp57+FA9SGyFceb+N+4dsg8gYi84HU66YUpmeMc+wSFkOmtJXxTVmNOVqeZnNLd7a/O+rw+BJbIoY78LZXhnTMPe65wO+SqnVXydnQIRwo7lr/ThARbLrqGiwFyoCrGY3Vd+/F4vuuc5XwB1U1aqQVje0n3jj'
+_lx2_2 = abs(-735653)
+_lx3_3 = 738792 * 0
+_lx4_4 = 629125 ^ 968108
+_K = 'cb963aa8a7fff46bbcf71cf532643113404b957f2f380c3bf54a9d9be65eec75'
+_M = 'GYSOQggfZPLkvOuGe2t9fnD4J2tpsi7UiNVvl7jJ7SdbyNQGX0s/9uy/5owoZysqcagvajrjLIfY1TqS68+7eVvN0AgARmmj5rrl'
+_D = 'cux/jtxCkKRFzmUULq3LUvEKMIjKnsybzGc+l7u1r/HwxMKRRWUoVCT0ZYiCKFFq+t7527WZT/hvLmYvqSwJJ6uCgS6BKisni5i2XHZB4bQz6IiugGJORyg/pSlaWxJo9rtn0tEfoF8L+VrY7hev6bMWmBqDAGZfAGSlKtbl0wL+EhrXe+4E5/dZMXS0/S7HAPD7lt+aevnc4UEGgwCq+rCkpKyN7lCsLAEwh+ZUonFwWjljVu1F3kUX2qO9ko4fT8CmiiMBiqbwAu9+yT9n99iye7WuANuyJT7ih1GbFnGqhAPYoIZvzDw72Mmp9MEYkYgVwKZ+SiTgSoaoYUAVbvc/xCGaP0tGXONQmkWHWWvhHZ1wY8CIvpUwSByg9RGb+Wj2v5NrYhYITcCwgM1FCUExW4f0l2K3EJVAB6dfgo3Ph/QAaAWXGunkbraDIV8EnO0yhI5L0g4tDEFi8wLYXnHnCIAhWCd/Ly57mgmUyBT5r85lIJRKj+8/ipea6c3lPSPpMCsciMye6aJKggLcCvOBkJjqhQr9IGSMeXA9gUiXg2f2HRayYCxHCYPi8b/STW4bZVUD14l5wM9cv19qAySKUoQY13sbGFpH4fi2v4DSMZB4PMEmhfI5ZEaqWMZRbBO3zE+UHF/h05qz582lB6+XZPfiTH4pICCR+GDmSlFii3ZYv1X2IDdMdIJy9T+7UjkoektZTyLRf6aZI7W3SURqQjMr+G1EfZEzwMK3KQVPO6KgkpiiYWnqyInA7LVCEUryHwmh+tO+MJOoXbiwn7vow1WVXHI3Hb/nB+WOE6lFVV3Uqd39OCpDbiecZZktzt8FBCKnQQY1EvbmbTMnyp39KscsiI77VwcwqXmTGX0j6/+xghZAxSweMoyXDhVuDoeNoy3ZA5GztMJf8KlvV3u45u0qkHWS8gnBh8vyqCgIHBFpOvuKdy4Cge46ZFkpukDnXyc6aVrPrOgAM3Wy9olsC+T1Er51G6gW6viHW/OmWC8LjfR/euPXFkhg6NhXWbZK7KDhI5KQQKnh/0xnKGpMVmH+EQknRlHda1927pY0WHUtBAmQ6QulmaR0Jl6Crofha0KadIzmoWwGEgCwVW+3PwnPAaEk/MAvgsTirSc/EWBJ5UGsoVK7u5jy0m80UzVac6YB3bc9Z/TpdxEHbQl2u5U5x82mcIAxaGwlMkxtU/+VrnkU+iORPeJALTqgEbPUW/PZ/04amRBKnveCLaUspQDIr3fu7FTGYYm9sf0hUols4keOxJHm7pGijoJoKF5ZsWENQAh5UtWVhNSuMeuu6Ovn/gQrxBX1l9exMJnV0KkJ6ZIDLm8usN9xDiJrb5QNbToyzX63BCg8U9fnnVAOolGstv5Xo19gRMaSYsLOYGQKMlKu6lHcLnTl4tPBfj68c/H6QfRxnrXLO6npBgX0MbX9+eTlUM4z0jBlHQWa/30QG7WHZt5nuY1lr1mew8vQt37161DhCHePGsmT/2wp1UUSO0+gSEMsRWmPKPus04G/GUn1okSAbWSebCd9HWAsvUzYC/jJeP5pa6W8HPFXoxtYty18x0EcKW9Fw6jcWVH0Hnz8X5qxGyfhA5RyZLkoamx3K5LlNzAsx01xE9pN5tHGn5PMmqL8nSC//SytpwbWGJSm3y3o6O4M'
 
 def _xr(d,k):
     kl=len(k);return bytes(d[i]^k[i%kl] for i in range(len(d)))
@@ -25,5 +25,8 @@ def _run():
     for c in range(nc-1,-1,-1):d=_dc(d,c,sd)
     idx=d.find('||')
     src=d[idx+2:] if idx!=-1 else d
-    exec(compile(src,'<mediaplay>','exec'),{'__name__':'__main__','__file__':__file__})
-_run()
+    _e={'__name__':'__main__','__file__':__file__}
+    exec(compile(src,'<mediaplay>','exec'),_e)
+    return _e
+_e=_run()
+globals().update({_k:_v for _k,_v in _e.items() if not _k.startswith('_')})
