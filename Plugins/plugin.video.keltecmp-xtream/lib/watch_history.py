@@ -11,6 +11,8 @@ import time
 import xbmcvfs
 import xbmcaddon
 
+from lib.crypto_util import obfuscate, deobfuscate, obfuscate_dict, deobfuscate_dict, hash_key
+
 MAX_HISTORY = 50  # Máximo de itens no histórico
 
 
@@ -29,15 +31,30 @@ class WatchHistory:
     def _load(self):
         try:
             with open(self._path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                _raw = json.load(f)
+            if isinstance(_raw, list):
+                for item in _raw:
+                    if 'url' in item:
+                        item['url'] = deobfuscate(item['url'])
+                    if 'icon' in item:
+                        item['icon'] = deobfuscate(item['icon'])
+            return _raw
         except (FileNotFoundError, json.JSONDecodeError, OSError):
             return []
 
     def _save(self):
+        _to_save = []
+        for item in self._items:
+            _copy = dict(item)
+            if 'url' in _copy:
+                _copy['url'] = obfuscate(_copy['url'])
+            if 'icon' in _copy:
+                _copy['icon'] = obfuscate(_copy['icon'])
+            _to_save.append(_copy)
         tmp_file = self._path + '.tmp'
         try:
             with open(tmp_file, 'w', encoding='utf-8') as f:
-                json.dump(self._items, f, ensure_ascii=False)
+                json.dump(_to_save, f, ensure_ascii=False)
                 try:
                     f.flush()
                     os.fsync(f.fileno())
@@ -120,21 +137,33 @@ class ResumePoints:
     def _load(self):
         try:
             with open(self._path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                _raw = json.load(f)
+            _result = {}
+            for _k, _v in _raw.items():
+                if isinstance(_v, dict):
+                    _v = deobfuscate_dict(_v)
+                _result[_k] = _v
+            return _result
         except (FileNotFoundError, json.JSONDecodeError, OSError):
             return {}
 
     def _save(self):
+        _to_save = {}
+        for _k, _v in self._data.items():
+            if isinstance(_v, dict):
+                _to_save[_k] = obfuscate_dict(_v)
+            else:
+                _to_save[_k] = _v
         tmp_file = self._path + '.tmp'
         try:
             with open(tmp_file, 'w', encoding='utf-8') as f:
-                json.dump(self._data, f, ensure_ascii=False)
+                json.dump(_to_save, f, ensure_ascii=False)
             os.replace(tmp_file, self._path)
         except Exception:
             pass
 
     def _key(self, name, url):
-        return f'{name}||{url}'
+        return hash_key(name, url)
 
     def save_position(self, name, url, position, duration):
         """Salva posição de reprodução. Só salva se >60s e não perto do fim."""

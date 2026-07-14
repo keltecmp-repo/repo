@@ -208,7 +208,6 @@
   .timeline-section:nth-child(8) .timeline-dot { border-color: var(--accent-purple); }
   .timeline-section:nth-child(9) .timeline-dot { border-color: var(--accent-cyan); }
   .timeline-section:nth-child(10) .timeline-dot { border-color: var(--accent-lime); }
-.timeline-section:nth-child(11) .timeline-dot { border-color: var(--accent-gold); }
 
   .section-header {
     margin-bottom: 16px;
@@ -345,17 +344,17 @@
   <header>
     <div class="logo"><span>KeTec</span> Media Play</div>
     <h1>Changelog de Melhorias</h1>
-    <p class="subtitle">Registro completo de todas as modifica&ccedil;&otilde;es &mdash; <strong>Julho 2026</strong></p>
+    <p class="subtitle">Registro completo de todas as modifica&ccedil;&otilde;es &mdash; <strong>Junho 2026</strong></p>
   </header>
 
   <!-- ═══════════ STATS ═══════════ -->
   <div class="stats-bar">
     <div class="stat-card">
-      <div class="stat-value">60</div>
+      <div class="stat-value">52</div>
       <div class="stat-label">Commits / Alteracoes</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value">16</div>
+      <div class="stat-value">13</div>
       <div class="stat-label">Arquivos Modificados</div>
     </div>
     <div class="stat-card">
@@ -371,100 +370,7 @@
   <!-- ═══════════ TIMELINE ═══════════ -->
   <div class="timeline">
 
-    <!-- ── 1. Pluto TV & Proxy ── -->
-    <div class="timeline-section">
-      <div class="timeline-dot">&#x2713;</div>
-
-      <div class="section-header">
-        <div class="section-title">Pluto TV Nativo &amp; Proxy HLS</div>
-        <div class="section-date">URL rewriting, fallback TS, descricoes profissionais e padronizacao visual</div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">HLS Proxy: deteccao de playlist por path (urlparse)</div>
-          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
-        </div>
-        <div class="card-desc">
-          <code>url.endswith('.m3u8')</code> falhava para URLs com query string (ex: Pluto stitcher). Substitu&iacute;do por <code>urlparse(url).path.endswith('.m3u8')</code>. Corre&ccedil;&atilde;o aplicada tamb&eacute;m na detec&ccedil;&atilde;o de tipo de conte&uacute;do de segmentos (<code>.ts</code>, <code>.mp4</code>, <code>.m4s</code>).
-        </div>
-        <div class="card-files"><span class="file-tag">kpn.py:873</span> <span class="file-tag">kpn.py:883</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Reescrita de URI= em playlists HLS</div>
-          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
-        </div>
-        <div class="card-desc">
-          Tags <code>#EXT-X-MEDIA</code>, <code>#EXT-X-KEY</code> e <code>#EXT-X-MAP</code> cont&ecirc;m <code>URI="..."</code> que n&atilde;o eram reescritas pelo proxy. Agora todas as ocorr&ecirc;ncias de <code>URI="..."</code> em linhas <code>#EXT-*</code> s&atilde;o convertidas para URLs absolutas do proxy, resolvendo &aacute;udio e legendas no Pluto TV.
-        </div>
-        <div class="card-files"><span class="file-tag">kpn.py:929-934</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">HLS Bridge: timeout de 30s sem dados reais</div>
-          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
-        </div>
-        <div class="card-desc">
-          O HLS Bridge enviava pacotes <code>NULL TS</code> indefinidamente quando n&atilde;o conseguia baixar segmentos, mantendo o Kodi em "demuxer error" sem nunca cair no fallback TS. Adicionado <code>_last_real_yield</code>: se passar 30s sem um segmento v&aacute;lido, o bridge abandona e o <code>_unified_stream</code> muda automaticamente para TS Downloader.
-        </div>
-        <div class="card-files"><span class="file-tag">kpn.py:1241</span> <span class="file-tag">kpn.py:1249-1252</span> <span class="file-tag">kpn.py:1340</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Descricoes profissionais no menu principal</div>
-          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
-        </div>
-        <div class="card-desc">
-          Todos os 19 itens do menu principal receberam <code>plot</code> com descri&ccedil;&otilde;es t&eacute;cnicas profissionais, exibidas no painel de informa&ccedil;&otilde;es do Kodi ao selecionar o item.
-        </div>
-        <div class="card-files"><span class="file-tag">main.py:7452-7599</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Ordenacao padrao (UNSORTED) em todos os menus</div>
-          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
-        </div>
-        <div class="card-desc">
-          <code>SORT_METHOD_UNSORTED</code> movido para primeiro lugar em todos os content types (<code>movies</code>, <code>tvshows</code>, <code>episodes</code>, <code>menu</code>, <code>files</code>). A ordena&ccedil;&atilde;o padr&atilde;o agora &eacute; "Padr&atilde;o" (ordem de inser&ccedil;&atilde;o) em vez de "Nome".
-        </div>
-        <div class="card-files"><span class="file-tag">main.py:3145-3183</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Pluto TV: view mode Lista Larga (52) em todos os menus</div>
-          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
-        </div>
-        <div class="card-desc">
-          Regi&otilde;es, grupos e canais do Pluto TV agora abrem em Lista Larga (Wide List). Sort methods padronizados: <code>UNSORTED</code> + <code>LABEL_IGNORE_THE</code>. Sem for&ccedil;amento de view mode ap&oacute;s endOfDirectory — o usu&aacute;rio pode alterar manualmente e o Kodi memoriza.
-        </div>
-        <div class="card-files"><span class="file-tag">lib/pluto_tv.py:138-144</span> <span class="file-tag">lib/pluto_tv.py:163</span> <span class="file-tag">lib/pluto_tv.py:198</span> <span class="file-tag">lib/pluto_tv.py:273</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">View modes adaptados por skin (Aeon Nox / Estuary)</div>
-          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
-        </div>
-        <div class="card-desc">
-          Sistema de view mode centralizado no <code>build_menu</code> com detec&ccedil;&atilde;o autom&aacute;tica do skin:
-          <ul>
-            <li><strong>Menu principal:</strong> Lista (50) — skin define largura</li>
-            <li><strong>Filmes / S&eacute;ries:</strong> Poster (51 Aeon Nox / 500 demais)</li>
-            <li><strong>Demais telas:</strong> Lista (50)</li>
-          </ul>
-        </div>
-        <div class="card-files"><span class="file-tag">main.py:3542-3560</span></div>
-      </div>
-
-    </div>
-
-    <!-- ── 2. Seguranca ── -->
+    <!-- ── 1. Seguranca ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -506,8 +412,8 @@
         <div class="card-files"><span class="file-tag">main.py:108</span></div>
       </div>
     </div>
-    <!-- ── 3. TMDB ── -->
 
+    <!-- ── 2. TMDB ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -561,7 +467,7 @@
       </div>
     </div>
 
-    <!-- ── 4. IMDB ── -->
+    <!-- ── 3. IMDB ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -626,7 +532,7 @@
       </div>
     </div>
 
-    <!-- ── 5. VIP / Servidores ── -->
+    <!-- ── 4. VIP / Servidores ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -669,7 +575,7 @@
       </div>
     </div>
 
-    <!-- ── 6. Navegacao ── -->
+    <!-- ── 5. Navegacao ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -736,7 +642,7 @@
       </div>
     </div>
 
-    <!-- ── 7. Suporte a Idiomas ── -->
+    <!-- ── 6. Suporte a Idiomas ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -770,7 +676,7 @@
       </div>
     </div>
 
-    <!-- ── 8. Limpeza ── -->
+    <!-- ── 7. Limpeza ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -824,7 +730,7 @@
       </div>
     </div>
 
-    <!-- ── 9. Session Manager ── -->
+    <!-- ── 8. Session Manager ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -879,7 +785,7 @@
 
     </div>
 
-    <!-- ── 10. Cancel Search ── -->
+    <!-- ── 9. Cancel Search ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -944,7 +850,7 @@
       </div>
     </div>
 
-    <!-- ── 11. Subtitles & Search ── -->
+    <!-- ── 10. Subtitles & Search ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>
 
@@ -1101,7 +1007,7 @@
   <!-- ═══════════ FOOTER ═══════════ -->
   <footer>
     <strong>KelTec Media Play</strong> &mdash; plugin.video.keltecmp-xtream<br>
-    Documentacao gerada em Julho de 2026 &bull; Kodi 21.2 Omega
+    Documentacao gerada em Junho de 2026 &bull; Kodi 21.2 Omega
   </footer>
 
 </div><!-- /container -->

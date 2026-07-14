@@ -77,13 +77,21 @@ query VideoPlayback($viconst: ID!) {
 }
 ''' + _TRAILER_FRAGMENT
 
+try:
+    import requests as _imdb_req
+    _imdb_session = _imdb_req.Session()
+    _imdb_session.headers['Connection'] = 'keep-alive'
+except ImportError:
+    _imdb_session = None
+
 def _http_post_json(url, payload, headers, timeout=15):
     try:
-        import requests
-        r = requests.post(url, json=payload, headers=headers, timeout=timeout)
+        if _imdb_session is None:
+            raise AttributeError('requests not available')
+        r = _imdb_session.post(url, json=payload, headers=headers, timeout=timeout)
         r.raise_for_status()
         return r.json()
-    except ImportError:
+    except (ImportError, AttributeError):
         data = json.dumps(payload).encode('utf-8')
         import urllib.request, urllib.error
         req = urllib.request.Request(url, data=data, headers=headers, method='POST')
@@ -127,7 +135,7 @@ def fetch_imdb_data(imdb_id):
 
     result = {
         'title':       (title.get('titleText') or {}).get('text', ''),
-        'plot':        (title.get('plot') or {}).get('plotText') or {},
+        'plot':        (title.get('plot') or {}).get('plotText') or '',
         'poster':      (title.get('primaryImage') or {}).get('url', ''),
         'year':        release.get('year', ''),
         'rating':      rating.get('aggregateRating'),

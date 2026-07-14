@@ -267,6 +267,67 @@ class LoadingManager:
 
         return window.result if not window.is_cancelled() else None
 
+    def show_search_start(self, fanart_path=None):
+        addon_path = self._addon_path()
+        fanart = fanart_path or self._default_fanart()
+        xbmcgui.Window(10000).setProperty('loading.fanart', fanart)
+        self._start_busy_suppressor()
+        self._window = None
+
+        def _run():
+            window = LoadingWindow(
+                'DialogLoadingKelTec.xml', addon_path, 'Default', '1080i',
+            )
+            with self._lock:
+                self._window = window
+                self._generation += 1
+            window.doModal()
+
+        threading.Thread(target=_run, daemon=True).start()
+
+    def show_search_update(self, pct, msg):
+        try:
+            xbmcgui.Window(10000).setProperty('loading.progress', str(pct))
+            with self._lock:
+                if self._window is not None:
+                    self._window._update_ui(pct, msg)
+        except Exception:
+            pass
+
+    def show_search_end(self):
+        for _ in range(20):
+            with self._lock:
+                if self._window is not None:
+                    break
+            time.sleep(0.1)
+        self.force_close()
+
+    def show_playback_start(self, fanart_path=None):
+        addon_path = self._addon_path()
+        fanart = fanart_path or self._default_fanart()
+        xbmcgui.Window(10000).setProperty('loading.fanart', fanart)
+        self._start_busy_suppressor()
+        self._window = None
+
+        def _run():
+            window = LoadingWindow(
+                'DialogLoadingKelTec.xml', addon_path, 'Default', '1080i',
+            )
+            with self._lock:
+                self._window = window
+                self._generation += 1
+            window.doModal()
+
+        threading.Thread(target=_run, daemon=True).start()
+
+    def show_playback_end(self):
+        for _ in range(20):
+            with self._lock:
+                if self._window is not None:
+                    break
+            time.sleep(0.1)
+        self.force_close()
+
     def show_source_select(self, players, fanart_path=None):
         try:
             addon_path = self._addon_path()

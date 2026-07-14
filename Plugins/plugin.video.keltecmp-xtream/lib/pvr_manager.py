@@ -12,6 +12,10 @@ import urllib.parse
 import unicodedata
 import re
 
+import requests as _pvr_req
+_pvr_session = _pvr_req.Session()
+_pvr_session.headers['Connection'] = 'keep-alive'
+
 import xbmc
 import xbmcgui
 import xbmcaddon
@@ -137,7 +141,7 @@ def _configure_pvr_instance(m3u_path, epg_path, instance=1, instance_name=''):
                 ('epgPathType', '0'),
                 ('epgPath', epg_path),
                 ('epgUrl', ''),
-                ('m3uRefreshMode', '1'),
+                ('m3uRefreshMode', '3'),
                 ('logoPathType', '0'),
                 ('logoPath', ''),
                 ('logoBaseUrl', ''),
@@ -341,14 +345,25 @@ def export_pvr_m3u(channels):
 # Exportação EPG para PVR
 # ─────────────────────────────────────────────────────────────
 
-def export_pvr_epg_from_url(epg_url, username='', password=''):
+def merge_epg_with_pluto(main_epg_root, pluto_epg_root):
+    added_channels = set()
+    for ch in main_epg_root.findall('channel'):
+        added_channels.add(ch.get('id', ''))
+    for ch in pluto_epg_root.findall('channel'):
+        cid = ch.get('id', '')
+        if cid not in added_channels:
+            main_epg_root.append(ch)
+            added_channels.add(cid)
+    for prog in pluto_epg_root.findall('programme'):
+        main_epg_root.append(prog)
+    return main_epg_root
+
+def export_pvr_epg_from_url(epg_url, username='', password='', dest_path=None):
     """
     Baixa e exporta o EPG XMLTV para o arquivo EPG do PVR.
     Suporta URL direta XMLTV ou auto-detecção via Xtream Codes.
     """
-    import requests
-
-    epg_path = pvr_epg_path()
+    epg_path = dest_path if dest_path else pvr_epg_path()
 
     # Auto-detecção de URL EPG via Xtream Codes
     if not epg_url:
@@ -359,7 +374,7 @@ def export_pvr_epg_from_url(epg_url, username='', password=''):
 
     _log(f'EPG: Baixando de {epg_url.split("?")[0]}...')
     try:
-        resp = requests.get(
+        resp = _pvr_session.get(
             epg_url,
             headers={'User-Agent': 'Mozilla/5.0'},
             timeout=30,
@@ -485,11 +500,36 @@ def _parse_xmltv_time(ts):
 # Sincronização PVR Principal
 # ─────────────────────────────────────────────────────────────
 
-def sync_pvr(channels, epg_url=''):
+def export_pvr_epg_with_pluto(epg_url, pluto_epg_root=None):
+    """Exporta EPG principal e opcionalmente mescla Pluto TV."""
+    epg_path = pvr_epg_path()
+    main_epg_path = epg_path + '.main'
+    ok = export_pvr_epg_from_url(epg_url, dest_path=main_epg_path)
+    if ((ok or os.path.exists(main_epg_path)) and pluto_epg_root is not None):
+        try:
+            if os.path.exists(main_epg_path):
+                main_root = ET.parse(main_epg_path).getroot()
+            else:
+                main_root = ET.Element('tv')
+            merged = merge_epg_with_pluto(main_root, pluto_epg_root)
+            tmp = epg_path + '.tmp'
+            ET.ElementTree(merged).write(tmp, encoding='utf-8', xml_declaration=True)
+            os.replace(tmp, epg_path)
+            _log(f'EPG mesclado com Pluto TV: {epg_path}')
+            if os.path.exists(main_epg_path):
+                os.remove(main_epg_path)
+            return True
+        except Exception as e:
+            _log(f'Erro ao mesclar EPG Pluto: {e}')
+    if ok and not pluto_epg_root:
+        return True
+    return os.path.exists(epg_path)
+
+def sync_pvr(channels, epg_url='', pluto_channels=None, pluto_epg_root=None):
     """
     Sincronizacao completa do PVR:
-    1. Exporta M3U
-    2. Exporta EPG (se URL configurada)
+    1. Exporta M3U (com Pluto TV opcional)
+    2. Exporta EPG (se URL configurada, mesclado com Pluto se fornecido)
     3. Configura pvr.iptvsimple (instancia 1)
     4. Solicita recarregamento suave via UpdateLocalAddons
     Retorna True se bem-sucedido.
@@ -502,16 +542,19 @@ def sync_pvr(channels, epg_url=''):
         prompt_install_pvr()
         return False
 
-    # Exporta M3U
-    _log(f'Exportando M3U: {len(channels)} canais')
-    ok_m3u = export_pvr_m3u(channels)
+    all_channels = list(channels)
+    if pluto_channels:
+        all_channels.extend(pluto_channels)
+        _log(f'{len(channels)} IPTV + {len(pluto_channels)} Pluto TV = {len(all_channels)} canais')
+
+    ok_m3u = export_pvr_m3u(all_channels)
     if not ok_m3u:
         _log('Falha ao exportar M3U')
 
-    # Exporta EPG (apenas se URL configurada e arquivo antigo ou ausente)
     epg_path = pvr_epg_path()
+    has_pluto_epg = pluto_epg_root is not None
     skip_epg = False
-    if os.path.exists(epg_path):
+    if not has_pluto_epg and os.path.exists(epg_path):
         try:
             age_hours = (time.time() - os.path.getmtime(epg_path)) / 3600
             if age_hours < 4:
@@ -519,29 +562,26 @@ def sync_pvr(channels, epg_url=''):
                     content = f.read(500)
                 if '<programme' in content or '<channel' in content:
                     skip_epg = True
-                    _log(f'EPG existente valido ({age_hours:.1f}h), pulando exportacao')
+                    _log(f'EPG existente valido ({age_hours:.1f}h), pulando')
         except Exception:
             pass
 
-    if not skip_epg and epg_url:
-        _log('Exportando EPG...')
-        export_pvr_epg_from_url(epg_url)
-    elif not epg_url:
-        _log('Sem URL de EPG, usando arquivo existente ou stub')
-        if not os.path.exists(epg_path):
-            _write_epg_stub(epg_path)
+    if (not skip_epg or has_pluto_epg):
+        if epg_url or has_pluto_epg:
+            _log('Exportando EPG...')
+            export_pvr_epg_with_pluto(epg_url, pluto_epg_root=pluto_epg_root)
+        else:
+            _log('Sem URL de EPG, usando stub')
+            if not os.path.exists(epg_path):
+                _write_epg_stub(epg_path)
 
-    # Configura pvr.iptvsimple (instancia 1 = todos os canais)
-    _log('Configurando pvr.iptvsimple (instancia 1)...')
     ok_cfg = _configure_pvr_instance(pvr_m3u_path(), pvr_epg_path(), instance=1)
 
-    # Sincroniza favoritos PVR (instancia 2) se habilitado
     addon = xbmcaddon.Addon(ADDON_ID)
     if addon.getSetting('pvr_favorites_enabled') == 'true':
         _log('Sincronizando Favoritos PVR (instancia 2)...')
         sync_pvr_favorites()
 
-    # Recarrega addons locais de forma suave (nao fecha/reabre o PVR)
     try:
         xbmc.executebuiltin('UpdateLocalAddons')
         xbmc.sleep(500)

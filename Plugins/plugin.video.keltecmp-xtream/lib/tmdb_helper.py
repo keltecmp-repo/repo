@@ -21,6 +21,8 @@ import time
 import re
 import threading
 import requests
+_tmdb_session = requests.Session()
+_tmdb_session.headers['Connection'] = 'keep-alive'
 from datetime import datetime, timedelta
 
 import xbmc
@@ -176,7 +178,7 @@ class TMDBHelper:
         url = f"{self.BASE_URL}/{endpoint}"
         
         try:
-            response = requests.get(url, params=params, timeout=10)
+            response = _tmdb_session.get(url, params=params, timeout=10)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:

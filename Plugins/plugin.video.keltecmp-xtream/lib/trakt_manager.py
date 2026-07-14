@@ -22,8 +22,11 @@ import threading
 
 try:
     import requests as _req
+    _trakt_session = _req.Session()
+    _trakt_session.headers['Connection'] = 'keep-alive'
     _HAS_REQUESTS = True
 except ImportError:
+    _trakt_session = None
     _HAS_REQUESTS = False
 
 try:
@@ -561,11 +564,10 @@ class TraktManager:
         if not _HAS_REQUESTS:
             return None
         try:
-            import requests as _r
             p = {'extended': 'full', 'limit': 30}
             if params:
                 p.update(params)
-            resp = _r.get(
+            resp = _trakt_session.get(
                 f'{_TRAKT_BASE}/{endpoint.lstrip("/")}',
                 headers={
                     'Content-Type':      'application/json',
@@ -591,11 +593,10 @@ class TraktManager:
         if not _HAS_REQUESTS:
             return [], 1, 0
         try:
-            import requests as _r
             p = {'extended': 'full', 'page': page, 'limit': limit}
             if params:
                 p.update(params)
-            resp = _r.get(
+            resp = _trakt_session.get(
                 f'{_TRAKT_BASE}/{endpoint.lstrip("/")}',
                 headers={
                     'Content-Type':      'application/json',

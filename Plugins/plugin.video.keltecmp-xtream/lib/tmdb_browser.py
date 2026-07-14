@@ -11,11 +11,13 @@ import re, json, time, os, threading, hashlib
 
 try:
     import requests as _req_lib
+    _tmdb_browser_session = _req_lib.Session()
+    _tmdb_browser_session.headers['Connection'] = 'keep-alive'
     def _http_get(url, params=None, headers=None, timeout=18):
         h = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
         if headers:
             h.update(headers)
-        r = _req_lib.get(url, params=params, headers=h, timeout=timeout)
+        r = _tmdb_browser_session.get(url, params=params, headers=h, timeout=timeout)
         r.raise_for_status()
         return r.json()
 except ImportError:
@@ -562,10 +564,9 @@ class TMDBBrowser:
                 params   = {'username': s_user, 'password': s_pass, 'action': endpoint}
 
                 try:
-                    import requests as _r
                     if cancel_event and cancel_event.is_set():
                         return
-                    resp = _r.get(api_url, params=params,
+                    resp = _tmdb_browser_session.get(api_url, params=params,
                                    headers={'User-Agent': UA}, timeout=15)
                     resp.raise_for_status()
                     data = resp.json()
@@ -743,12 +744,11 @@ def _match_with_year(query_title, xtream_title, tmdb_year=''):
         return base
 
     # Extrai ano do titulo Xtream (ex: "Avatar (2022)", "Avatar 2022")
-    import re as _re
-    years_found = _re.findall(r'\b(19|20)\d{2}\b', xtream_title)
+    years_found = __import__('re').findall(r'\b(19|20)\d{2}\b', xtream_title)
     if not years_found:
         return base  # sem ano no titulo Xtream — nao penaliza
 
-    xtream_year = int(years_found[-1] + _re.findall(r'\b(?:19|20)(\d{2})\b', xtream_title)[-1] if False else years_found[-1])
+    xtream_year = int(years_found[-1])
     diff = abs(int(tmdb_year) - int(xtream_year))
 
     if diff == 0:

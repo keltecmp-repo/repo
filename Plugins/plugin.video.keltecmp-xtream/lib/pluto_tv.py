@@ -3,11 +3,13 @@
 Pluto TV nativo — sem dependencia externa (SlyGuy).
 Canais gratis ao vivo com EPG, regioes e grupos.
 """
-import json, gzip, time, uuid, io, threading, re as _re
+import json, gzip, time, uuid, io, os, threading, re as _re
 from urllib.parse import urlencode, quote as _quote, quote_plus
 from collections import OrderedDict
 
 import requests as _req
+_pluto_session = _req.Session()
+_pluto_session.headers['Connection'] = 'keep-alive'
 import xbmc, xbmcgui, xbmcplugin, xbmcvfs
 try:
     from urllib3.util.ssl_ import create_urllib3_context
@@ -66,7 +68,7 @@ def _fetch_data(force=False):
         if not force and _cache.get('data') and (now - _cache.get('data_ts', 0)) < CACHE_TTL:
             return _cache['data']
     try:
-        r = _req.get(PLUTO_DATA_URL, timeout=15, verify=False)
+        r = _pluto_session.get(PLUTO_DATA_URL, timeout=15, verify=False)
         r.raise_for_status()
         raw = gzip.decompress(r.content)
         data = json.loads(raw.decode('utf-8'))
@@ -94,7 +96,7 @@ def _get_jwt(force=False):
         'clientID': device_id, 'clientModelNumber': '1.0.0',
     }
     try:
-        r = _req.get(PLUTO_BOOT_URL, params=params, timeout=10, verify=False)
+        r = _pluto_session.get(PLUTO_BOOT_URL, params=params, timeout=10, verify=False)
         r.raise_for_status()
         j = r.json()
         result = (j['stitcherParams'], j['sessionToken'])
@@ -158,7 +160,8 @@ def menu_regions():
         region_name = _sanitize(r.get('name', code))
         label = '%s (%d)' % (region_name, ch_count)
         url = 'plugin://plugin.video.keltecmp-xtream/?mode=pluto_tv_region&region_code=%s' % _quote(code)
-        _add_item(label, url, thumb=r.get('logo', ''), plot=region_name)
+        _add_item(label, url, thumb=r.get('logo', ''), fanart=r.get('logo', ''),
+                  plot='[B]%s[/B] - %d canais\n%s' % (region_name, ch_count, _sanitize(r.get('description', ''))))
     _end('files')
 
 # ---------------------------------------------------------------------------
@@ -183,17 +186,23 @@ def menu_groups(region_code):
         _end(); return
     # If only one group or groups disabled, show channels directly
     if len(groups) == 1:
-        menu_channels(region_code, list(groups.values())[0])
+        menu_channels(region_code, 'ALL')
         return
     all_count = sum(len(v) for v in groups.values())
     url_all = 'plugin://plugin.video.keltecmp-xtream/?mode=pluto_tv_channels&region_code=%s&group=ALL' % _quote(region_code)
-    _add_item('All (%d)' % all_count, url_all, thumb=region.get('logo', ''))
+    region_logo = region.get('logo', '')
+    _add_item('All (%d)' % all_count, url_all, thumb=region_logo, fanart=region_logo,
+              plot='[B]%s[/B] - Todos os %d canais' % (region.get('name', ''), all_count))
     for gname in groups:
         count = len(groups[gname])
         display_name = _sanitize(gname)
-        thumb = channels.get(groups[gname][0], {}).get('logo', '') if groups[gname] else ''
+        first_ch = channels.get(groups[gname][0], {}) if groups[gname] else {}
+        thumb = first_ch.get('logo', '')
+        fanart = first_ch.get('art', '') or first_ch.get('logo', '')
         url_g = 'plugin://plugin.video.keltecmp-xtream/?mode=pluto_tv_channels&region_code=%s&group=%s' % (_quote(region_code), _quote(gname))
-        _add_item('%s (%d)' % (display_name, count), url_g, thumb=thumb)
+        _add_item('%s (%d)' % (display_name, count), url_g, thumb=thumb, fanart=fanart,
+                  plot='[B]%s[/B] - %d canais\nRegiao: %s' % (display_name, count, region.get('name', '')),
+                  genre=display_name)
     _end('files')
 
 # ---------------------------------------------------------------------------
@@ -275,6 +284,77 @@ def menu_channels(region_code, group_name=None):
 # Playback
 # ---------------------------------------------------------------------------
 
+def sync_to_pvr(region_code=None):
+    addon = __import__('xbmcaddon').Addon('plugin.video.keltecmp-xtream')
+    profile = __import__('xbmcvfs').translatePath(addon.getAddonInfo('profile'))
+    dp = xbmcgui.DialogProgress()
+    label = 'Pluto TV - PVR'
+    if region_code: label += ' [%s]' % region_code
+    dp.create(label, 'Carregando dados dos canais...')
+    data = _fetch_data()
+    if not data or dp.iscanceled():
+        if dp.iscanceled(): dp.close()
+        else: xbmcgui.Dialog().notification('Pluto TV', 'Erro ao carregar dados', xbmcgui.NOTIFICATION_ERROR)
+        return
+    try:
+        from lib.pluto_epg import build_pvr_channels, build_epg_xml, enrich_programs_tmdb, export_pvr_files
+        from lib.pvr_manager import _configure_pvr_instance, is_pvr_installed, prompt_install_pvr
+    except Exception as e:
+        _log(f'Erro ao importar modulos EPG: {e}')
+        dp.close()
+        xbmcgui.Dialog().notification('Pluto TV', 'Erro interno', xbmcgui.NOTIFICATION_ERROR)
+        return
+    if not is_pvr_installed():
+        dp.close()
+        prompt_install_pvr()
+        if not is_pvr_installed():
+            return
+        dp.create(label, 'Carregando dados dos canais...')
+    dp.update(10, 'Construindo lista de canais...')
+    channels = build_pvr_channels(data, region_code=region_code)
+    if not channels:
+        dp.close()
+        xbmcgui.Dialog().notification('Pluto TV', 'Nenhum canal encontrado', xbmcgui.NOTIFICATION_WARNING)
+        return
+    dp.update(20, 'Carregando cache TMDB...')
+    try:
+        from lib.pluto_epg import _load_tmdb_cache
+        tmdb_cache = _load_tmdb_cache()
+    except Exception:
+        tmdb_cache = None
+    dp.update(40, 'Montando XMLTV da programacao...')
+    epg_root = build_epg_xml(data, tmdb_cache=tmdb_cache, region_code=region_code)
+    if dp.iscanceled(): dp.close(); return
+    dp.update(60, 'Exportando arquivos M3U e EPG...')
+    m3u_path = os.path.join(profile, 'pluto_pvr.m3u8')
+    epg_path = os.path.join(profile, 'pluto_epg.xml')
+    ok = export_pvr_files(channels, epg_root, m3u_path, epg_path)
+    if not ok:
+        dp.close()
+        xbmcgui.Dialog().notification('Pluto TV', 'Falha ao exportar', xbmcgui.NOTIFICATION_ERROR)
+        return
+    dp.update(80, 'Configurando PVR (instancia 3)...\nAcesse TV > Guia de Programacao')
+    ok_cfg = _configure_pvr_instance(m3u_path, epg_path, instance=3, instance_name='Pluto TV')
+    if ok_cfg:
+        try:
+            __import__('xbmc').executebuiltin('UpdateLocalAddons')
+        except Exception:
+            pass
+        dp.update(100, 'Pronto!')
+        xbmc.sleep(300)
+        dp.close()
+        xbmcgui.Dialog().notification('Pluto TV',
+            f'{len(channels)} canais sincronizados!',
+            xbmcgui.NOTIFICATION_INFO, 3000)
+        yes = xbmcgui.Dialog().yesno('Pluto TV', f'{len(channels)} canais exportados.\nDeseja abrir a Guia de Programacao?')
+        if yes:
+            xbmc.sleep(2000)
+            xbmc.executebuiltin('ActivateWindow(TVGuide)')
+    else:
+        dp.close()
+        xbmcgui.Dialog().notification('Pluto TV', 'Falha ao configurar PVR', xbmcgui.NOTIFICATION_ERROR)
+    _log(f'PVR sync: {len(channels)} canais Pluto TV')
+
 def _find_channel(data, channel_id):
     for r in data.get('regions', {}).values():
         ch = r.get('channels', {}).get(channel_id)
@@ -299,6 +379,9 @@ def play_channel(channel_id):
         return
     name = channel.get('name', channel_id)
     thumb = channel.get('logo', '')
+    fanart = channel.get('art', '') or thumb
+    group = _sanitize(channel.get('group', ''))
+    desc = _sanitize(channel.get('description', ''))
     params, jwt = _get_jwt()
     if not params or not jwt:
         xbmcplugin.setResolvedUrl(_ADDON_HANDLE, False, xbmcgui.ListItem())
@@ -320,15 +403,21 @@ def play_channel(channel_id):
         _port, quote_plus(pluto_url), quote_plus(json.dumps(headers)))
     li = xbmcgui.ListItem(label=name, path=proxy_url)
     try:
-        li.getVideoInfoTag().setTitle(name)
+        tag = li.getVideoInfoTag()
+        tag.setTitle(name)
+        tag.setMediaType('video')
+        if group:
+            tag.setGenre(group)
+        if desc:
+            tag.setPlot(desc)
     except Exception:
-        li.setInfo('video', {'title': name})
-    li.setArt({'thumb': thumb})
+        li.setInfo('video', {'title': name, 'plot': desc or '', 'genre': group or ''})
+    li.setArt({'thumb': thumb, 'fanart': fanart, 'poster': thumb, 'icon': thumb})
     li.setProperty('IsPlayable', 'true')
     li.setProperty('inputstream', 'inputstream.adaptive')
     li.setProperty('inputstream.adaptive.manifest_config',
         '{"hls_ignore_endlist":true,"hls_fix_mediasequence":true,"hls_fix_discsequence":true}')
-    li.setProperty('inputstream.adaptive.live_delay', '8')
+    li.setProperty('inputstream.adaptive.live_delay', '15')
     li.setProperty('inputstream.adaptive.audio_persist', 'true')
     li.setContentLookup(False)
     li.setMimeType('application/vnd.apple.mpegurl')

@@ -93,6 +93,8 @@
         <setting id="menu_show_tv"            type="bool" label="Mostrar TV ao Vivo"             default="true"/>
         <setting id="menu_show_movies"        type="bool" label="Mostrar Filmes"                 default="true"/>
         <setting id="menu_show_series"        type="bool" label="Mostrar Series"                 default="true"/>
+        <setting id="menu_show_pvrsync"       type="bool" label="Mostrar Sync IPTV + Proxy"       default="true"/>
+        <setting id="menu_show_pvrguide"      type="bool" label="Mostrar Guia IPTV (Proxy)"         default="true"/>
 
         <setting type="sep"/>
         <setting label="Favoritos e Historico" type="lsep"/>
@@ -236,6 +238,19 @@
         <!-- IDs internos salvos automaticamente -->
         <setting id="active_server_name" type="text" label="Nome servidor ativo" default="" visible="false"/>
         <setting id="active_server_id"   type="text" label="ID servidor ativo"   default="" visible="false"/>
+    </category>
+
+    <!-- ========================================== -->
+    <!-- PLUTO TV                                   -->
+    <!-- ========================================== -->
+    <category label="PVR (Proxy)">
+        <setting label="IPTV via Proxy - Instancia 4" type="lsep"/>
+        <setting label="Exporta canais do servidor IPTV para o PVR nativo (pvr.iptvsimple)" type="lsep"/>
+        <setting label="A reproducao passa pelo proxy nativo (KPN)" type="lsep"/>
+
+        <setting type="sep"/>
+        <setting label="Sincronizar IPTV com o PVR agora" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=pvr_sync_server)"/>
     </category>
 
     <!-- ========================================== -->
