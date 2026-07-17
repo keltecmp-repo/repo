@@ -302,7 +302,7 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
   </extension>
 </addon>
 
-<addon id="plugin.program.keltec.wizard" name="[B][COLOR limegreen]KelTec [/COLOR]Open Wizard[/B] Matrix" version="2.0" provider-name="Team KelTec Media Play">
+<addon id="plugin.program.keltec.wizard" name="[B][COLOR gold]KelTec [/COLOR]Open Wizard[/B] Matrix" version="3.0" provider-name="Team KelTec Media Play">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
         <import addon="script.module.requests" />
@@ -318,12 +318,12 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
     <extension point="xbmc.service" library="startup.py" start="startup" />
     
     <extension point="xbmc.addon.metadata">
-        <summary lang="en">[COLOR limegreen]Open[/COLOR]Wizard</summary>
-        <description lang="en">[COLOR limegreen]Open[/COLOR]O Wizard oferece muitos recursos de manutenção, salvamento seletivo de dados complementares e instalações de compilação automatizadas.\nInstalador KelTe-Media-Play Wizard, Para Versão do Kodi v19_Matrix, não aceite Imitações.</description>
+        <summary lang="en">[COLOR gold]Open[/COLOR]Wizard</summary>
+        <description lang="en">[COLOR gold]Open[/COLOR]O Wizard oferece muitos recursos de manutenção, salvamento seletivo de dados complementares e instalações de compilação automatizadas.\nInstalador KelTe-Media-Play Wizard, Para Versão do Kodi v19_Matrix, 20, 21 & 22+, não aceite Imitações.</description>
         <disclaimer lang="en">[COLOR darkgrey][B] KelTec-Media-Play[/COLOR][COLOR crimson] O autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[/COLOR][COLOR darkgrey] KelTec-Media-Play o Futuro é Agora![/COLOR][/B]</disclaimer>
 		<platform>all</platform>
         <reuselanguageinvoker>false</reuselanguageinvoker>
-        <source>https://keltecmp.ebj.re/</source>
+        <source>https://www.keltecmp.ebj.re/</source>
         <news>
 Add-on KelTec Open Wizard
 1.0.0

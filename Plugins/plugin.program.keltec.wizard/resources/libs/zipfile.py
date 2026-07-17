@@ -2,7 +2,6 @@
 Read and write ZIP files.
 """
 import binascii
-import cStringIO
 import io
 import os
 import re
@@ -399,7 +398,7 @@ class ZipInfo (object):
         return header + filename + extra
 
     def _encodeFilenameFlags(self):
-        if isinstance(self.filename, unicode):
+        if isinstance(self.filename, str):
             try:
                 return self.filename.encode('ascii'), self.flag_bits
             except UnicodeEncodeError:
@@ -434,15 +433,15 @@ class ZipInfo (object):
                 idx = 0
 
                 # ZIP64 extension (large files and/or large archives)
-                if self.file_size in (0xffffffffffffffffL, 0xffffffffL):
+                if self.file_size in (0xffffffffffffffff, 0xffffffff):
                     self.file_size = counts[idx]
                     idx += 1
 
-                if self.compress_size == 0xFFFFFFFFL:
+                if self.compress_size == 0xFFFFFFFF:
                     self.compress_size = counts[idx]
                     idx += 1
 
-                if self.header_offset == 0xffffffffL:
+                if self.header_offset == 0xffffffff:
                     old = self.header_offset
                     self.header_offset = counts[idx]
                     idx+=1
@@ -563,9 +562,9 @@ class ZipExtFile(io.BufferedIOBase):
                 raise NotImplementedError("compression type %d (%s)" % (self._compress_type, descr))
             else:
                 raise NotImplementedError("compression type %d" % (self._compress_type,))
-        self._unconsumed = ''
+        self._unconsumed = b''
 
-        self._readbuffer = ''
+        self._readbuffer = b''
         self._offset = 0
 
         self._universal = 'U' in mode
@@ -797,7 +796,7 @@ class ZipFile(object):
         if platform() == 'android':
             file = io.FileIO(file,mode)
 
-        if isinstance(file, basestring):
+        if isinstance(file, str):
             self._filePassed = 0
             self.filename = file
             modeDict = {'r' : 'rb', 'w': 'wb', 'a' : 'r+b'}
@@ -877,7 +876,7 @@ class ZipFile(object):
         self.start_dir = offset_cd + concat
         fp.seek(self.start_dir, 0)
         data = fp.read(size_cd)
-        fp = cStringIO.StringIO(data)
+        fp = io.BytesIO(data)
         total = 0
         while total < size_cd:
             centdir = fp.read(sizeCentralDir)
@@ -1041,7 +1040,7 @@ class ZipFile(object):
                 #  or the MSB of the file time depending on the header type
                 #  and is used to check the correctness of the password.
                 bytes = zef_file.read(12)
-                h = map(zd, bytes[0:12])
+                h = list(map(zd, bytes[0:12]))
                 if zinfo.flag_bits & 0x8:
                     # compare against the file type from extended local headers
                     check_byte = (zinfo._raw_time >> 8) & 0xff
@@ -1102,7 +1101,7 @@ class ZipFile(object):
         if os.path.sep == '\\':
             # filter illegal characters on Windows
             illegal = ':<>|"?*'
-            if isinstance(arcname, unicode):
+            if isinstance(arcname, str):
                 table = {ord(c): ord('_') for c in illegal}
             else:
                 table = string.maketrans(illegal, '_' * len(illegal))
@@ -1124,7 +1123,7 @@ class ZipFile(object):
                 os.mkdir(targetpath)
             return targetpath
 
-        with self.open(member, pwd=pwd) as source, file(targetpath, "wb") as target:
+        with self.open(member, pwd=pwd) as source, open(targetpath, "wb") as target:
             shutil.copyfileobj(source, target)
 
         return targetpath
@@ -1174,7 +1173,7 @@ class ZipFile(object):
         if isdir:
             arcname += '/'
         zinfo = ZipInfo(arcname, date_time)
-        zinfo.external_attr = (st[0] & 0xFFFF) << 16L      # Unix attributes
+        zinfo.external_attr = (st[0] & 0xFFFF) << 16      # Unix attributes
         if isdir:
             zinfo.compress_type = ZIP_STORED
         elif compress_type is None:
@@ -1328,7 +1327,7 @@ class ZipFile(object):
 
                     if zinfo.header_offset > ZIP64_LIMIT:
                         extra.append(zinfo.header_offset)
-                        header_offset = 0xffffffffL
+                        header_offset = 0xffffffff
                     else:
                         header_offset = zinfo.header_offset
 
@@ -1355,14 +1354,14 @@ class ZipFile(object):
                         0, zinfo.internal_attr, zinfo.external_attr,
                         header_offset)
                     except DeprecationWarning:
-                        print >>sys.stderr, (structCentralDir,
+                        print(structCentralDir,
                         stringCentralDir, create_version,
                         zinfo.create_system, extract_version, zinfo.reserved,
                         zinfo.flag_bits, zinfo.compress_type, dostime, dosdate,
                         zinfo.CRC, compress_size, file_size,
                         len(zinfo.filename), len(extra_data), len(zinfo.comment),
                         0, zinfo.internal_attr, zinfo.external_attr,
-                        header_offset)
+                        header_offset, file=sys.stderr)
                         raise
                     self.fp.write(centdir)
                     self.fp.write(filename)

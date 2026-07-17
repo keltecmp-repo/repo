@@ -15,7 +15,7 @@ from resources.libs.common.config import CONFIG
 
 try:  # Python 3
     from urllib.parse import urlencode
-    from urllib.request import FancyURLopener
+    from urllib.request import build_opener
 except ImportError:  # Python 2
     from urllib import urlencode
     from urllib import FancyURLopener
@@ -297,8 +297,21 @@ def copy_to_clipboard(txt):
         # return False, "Error Sending Email."
 
 
-class LogURLopener(FancyURLopener):
-    version = '{0}: {1}'.format(CONFIG.ADDON_ID, CONFIG.ADDON_VERSION)
+try:
+    _opener = build_opener()
+    class LogURLopener:  # Python 3
+        version = '{0}: {1}'.format(CONFIG.ADDON_ID, CONFIG.ADDON_VERSION)
+        def open(self, url, data=None):
+            req = _opener.open if data is None else _opener.open
+            if data:
+                if isinstance(data, dict):
+                    data = urlencode(data)
+                if isinstance(data, str):
+                    data = data.encode('utf-8')
+            return _opener.open(url, data=data)
+except NameError:
+    class LogURLopener(FancyURLopener):  # Python 2
+        version = '{0}: {1}'.format(CONFIG.ADDON_ID, CONFIG.ADDON_VERSION)
 
 
 def show_result(message, url=None):

@@ -32,10 +32,12 @@ try:  # Python 3
     from urllib.parse import quote
     from urllib.parse import urlparse
     from html.parser import HTMLParser
+    from html import unescape as _unescape
 except ImportError:  # Python 2
     from urllib import quote
     from urlparse import urlparse
     import HTMLParser
+    _unescape = None
 
 from contextlib import contextmanager
 
@@ -509,7 +511,10 @@ def data_type(str):
 
 def replace_html_codes(txt):
     txt = re.sub("(&#[0-9]+)([^;^0-9]+)", "\\1;\\2", txt)
-    txt = HTMLParser.HTMLParser().unescape(txt)
+    if _unescape:
+        txt = _unescape(txt)
+    else:
+        txt = HTMLParser.HTMLParser().unescape(txt)
     txt = txt.replace("&quot;", "\"")
     txt = txt.replace("&amp;", "&")
     return txt

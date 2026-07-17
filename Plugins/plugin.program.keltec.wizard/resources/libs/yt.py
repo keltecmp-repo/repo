@@ -2,8 +2,16 @@ import xbmc
 import xbmcgui
 
 import re
-import urllib
 import cgi
+
+try:  # Python 3
+    from urllib.request import Request, urlopen
+    from urllib.parse import unquote as _unquote
+    import html as _html
+except ImportError:  # Python 2
+    from urllib2 import Request, urlopen
+    from urllib import unquote as _unquote
+    import HTMLParser as _html
 
 try:
     import simplejson as json
@@ -11,6 +19,11 @@ except ImportError:
     import json
 
 from resources.libs.common.config import CONFIG
+
+try:
+    _unescape = _html.unescape
+except AttributeError:
+    _unescape = lambda t: _html.HTMLParser().unescape(t)
 
 dp            =  xbmcgui.DialogProgress()
 MAX_REC_DEPTH = 5
@@ -111,42 +124,42 @@ def Scrape(html):
 
     flashvars = ExtractFlashVars(html)
 
-    if not flashvars.has_key(u"url_encoded_fmt_stream_map"):
+    if not u"url_encoded_fmt_stream_map" in flashvars:
         return video, links
 
-    if flashvars.has_key(u"ttsurl"):
+    if u"ttsurl" in flashvars:
         video[u"ttsurl"] = flashvars[u"ttsurl"]
 
-    if flashvars.has_key(u"hlsvp"):                               
+    if u"hlsvp" in flashvars:                               
         video[u"hlsvp"] = flashvars[u"hlsvp"]    
 
     for url_desc in flashvars[u"url_encoded_fmt_stream_map"].split(u","):
         url_desc_map = cgi.parse_qs(url_desc)
         
-        if not (url_desc_map.has_key(u"url") or url_desc_map.has_key(u"stream")):
+        if not (u"url" in url_desc_map or u"stream" in url_desc_map):
             continue
 
         key = int(url_desc_map[u"itag"][0])
         url = u""
         
-        if url_desc_map.has_key(u"url"):
-            url = urllib.unquote(url_desc_map[u"url"][0])
+        if u"url" in url_desc_map:
+            url = _unquote(url_desc_map[u"url"][0])
         
-        elif url_desc_map.has_key(u"conn") and url_desc_map.has_key(u"stream"):
-            url = urllib.unquote(url_desc_map[u"conn"][0])
+        elif u"conn" in url_desc_map and u"stream" in url_desc_map:
+            url = _unquote(url_desc_map[u"conn"][0])
             
             if url.rfind("/") < len(url) -1:
                 url = url + "/"
             
-            url = url + urllib.unquote(url_desc_map[u"stream"][0])
+            url = url + _unquote(url_desc_map[u"stream"][0])
         
-        elif url_desc_map.has_key(u"stream") and not url_desc_map.has_key(u"conn"):
-            url = urllib.unquote(url_desc_map[u"stream"][0])
+        elif u"stream" in url_desc_map and not u"conn" in url_desc_map:
+            url = _unquote(url_desc_map[u"stream"][0])
 
-        if url_desc_map.has_key(u"sig"):
+        if u"sig" in url_desc_map:
             url = url + u"&signature=" + url_desc_map[u"sig"][0]
         
-        elif url_desc_map.has_key(u"s"):
+        elif u"s" in url_desc_map:
             sig = url_desc_map[u"s"][0]
             #url = url + u"&signature=" + DecryptSignature(sig)
            
@@ -223,18 +236,18 @@ def ExtractFlashVars(data, assets=False):
 
 
 def FetchPage(url):
-    req = urllib2.Request(url)
+    req = Request(url)
     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
     req.add_header('Referer',    'http://www.youtube.com/')
 
-    return urllib2.urlopen(req).read().decode("utf-8")
+    return urlopen(req).read().decode("utf-8")
 
 
 def replaceHTMLCodes(txt):
     # Fix missing ; in &#<number>;
     txt = re.sub("(&#[0-9]+)([^;^0-9]+)", "\\1;\\2", txt)
 
-    txt = HTMLParser.HTMLParser().unescape(txt)
+    txt = _unescape(txt)
     txt = txt.replace("&amp;", "&")
     return txt
 
@@ -396,12 +409,12 @@ def DecryptSignatureNew(s, playerUrl):
     allLocalVarNamesTab = []
     playerData          = ''    
 
-    request = urllib2.Request(playerUrl)
+    request = Request(playerUrl)
     #res        = core._fetchPage({u"link": playerUrl})
     #playerData = res["content"]
             
     try:
-        playerData = urllib2.urlopen(request).read()
+        playerData = urlopen(request).read()
         playerData = playerData.decode('utf-8', 'ignore')
     
     except Exception as e:
