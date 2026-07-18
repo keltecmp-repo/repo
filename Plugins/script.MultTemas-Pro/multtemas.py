@@ -99,9 +99,6 @@ _update_zip_          = os.path.join(_skin_root_, 'skin_topics', 'update.zip')
 def log(msg, level=xbmc.LOGINFO):
     xbmc.log('[MultTemas-Pro] ' + str(msg), level)
 
-def unload_skin():
-    xbmc.executebuiltin('UnloadSkin()')
-
 def reload_skin():
     xbmc.executebuiltin('ReloadSkin()')
 
@@ -410,8 +407,6 @@ def action_activate_local_topic(auto_select=None):
     if choice == 0:
         if os.path.exists(_pickle_file_):
             saved = load_pickle(_pickle_file_)
-            unload_skin()
-            xbmc.sleep(100)
             restore_original_files(saved)
             clear_backup()
             delete_path(_pickle_file_)
@@ -429,9 +424,6 @@ def _apply_topic(topic_name, topics=None):
         topics = list_local_topics()
     topic_path = os.path.join(_modified_topics_dir_, topic_name)
     data = scan_topic_files(topic_path)
-
-    unload_skin()
-    xbmc.sleep(100)
 
     backup_original_files(data['dirs'], data['files'])
 
@@ -597,8 +589,6 @@ def main_menu():
                     'MultTemas-Pro',
                     'Restaurar o tema original?\nO tema atual sera desativado.'):
                 saved = load_pickle(_pickle_file_)
-                unload_skin()
-                xbmc.sleep(100)
                 restore_original_files(saved)
                 clear_backup()
                 delete_path(_pickle_file_)

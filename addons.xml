@@ -209,7 +209,7 @@ atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reo
 
 <addon id="script.MultTemas-Pro"
   name="MultTemas-Pro"
-  version="1.0.0"
+  version="1.0.1"
   provider-name="Team KelTecMP">
   <requires>
     <import addon="xbmc.python" version="3.0.0" />
