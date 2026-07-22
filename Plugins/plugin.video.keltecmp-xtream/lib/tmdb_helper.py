@@ -568,10 +568,9 @@ class TMDBHelper:
             'mediatype': 'movie',
         }
         
-        # Cast (formato Kodi)
+        # Cast (formato infotagger: listas de strings/tuplas)
         if metadata.get('cast'):
-            info['cast'] = [actor['name'] for actor in metadata['cast']]
-            info['castandrole'] = [(actor['name'], actor['character']) for actor in metadata['cast']]
+            info['castandrole'] = [(a['name'], a.get('character', '')) for a in metadata['cast']]
         
         return info
     
@@ -600,8 +599,7 @@ class TMDBHelper:
         }
         
         if metadata.get('cast'):
-            info['cast'] = [actor['name'] for actor in metadata['cast']]
-            info['castandrole'] = [(actor['name'], actor['character']) for actor in metadata['cast']]
+            info['castandrole'] = [(a['name'], a.get('character', '')) for a in metadata['cast']]
         
         return info
     

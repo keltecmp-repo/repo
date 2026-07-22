@@ -197,6 +197,7 @@ def _configure_pvr_instance(m3u_path, epg_path, instance=1, instance_name=''):
                 ]
                 if instance_name:
                     base_defs.insert(0, ('kodi_addon_instance_name', instance_name))
+                    base_defs.insert(1, ('kodi_addon_instance_enabled', 'true'))
                 for key, val in base_defs:
                     el = ET.SubElement(root, 'setting', {'id': key})
                     el.text = val
