@@ -112,6 +112,11 @@
         <setting id="menu_show_addons"        type="bool" label="Mostrar Meus Add-ons"           default="true"/>
         <setting id="menu_show_reload"        type="bool" label="Mostrar Atualizar Servidores"   default="false"/>
         <setting id="menu_show_parental"      type="bool" label="Mostrar Controle Parental"      default="true"/>
+
+        <setting type="sep"/>
+        <setting label="Visualizacao dos menus" type="lsep"/>
+        <setting id="force_list_view" type="bool" label="Usar Modo Lista como padrao nos menus (exceto Filmes e Series)" default="true"/>
+        <setting id="list_view_id"    type="number" label="ID do Modo Lista da skin (padrao 50)" default="50" enable="eq(-1,true)"/>
     </category>
 
 
