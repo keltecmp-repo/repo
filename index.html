@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KelTec Media Play — Documentação Técnica v3.0.0</title>
+<title>KelTec Media Play — Documentação Técnica v3.1.24</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -603,7 +603,7 @@ p.lead{
   <div class="nav-brand">
     <span class="dot"></span>
     <span class="k">Kel</span><span class="t">Tec</span> Media Play
-    <span class="nav-ver">v3.0.0</span>
+    <span class="nav-ver">v3.1.24</span>
   </div>
   <ul class="nav-links">
     <li><a href="#overview">Visão Geral</a></li>
@@ -611,6 +611,8 @@ p.lead{
     <li><a href="#vip">Sistema VIP</a></li>
     <li><a href="#tmdb">TMDB</a></li>
     <li><a href="#catalogo">Catálogos</a></li>
+    <li><a href="#webtv">WebTV</a></li>
+    <li><a href="#acelerador">Acelerador</a></li>
     <li><a href="#parental">Parental</a></li>
     <li><a href="#arch">Arquitetura</a></li>
     <li><a href="#seguranca">Segurança</a></li>
@@ -622,7 +624,7 @@ p.lead{
 <!-- HERO -->
 <div class="hero">
   <div class="hero-grid"></div>
-  <div class="hero-eyebrow">Documentação Técnica — Junho 2026</div>
+  <div class="hero-eyebrow">Documentação Técnica — Novembro 2026</div>
   <div class="hero-logo">
     <span class="k">Kel</span><span class="t">Tec</span>
   </div>
@@ -630,15 +632,16 @@ p.lead{
   <p class="hero-tagline">
     Add-on Kodi completo com <strong>Proxy Nativo KPN</strong>, autenticação VIP por JWT,
     TMDB nativo, EPG, controle parental e multi-servidor remoto.
-    Sem necessidade de add-ons externos para streams ao vivo.
+    Inclui <strong>Acelerador de catálogos</strong>, WebTV 1/2/3 com EPG em disco e
+    instalação automática do <strong>inputstream.adaptive</strong>.
   </p>
   <div class="hero-stats">
-    <div class="stat"><span class="stat-num" data-n="18">0</span><span class="stat-label">Servidores</span></div>
-    <div class="stat"><span class="stat-num" data-n="55">0</span><span class="stat-label">Modos de Rota</span></div>
+    <div class="stat"><span class="stat-num" data-n="29">0</span><span class="stat-label">Servidores</span></div>
+    <div class="stat"><span class="stat-num" data-n="64">0</span><span class="stat-label">Modos de Rota</span></div>
     <div class="stat"><span class="stat-num">KPN</span><span class="stat-label" style="color:var(--cyan)">Proxy Nativo</span></div>
     <div class="stat"><span class="stat-num">JWT</span><span class="stat-label" style="color:var(--gold)">Auth VIP</span></div>
     <div class="stat"><span class="stat-num">TMDB</span><span class="stat-label" style="color:var(--purple)">Integração</span></div>
-    <div class="stat"><span class="stat-num">v5.0</span><span class="stat-label">ServerLoader</span></div>
+    <div class="stat"><span class="stat-num">ACCEL</span><span class="stat-label" style="color:var(--green)">Acelerador</span></div>
   </div>
 </div>
 
@@ -669,7 +672,7 @@ p.lead{
     <div class="card reveal">
       <span class="card-icon">📡</span>
       <h3>Multi-Servidor Remoto</h3>
-      <p>18+ servidores gerenciados via JSON remoto, sem reinstalar o add-on. ServerLoader v5.0 com cache cifrado XOR+Base64, TTL configurável e fallback automático por prioridade.</p>
+      <p>26+ servidores Xtream gerenciados via JSON remoto + 3 Servidores Web, sem reinstalar o add-on. ServerLoader v5.0 com cache cifrado XOR+Base64, TTL configurável e fallback automático por prioridade.</p>
       <span class="tag-file">ServerLoader v5.0</span>
     </div>
     <div class="card reveal">
@@ -708,11 +711,64 @@ p.lead{
       <p>Registro automático de conteúdo assistido com histórico navegável, integração Trakt.tv para sincronização de watch history, ratings e watchlist, e painel de estatísticas pessoais.</p>
       <span class="tag-file">lib/watch_history.py + lib/trakt_manager.py + lib/stats_manager.py</span>
     </div>
+    <div class="card reveal">
+      <span class="card-icon">🚀</span>
+      <h3>Acelerador de Catálogos</h3>
+      <p>Guarda o catálogo de cada servidor em disco (gzip/JSON) com TTL configurável e pré-aquece menus em segundo plano. A busca em todos os servidores fica quase instantânea depois da primeira vez.</p>
+      <span class="tag-file">lib/accelerator.py</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">📺</span>
+      <h3>WebTV 1/2/3 + EPG em Disco</h3>
+      <p>Três fontes de canais ao vivo com EPG próprio (limaalef/BrazilTVEPG). Canais e categorias ficam em cache no disco (6h) e os eventos a cada 30 min, com opção de desativar o EPG.</p>
+      <span class="tag-file">lib/webtv.py · lib/webtv2.py · lib/webtv3.py · lib/webtv_epg.py</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">🧩</span>
+      <h3>inputstream.adaptive Automático</h3>
+      <p>Dependência declarada no addon.xml e instalador em runtime: ao abrir um canal WebTV, o ISA é instalado/habilitado automaticamente (qualquer skin) e o canal abre em seguida.</p>
+      <span class="tag-file">lib/isa_installer.py</span>
+    </div>
   </div>
 
   <!-- NOVIDADES -->
-  <h3 style="margin-bottom:2rem">Principais <span style="color:var(--green)">Novidades</span> — v3.0.0</h3>
+  <h3 style="margin-bottom:2rem">Novidades <span style="color:var(--green)">v3.1.x</span> — Acelerador, WebTV e busca</h3>
   <div class="changelog">
+    <div class="cl-item new reveal">
+      <span class="cl-badge">NOVO</span>
+      <h4>Acelerador — Cache de Catálogos + Pré-aquecimento</h4>
+      <p>Novo módulo <code>lib/accelerator.py</code>: o catálogo (<code>get_vod_streams</code>/<code>get_series</code>) de cada servidor é gravado em disco (gzip/JSON) com TTL configurável e reutilizado nas buscas seguintes. O serviço pré-carrega links, gêneros TMDB, EPG e canais WebTV em segundo plano. Opção "Ativar acelerador" nas configurações.</p>
+    </div>
+    <div class="cl-item new reveal">
+      <span class="cl-badge">NOVO</span>
+      <h4>Busca em Todos os Servidores</h4>
+      <p>A busca TMDB/Trakt agora consulta <strong>todos</strong> os 26 servidores Xtream + os 3 Servidores Web, com pool de workers limitado (padrão 6), timeout por servidor (padrão 5s) e sem corte antecipado de resultados. Configurável em "Desempenho da Busca".</p>
+    </div>
+    <div class="cl-item new reveal">
+      <span class="cl-badge">NOVO</span>
+      <h4>WebTV 1/2/3 com EPG e Cache em Disco</h4>
+      <p>Canais, categorias e eventos das três fontes WebTV ficam persistidos em disco: canais/categorias com TTL de 6h e eventos com 30 min. O EPG usa cache em disco de 6h e há a opção <strong>"Ativar EPG dos canais WebTV (1/2/3)"</strong>.</p>
+    </div>
+    <div class="cl-item new reveal">
+      <span class="cl-badge">NOVO</span>
+      <h4>inputstream.adaptive Automático</h4>
+      <p><code>inputstream.adaptive</code> declarado como dependência no <code>addon.xml</code> e com instalador em runtime (<code>lib/isa_installer.py</code>): ao abrir um canal WebTV, ele é instalado/habilitado automaticamente e o canal abre em seguida — independente da skin.</p>
+    </div>
+    <div class="cl-item fix reveal">
+      <span class="cl-badge">CORREÇÃO</span>
+      <h4>Cache de Links com Escrita Concorrente</h4>
+      <p>O <code>links_cache.json</code> agora usa arquivo temporário único por thread + lock de escrita, eliminando os erros <code>WinError 32</code>/<code>WinError 2</code> quando duas threads gravavam ao mesmo tempo.</p>
+    </div>
+    <div class="cl-item fix reveal">
+      <span class="cl-badge">CORREÇÃO</span>
+      <h4>Proteção de dns_cache e watch_history</h4>
+      <p>As rotinas de cifragem de <code>dns_cache.json</code> e <code>watch_history.json</code> agora toleram o arquivo ser removido entre a checagem e a leitura (<code>isfile</code> + <code>FileNotFoundError</code>), eliminando avisos falsos no log.</p>
+    </div>
+    <div class="cl-item upd reveal">
+      <span class="cl-badge">MELHORIA</span>
+      <h4>Configurações de Desempenho</h4>
+      <p>Nova categoria <strong>"Desempenho da Busca"</strong> com <code>search_timeout</code>, <code>search_max_workers</code>, <code>accelerator_enabled</code>, <code>catalog_cache_hours</code> e ação para limpar os caches do acelerador.</p>
+    </div>
     <div class="cl-item rem reveal">
       <span class="cl-badge">REMOVIDO</span>
       <h4>F4M Tester — Não é mais necessário</h4>
@@ -1092,6 +1148,142 @@ p.lead{
 
 <div class="divider"></div>
 
+<!-- WEBTV + EPG -->
+<section id="webtv">
+  <div class="s-tag green">WebTV 1/2/3 — Canais ao Vivo</div>
+  <h2>Canais <span class="g">WebTV</span> e EPG</h2>
+
+  <p class="lead">Três fontes públicas de canais ao vivo (EmbedTV, Multicanais e Futemax) integradas com EPG próprio, favoritos, guia de jogos e cache em disco para abrir as categorias na hora.</p>
+
+  <div class="grid">
+    <div class="card reveal">
+      <span class="card-icon">📡</span>
+      <h3>WebTV 1 — EmbedTV</h3>
+      <p>Fonte principal (embedtv.cc). Canais, categorias e guia de programação extraídos do HTML da página inicial. Reprodução via HLS com headers de Referer/Origin.</p>
+      <span class="tag-file">lib/webtv.py</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">🎯</span>
+      <h3>WebTV 2 — Multicanais</h3>
+      <p>Segunda fonte (multicanais.cyou) com canais ao vivo, categorias e lista de jogos com sinal. Extração via JSON/HTML e player próprio.</p>
+      <span class="tag-file">lib/webtv2.py</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">⚽</span>
+      <h3>WebTV 3 — Futemax</h3>
+      <p>Terceira fonte (futemax.voto) focada em esportes/jogos, com guia completo e eventos com sinal em tempo real.</p>
+      <span class="tag-file">lib/webtv3.py</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">🗓️</span>
+      <h3>EPG — Guia de Programação</h3>
+      <p>Grade de programação via limaalef/BrazilTVEPG (epg, claro, globo, +SBT), com matching de nomes, cache em disco de 6h e opção de desativar.</p>
+      <span class="tag-file">lib/webtv_epg.py</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">💾</span>
+      <h3>Cache em Disco dos Canais</h3>
+      <p>Canais e categorias persistem 6h e os eventos 30 min. A categoria abre instantaneamente e o EPG já aparece na primeira abertura após o pré-aquecimento.</p>
+      <span class="tag-file">webtv_cache/ · lib/accelerator.py</span>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">🧩</span>
+      <h3>inputstream.adaptive (ISA)</h3>
+      <p>Necessário para HLS das WebTV. Declarado no addon.xml e garantido em runtime: instala/habilita automaticamente antes de abrir o canal.</p>
+      <span class="tag-file">lib/isa_installer.py</span>
+    </div>
+  </div>
+
+  <div class="hl green reveal">
+    <strong style="color:var(--green)">Configurações:</strong> "Ativar EPG dos canais WebTV (1/2/3)" e "Ativar acelerador" em Configurações → Player e EPG / Desempenho da Busca.
+  </div>
+
+  <div class="code" data-l="FLUXO WEBTV (play_channel)">
+<span class="cc">// Ao clicar em um canal WebTV</span>
+<span class="ck">1.</span> ensure_inputstream_adaptive()   <span class="cc">→ instala/habilita o ISA se preciso</span>
+<span class="ck">2.</span> scrape da pagina do canal       <span class="cc">→ extrai a URL HLS</span>
+<span class="ck">3.</span> ListItem + headers (Referer/Origin)
+<span class="ck">4.</span> setResolvedUrl()                <span class="cc">→ abre com inputstream.adaptive</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ACELERADOR -->
+<section id="acelerador">
+  <div class="s-tag green">Acelerador — Performance</div>
+  <h2><span class="g">Acelerador</span> de Catálogos e Menus</h2>
+
+  <p class="lead">Módulo de performance que persiste catálogos em disco e pré-aquece os menus em segundo plano — mantendo a busca em todos os servidores, mas quase instantânea depois da primeira vez.</p>
+
+  <div class="arch">
+    <div class="arch-layer reveal">
+      <div class="arch-head">
+        <div class="arch-n" style="color:var(--green);border-color:var(--green)">01</div>
+        <div class="arch-t" style="color:var(--green)">Cache de Catálogos</div>
+        <div class="arch-d">get_vod_streams / get_series em gzip/JSON com TTL configurável (padrão 6h)</div>
+      </div>
+      <div class="arch-files">
+        <span class="arch-f new">catalog_cache/*.json.gz</span>
+        <span class="arch-f new">lib/accelerator.py</span>
+        <span class="arch-f">lib/tmdb_browser.py</span>
+      </div>
+    </div>
+    <div class="arch-layer reveal">
+      <div class="arch-head">
+        <div class="arch-n" style="color:var(--cyan);border-color:var(--cyan)">02</div>
+        <div class="arch-t" style="color:var(--cyan)">Dados WebTV</div>
+        <div class="arch-d">Canais/categorias (6h) e eventos (30min) em disco, por fonte</div>
+      </div>
+      <div class="arch-files">
+        <span class="arch-f new">webtv_cache/webtvN_channels.json.gz</span>
+        <span class="arch-f new">webtv_cache/webtvN_events.json.gz</span>
+        <span class="arch-f">lib/webtv.py · webtv2.py · webtv3.py</span>
+      </div>
+    </div>
+    <div class="arch-layer reveal">
+      <div class="arch-head">
+        <div class="arch-n" style="color:var(--gold);border-color:var(--gold)">03</div>
+        <div class="arch-t" style="color:var(--gold)">Pré-aquecimento (Service)</div>
+        <div class="arch-d">25s após o boot, carrega links, gêneros TMDB, EPG e canais WebTV em background</div>
+      </div>
+      <div class="arch-files">
+        <span class="arch-f new">service_refresh.py</span>
+        <span class="arch-f new">start_prewarm()</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:1rem">Configurações do Acelerador</h3>
+  <div style="overflow-x:auto;margin-bottom:2rem">
+    <table class="tbl">
+      <thead><tr><th>Configuração</th><th>Tipo</th><th>Descrição</th><th>Padrão</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">accelerator_enabled</td><td><span class="tag g">bool</span></td><td>Ativa cache de catálogos + pré-aquecimento</td><td class="mono">true</td></tr>
+        <tr><td class="mono">catalog_cache_hours</td><td><span class="tag g">int</span></td><td>Validade do cache de catálogos (1–24h)</td><td class="mono">6</td></tr>
+        <tr><td class="mono">search_timeout</td><td><span class="tag g">int</span></td><td>Timeout por servidor na busca (2–12s)</td><td class="mono">5</td></tr>
+        <tr><td class="mono">search_max_workers</td><td><span class="tag g">int</span></td><td>Servidores consultados ao mesmo tempo (1–12)</td><td class="mono">6</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hl reveal">
+    <strong style="color:var(--green)">Limpeza:</strong> Configurações → Desempenho da Busca → "Limpar caches do acelerador (catalogos + WebTV)" remove os catálogos e os dados WebTV em disco.
+  </div>
+
+  <div class="code" data-l="FLUXO ACELERADOR">
+<span class="cc">// Busca em todos os servidores com cache</span>
+<span class="ck">for</span> servidor <span class="ck">in</span> todos_os_servidores:
+    cat = accelerator.load_catalog(servidor)    <span class="cc"># disco (rapido)</span>
+    <span class="ck">if</span> cat <span class="ck">is</span> <span class="ck">None</span>:
+        cat = baixar_catalogo(servidor)          <span class="cc"># rede</span>
+        accelerator.save_catalog(servidor, cat)  <span class="cc"># grava em disco</span>
+    buscar_no_catalogo(cat)
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- 06 PARENTAL -->
 <section id="parental">
   <div class="s-tag red">06 — Controle Parental</div>
@@ -1138,14 +1330,14 @@ p.lead{
   <div class="s-tag">07 — Arquitetura</div>
   <h2>Arquitetura <span class="c">Técnica</span></h2>
 
-  <p class="lead">O add-on é organizado em camadas independentes. O ponto de entrada main.py roteia 55+ modos. Cada módulo é responsável por sua própria área sem acoplamento direto.</p>
+  <p class="lead">O add-on é organizado em camadas independentes. O ponto de entrada main.py roteia 64+ modos. Cada módulo é responsável por sua própria área sem acoplamento direto.</p>
 
   <div class="arch">
     <div class="arch-layer reveal">
       <div class="arch-head">
         <div class="arch-n" style="color:var(--red);border-color:var(--red)">01</div>
         <div class="arch-t" style="color:var(--red)">Ponto de Entrada</div>
-        <div class="arch-d">Roteamento por mode= — 55+ rotas, inicialização de todos os módulos</div>
+        <div class="arch-d">Roteamento por mode= — 64+ rotas, inicialização de todos os módulos</div>
       </div>
       <div class="arch-files">
         <span class="arch-f">main.py</span>
@@ -1225,6 +1417,21 @@ p.lead{
         <span class="arch-f">xbmcvfs</span>
       </div>
     </div>
+    <div class="arch-layer reveal">
+      <div class="arch-head">
+        <div class="arch-n" style="color:var(--green);border-color:var(--green)">08</div>
+        <div class="arch-t" style="color:var(--green)">Performance / WebTV</div>
+        <div class="arch-d">Acelerador, cache em disco, EPG WebTV e instalação automática do ISA</div>
+      </div>
+      <div class="arch-files">
+        <span class="arch-f new">lib/accelerator.py</span>
+        <span class="arch-f new">lib/isa_installer.py</span>
+        <span class="arch-f new">lib/webtv.py · webtv2.py · webtv3.py</span>
+        <span class="arch-f new">lib/webtv_epg.py</span>
+        <span class="arch-f new">lib/loading_window.py</span>
+        <span class="arch-f new">service_refresh.py</span>
+      </div>
+    </div>
   </div>
 
   <h3 style="margin-bottom:1.5rem">Modos de Roteamento (main.py)</h3>
@@ -1255,6 +1462,14 @@ p.lead{
         <tr>
           <td style="color:var(--teal)">Trakt</td>
           <td class="mono">trakt_menu · trakt_public · trakt_clear_cache</td>
+        </tr>
+        <tr>
+          <td style="color:var(--green)">WebTV</td>
+          <td class="mono">webtv · webtv_channels · webtv_play · webtv_favorites · webtv2 · webtv2_channels · webtv2_play · webtv3 · webtv3_channels · webtv3_play</td>
+        </tr>
+        <tr>
+          <td style="color:var(--green)">Acelerador</td>
+          <td class="mono">accel_clear_cache</td>
         </tr>
         <tr>
           <td style="color:var(--red)">Player</td>
@@ -1529,16 +1744,21 @@ p.lead{
     <table class="tbl">
       <thead><tr><th>Configuração</th><th>Tipo</th><th>Descrição</th><th>Padrão</th></tr></thead>
       <tbody>
-        <tr><td class="mono">tmdb_enabled</td><td><span class="tag c">bool</span></td><td>Ativa TMDB Browser e enriquecimento de metadados</td><td class="mono">false</td></tr>
+        <tr><td class="mono">tmdb_enabled</td><td><span class="tag c">bool</span></td><td>Ativa TMDB Browser e enriquecimento de metadados</td><td class="mono">true</td></tr>
         <tr><td class="mono">tmdb_api_key</td><td><span class="tag">string</span></td><td>Chave gratuita em themoviedb.org/settings/api</td><td class="mono">—</td></tr>
         <tr><td class="mono">tmdb_language</td><td><span class="tag">select</span></td><td>Idioma dos metadados (sinopse, gêneros, título)</td><td class="mono">pt-BR</td></tr>
         <tr><td class="mono">tmdb_cache_days</td><td><span class="tag gold">int</span></td><td>Dias de validade do cache TMDB em disco</td><td class="mono">7</td></tr>
-        <tr><td class="mono">use_Proxy Nativo</td><td><span class="tag c">bool</span></td><td>Ativa proxy KPN interno para canais ao vivo</td><td class="mono">true</td></tr>
+        <tr><td class="mono">use_f4mtester</td><td><span class="tag c">bool</span></td><td>Ativa proxy KPN interno para canais ao vivo</td><td class="mono">true</td></tr>
         <tr><td class="mono">use_keltec_proxy</td><td><span class="tag c">bool</span></td><td>Proxy interno (porta 8089) para filmes/séries — oculta URLs nos logs</td><td class="mono">true</td></tr>
-        <tr><td class="mono">enable_epg</td><td><span class="tag c">bool</span></td><td>EPG/XMLTV com atualização automática a cada 5 minutos</td><td class="mono">false</td></tr>
+        <tr><td class="mono">enable_epg</td><td><span class="tag c">bool</span></td><td>EPG/XMLTV do servidor Xtream com atualização automática</td><td class="mono">true</td></tr>
         <tr><td class="mono">auto_fallback</td><td><span class="tag c">bool</span></td><td>Fallback automático para próximo servidor em caso de falha</td><td class="mono">true</td></tr>
-        <tr><td class="mono">parental_enabled</td><td><span class="tag c">bool</span></td><td>Controle parental com bloqueio de categorias adultas por PIN</td><td class="mono">false</td></tr>
+        <tr><td class="mono">parental_enabled</td><td><span class="tag c">bool</span></td><td>Controle parental com bloqueio de categorias adultas por PIN</td><td class="mono">true</td></tr>
         <tr><td class="mono">parental_pin</td><td><span class="tag r">secret</span></td><td>PIN de desbloqueio de conteúdo adulto (4+ dígitos)</td><td class="mono">0000</td></tr>
+        <tr><td class="mono">webtv_epg_enabled</td><td><span class="tag g">bool</span></td><td>Ativa o EPG dos canais WebTV 1/2/3 (desligue em aparelhos fracos)</td><td class="mono">true</td></tr>
+        <tr><td class="mono">search_timeout</td><td><span class="tag g">int</span></td><td>Timeout por servidor na busca (2–12s)</td><td class="mono">5</td></tr>
+        <tr><td class="mono">search_max_workers</td><td><span class="tag g">int</span></td><td>Servidores consultados ao mesmo tempo na busca (1–12)</td><td class="mono">6</td></tr>
+        <tr><td class="mono">accelerator_enabled</td><td><span class="tag g">bool</span></td><td>Cache de catálogos em disco + pré-aquecimento</td><td class="mono">true</td></tr>
+        <tr><td class="mono">catalog_cache_hours</td><td><span class="tag g">int</span></td><td>Validade do cache de catálogos (1–24h)</td><td class="mono">6</td></tr>
       </tbody>
     </table>
   </div>
@@ -1583,8 +1803,8 @@ p.lead{
     Construído sobre Python 3 · Kodi API · TMDB · Xtream Codes
   </p>
   <div class="credits-ver">
-    DOCUMENTAÇÃO — JUNHO 2026
-    <span class="vb">v3.0.0</span>
+    DOCUMENTAÇÃO — NOVEMBRO 2026
+    <span class="vb">v3.1.24</span>
   </div>
 </div>
 
