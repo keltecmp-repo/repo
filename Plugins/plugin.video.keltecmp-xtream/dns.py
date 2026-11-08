@@ -140,7 +140,7 @@ class customdns:
                 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 addr = (dns_custom, 53)
 
-            s.settimeout(3)
+            s.settimeout(1.5)
             s.sendto(query, addr)
             data, _ = s.recvfrom(512)
             s.close()

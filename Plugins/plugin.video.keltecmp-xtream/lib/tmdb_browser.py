@@ -524,12 +524,13 @@ class TMDBBrowser:
 
     # ── Busca em todos os servidores (paralela) ──────────────────────
 
-    def find_in_all_servers(self, title, tmdb_type, servers, progress_cb=None, tmdb_year='', cancel_event=None):
+    def find_in_all_servers(self, title, tmdb_type, servers, progress_cb=None, tmdb_year='', cancel_event=None, max_wait=5.0):
         """
         Busca em TODOS os servidores Xtream em paralelo.
         progress_cb(pct, msg) - callback opcional para DialogProgress
         tmdb_year - ano do TMDB para penalizar resultados com ano diferente
         cancel_event - threading.Event: quando setado, interrompe a busca
+        max_wait - tempo maximo (s) esperando servidores lentos; devolve o que ja chegou
 
         Retorna lista de dicts ordenada por match_score desc.
         """
@@ -567,7 +568,7 @@ class TMDBBrowser:
                     if cancel_event and cancel_event.is_set():
                         return
                     resp = _tmdb_browser_session.get(api_url, params=params,
-                                   headers={'User-Agent': UA}, timeout=15)
+                                   headers={'User-Agent': UA}, timeout=6)
                     resp.raise_for_status()
                     data = resp.json()
                 except Exception:
@@ -578,7 +579,7 @@ class TMDBBrowser:
                     full_url = api_url + '?' + _up.urlencode(params)
                     req = urllib.request.Request(full_url,
                                                   headers={'User-Agent': UA})
-                    with urllib.request.urlopen(req, timeout=15) as r:
+                    with urllib.request.urlopen(req, timeout=6) as r:
                         data = json.loads(r.read().decode('utf-8'))
 
                 if not data or not isinstance(data, list):
@@ -656,7 +657,7 @@ class TMDBBrowser:
             t.start()
             threads.append(t)
 
-        deadline = time.time() + 60
+        deadline = time.time() + max(3.0, float(max_wait))
         for t in threads:
             if cancel_event and cancel_event.is_set():
                 break
@@ -665,6 +666,10 @@ class TMDBBrowser:
                 t.join(timeout=remaining)
             else:
                 break
+
+        alive = sum(1 for t in threads if t.is_alive())
+        if alive:
+            xbmc.log(f'[KelTec-TMDBv3] retornando cedo: {alive} servidor(es) ainda respondendo', xbmc.LOGINFO)
 
         with results_lock:
             results.sort(key=lambda x: (-x['match_score'], x['title'].lower()))

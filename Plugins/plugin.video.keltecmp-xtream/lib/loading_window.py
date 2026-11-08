@@ -295,7 +295,7 @@ class LoadingManager:
             pass
 
     def show_search_end(self):
-        for _ in range(20):
+        for _ in range(10):
             with self._lock:
                 if self._window is not None:
                     break
@@ -321,7 +321,7 @@ class LoadingManager:
         threading.Thread(target=_run, daemon=True).start()
 
     def show_playback_end(self):
-        for _ in range(20):
+        for _ in range(10):
             with self._lock:
                 if self._window is not None:
                     break
