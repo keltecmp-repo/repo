@@ -145,6 +145,17 @@ def _start_kpn_proxy():
 
 def run():
     _start_kpn_proxy()
+
+    # -- Acelerador: pre-aquecimento em segundo plano ----------------------
+    try:
+        _addon_path = xbmcvfs.translatePath(xbmcaddon.Addon(ADDON_ID).getAddonInfo('path'))
+        if _addon_path not in sys.path:
+            sys.path.insert(0, _addon_path)
+        from lib import accelerator
+        accelerator.start_prewarm(delay=25.0)
+    except Exception as _acc_e:
+        xbmc.log('[KelTec] service_refresh: prewarm: %s' % _acc_e, xbmc.LOGDEBUG)
+
     monitor = xbmc.Monitor()
     player = _PlayerWatcher()
     settings_was_open = False

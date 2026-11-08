@@ -234,7 +234,8 @@ class LoadingManager:
             except Exception:
                 pass
 
-    def show_search(self, title, all_servers, tmdb_browser, tmdb_type, fanart_path=None):
+    def show_search(self, title, all_servers, tmdb_browser, tmdb_type, fanart_path=None,
+                    tmdb_year='', max_wait=None, max_workers=6, request_timeout=None):
         addon_path = self._addon_path()
         fanart = fanart_path or self._default_fanart()
         xbmcgui.Window(10000).setProperty('loading.fanart', fanart)
@@ -249,6 +250,10 @@ class LoadingManager:
                 servers=all_servers,
                 progress_cb=progress_cb,
                 cancel_event=cancel_ev,
+                tmdb_year=tmdb_year,
+                max_wait=max_wait,
+                max_workers=max_workers,
+                request_timeout=request_timeout,
             )
 
         self._start_busy_suppressor()

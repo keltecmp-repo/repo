@@ -16,7 +16,7 @@ v2 (correcao de canais sem EPG, ex.: Record e MTV):
   * MTV: nenhuma das fontes publica a grade da MTV Brasil. Para ter EPG dela, informe
     uma URL XMLTV extra nas Configuracoes (campo "EPG extra") - o mapa ja esta pronto.
 """
-import re, time, threading, json, unicodedata
+import re, time, threading, json, unicodedata, os
 from html import unescape
 import xbmc
 
@@ -26,9 +26,10 @@ EPG_URLS = [
     'https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/globo.xml',
     'https://raw.githubusercontent.com/limaalef/BrazilTVEPG/main/maissbt.xml',   # SBT / +SBT (625 KB)
 ]
-CACHE_TTL = 1800        # EPG carregado com sucesso
+CACHE_TTL = 1800        # EPG carregado com sucesso (memoria)
 RETRY_TTL = 120         # nada carregou: tenta de novo logo
 KEEP_PAST = 3600        # guarda programas encerrados ha ate 1h
+DISK_CACHE_TTL = 6 * 3600   # cache em disco persiste entre navegacoes/restarts
 ADDON_ID = 'plugin.video.keltecmp-xtream'
 
 _cache = {}
@@ -186,6 +187,16 @@ def _log(msg):
     xbmc.log('[WebTV-EPG] ' + msg, xbmc.LOGINFO)
 
 
+def _epg_enabled():
+    """Opcao nas configuracoes: desativar o EPG dos canais WebTV (1/2/3)."""
+    try:
+        import xbmcaddon
+        raw = xbmcaddon.Addon(ADDON_ID).getSetting('webtv_epg_enabled')
+        return str(raw or 'true').strip().lower() not in ('false', '0', 'off', 'no')
+    except Exception:
+        return True
+
+
 def _extra_urls():
     try:
         import xbmcaddon
@@ -339,11 +350,65 @@ _PROG_RE = re.compile(
 _CHAN_RE = re.compile(r'<channel id="([^"]+)">\s*<display-name[^>]*>([^<]+)</display-name>')
 
 
+# ---------------------------------------------------------------------------
+# Cache em disco (persiste entre navegacoes e reinicios do Kodi)
+# ---------------------------------------------------------------------------
+def _disk_cache_path():
+    try:
+        import xbmcaddon, xbmcvfs
+        prof = xbmcvfs.translatePath(xbmcaddon.Addon(ADDON_ID).getAddonInfo('profile'))
+        os.makedirs(prof, exist_ok=True)
+        return os.path.join(prof, 'webtv_epg_cache.json')
+    except Exception:
+        return None
+
+
+def _load_disk_cache():
+    p = _disk_cache_path()
+    if not p:
+        return None
+    try:
+        if os.path.exists(p) and (time.time() - os.path.getmtime(p)) < DISK_CACHE_TTL:
+            with open(p, 'r', encoding='utf-8') as f:
+                obj = json.load(f)
+            if obj and obj.get('channels') and obj.get('programmes') is not None:
+                obj.setdefault('index', _build_index(obj['programmes']))
+                obj.setdefault('resolved', {})
+                return obj
+    except Exception:
+        pass
+    return None
+
+
+def _save_disk_cache(data):
+    p = _disk_cache_path()
+    if not p:
+        return
+    try:
+        with open(p, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False)
+    except Exception:
+        pass
+
+
 def _fetch_epg(force=False):
     global _epg_data
+    # Respeita a opcao das configuracoes: EPG dos WebTV desativado.
+    if not _epg_enabled():
+        return None
     now = time.time()
     with _cache_lock:
         if not force and _epg_data is not None and (now - _cache.get('epg_ts', 0)) < _cache.get('ttl', CACHE_TTL):
+            return _epg_data
+    # Tenta o cache em disco (rapido, sem rede) antes de baixar
+    if not force and _epg_data is None:
+        disk = _load_disk_cache()
+        if disk is not None:
+            with _cache_lock:
+                _epg_data = disk
+                _cache['epg_ts'] = time.time()
+                _cache['ttl'] = CACHE_TTL
+            _log('EPG carregado do cache em disco: %d canais' % len(disk.get('channels', {})))
             return _epg_data
     with _fetch_lock:                     # evita 2 downloads simultaneos (tela + thread de aquecimento)
         now = time.time()
@@ -407,6 +472,8 @@ def _fetch_epg(force=False):
             _epg_data = data
             _cache['epg_ts'] = time.time()
             _cache['ttl'] = CACHE_TTL if flat else RETRY_TTL
+        if flat:
+            _save_disk_cache(data)
         _log('EPG carregado: %d canais, %d com programacao' % (len(channels), len(flat)))
         return data
 
@@ -429,7 +496,32 @@ def _parse_epg_time(ts):
         return 0
 
 
-def _get_programmes_for_channel(channel_id):
+_bg_started = False
+_bg_lock = threading.Lock()
+
+
+def start_background_fetch():
+    """Dispara o download do EPG em segundo plano, sem travar o menu."""
+    global _bg_started
+    with _bg_lock:
+        if _bg_started:
+            return
+        _bg_started = True
+
+    def _run():
+        try:
+            _fetch_epg()
+        except Exception:
+            pass
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _get_programmes_for_channel(channel_id, block=True):
+    # Comportamento original: baixa o EPG (bloqueante) para a grade aparecer
+    # ja na primeira abertura da categoria. Se desativado nas configuracoes,
+    # retorna vazio na hora (menu rapido, sem EPG).
+    if not _epg_enabled():
+        return []
     epg = _fetch_epg()
     if not epg:
         return []

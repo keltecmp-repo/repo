@@ -35,6 +35,15 @@ try:
 except ImportError:
     pass
 
+# Acelerador: cache em disco dos catalogos dos servidores
+try:
+    from . import accelerator as _accelerator
+except Exception:
+    try:
+        import accelerator as _accelerator
+    except Exception:
+        _accelerator = None
+
 TMDB_API_BASE   = 'https://api.themoviedb.org/3'
 TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p'
 IMG_POSTER  = 'w500'
@@ -524,15 +533,19 @@ class TMDBBrowser:
 
     # ── Busca em todos os servidores (paralela) ──────────────────────
 
-    def find_in_all_servers(self, title, tmdb_type, servers, progress_cb=None, tmdb_year='', cancel_event=None, max_wait=5.0):
+    def find_in_all_servers(self, title, tmdb_type, servers, progress_cb=None, tmdb_year='', cancel_event=None, max_wait=None, max_workers=None, request_timeout=None):
         """
-        Busca em TODOS os servidores Xtream em paralelo.
+        Busca em TODOS os servidores Xtream em paralelo (todos sao consultados).
         progress_cb(pct, msg) - callback opcional para DialogProgress
         tmdb_year - ano do TMDB para penalizar resultados com ano diferente
         cancel_event - threading.Event: quando setado, interrompe a busca
-        max_wait - tempo maximo (s) esperando servidores lentos; devolve o que ja chegou
+        max_wait - piso de tempo total (s); o prazo real cresce automaticamente
+                   para dar tempo de consultar TODOS os servidores.
+        max_workers - maximo de servidores consultados ao mesmo tempo (default 6).
+        request_timeout - timeout por requisicao HTTP (default 5s).
 
-        Retorna lista de dicts ordenada por match_score desc.
+        Retorna lista de dicts ordenada por match_score desc (resultados de todos
+        os servidores que contem o titulo).
         """
         if not servers:
             return []
@@ -542,109 +555,187 @@ class TMDBBrowser:
         total        = len(servers)
         done_count   = [0]
 
-        UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        if max_workers is None:
+            max_workers = 6
+        try:
+            max_workers = max(1, min(int(max_workers), max(1, total)))
+        except Exception:
+            max_workers = 6
+
+        if request_timeout is None:
+            request_timeout = 5.0
+        try:
+            request_timeout = max(2.0, float(request_timeout))
+        except Exception:
+            request_timeout = 5.0
+
+        if max_wait is None:
+            max_wait = 0.0
+        try:
+            max_wait = max(0.0, float(max_wait))
+        except Exception:
+            max_wait = 0.0
+
+        UA   = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        _sem = threading.BoundedSemaphore(max_workers)
+
+        # Normalizacoes do titulo calculadas UMA vez (evita re-normalizar o titulo
+        # da query para cada item do catalogo — grande ganho em TV Box fracos).
+        _q_norm  = _norm_title(title)
+        _q_lower = title.lower().strip()
+
+        def _finish(srv):
+            with results_lock:
+                done_count[0] += 1
+                if progress_cb and not (cancel_event and cancel_event.is_set()):
+                    pct = int(10 + 85 * done_count[0] / total)
+                    try:
+                        progress_cb(pct, f'Verificado {done_count[0]}/{total}: {(srv.get("name") or "Servidor").strip()}')
+                    except Exception:
+                        pass
 
         def _search_one(srv):
+            try:
+                if cancel_event and cancel_event.is_set():
+                    return
+                with _sem:
+                    if cancel_event and cancel_event.is_set():
+                        return
+                    _search_one_worker(srv)
+            except Exception as e:
+                xbmc.log(f'[KelTec-TMDBv3] {(srv.get("name") or "Servidor").strip()}: {type(e).__name__}: {e}', xbmc.LOGWARNING)
+            finally:
+                _finish(srv)
+
+        def _search_one_worker(srv):
             s_url  = (srv.get('url') or '').strip().rstrip('/')
             s_user = (srv.get('username') or srv.get('user') or '').strip()
             s_pass = (srv.get('password') or srv.get('pass') or '').strip()
             s_name = (srv.get('name') or 'Servidor').strip()
 
             if not s_url or not s_user or not s_pass:
-                with results_lock:
-                    done_count[0] += 1
                 return
 
-            if cancel_event and cancel_event.is_set():
-                return
+            endpoint = 'get_vod_streams' if tmdb_type == 'movie' else 'get_series'
+            api_url  = f'{s_url}/player_api.php'
+            params   = {'username': s_user, 'password': s_pass, 'action': endpoint}
+            data     = None
+            ctimeout = min(3.0, request_timeout)
 
-            try:
-                # Tenta ambos: com e sem porta explicita
-                endpoint = 'get_vod_streams' if tmdb_type == 'movie' else 'get_series'
-                api_url  = f'{s_url}/player_api.php'
-                params   = {'username': s_user, 'password': s_pass, 'action': endpoint}
+            # -- Acelerador: catalogo em cache em disco (evita rebaixar tudo) --
+            _from_cache = False
+            if _accelerator is not None:
+                try:
+                    _cached = _accelerator.load_catalog(s_url, tmdb_type)
+                except Exception:
+                    _cached = None
+                if isinstance(_cached, list) and _cached:
+                    data = _cached
+                    _from_cache = True
 
+            if not _from_cache:
+                # Sessao propria por worker: requests.Session nao e thread-safe
+                # quando compartilhada por muitos threads simultaneos.
+                session = None
+                try:
+                    session = _req_lib.Session()
+                except Exception:
+                    session = None
                 try:
                     if cancel_event and cancel_event.is_set():
                         return
-                    resp = _tmdb_browser_session.get(api_url, params=params,
-                                   headers={'User-Agent': UA}, timeout=6)
-                    resp.raise_for_status()
-                    data = resp.json()
+                    if session is not None:
+                        resp = session.get(api_url, params=params,
+                                           headers={'User-Agent': UA},
+                                           timeout=(ctimeout, request_timeout))
+                        resp.raise_for_status()
+                        data = resp.json()
+                    else:
+                        import urllib.request, urllib.parse as _up
+                        full_url = api_url + '?' + _up.urlencode(params)
+                        req = urllib.request.Request(full_url, headers={'User-Agent': UA})
+                        with urllib.request.urlopen(req, timeout=request_timeout) as r:
+                            data = json.loads(r.read().decode('utf-8'))
                 except Exception:
                     if cancel_event and cancel_event.is_set():
                         return
-                    # Fallback: urllib
-                    import urllib.request, urllib.parse as _up
-                    full_url = api_url + '?' + _up.urlencode(params)
-                    req = urllib.request.Request(full_url,
-                                                  headers={'User-Agent': UA})
-                    with urllib.request.urlopen(req, timeout=6) as r:
-                        data = json.loads(r.read().decode('utf-8'))
+                    # Fallback urllib apenas se a tentativa via requests falhou
+                    try:
+                        import urllib.request, urllib.parse as _up
+                        full_url = api_url + '?' + _up.urlencode(params)
+                        req = urllib.request.Request(full_url, headers={'User-Agent': UA})
+                        with urllib.request.urlopen(req, timeout=request_timeout) as r:
+                            data = json.loads(r.read().decode('utf-8'))
+                    except Exception:
+                        data = None
+                finally:
+                    if session is not None:
+                        try:
+                            session.close()
+                        except Exception:
+                            pass
+                # Grava o catalogo baixado no disco (acelera as proximas buscas)
+                if _accelerator is not None and isinstance(data, list) and data:
+                    try:
+                        _accelerator.save_catalog(s_url, tmdb_type, data)
+                    except Exception:
+                        pass
 
-                if not data or not isinstance(data, list):
-                    return
+            if not data or not isinstance(data, list):
+                return
 
-                q = _norm_title(title)
+            # Limite de resultados por servidor (ainda coleta de TODOS os servidores)
+            _max_per_srv = 12
+            _found_srv   = 0
 
-                # Pre-filter rapido: substring case-insensitive antes do fuzzy
-                _q_lower = title.lower().strip()
-                # Limite de resultados por servidor para nao travar
-                _max_per_srv = 12
-                _found_srv = 0
+            for _idx, item in enumerate(data):
+                # Checa cancelamento periodicamente (mantem UI responsiva)
+                if _idx % 250 == 0:
+                    if cancel_event and cancel_event.is_set():
+                        return
 
-                for item in data:
-                    raw  = (item.get('name') or '').strip()
-                    if not raw or _q_lower not in raw.lower():
-                        continue
-                    sc   = _match_with_year(title, raw, tmdb_year)
-                    if sc < 0.60:  # threshold elevado — filtra titulos parciais
-                        continue
+                raw  = (item.get('name') or '').strip()
+                if not raw or _q_lower not in raw.lower():
+                    continue
+                sc   = _match_with_year(title, raw, tmdb_year, q_norm=_q_norm)
+                if sc < 0.60:  # threshold elevado — filtra titulos parciais
+                    continue
 
-                    sid = str(item.get('stream_id') or item.get('series_id') or '')
-                    if not sid:
-                        continue
+                sid = str(item.get('stream_id') or item.get('series_id') or '')
+                if not sid:
+                    continue
 
-                    if tmdb_type == 'movie':
-                        ext   = item.get('container_extension') or 'mp4'
-                        stype = item.get('stream_type') or 'movie'
-                        url   = f'{s_url}/{stype}/{s_user}/{s_pass}/{sid}.{ext}'
-                        icon  = item.get('stream_icon') or ''
-                        ctype = 'movie'
-                    else:
-                        url   = ''
-                        info  = item.get('info') or {}
-                        icon  = info.get('cover_big') or info.get('movie_image') or item.get('cover') or ''
-                        ctype = 'tvshow'
+                if tmdb_type == 'movie':
+                    ext   = item.get('container_extension') or 'mp4'
+                    stype = item.get('stream_type') or 'movie'
+                    url   = f'{s_url}/{stype}/{s_user}/{s_pass}/{sid}.{ext}'
+                    icon  = item.get('stream_icon') or ''
+                    ctype = 'movie'
+                else:
+                    url   = ''
+                    info  = item.get('info') or {}
+                    icon  = info.get('cover_big') or info.get('movie_image') or item.get('cover') or ''
+                    ctype = 'tvshow'
 
-                    dup = f'{s_url}|{sid}'
-                    with results_lock:
-                        if not any(f'{r["server_url"]}|{r["stream_id"]}' == dup for r in results):
-                            results.append({
-                                'title':        raw,
-                                'url':          url,
-                                'icon':         icon,
-                                'content_type': ctype,
-                                'stream_id':    sid,
-                                'match_score':  sc,
-                                'tmdb_type':    tmdb_type,
-                                'server_name':  s_name,
-                                'server_url':   s_url,
-                                'server_user':  s_user,
-                                'server_pass':  s_pass,
-                            })
-                            _found_srv += 1
-                            if _found_srv >= _max_per_srv:
-                                break
-
-            except Exception as e:
-                xbmc.log(f'[KelTec-TMDBv3] {s_name}: {type(e).__name__}: {e}', xbmc.LOGWARNING)
-            finally:
+                dup = f'{s_url}|{sid}'
                 with results_lock:
-                    done_count[0] += 1
-                    if progress_cb:
-                        pct = int(10 + 85 * done_count[0] / total)
-                        progress_cb(pct, f'Verificado {done_count[0]}/{total}: {s_name}')
+                    if not any(f'{r["server_url"]}|{r["stream_id"]}' == dup for r in results):
+                        results.append({
+                            'title':        raw,
+                            'url':          url,
+                            'icon':         icon,
+                            'content_type': ctype,
+                            'stream_id':    sid,
+                            'match_score':  sc,
+                            'tmdb_type':    tmdb_type,
+                            'server_name':  s_name,
+                            'server_url':   s_url,
+                            'server_user':  s_user,
+                            'server_pass':  s_pass,
+                        })
+                        _found_srv += 1
+                        if _found_srv >= _max_per_srv:
+                            break
 
         if cancel_event and cancel_event.is_set():
             return []
@@ -657,7 +748,12 @@ class TMDBBrowser:
             t.start()
             threads.append(t)
 
-        deadline = time.time() + max(3.0, float(max_wait))
+        # Prazo para consultar TODOS os servidores: cada um leva no maximo ~2x o
+        # timeout (requisicao + fallback), dividido pelas ondas do pool de workers.
+        waves  = -(-total // max_workers)  # divisao arredondada para cima
+        needed = request_timeout * 2.0 * waves + 4.0
+        deadline = time.time() + max(max_wait, needed)
+
         for t in threads:
             if cancel_event and cancel_event.is_set():
                 break
@@ -673,7 +769,7 @@ class TMDBBrowser:
 
         with results_lock:
             results.sort(key=lambda x: (-x['match_score'], x['title'].lower()))
-        return results[:25]
+        return results
 
 # ── Fuzzy match ────────────────────────────────────────────────────────
 
@@ -738,13 +834,15 @@ def _match(a, b):
     return min(1.0, score)
 
 
-def _match_with_year(query_title, xtream_title, tmdb_year=''):
+def _match_with_year(query_title, xtream_title, tmdb_year='', q_norm=None):
     """
     Match com bonus/penalidade de ano.
     Se o titulo do Xtream contem um ano que diverge do ano TMDB, penaliza.
     Se nao contem ano, usa o score normal.
+    q_norm - titulo da query ja normalizado (opcional, evita re-normalizar
+             o mesmo titulo milhares de vezes em aparelhos fracos).
     """
-    base = _match(_norm_title(query_title), _norm_title(xtream_title))
+    base = _match(q_norm if q_norm is not None else _norm_title(query_title), _norm_title(xtream_title))
     if not base or not tmdb_year or not str(tmdb_year).isdigit():
         return base
 

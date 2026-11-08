@@ -235,6 +235,7 @@
         <setting label="Configuracoes do EPG" type="lsep"/>
 
         <setting id="enable_epg" type="bool" label="Ativar EPG (Guia de Programacao)" default="true"/>
+        <setting id="webtv_epg_enabled" type="bool" label="Ativar EPG dos canais WebTV (1/2/3)" default="true"/>
         <setting id="epg_refresh_minutes" type="slider" label="Intervalo entre atualizacoes (minutos)" default="720" range="60,60,1440" option="int"/>
         <setting id="epg_offset_hours" type="slider" label="Ajuste manual de fuso horario (horas)" default="0" range="-12,1,12" option="int"/>
 
@@ -339,6 +340,27 @@
         <setting id="remote_links_hours" type="number" label="Validade do cache (horas)" default="1"/>
         <setting id="remote_links_reload" type="action" label="Atualizar links agora"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=links_reload)"/>
+    </category>
+
+
+    <!-- ========================================== -->
+    <!-- DESEMPENHO DA BUSCA (TMDB/TRAKT)           -->
+    <!-- ========================================== -->
+    <category label="Desempenho da Busca">
+        <setting label="Ajuste fino da busca de conteudo (TMDB/Trakt)" type="lsep"/>
+        <setting label="Valores menores deixam a busca mais rapida em TV Box com pouca RAM" type="lsep"/>
+
+        <setting type="sep"/>
+        <setting id="search_timeout" type="slider" label="Timeout por servidor (segundos)" default="5" range="2,1,12" option="int"/>
+        <setting id="search_max_workers" type="slider" label="Servidores consultados ao mesmo tempo" default="6" range="1,1,12" option="int"/>
+
+        <setting type="sep"/>
+        <setting label="Acelerador" type="lsep"/>
+        <setting label="Guarda o catalogo de cada servidor em disco e pre-carrega menus em segundo plano" type="lsep"/>
+        <setting id="accelerator_enabled" type="bool" label="Ativar acelerador (cache de catalogos + pre-aquecimento)" default="true"/>
+        <setting id="catalog_cache_hours" type="slider" label="Validade do cache de catalogos (horas)" default="6" range="1,1,24" option="int" enable="eq(-1,true)"/>
+        <setting label="Limpar caches do acelerador (catalogos + WebTV)" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=accel_clear_cache)"/>
     </category>
 
 
