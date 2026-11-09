@@ -44,6 +44,33 @@ except Exception:
     except Exception:
         _accelerator = None
 
+# Invalida o cache DNS de um host quando a conexao falha (IP velho/quebrado)
+try:
+    from dns import invalidate_host as _dns_invalidate
+except Exception:
+    def _dns_invalidate(host):
+        return None
+
+# Tabela rapida p/ remover acentos no pre-filtro de titulos (catalogos grandes)
+def _build_fold_table():
+    import unicodedata
+    tbl = {}
+    for cp in range(0xC0, 0x250):
+        ch = chr(cp)
+        base = unicodedata.normalize('NFKD', ch)[:1]
+        if base and base.isascii() and base.isalpha():
+            tbl[cp] = base.lower()
+    tbl[0xDF] = 'ss'
+    return tbl
+_FOLD_TABLE = _build_fold_table()
+
+# User-Agents alternativos: alguns paineis Xtream bloqueiam UA de navegador
+_ALT_UAS = (
+    'VLC/3.0.20 LibVLC/3.0.20',
+    'IPTVSmartersPro',
+    'okhttp/4.9.3',
+)
+
 TMDB_API_BASE   = 'https://api.themoviedb.org/3'
 TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p'
 IMG_POSTER  = 'w500'
@@ -583,6 +610,9 @@ class TMDBBrowser:
         # da query para cada item do catalogo — grande ganho em TV Box fracos).
         _q_norm  = _norm_title(title)
         _q_lower = title.lower().strip()
+        # Tokens do titulo (sem acento/pontuacao/artigos) p/ pre-filtro tolerante:
+        # "Pantera Negra: Wakanda" casa com "Pantera Negra - Wakanda" e "Ação" com "Acao".
+        _q_tokens = [t for t in _q_norm.split() if t]
 
         def _finish(srv):
             with results_lock:
@@ -656,16 +686,38 @@ class TMDBBrowser:
                         req = urllib.request.Request(full_url, headers={'User-Agent': UA})
                         with urllib.request.urlopen(req, timeout=request_timeout) as r:
                             data = json.loads(r.read().decode('utf-8'))
-                except Exception:
+                except Exception as _e1:
                     if cancel_event and cancel_event.is_set():
                         return
-                    # Fallback urllib apenas se a tentativa via requests falhou
+                    # 2a tentativa: limpa o cache DNS do host (IP velho/bloqueado), forca
+                    # nova resolucao em paralelo (publico + sistema + DoH) e troca o UA.
                     try:
                         import urllib.request, urllib.parse as _up
+                        _host = _up.urlparse(api_url).hostname or ''
+                        _dns_invalidate(_host)       # proxima busca ja resolve de novo
                         full_url = api_url + '?' + _up.urlencode(params)
-                        req = urllib.request.Request(full_url, headers={'User-Agent': UA})
-                        with urllib.request.urlopen(req, timeout=request_timeout) as r:
-                            data = json.loads(r.read().decode('utf-8'))
+                        data = None
+                        # Timeout (servidor lento/offline) nao melhora repetindo na hora:
+                        # evita somar ~2x o tempo em servidores mortos.
+                        _tname = type(_e1).__name__
+                        if 'Timeout' in _tname or isinstance(_e1, TimeoutError):
+                            raise RuntimeError('timeout')
+                        for _ua in _ALT_UAS[:2]:
+                            if cancel_event and cancel_event.is_set():
+                                return
+                            try:
+                                req = urllib.request.Request(full_url, headers={'User-Agent': _ua})
+                                with urllib.request.urlopen(req, timeout=request_timeout) as r:
+                                    data = json.loads(r.read().decode('utf-8'))
+                                if isinstance(data, list):
+                                    break
+                            except Exception as _e2:
+                                data = None
+                                # 401/403/406 = painel recusou o UA -> tenta o proximo UA;
+                                # qualquer outro erro de rede: nao insiste.
+                                if getattr(_e2, 'code', None) in (401, 403, 406, 429, 512):
+                                    continue
+                                break
                     except Exception:
                         data = None
                 finally:
@@ -695,8 +747,15 @@ class TMDBBrowser:
                         return
 
                 raw  = (item.get('name') or '').strip()
-                if not raw or _q_lower not in raw.lower():
+                if not raw:
                     continue
+                _rl = raw.lower()
+                if _q_lower not in _rl:
+                    if not _q_tokens:
+                        continue
+                    _rf = _rl.translate(_FOLD_TABLE)
+                    if not all(_t in _rf for _t in _q_tokens):
+                        continue
                 sc   = _match_with_year(title, raw, tmdb_year, q_norm=_q_norm)
                 if sc < 0.60:  # threshold elevado — filtra titulos parciais
                     continue
@@ -751,7 +810,7 @@ class TMDBBrowser:
         # Prazo para consultar TODOS os servidores: cada um leva no maximo ~2x o
         # timeout (requisicao + fallback), dividido pelas ondas do pool de workers.
         waves  = -(-total // max_workers)  # divisao arredondada para cima
-        needed = request_timeout * 2.0 * waves + 4.0
+        needed = (request_timeout * 2.0 + 2.5) * waves + 4.0
         deadline = time.time() + max(max_wait, needed)
 
         for t in threads:
