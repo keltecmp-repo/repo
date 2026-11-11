@@ -137,12 +137,34 @@ def _add_item(label, url, thumb='', fanart='', plot='', folder=True, playable=Fa
         li.setProperty('IsPlayable', 'true')
     xbmcplugin.addDirectoryItem(handle=_ADDON_HANDLE, url=url, listitem=li, isFolder=folder)
 
+def _force_list_view():
+    """Canais SEMPRE em Modo Lista (o filtro global do add-on poupa 'tvshows' para posters de series).
+    Respeita 'Forcar Modo Lista' e o ID da skin definidos nas configuracoes do add-on."""
+    try:
+        if int(_ADDON_HANDLE) < 0:
+            return
+    except Exception:
+        return
+    try:
+        from main import _list_view_enabled, _list_view_id, _apply_view_mode
+        if not _list_view_enabled():
+            return
+        _apply_view_mode(_list_view_id())
+    except Exception:
+        try:                                  # sem acesso ao main: ID padrao da lista (Estuary e maioria das skins)
+            xbmc.executebuiltin('Container.SetViewMode(50)')
+        except Exception:
+            pass
+
+
 def _end(content_type=''):
     if content_type:
         xbmcplugin.setContent(_ADDON_HANDLE, content_type)
         xbmcplugin.addSortMethod(_ADDON_HANDLE, xbmcplugin.SORT_METHOD_UNSORTED)
         xbmcplugin.addSortMethod(_ADDON_HANDLE, xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
     xbmcplugin.endOfDirectory(_ADDON_HANDLE)
+    if content_type in ('tvshows', 'movies'):     # listas de canais/jogos: lista, nao grade de posters
+        _force_list_view()
 
 # ---------------------------------------------------------------------------
 # Menu: Regions
