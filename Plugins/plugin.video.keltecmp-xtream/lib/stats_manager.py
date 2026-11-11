@@ -30,6 +30,37 @@ try:
 except ImportError:
     _HAS_KODI = False
 
+# -- Registro de fontes (WebTV 1-6 / Servidor Web 1-3) ----------------------
+# O import e tolerante: se o modulo nao existir (instalacao antiga), as
+# estatisticas continuam funcionando com a inferencia local minima.
+try:
+    from lib.source_registry import (
+        WEBTV_SOURCES as _SRC_WEBTV,
+        SERVERS_WEB as _SRC_SERVERS,
+        infer_source as _src_infer,
+        source_label as _src_label,
+    )
+except Exception:
+    try:
+        from source_registry import (          # execucao direta / testes
+            WEBTV_SOURCES as _SRC_WEBTV,
+            SERVERS_WEB as _SRC_SERVERS,
+            infer_source as _src_infer,
+            source_label as _src_label,
+        )
+    except Exception:
+        _SRC_WEBTV = ()
+        _SRC_SERVERS = ()
+
+        def _src_infer(item):
+            try:
+                return str((item or {}).get('source') or '')
+            except Exception:
+                return ''
+
+        def _src_label(source, default=''):
+            return default or source or 'Servidor IPTV'
+
 
 def _log(msg):
     if _HAS_KODI:
@@ -82,6 +113,10 @@ class StatsManager:
             'top_by_type':   {'live': [], 'movie': [], 'series': []},
             'first_watch':   None,
             'last_watch':    None,
+            # Fontes especiais (WebTV 1-6 / Servidor Web 1-3)
+            'by_source':     {},
+            'minutes_by_source': {},
+            'source_rows':   [],
         }
 
         if not items:
@@ -97,6 +132,8 @@ class StatsManager:
             series_counter = Counter()
             hour_counter   = Counter()
             dow_counter    = Counter()
+            source_counter = Counter()
+            source_minutes = Counter()
             days_seen      = set()
             timestamps     = []
 
@@ -106,6 +143,12 @@ class StatsManager:
                 ts    = it.get('timestamp', 0)
 
                 type_counter[stype] += 1
+                try:
+                    _src_key = _src_infer(it) or ''
+                except Exception:
+                    _src_key = ''
+                source_counter[_src_key] += 1
+                source_minutes[_src_key] += self._DURATION_ESTIMATE.get(stype, 60)
                 if name:
                     title_counter[name] += 1
                     if stype == 'live':
@@ -150,6 +193,34 @@ class StatsManager:
                 'movie':  [{'name': n, 'count': c} for n, c in movie_counter.most_common(3)],
                 'series': [{'name': n, 'count': c} for n, c in series_counter.most_common(3)],
             }
+
+            # -- Por fonte: WebTV 1-6 e Servidor Web 1-3 -------------------
+            _webtv_keys = {s['key'] for s in _SRC_WEBTV}
+            _rows = []
+            for _s in tuple(_SRC_WEBTV) + tuple(_SRC_SERVERS):
+                _c = source_counter.get(_s['key'], 0)
+                if not _c:
+                    continue
+                _rows.append({
+                    'key':     _s['key'],
+                    'label':   _s['label'],
+                    'color':   _s.get('color') or ('cyan' if _s['key'] in _webtv_keys else 'gold'),
+                    'count':   _c,
+                    'minutes': source_minutes.get(_s['key'], 0),
+                })
+            # Itens sem fonte especial = servidor IPTV ativo
+            _iptv_c = source_counter.get('', 0)
+            if _iptv_c:
+                _rows.append({
+                    'key':     '',
+                    'label':   'Servidor IPTV',
+                    'color':   'white',
+                    'count':   _iptv_c,
+                    'minutes': source_minutes.get('', 0),
+                })
+            result['source_rows'] = _rows
+            result['by_source'] = {r['key']: r['count'] for r in _rows}
+            result['minutes_by_source'] = {r['key']: r['minutes'] for r in _rows}
 
             if hour_counter:
                 result['best_hour'] = hour_counter.most_common(1)[0][0]
@@ -402,6 +473,25 @@ class StatsManager:
                 f'  [COLOR dimgray]{hh}[/COLOR]'
                 f'  [COLOR gray]({self._pct(ser_n, total_t)}%)[/COLOR]'
             )
+
+        # =====================================================================
+        # POR FONTE (WebTV 1-6 / Servidor Web 1-3 / Servidor IPTV)
+        # =====================================================================
+        _source_rows = stats.get('source_rows') or []
+        if _source_rows:
+            _sep()
+            _section('POR FONTE')
+            _sep()
+            _max_src = max(r['count'] for r in _source_rows) or 1
+            for _r in _source_rows:
+                _bar_src = self._bar(_r['count'], _max_src, width=9)
+                _hh_src  = self._fmt_hours(_r.get('minutes', 0))
+                _add(
+                    f'[B][COLOR {_r["color"]}]{_r["label"]}[/COLOR][/B]'
+                    f'  {_bar_src} [B]{_r["count"]}[/B]'
+                    f'  [COLOR dimgray]{_hh_src}[/COLOR]'
+                    f'  [COLOR gray]({self._pct(_r["count"], total_t)}%)[/COLOR]'
+                )
 
         # =====================================================================
         # TOP 5 MAIS ASSISTIDOS

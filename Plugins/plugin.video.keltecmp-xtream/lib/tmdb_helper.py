@@ -29,6 +29,15 @@ import xbmc
 import xbmcaddon
 import xbmcvfs
 
+# Normalizacao/pontuacao de titulos compartilhada com a busca TMDB/Xtream
+try:
+    from . import search_match as _SM
+except Exception:
+    try:
+        import search_match as _SM
+    except Exception:
+        _SM = None
+
 # Lock global de escrita em disco — evita WinError 5 quando múltiplas instâncias
 # do TMDBHelper tentam escrever no mesmo arquivo simultaneamente
 _DISK_WRITE_LOCK = threading.Lock()
@@ -191,33 +200,53 @@ class TMDBHelper:
     
     def _clean_title(self, title):
         """
-        Limpa título para busca mais eficiente
-        
+        Limpa titulo para busca mais eficiente.
+
         Remove:
-        - Ano entre parênteses
-        - Qualidade (HD, 4K, etc.)
-        - Extras como [Dublado], (Legendado), [L], [LANÇAMENTOS]
-        - Conteúdo entre colchetes e parênteses
+        - Conteudo entre colchetes/parênteses: [L], (Dublado), (2020)
+        - Ano solto no FINAL ("Filme 2021")
+        - Qualidade (HD, 4K, BluRay, ...) e tags (Dublado, Legendado, ...)
+
+        IMPORTANTE: nunca destrói titulos que SAO numeros ("1917", "2012",
+        "2001: A Space Odyssey") nem titulos com numero no final
+        ("Blade Runner 2049").
         """
-        # Remove ano (1999), [2020], etc.
-        title = re.sub(r'[\(\[]?\d{4}[\)\]]?', '', title)
-        
-        # Remove qualidade e tags comuns
-        title = re.sub(r'\b(HD|4K|720p|1080p|BluRay|WEB[\s-]?DL|DVDRip|WEBRip|BDRip|HDRip|CAM|TS|HDTC)\b', '', title, flags=re.IGNORECASE)
-        
-        # Remove extras
-        title = re.sub(r'[\(\[]?(Dublado|Legendado|Dual|Nacional|Lancamento|Lancamentos)[\)\]]?', '', title, flags=re.IGNORECASE)
-        
-        # Remove qualquer conteúdo entre colchetes [L] [D] [N] [4K] etc
-        title = re.sub(r'\[[^\]]*\]', '', title)
-        
-        # Remove qualquer conteúdo entre parênteses
-        title = re.sub(r'\([^)]*\)', '', title)
-        
-        # Remove múltiplos espaços
-        title = re.sub(r'\s+', ' ', title)
-        
-        return title.strip()
+        raw = re.sub(r'\s+', ' ', str(title or '')).strip()
+        if not raw:
+            return ''
+
+        work = raw
+
+        # 1) Conteudo entre colchetes/parênteses (tags, ano, idioma...)
+        work = re.sub(r'\[[^\]]*\]', ' ', work)
+        work = re.sub(r'\([^)]*\)', ' ', work)
+
+        # 2) Qualidade e tags comuns (palavras isoladas). Vem ANTES do ano
+        #    para permitir "Duna 2021 dublado" -> "Duna".
+        work = re.sub(
+            r'\b(HD|FHD|UHD|4K|8K|SD|720p|1080p|2160p|BluRay|Blu[\s-]?Ray|'
+            r'WEB[\s-]?DL|WEBRip|DVDRip|BDRip|HDRip|HDTV|HDTC|CAM|TS)\b',
+            ' ', work, flags=re.IGNORECASE)
+        work = re.sub(
+            r'\b(Dublado|Legendado|Dual[\s-]?Audio|Nacional|'
+            r'Lancamento|Lancamentos)\b',
+            ' ', work, flags=re.IGNORECASE)
+
+        # 3) Ano solto no final ("Duna 2021"). So remove quando sobra titulo
+        #    e o numero e um ano plausivel (1900..ano atual+1), o que preserva
+        #    "Blade Runner 2049" e "2001: A Space Odyssey".
+        max_year = time.localtime().tm_year + 1
+        m = re.search(r'(?:^|\s)((?:19|20)\d{2})\s*$', work)
+        if m and 1900 <= int(m.group(1)) <= max_year:
+            head = work[:m.start()].strip(' -:;,._/')
+            if head:
+                work = head
+
+        work = re.sub(r'\s+', ' ', work).strip(' -:;,._/|')
+
+        # Se a limpeza esvaziou o titulo (ex.: filme chamado "Dual"),
+        # devolve o original em vez de buscar string vazia.
+        return work or raw
     
     def _extract_year(self, title):
         """Extrai ano do título se existir"""
@@ -229,7 +258,43 @@ class TMDBHelper:
     # =========================
     # BUSCA
     # =========================
-    
+
+    def _pick_best(self, results, query, year=None):
+        """
+        Escolhe o resultado do TMDB mais parecido com o titulo pesquisado.
+
+        A API ordena por popularidade, o que faz "Duna" trazer "Duna: Parte
+        Dois" antes do original e "Ava" trazer "Avatar". Aqui a ordenacao passa
+        a ser por relevancia de titulo (com ano como desempate).
+        """
+        if not results:
+            return None
+        if _SM is None:
+            return results[0]
+
+        try:
+            info = _SM.parse_query(query)
+            best = None
+            best_key = None
+            for pos, res in enumerate(results):
+                titles = [
+                    res.get('title') or res.get('name') or '',
+                    res.get('original_title') or res.get('original_name') or '',
+                ]
+                date = res.get('release_date') or res.get('first_air_date') or ''
+                cand_year = (date or '')[:4]
+                score = _SM.score_titles(
+                    info, titles, year=cand_year,
+                    votes=res.get('vote_count') or 0)
+                # Ordem final: maior score, depois popularidade, depois posicao
+                key = (score, float(res.get('popularity') or 0), -pos)
+                if best_key is None or key > best_key:
+                    best_key = key
+                    best = res
+            return best or results[0]
+        except Exception:
+            return results[0]
+
     def search_movie(self, title, year=None):
         """
         Busca filme por título
@@ -252,10 +317,15 @@ class TMDBHelper:
             params['year'] = year
         
         data = self._request('search/movie', params)
-        
-        if data and data.get('results'):
-            # Pega primeiro resultado
-            result = data['results'][0]
+
+        # O ano informado pode ser restritivo demais: tenta sem ele.
+        results = (data or {}).get('results') or []
+        if not results and year:
+            data = self._request('search/movie', {'query': clean})
+            results = (data or {}).get('results') or []
+
+        if results:
+            result = self._pick_best(results, clean, year)
             self._add_to_cache(cache_key, result)
             self.log(f"Filme encontrado: {result.get('title')} ({result.get('release_date', '')[:4]})")
             return result
@@ -285,9 +355,14 @@ class TMDBHelper:
             params['first_air_date_year'] = year
         
         data = self._request('search/tv', params)
-        
-        if data and data.get('results'):
-            result = data['results'][0]
+
+        results = (data or {}).get('results') or []
+        if not results and year:
+            data = self._request('search/tv', {'query': clean})
+            results = (data or {}).get('results') or []
+
+        if results:
+            result = self._pick_best(results, clean, year)
             self._add_to_cache(cache_key, result)
             self.log(f"Série encontrada: {result.get('name')} ({result.get('first_air_date', '')[:4]})")
             return result

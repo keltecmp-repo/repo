@@ -43,9 +43,124 @@ SKIP_IF_REFRESHED = 3       # nao repete se o add-on ja atualizou ha menos de 3s
 PLAY_SETTLE = 0.3           # espera o Kodi sair da tela cheia do video antes de atualizar
 PLAY_PENDING_MAX = 20       # desiste se a tela nao assentar em 20s
 
+# -- Modo de visualizacao: Lista nos menus, Poster so em Filmes/Series ------
+VIEW_LIST_DEFAULT = 50
+VIEW_POSTER_DEFAULT = 500
+VIEW_POSTER_CONTENTS = ('movies', 'tvshows')
+VIEW_REENFORCE_SECONDS = 3.0    # janela de correcao depois de abrir a pasta
+VIEW_APPLY_INTERVAL = 0.60      # intervalo minimo entre reaplicacoes
+VIEW_MAX_APPLIES = 4            # limite quando o Kodi nao informa o ID da view atual
+_view_watch = {'path': '', 'content': '', 'until': 0.0, 'last': 0.0, 'tries': 0}
+
 # Telas que mudam com a reproducao (historico, contadores, ultimos vistos...)
 DYNAMIC_AFTER_PLAY = ('main', 'enter', 'history_menu', 'history', 'stats_dashboard',
                       'favorites_menu')
+
+
+def _setting(name, default=''):
+    try:
+        return xbmcaddon.Addon(ADDON_ID).getSetting(name) or default
+    except Exception:
+        return default
+
+
+def _list_view_id():
+    try:
+        custom = int(_setting('list_view_id', str(VIEW_LIST_DEFAULT)) or 0)
+        if 1 <= custom <= 99999 and custom != VIEW_LIST_DEFAULT:
+            return custom
+    except Exception:
+        pass
+    return VIEW_LIST_DEFAULT
+
+
+def _poster_view_id():
+    try:
+        custom = int(_setting('poster_view_id', str(VIEW_POSTER_DEFAULT)) or 0)
+        if 1 <= custom <= 99999 and custom != VIEW_POSTER_DEFAULT:
+            return custom
+    except Exception:
+        pass
+    try:
+        if xbmc.getSkinDir() == 'skin.aeon.nox.silvo':
+            return 51
+    except Exception:
+        pass
+    return VIEW_POSTER_DEFAULT
+
+
+def _current_view_id():
+    try:
+        return int(xbmc.getInfoLabel('Container.ViewMode') or 0)
+    except Exception:
+        return 0
+
+
+def _view_apply_needed(want):
+    """True quando vale reaplicar o modo desejado.
+
+    Se o Kodi informar o ID atual (Container.ViewMode numerico) e ele ja for o
+    desejado, nao reaplica. Se nao der para ler (a maioria das skins devolve um
+    nome, nao um numero), reaplica algumas vezes dentro da janela para vencer a
+    restauracao do modo salvo por pasta.
+    """
+    current = _current_view_id()
+    if current == want:
+        return False
+    if current <= 0 and _view_watch['tries'] >= VIEW_MAX_APPLIES:
+        return False
+    now = time.time()
+    if now - _view_watch['last'] < VIEW_APPLY_INTERVAL:
+        return False
+    _view_watch['last'] = now
+    _view_watch['tries'] += 1
+    return True
+
+
+def _enforce_view_mode():
+    """Garante o modo de visualizacao ao abrir cada pasta do add-on.
+
+    O Kodi memoriza o modo por pasta e pode restaurar um modo antigo logo
+    depois que o plugin termina. Este vigia reaplica o modo correto por alguns
+    segundos: Modo Lista em todos os menus e Poster/Grade somente nos
+    conteudos de Filmes e Series (content 'movies'/'tvshows').
+    """
+    path = xbmc.getInfoLabel('Container.FolderPath') or ''
+    if not path.startswith(ADDON_URL):
+        _view_watch['path'] = ''
+        _view_watch['until'] = 0.0
+        return
+    if xbmc.getCondVisibility('Player.HasMedia'):
+        return
+
+    now = time.time()
+    content = (xbmc.getInfoLabel('Container.Content') or '').lower()
+    try:
+        mode = (parse_qs(urlparse(path).query).get('mode') or ['main'])[0] or 'main'
+    except Exception:
+        mode = 'main'
+
+    if path != _view_watch['path'] or content != _view_watch['content']:
+        _view_watch['path'] = path
+        _view_watch['content'] = content
+        _view_watch['until'] = now + VIEW_REENFORCE_SECONDS
+        _view_watch['last'] = 0.0
+        _view_watch['tries'] = 0
+
+    if not _view_watch['until'] or now > _view_watch['until']:
+        return
+
+    want_poster = (mode not in ('main', 'enter')) and (content in VIEW_POSTER_CONTENTS)
+    if want_poster:
+        want = _poster_view_id()
+    else:
+        # Menu principal e todo o resto: SEMPRE lista (se a opcao estiver ligada)
+        if str(_setting('force_list_view', 'true')).lower() == 'false':
+            return
+        want = _list_view_id()
+
+    if _view_apply_needed(want):
+        xbmc.executebuiltin('Container.SetViewMode(%d)' % want)
 
 
 def _container_mode():
@@ -152,7 +267,7 @@ def run():
         if _addon_path not in sys.path:
             sys.path.insert(0, _addon_path)
         from lib import accelerator
-        accelerator.start_prewarm(delay=25.0)
+        accelerator.start_prewarm(delay=12.0)
     except Exception as _acc_e:
         xbmc.log('[KelTec] service_refresh: prewarm: %s' % _acc_e, xbmc.LOGDEBUG)
 
@@ -199,6 +314,9 @@ def run():
                 pending_until = 0.0
                 if _on_main_menu() and not _recently_refreshed():
                     _do_refresh('Configuracoes fechadas')
+
+            # ---------- modo de visualizacao (Lista x Poster) ----------
+            _enforce_view_mode()
         except Exception as e:
             xbmc.log('[KelTec] service_refresh: %s' % e, xbmc.LOGDEBUG)
 

@@ -64,10 +64,15 @@ class WatchHistory:
         except Exception:
             pass
 
-    def add(self, name, url, icon='', stype='live', extra=None):
+    def add(self, name, url, icon='', stype='live', extra=None, uid=None):
         """
-        Adiciona item ao histórico. Deduplica por name+stype, mais recente primeiro.
+        Adiciona item ao histórico. Deduplica por uid (quando informado) ou por
+        name+stype, mais recente primeiro.
+
         stype: 'live', 'movie', 'series'
+        uid:   identificador estável opcional (ex.: 'webtv2_canal123'). Permite
+               que canais de fontes diferentes com o mesmo nome coexistam no
+               histórico (WebTV 1..6 / Servidor Web 1..3).
         """
         entry = {
             'name': name,
@@ -76,12 +81,22 @@ class WatchHistory:
             'stype': stype,
             'timestamp': time.time(),
         }
+        if uid:
+            entry['uid'] = str(uid)
         if extra and isinstance(extra, dict):
             entry.update(extra)
 
-        # Remove entrada existente com mesmo nome+tipo
-        self._items = [i for i in self._items
-                       if not (i.get('name') == name and i.get('stype') == stype)]
+        if uid:
+            # Remove entrada existente com o mesmo UID (mesma fonte/canal)
+            self._items = [i for i in self._items
+                           if not (i.get('uid') == str(uid)
+                                   or (not i.get('uid')
+                                       and i.get('name') == name
+                                       and i.get('stype') == stype))]
+        else:
+            # Remove entrada existente com mesmo nome+tipo
+            self._items = [i for i in self._items
+                           if not (i.get('name') == name and i.get('stype') == stype)]
 
         # Insere no início
         self._items.insert(0, entry)
@@ -106,9 +121,11 @@ class WatchHistory:
         self._items = [i for i in self._items if i.get('stype') != stype]
         self._save()
 
-    def remove(self, name, stype=None):
-        """Remove item específico do histórico."""
-        if stype:
+    def remove(self, name, stype=None, uid=None):
+        """Remove item específico do histórico (por UID quando disponível)."""
+        if uid:
+            self._items = [i for i in self._items if i.get('uid') != str(uid)]
+        elif stype:
             self._items = [i for i in self._items
                            if not (i.get('name') == name and i.get('stype') == stype)]
         else:

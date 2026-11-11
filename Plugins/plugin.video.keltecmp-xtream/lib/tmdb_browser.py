@@ -44,6 +44,25 @@ except Exception:
     except Exception:
         _accelerator = None
 
+# Normalizacao/pontuacao de titulos compartilhada com a busca TMDB
+try:
+    from .search_match import (
+        normalize_title as _sm_normalize_title,
+        score_titles as _sm_score_titles,
+        is_year_token as _sm_is_year_token,
+    )
+except Exception:
+    try:
+        from search_match import (
+            normalize_title as _sm_normalize_title,
+            score_titles as _sm_score_titles,
+            is_year_token as _sm_is_year_token,
+        )
+    except Exception:
+        _sm_normalize_title = None
+        _sm_score_titles = None
+        _sm_is_year_token = None
+
 # Invalida o cache DNS de um host quando a conexao falha (IP velho/quebrado)
 try:
     from dns import invalidate_host as _dns_invalidate
@@ -202,10 +221,13 @@ class TMDBBrowser:
             'tmdb_id':   m.get('id', 0),
             'tmdb_type': ttype,
             'title':     title,
+            'original_title': (m.get('original_title') or m.get('original_name') or ''),
+            'original_language': m.get('original_language', ''),
             'year':      year,
             'plot':      m.get('overview', ''),
             'rating':    round(float(m.get('vote_average') or 0), 1),
             'votes':     m.get('vote_count', 0),
+            'popularity': float(m.get('popularity') or 0),
             'genre':     genre_str,
             'icon':      self.img(m.get('poster_path')),
             'fanart':    self.img(m.get('backdrop_path'), IMG_FANART),
@@ -612,7 +634,11 @@ class TMDBBrowser:
         _q_lower = title.lower().strip()
         # Tokens do titulo (sem acento/pontuacao/artigos) p/ pre-filtro tolerante:
         # "Pantera Negra: Wakanda" casa com "Pantera Negra - Wakanda" e "Ação" com "Acao".
-        _q_tokens = [t for t in _q_norm.split() if t]
+        _q_tokens_all = [t for t in _q_norm.split() if t]
+        # "Duna 2021" deve pre-filtrar por "Duna" (o ano e tratado no score).
+        _q_tokens = ([t for t in _q_tokens_all
+                      if not (_sm_is_year_token and _sm_is_year_token(t))]
+                     or _q_tokens_all)
 
         def _finish(srv):
             with results_lock:
@@ -833,6 +859,12 @@ class TMDBBrowser:
 # ── Fuzzy match ────────────────────────────────────────────────────────
 
 def _norm_title(t):
+    """Titulo comparavel (delegado ao modulo compartilhado quando disponivel)."""
+    if _sm_normalize_title is not None:
+        try:
+            return _sm_normalize_title(t)
+        except Exception:
+            pass
     import unicodedata
     t = (t or '').lower().strip()
     t = unicodedata.normalize('NFKD', t)
@@ -847,49 +879,69 @@ def _norm_title(t):
 
 def _match(a, b):
     """
-    Matching por palavras inteiras — evita falsos positivos tipo 'Ava'/'Atar'
-    para a query 'Avatar'.
-    Regras:
-      1. Match exato → 1.0
-      2. Todas as palavras da query devem aparecer como PALAVRAS INTEIRAS no
-         resultado (nao como substrings). Se alguma faltar → penaliza forte.
-      3. Score final = Jaccard ponderado pelo ratio de tamanho dos titulos.
-    """
-    if not a or not b: return 0.0
-    if a == b: return 1.0
+    Matching por palavras inteiras (com tolerancia a erros de digitacao).
+    'a' e 'b' ja chegam normalizados por _norm_title.
 
-    wa = a.split()   # palavras da query normalizada
-    wb = b.split()   # palavras do resultado normalizado
-    if not wa or not wb: return 0.0
+    Regras:
+      1. Exato / prefixo recebem prioridade maxima.
+      2. Todas as palavras relevantes da query sao comparadas como palavras
+         inteiras (evita 'Ava' casar com 'Avatar').
+      3. Anos isolados sao ignorados quando ha outras palavras.
+      4. Score final combina cobertura, precisao, Jaccard e proximidade
+         de tamanho. Sem nenhuma palavra em comum, tenta similaridade
+         global (typos leves) e descarta o resto.
+    """
+    if not a or not b:
+        return 0.0
+
+    if _sm_score_titles is not None:
+        try:
+            return _sm_score_titles({'tokens': a.split(), 'year': ''}, [b])
+        except Exception:
+            pass
+
+    if a == b:
+        return 1.0
+
+    wa = a.split()
+    wb = b.split()
+    if not wa or not wb:
+        return 0.0
+
+    if _sm_is_year_token is not None:
+        _filtered = [w for w in wa if not _sm_is_year_token(w)]
+        if _filtered:
+            wa = _filtered
+        _filtered = [w for w in wb if not _sm_is_year_token(w)]
+        if _filtered:
+            wb = _filtered
+
+    q_core = ' '.join(wa)
+    c_core = ' '.join(wb)
+    if q_core == c_core:
+        return 1.0
+    if c_core.startswith(q_core + ' '):
+        return 0.95
+    if q_core.startswith(c_core + ' '):
+        return 0.92
 
     sa, sb = set(wa), set(wb)
-
-    # Quantas palavras da query aparecem como palavras inteiras no resultado?
     matched = sa & sb
-    coverage = len(matched) / len(sa)   # 1.0 = todas as palavras da query presentes
+    if not matched:
+        from difflib import SequenceMatcher
+        ratio = SequenceMatcher(None, q_core, c_core).ratio()
+        return 0.72 * ratio if (ratio >= 0.84 and min(len(q_core), len(c_core)) >= 4) else 0.0
 
-    # Se nenhuma palavra da query aparece como palavra inteira → descarta
-    if coverage == 0:
-        return 0.0
-
-    # Se a query tem 1 palavra e ela NAO aparece como palavra inteira → 0
-    # (evita 'Ava'→'Avatar', 'Ko'→'Kodi', etc.)
-    if len(wa) == 1 and coverage < 1.0:
-        return 0.0
-
-    # Jaccard nas palavras
-    j = len(sa & sb) / len(sa | sb)
-
-    # Penaliza resultados muito mais longos que a query
-    # (preserva sequencias/continuacoes mas rejeita resultados completamente
-    #  diferentes que so compartilham uma palavra genérica)
+    coverage  = len(matched) / len(sa)
+    precision = len(matched) / len(sb)
+    jaccard   = len(matched) / len(sa | sb)
     len_ratio = min(len(wa), len(wb)) / max(len(wa), len(wb))
+    score = coverage * 0.45 + precision * 0.15 + jaccard * 0.15 + len_ratio * 0.15
 
-    # Bonus se os primeiros 4 chars batem (mesmo inicio de titulo)
-    bonus = 0.08 if (len(a) >= 4 and len(b) >= 4 and a[:4] == b[:4]) else 0
-
-    # Score = cobertura da query (peso 50%) + Jaccard (30%) + ratio tamanho (20%)
-    score = coverage * 0.5 + j * 0.3 + len_ratio * 0.2 + bonus
+    if wa[0] == wb[0]:
+        score += 0.05
+    if (len(wa[0]) >= 4 and len(wb[0]) >= 4 and wa[0][:4] == wb[0][:4]):
+        score += 0.03
     return min(1.0, score)
 
 

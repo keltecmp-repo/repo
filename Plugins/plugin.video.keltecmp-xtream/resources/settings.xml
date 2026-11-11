@@ -112,14 +112,19 @@
         <setting id="menu_show_embedtv"       type="bool" label="Mostrar WebTV (fonte 1)"       default="true"/>
         <setting id="menu_show_webtv2"        type="bool" label="Mostrar WebTV 2 (fonte 2)"     default="true"/>
         <setting id="menu_show_webtv3"        type="bool" label="Mostrar WebTV 3 (fonte 3)"     default="true"/>
+        <setting id="menu_show_webtv4"        type="bool" label="Mostrar WebTV 4 (fonte 4)"     default="true"/>
+        <setting id="menu_show_webtv6"        type="bool" label="Mostrar WebTV 5 (fonte 5)" default="true"/>
+        <setting id="menu_show_webtv5"  type="bool" label="Mostrar WebTV 6 (experimental, oculto)" default="false"/>
         <setting id="menu_show_addons"        type="bool" label="Mostrar Meus Add-ons"           default="true"/>
         <setting id="menu_show_reload"        type="bool" label="Mostrar Atualizar Servidores"   default="false"/>
         <setting id="menu_show_parental"      type="bool" label="Mostrar Controle Parental"      default="true"/>
 
         <setting type="sep"/>
         <setting label="Visualizacao dos menus" type="lsep"/>
-        <setting id="force_list_view" type="bool" label="Usar Modo Lista como padrao nos menus (exceto Filmes e Series)" default="true"/>
+        <setting label="Lista em TODOS os menus (mesmo com modo antigo salvo pelo Kodi). Poster somente em Filmes, Series e Temporadas." type="lsep"/>
+        <setting id="force_list_view" type="bool" label="Forcar Modo Lista nos menus (exceto Filmes e Series)" default="true"/>
         <setting id="list_view_id"    type="number" label="ID do Modo Lista da skin (padrao 50)" default="50" enable="eq(-1,true)"/>
+        <setting id="poster_view_id"  type="number" label="ID do Modo Poster/Grade da skin (padrao 500; Aeon Nox = 51)" default="500"/>
     </category>
 
 
@@ -359,7 +364,8 @@
         <setting label="Guarda o catalogo de cada servidor em disco e pre-carrega menus em segundo plano" type="lsep"/>
         <setting id="accelerator_enabled" type="bool" label="Ativar acelerador (cache de catalogos + pre-aquecimento)" default="true"/>
         <setting id="catalog_cache_hours" type="slider" label="Validade do cache de catalogos (horas)" default="6" range="1,1,24" option="int" enable="eq(-1,true)"/>
-        <setting label="Limpar caches do acelerador (catalogos + WebTV)" type="action"
+        <setting id="vod_cache_minutes" type="slider" label="Reuso de fontes de filme/episodio (minutos, 0 = desliga)" default="10" range="0,1,30" option="int" enable="eq(-2,true)"/>
+        <setting label="Limpar caches do acelerador (catalogos + WebTV + fontes VOD)" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=accel_clear_cache)"/>
     </category>
 
