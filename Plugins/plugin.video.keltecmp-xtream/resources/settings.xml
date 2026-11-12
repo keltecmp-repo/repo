@@ -339,9 +339,9 @@
     <!-- ========================================== -->
     <category label="Links das Fontes (remoto)">
         <setting label="Troque os dominios das fontes sem atualizar o add-on" type="lsep"/>
-        <setting label="Deixe a URL vazia para usar automaticamente o painel web (api/links.php). Para usar Pastebin/GitHub, cole a URL raw abaixo." type="lsep"/>
+        <!--setting label="Deixe a URL vazia para usar automaticamente o painel web (api/links.php). Para usar Pastebin/GitHub, cole a URL raw abaixo." type="lsep"/>
         <setting label="Modelo pronto: links_exemplo.json na pasta do add-on." type="lsep"/>
-        <setting id="remote_links_url"   type="text"   label="URL do arquivo de links (vazio = painel)" default=""/>
+        <setting id="remote_links_url"   type="text"   label="URL do arquivo de links (vazio = painel)" default=""/-->
         <setting id="remote_links_hours" type="number" label="Validade do cache (horas)" default="1"/>
         <setting id="remote_links_reload" type="action" label="Atualizar links agora"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=links_reload)"/>
