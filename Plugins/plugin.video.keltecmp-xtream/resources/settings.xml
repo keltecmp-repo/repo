@@ -115,6 +115,7 @@
         <setting id="menu_show_webtv4"        type="bool" label="Mostrar WebTV 4 (fonte 4)"     default="true"/>
         <setting id="menu_show_webtv6"        type="bool" label="Mostrar WebTV 5 (fonte 5)" default="true"/>
         <setting id="menu_show_webtv5"  type="bool" label="Mostrar WebTV 6 (experimental, oculto)" default="false"/>
+        <setting id="menu_show_webtv7"        type="bool" label="Mostrar WebTV 7 (fonte 7)" default="true"/>
         <setting id="menu_show_addons"        type="bool" label="Mostrar Meus Add-ons"           default="true"/>
         <setting id="menu_show_reload"        type="bool" label="Mostrar Atualizar Servidores"   default="false"/>
         <setting id="menu_show_parental"      type="bool" label="Mostrar Controle Parental"      default="true"/>
@@ -339,9 +340,6 @@
     <!-- ========================================== -->
     <category label="Links das Fontes (remoto)">
         <setting label="Troque os dominios das fontes sem atualizar o add-on" type="lsep"/>
-        <!--setting label="Deixe a URL vazia para usar automaticamente o painel web (api/links.php). Para usar Pastebin/GitHub, cole a URL raw abaixo." type="lsep"/>
-        <setting label="Modelo pronto: links_exemplo.json na pasta do add-on." type="lsep"/>
-        <setting id="remote_links_url"   type="text"   label="URL do arquivo de links (vazio = painel)" default=""/-->
         <setting id="remote_links_hours" type="number" label="Validade do cache (horas)" default="1"/>
         <setting id="remote_links_reload" type="action" label="Atualizar links agora"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=links_reload)"/>

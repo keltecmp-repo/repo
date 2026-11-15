@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 # KelTec MediaPlay 
 
-_lx0_0 = 648196 ^ 454120
-_lx1_1 = len("ac6d3a")
+_lx0_0 = 771703 ^ 805160
+_lx1_1 = len("27a841")
 import zlib as _z,base64 as _b,hashlib as _h,sys as _s,os as _o
-_lx2_2 = abs(-446988)
-_lx3_3 = 906949 * 0
-_lx4_4 = 702425 ^ 303472
-_M = 'THOjFNWriGB73jJhpjwxW0Sm11dwdhluW38zL37c3exHdKNNw6mPMiXTaTilPDUJHffUX3ImH2VcezxzcY6N6kgioRDG8tk9Ito/'
-_D = 'dGdey3uqMuXyeIEAIAWCzTLDS7kb1/A5LEJz3N2Sw4kf42Z4QSOBuvdCEcoVU6Wgf4jTODp6roj0AYEQKC8pEENHkWaSb9kf3IRqeaiYdbQJivZUqdZboqhkF0JgyV5pfPoBQSVa3HeKzJWMx7VbtVRxK1/4ETltyoHeOmhn5hWIsbXrnsxDLlGyI2PSOSOcB5kdKqb/iSUWixNMn5qP7me5Qrf+Kvv9vgx5E7GODwSkQdcQ61x8qYjm4bHA38dDYUaHWX32V3SMXdirOTNBpoiYhqDWStpynLlOEtwz7OtP9b+VaJliXaQjC6v56JbmAEYjkVv5b7DTk/5MpYE/OVFdbORWTEsGEK6s1zb6b4oYLmgg1y1P/2KbEp03Es+PtXuhkTI8wkH4a5Oimqt/AFNUp8GEqjmJ5hoe4XKCmr94U5iHsq5nzcMKPoV/2YxgckjEb2OqK+h9APD4lA8qLmvt6O7hR+7RaWP4LsADS8dH9QhQAF6GqiH+d1S7b3YRmfit4k13AYEnLB041KkmxZBYDZ2pfgLAMFVbDbYyWVM1teqDbonnYf3D/DVV6Q+/tFumG6dmpVXJtuMT2zxHr6Q6AdOdaALU70ynRQ+BCBprCZwiJop1QziMsy73x7lr8o0GZGhoIMfCF5anXotdV4XQaa0wkCnz3/Iu91YjU0RkXT0ote/v2YX1LDEXyUTMUBaqS9nUyamSdR7vWeHXaeKGLzdOcMCikCaPBDe1fTB3qj9GaVAzT9UAzIwuJg+8auJgrvHzbcCJjdgwzAMQ04T0rx0obwc73XwsorYUwd55f0Ga7QWPxPTLH4ERrFs7wtm+FhPXoVGfxqQQRpmAHVSLZVCCz8UxIyv+6txJWXWqy0cpdrrXKehJk1rYoEP2s1YDz/zmL059YdAL3Cf4m5cBcbsQWZTbIsdpURCSsl6nIGYXKXeCgQ+m2j6j+xBI0bTBeAtD9L+1VTomVB5+By08Xs8Jb2WC2dgmcxgC/o+0pcRkohgbeXrZWOl9fdc2TZ0tN64Uujszfvnen3nejryCsxe63cUC3+1ILObK2RV6SdQXHb6MtD8H5TNRaU+2R8oX8OOkKOthRQ1EDe/yoEhfln7HTvmCI4O24u4rfrA7+/mQLT8R3fMQdSP2aZbAz8rGyvLq3YFumpID12FWHSD7WYeDlau/lZdiQYqciP6Ga3MvpKUkdgTqR2WYT7PfxYuF07vgY2g9Fi8Yc3LQxBvaPR7T7svD6Mdw39/DhQ/KXPU4TQ7suB1iys6LKGfTwM2QMlvU5gesh9UR2fTK/lVNSSjlvJuQqxBGG7J0KVl4isyLpALJKkLyQDDmwKnHU0ZzwkMLpZoxpzryikYftcpWU/Shf1x2Q0f33PmYCjrW3EPxpJHkaISHAoEqYumavINBitXS5f9/XfV7z9Swp6F2tvqnHC8NaoeYFsbMU+IlhcYHz3dtpC1YJUyTOH8KR6YMc0Dpzf744FBkffyOP5AQgB1QgHdLIyjkKM5TWpQl9oSPo0qIsqEviXdt6l7PgUcFrCh8T9SZ5dWb2GJ3cSCMuISyQEJv3cttTEbbGwCPVNOyaA/lSUakJJsPQgo18yVDUgovgWYAPYYant8yLXX91FdDe6xQraJzaikwZ/B6NXEOMKdME4FHJyODJEFb'
+_lx2_2 = abs(-851356)
+_lx3_3 = 919528 * 0
+_lx4_4 = 320578 ^ 645937
+_M = 'se9P+2bF9C3dLvS70I6zT0Dns8PRIU1HcF3pTYG9j8fiuhX4Ns+jK9Uv9uzV2uYfE7a1ldFxFUwjXe4Y1e3Zwra2QKQ6lPN/03mq'
+_D = 'zqo7jA1+7pLJF2ZgHSRZHtnwGqcmFRaB41M/l6MZpd+vc/Ddd3jsB7kThCiQwFBfnqQaJGWXhUcrs8Ev5WqqooEK/oKQi1TsAn4ijR+MAd1Or6a705hKIs+Sw39QxU0jo6Tw7VJwR+/057BcFlMlUYgNKuoKAtA6I0I+TgsmGjRyx8gvQlJznXtXG+KLNpPKUfkEUTXodZHfxyJg4ku0jFM+2D8FPpLU7KSsFv6ea4VFqlwOgDu3rW35p36+7qjYsaDYNrluPkzo2H284Sm9QNHmbJoaXPUmv9nlpuvP+KNjSsKt4QtqW7JQkyq4Clz5oUG2GCMFQv9LO1wvGzF3c2mYgtfvH1CMCHkFgmONyXHgvWhG94f8vXZ/mD2J7PbNxMUpJLQpkorbF7Wxg4dCc70za0kJ8KSk1/swTa/pcSLtBDKRm2yXH0Q1MJLBy+Oow6aP2BAQYuZBOxw8isCd6yoCbwcosrbCldxudPAoOOkWzVmBFQnVnTleK7KbNVYrvgY1Y/QIWIWN4SKEFqOh/Q+eKZONDbn89tBmxVv1oRWW0Pe8g4UGu7+FA6SwpXSLpoUHLI3sgqWZNr17BLH0dWUlgeta2N3GG8SI0Y3MWQ9aUUCl8Jh4IVRZY0TNqLmUH/g0KnMzmb3wukFMbfd5HhXRcESCsKFCCwqSxjAuz+ZxPfBqR0x8qMHdw3Od2GT0vhT/grue8fRrG4/DgOJvJmFWj6mu2oyLYereLH4/r9rJoeBC/27b59aQEL28BZqemDsWLOU9V9hDa+dGIUGhU9Kn7paaKRJc0TV5t8DIfQ+AGV6NI7OV2sx48oykAJpH3LCNo8Tb0TAMAmGIslcIIQ+UqT3r1Lo4je2ereLIkGl1v7+INa0MdzPoFs6diVQnElJgurpTMV8XpizdgvjeiQgrPNTfKImdGTD0FFnj7bzs1FHMf0X2QSSW0Fxz06vTZO/AOhJ3V3P3QOwqgSdSpqrrE4oidsi+4ItAH5CC0lfbQILA9yO0tf7jiCwl8HBQTpLq6eTPakS7B8HA4k3Mo59Up5fH3VzRkDjFudWZRElDuWHECkUjjr1wwn7nMp8g5PiRfuE4PXnFTgjMzjljkoray0/paVDaquGS1/s1A+XnnAi+UNoZWvok7iAZgw6Z8K10/ZEgBEbO7CPsgBkp5Kpnj8rTjXDd2ONljRqDCSB/jHkwJyv3YhPe03XsifOxKHMX2UW2Zi+T2lR6J8zfCxuEIRL2+bWlp7JkDCiZFTwkUIAK7Ht7daShj4qJM6Yi7JhbKh8f+Ox6TTEpb/zVHGKNhaoUBnyWMQfMQ57wJPXq0kjGRrhDcGzXHw0NbDE9kcy5bEJp45EWbQpgQSEV+UWxivwg9rKOxj6jDf060JrL04y/EN687R87nrn5vat+/HLimYBzCQTt0N1K5Hkd9SGlH377hvatBHekFQEllz5U/OhD9ifDrgXQTXD2U6ecETOaerivJcJl4Y+ewTaUaw77ZDUjlfUgp4zvVBx0nbCRGO/fjfAjVU3yk4bwVUGzVprtiChZxhoqKLCVN2shOg6hZogpon7fiaUVDrkSNonERTRulvmvHUqXPAkOIXhYeoI81ck63RSH77tCgyCzwbfA29K5pzIfw0Ts7fqa47L4eEfq2jPd+QpUBihqNIHxwNY9S5aSLmc8GbgEIfrWTnhzRpKErjfqUL0e'
 
-_6c86=[140,174,80,1,121,134,58,211]+[188,108,17,23,178,238,34,152]
-_17dc=[133,202,177,249,65,160,15,60]+[237,130,163,249,93,127,226,56]
-_7fc8=bytes([a^b for a,b in zip([254,203,35,110,12,244,89,182,207,67,117,118,198,143],_6c86*8)]).decode()
-_10f2=bytes([a^b for a,b in zip([246,175,197,141,40,206,104,79,195,224,202,151],_17dc*8)]).decode()
-_8d1a=_o.path.join(_o.path.dirname(_o.path.abspath(__file__)),*_7fc8.split('/'),_10f2)
-with open(_8d1a,'r') as _f:_K=_f.read().strip()
+_0baf=[227,134,173,3,186,102,40,118]+[252,24,90,195,217,49,72,142]
+_d501=[9,86,223,80,189,110,106,102]+[156,152,37,134,60,227,146,118]
+_6bb0=bytes([a^b for a,b in zip([145,227,222,108,207,20,75,19,143,55,62,162,173,80],_0baf*8)]).decode()
+_9c95=bytes([a^b for a,b in zip([122,51,171,36,212,0,13,21,178,250,76,232],_d501*8)]).decode()
+_4cc8=_o.path.join(_o.path.dirname(_o.path.abspath(__file__)),*_6bb0.split('/'),_9c95)
+with open(_4cc8,'r') as _f:_K=_f.read().strip()
 def _xr(d,k):
     kl=len(k);return bytes(d[i]^k[i%kl] for i in range(len(d)))
 def _dk(sd,c):

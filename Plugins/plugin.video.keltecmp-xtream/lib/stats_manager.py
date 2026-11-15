@@ -30,7 +30,7 @@ try:
 except ImportError:
     _HAS_KODI = False
 
-# -- Registro de fontes (WebTV 1-6 / Servidor Web 1-3) ----------------------
+# -- Registro de fontes (WebTV 1-7 / Servidor Web 1-4) ----------------------
 # O import e tolerante: se o modulo nao existir (instalacao antiga), as
 # estatisticas continuam funcionando com a inferencia local minima.
 try:
@@ -113,7 +113,7 @@ class StatsManager:
             'top_by_type':   {'live': [], 'movie': [], 'series': []},
             'first_watch':   None,
             'last_watch':    None,
-            # Fontes especiais (WebTV 1-6 / Servidor Web 1-3)
+            # Fontes especiais (WebTV 1-7 / Servidor Web 1-4)
             'by_source':     {},
             'minutes_by_source': {},
             'source_rows':   [],
@@ -194,7 +194,7 @@ class StatsManager:
                 'series': [{'name': n, 'count': c} for n, c in series_counter.most_common(3)],
             }
 
-            # -- Por fonte: WebTV 1-6 e Servidor Web 1-3 -------------------
+            # -- Por fonte: WebTV 1-7 e Servidor Web 1-4 -------------------
             _webtv_keys = {s['key'] for s in _SRC_WEBTV}
             _rows = []
             for _s in tuple(_SRC_WEBTV) + tuple(_SRC_SERVERS):
@@ -475,7 +475,7 @@ class StatsManager:
             )
 
         # =====================================================================
-        # POR FONTE (WebTV 1-6 / Servidor Web 1-3 / Servidor IPTV)
+        # POR FONTE (WebTV 1-7 / Servidor Web 1-4 / Servidor IPTV)
         # =====================================================================
         _source_rows = stats.get('source_rows') or []
         if _source_rows:

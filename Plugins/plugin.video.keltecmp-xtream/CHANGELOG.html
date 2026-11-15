@@ -208,6 +208,8 @@
   .timeline-section:nth-child(8) .timeline-dot { border-color: var(--accent-purple); }
   .timeline-section:nth-child(9) .timeline-dot { border-color: var(--accent-cyan); }
   .timeline-section:nth-child(10) .timeline-dot { border-color: var(--accent-lime); }
+  .timeline-section:nth-child(11) .timeline-dot { border-color: var(--accent-gold); }
+  .timeline-section:nth-child(12) .timeline-dot { border-color: var(--accent-orange); }
 
   .section-header {
     margin-bottom: 16px;
@@ -344,13 +346,13 @@
   <header>
     <div class="logo"><span>KeTec</span> Media Play</div>
     <h1>Changelog de Melhorias</h1>
-    <p class="subtitle">Registro completo de todas as modifica&ccedil;&otilde;es &mdash; <strong>Junho 2026</strong></p>
+    <p class="subtitle">Registro completo de todas as modifica&ccedil;&otilde;es &mdash; <strong>Junho &ndash; Novembro 2026</strong></p>
   </header>
 
   <!-- ═══════════ STATS ═══════════ -->
   <div class="stats-bar">
     <div class="stat-card">
-      <div class="stat-value">52</div>
+      <div class="stat-value">58</div>
       <div class="stat-label">Commits / Alteracoes</div>
     </div>
     <div class="stat-card">
@@ -358,11 +360,11 @@
       <div class="stat-label">Arquivos Modificados</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value">5</div>
+      <div class="stat-value">6</div>
       <div class="stat-label">Novos Arquivos</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value">11</div>
+      <div class="stat-value">13</div>
       <div class="stat-label">Categorias</div>
     </div>
   </div>
@@ -1002,12 +1004,99 @@
       </div>
     </div>
 
+
+    <!-- ── 11. TV ao Vivo Xtream & Modo Lista ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">TV ao Vivo Xtream &amp; Modo Lista</div>
+        <div class="section-date">Seletor de servidor corrigido e lista padr&atilde;o em todos os canais &mdash; Novembro 2026</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">TV ao Vivo dos servidores Xtream voltou a funcionar (seletor de servidor)</div>
+          <div class="tags"><span class="tag tag-fixed">CORRECAO</span></div>
+        </div>
+        <div class="card-desc">
+          No ramo <code>live</code> de <code>play_item()</code>, o canal passava pelo link protegido <code>stream_proxy.play()</code>, que sempre devolve uma URL e fazia o c&oacute;digo pular o Autostream e o <code>convert_to_m3u8()</code>. Restaurado o fluxo que funcionava: <code>/autostream</code> (failover HLS&harr;TS) quando o KPN suporta, ou <code>/hlsretry</code> com a URL convertida para <code>.m3u8</code>. A URL real continua oculta por token local e a porta do KPN &eacute; a real (8090 a 8095). Corre&ccedil;&otilde;es das WebTV mantidas; nenhuma outra rota foi alterada.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py: play_item (live)</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Modo Lista e ordem padr&atilde;o em todas as categorias e listas de canais</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Nova <code>_is_channel_directory()</code>: Xtream, WebTV 1-7, Pluto TV, PVR e favoritos de canais ficam sempre em Modo Lista, mesmo quando a fonte marca o conte&uacute;do como <code>tvshows</code>/<code>movies</code> (usado s&oacute; para metadados). Posters continuam s&oacute; para filmes e s&eacute;ries. As bibliotecas WebTV e Pluto deixaram de fazer <code>from main import ...</code> (que podia reexecutar o <code>main.py</code>) e usam o m&oacute;dulo j&aacute; carregado. A ordem padr&atilde;o da fonte (<code>SORT_METHOD_UNSORTED</code> primeiro) foi mantida; A&ndash;Z segue como op&ccedil;&atilde;o.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py: _apply_default_list_view</span> <span class="file-tag">main.py: _is_channel_directory</span> <span class="file-tag">lib/webtv.py</span> <span class="file-tag">lib/webtv2.py</span> <span class="file-tag">lib/webtv3.py</span> <span class="file-tag">lib/webtv4.py</span> <span class="file-tag">lib/webtv5.py</span> <span class="file-tag">lib/webtv6.py</span> <span class="file-tag">lib/webtv7.py</span> <span class="file-tag">lib/pluto_tv.py</span></div>
+      </div>
+    </div>
+
+    <!-- ── 12. WebTV 7, Servidor Web 4 & Busca Global ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+
+      <div class="section-header">
+        <div class="section-title">WebTV 7, Servidor Web 4 &amp; Busca Global</div>
+        <div class="section-date">Painel v3.0, pesquisa global em canais e fontes novas nos menus &mdash; Novembro 2026</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Pesquisa global agora busca canais nas WebTV 1 a 7</div>
+          <div class="tags"><span class="tag tag-added">NOVO</span></div>
+        </div>
+        <div class="card-desc">
+          Novos <code>_search_webtv_source()</code> e <code>_search_webtv_visible()</code>: a busca consulta o cat&aacute;logo (em cache) de cada WebTV em paralelo, com espera m&aacute;xima de 15 s e at&eacute; 12 canais por fonte. Os resultados aparecem como <code>[WEBTV 7] Nome</code> e tocam pela rota da pr&oacute;pria fonte. Respeita o menu: fonte oculta (WebTV 6, Rei dos Canais) ou VIP sem login VIP fica de fora; canais adultos s&atilde;o ignorados.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py: search_global</span> <span class="file-tag">main.py: _search_webtv_source</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Pesquisa global: filmes e s&eacute;ries pelos Servidores Web 1 a 4</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Os Servidores Web 1 a 3 resolvem por id do TMDB e o Web 4 localiza o t&iacute;tulo ap&oacute;s o TMDB identific&aacute;-lo, ent&atilde;o a busca continua via TMDB. Os resultados TMDB agora mostram na sinopse as fontes dispon&iacute;veis (Servidores Web 1, 2, 3 e 4) e, ao abrir, o fluxo existente oferece os quatro servidores.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py: search_global</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Favoritos, &Uacute;ltimos Vistos e Estat&iacute;sticas com Servidor Web 4 e WebTV 7</div>
+          <div class="tags"><span class="tag tag-enhanced">MELHORIA</span></div>
+        </div>
+        <div class="card-desc">
+          Os tr&ecirc;s menus leem o registro central de fontes, onde Servidor Web 4 e WebTV 7 j&aacute; estavam; foram atualizados os textos que ainda diziam &ldquo;WebTV 1-6&rdquo; e &ldquo;Servidor Web 1-3&rdquo; (menu principal, filtros por fonte, plots e tela de Estat&iacute;sticas) para &ldquo;WebTV 1-7&rdquo; e &ldquo;Servidor Web 1-4&rdquo;.
+        </div>
+        <div class="card-files"><span class="file-tag">main.py</span> <span class="file-tag">lib/stats_manager.py</span> <span class="file-tag">lib/source_registry.py</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Painel web v3.0: WebTV 7 e Servidor Web 4</div>
+          <div class="tags"><span class="tag tag-added">NOVO</span></div>
+        </div>
+        <div class="card-desc">
+          Adicionadas &agrave;s fontes de <strong>Servidores Web</strong> (dom&iacute;nio padr&atilde;o <code>embed.bugoumods.com</code>): <code>webtv7</code> (WebTV 7, com bot&atilde;o FREE/VIP e na p&aacute;gina Acesso ao Conte&uacute;do) e <code>api_vod4</code> (Servidor Web 4, sem bot&atilde;o FREE/VIP, como os Servidores Web 1 a 3). Ambas s&atilde;o entregues em <code>api/links.php</code>; a WebTV 7 tamb&eacute;m em <code>api/content.php</code>. Novo <code>install/update_v30.sql</code> (seguro para rodar mais de uma vez) e README atualizado.
+        </div>
+        <div class="card-files"><span class="file-tag">includes/functions.php</span> <span class="file-tag">public/content.php</span> <span class="file-tag">api/content.php</span> <span class="file-tag">api/links.php</span> <span class="file-tag">install/update_v30.sql</span> <span class="file-tag">README.md</span></div>
+      </div>
+    </div>
+
   </div><!-- /timeline -->
 
   <!-- ═══════════ FOOTER ═══════════ -->
   <footer>
     <strong>KelTec Media Play</strong> &mdash; plugin.video.keltecmp-xtream<br>
-    Documentacao gerada em Junho de 2026 &bull; Kodi 21.2 Omega
+    Documentacao gerada em Junho de 2026 &bull; atualizada em Novembro de 2026 &bull; Kodi 21.2 Omega
   </footer>
 
 </div><!-- /container -->

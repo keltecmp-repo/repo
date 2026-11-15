@@ -114,6 +114,11 @@ def _get_jwt(force=False):
 # ---------------------------------------------------------------------------
 
 def _add_item(label, url, thumb='', fanart='', plot='', folder=True, playable=False, label2='', genre=''):
+    try:
+        from lib import stream_proxy as _spx_pl
+        thumb, fanart = _spx_pl.image(thumb), _spx_pl.image(fanart)
+    except Exception:
+        pass
     li = xbmcgui.ListItem(label=label)
     art = {}
     if thumb: art['thumb'] = thumb
@@ -146,7 +151,13 @@ def _force_list_view():
     except Exception:
         return
     try:
-        from main import _list_view_enabled, _list_view_id, _apply_view_mode
+        import sys as _sys
+        _mm = _sys.modules.get('__main__')
+        if not hasattr(_mm, '_list_view_id'):
+            _mm = _sys.modules.get('main')
+        if not hasattr(_mm, '_list_view_id'):
+            raise ImportError('main nao carregado')
+        _list_view_enabled, _list_view_id, _apply_view_mode = _mm._list_view_enabled, _mm._list_view_id, _mm._apply_view_mode
         if not _list_view_enabled():
             return
         _apply_view_mode(_list_view_id())
@@ -421,8 +432,19 @@ def play_channel(channel_id):
         _port = get_port() or 8090
     except Exception:
         _port = 8090
-    proxy_url = 'http://127.0.0.1:%d/hlsproxy?url=%s&h=%s' % (
-        _port, quote_plus(pluto_url), quote_plus(json.dumps(headers)))
+    proxy_url = ''
+    try:
+        from lib import stream_proxy as _spx_pluto
+        _tok = _spx_pluto.encode_token(pluto_url,
+                                      headers.get('User-Agent', ''),
+                                      headers.get('Referer', ''))
+        if _tok:
+            proxy_url = 'http://127.0.0.1:%d/hlsproxy?token=%s' % (_port, _tok)
+    except Exception:
+        proxy_url = ''
+    if not proxy_url:
+        proxy_url = 'http://127.0.0.1:%d/hlsproxy?url=%s&h=%s' % (
+            _port, quote_plus(pluto_url), quote_plus(json.dumps(headers)))
     li = xbmcgui.ListItem(label=name, path=proxy_url)
     try:
         tag = li.getVideoInfoTag()
@@ -434,7 +456,13 @@ def play_channel(channel_id):
             tag.setPlot(desc)
     except Exception:
         li.setInfo('video', {'title': name, 'plot': desc or '', 'genre': group or ''})
-    li.setArt({'thumb': thumb, 'fanart': fanart, 'poster': thumb, 'icon': thumb})
+    try:
+        from lib import stream_proxy as _spx_pluto_img
+        _pthumb = _spx_pluto_img.image(thumb)
+        _pfan = _spx_pluto_img.image(fanart)
+    except Exception:
+        _pthumb, _pfan = thumb, fanart
+    li.setArt({'thumb': _pthumb, 'fanart': _pfan, 'poster': _pthumb, 'icon': _pthumb})
     li.setProperty('IsPlayable', 'true')
     li.setProperty('inputstream', 'inputstream.adaptive')
     li.setProperty('inputstream.adaptive.manifest_config',
