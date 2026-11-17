@@ -40,7 +40,7 @@ ADDON_URL = 'plugin://plugin.video.keltecmp-xtream/'
 POLL_SECONDS = 0.5
 PENDING_WINDOW = 120        # segundos para esperar o menu aparecer apos fechar as configuracoes
 SKIP_IF_REFRESHED = 3       # nao repete se o add-on ja atualizou ha menos de 3s
-PLAY_SETTLE = 0.3           # espera o Kodi sair da tela cheia do video antes de atualizar
+PLAY_SETTLE = 0.1           # espera o Kodi sair da tela cheia do video antes de atualizar
 PLAY_PENDING_MAX = 20       # desiste se a tela nao assentar em 20s
 
 # -- Modo de visualizacao: Lista nos menus, Poster so em Filmes/Series ------
@@ -55,6 +55,18 @@ _view_watch = {'path': '', 'content': '', 'until': 0.0, 'last': 0.0, 'tries': 0}
 # Telas que mudam com a reproducao (historico, contadores, ultimos vistos...)
 DYNAMIC_AFTER_PLAY = ('main', 'enter', 'history_menu', 'history', 'stats_dashboard',
                       'favorites_menu')
+# Acelerador de navegacao: o que o STOP realmente muda. O menu principal e os favoritos nao
+# dependem da reproducao, entao NAO sao recarregados (retorno instantaneo, sem rodar o add-on).
+DYNAMIC_AFTER_PLAY_FAST = ('history_menu', 'history', 'stats_dashboard')
+
+
+def _fast_mode():
+    return str(_setting('nav_fast_mode', 'true')).lower() != 'false'
+
+
+def _force_list_all():
+    return str(_setting('force_list_all', 'true')).lower() != 'false' and \
+        str(_setting('force_list_view', 'true')).lower() != 'false'
 
 
 def _setting(name, default=''):
@@ -150,7 +162,8 @@ def _enforce_view_mode():
     if not _view_watch['until'] or now > _view_watch['until']:
         return
 
-    want_poster = (mode not in ('main', 'enter')) and (content in VIEW_POSTER_CONTENTS)
+    want_poster = (mode not in ('main', 'enter')) and (content in VIEW_POSTER_CONTENTS) \
+        and not _force_list_all()
     if want_poster:
         want = _poster_view_id()
     else:
@@ -291,7 +304,8 @@ def run():
                         not xbmc.getCondVisibility('Window.IsActive(fullscreenvideo)'):
                     player.ended_at = 0.0
                     threading.Thread(target=_report_idle, daemon=True).start()
-                    if _container_mode() in DYNAMIC_AFTER_PLAY and not _recently_refreshed():
+                    _dyn = DYNAMIC_AFTER_PLAY_FAST if _fast_mode() else DYNAMIC_AFTER_PLAY
+                    if _container_mode() in _dyn and not _recently_refreshed():
                         _do_refresh('Reproducao encerrada')
 
             # ---------- configuracoes fechadas: atualiza o menu principal ----------

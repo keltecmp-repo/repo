@@ -44,6 +44,15 @@ except Exception:
     except Exception:
         _accelerator = None
 
+# Motor hibrido do acelerador: indice SQLite + download em streaming + governador de RAM
+try:
+    from . import accel_engine as _engine
+except Exception:
+    try:
+        import accel_engine as _engine
+    except Exception:
+        _engine = None
+
 # Normalizacao/pontuacao de titulos compartilhada com a busca TMDB
 try:
     from .search_match import (
@@ -69,6 +78,15 @@ try:
 except Exception:
     def _dns_invalidate(host):
         return None
+
+def _dns_invalidate_url(url):
+    """Invalida o cache DNS do host de uma URL (usado pelo motor hibrido)."""
+    try:
+        import urllib.parse as _up
+        _dns_invalidate(_up.urlparse(url).hostname or '')
+    except Exception:
+        pass
+
 
 # Tabela rapida p/ remover acentos no pre-filtro de titulos (catalogos grandes)
 def _build_fold_table():
@@ -610,6 +628,13 @@ class TMDBBrowser:
             max_workers = max(1, min(int(max_workers), max(1, total)))
         except Exception:
             max_workers = 6
+        # Governador de RAM: em TV Box de 2 GB limita quantos servidores sao
+        # processados ao mesmo tempo (o usuario pode pedir menos, nunca mais).
+        if _engine is not None:
+            try:
+                max_workers = max(1, min(max_workers, _engine.cap_workers(max_workers)))
+            except Exception:
+                pass
 
         if request_timeout is None:
             request_timeout = 5.0
@@ -678,9 +703,24 @@ class TMDBBrowser:
             data     = None
             ctimeout = min(3.0, request_timeout)
 
-            # -- Acelerador: catalogo em cache em disco (evita rebaixar tudo) --
+            # -- Acelerador HIBRIDO: indice SQLite em disco, baixado em streaming --
+            # O catalogo nunca fica inteiro na RAM: so os candidatos da busca.
             _from_cache = False
-            if _accelerator is not None:
+            if _engine is not None:
+                try:
+                    _hy_rows = _engine.search_server(
+                        s_url, s_user, s_pass, tmdb_type, _q_lower, _q_tokens,
+                        request_timeout=request_timeout, ctimeout=ctimeout,
+                        cancel_event=cancel_event, uas=_ALT_UAS,
+                        on_net_fail=_dns_invalidate_url)
+                except Exception as _he:
+                    xbmc.log(f'[KelTec-TMDBv3] motor hibrido indisponivel: {type(_he).__name__}: {_he}',
+                             xbmc.LOGWARNING)
+                    _hy_rows = None
+                if _hy_rows is not None:
+                    data = _hy_rows
+                    _from_cache = True      # pula o caminho classico (ja tratado)
+            if _accelerator is not None and not _from_cache:
                 try:
                     _cached = _accelerator.load_catalog(s_url, tmdb_type)
                 except Exception:
@@ -854,6 +894,8 @@ class TMDBBrowser:
 
         with results_lock:
             results.sort(key=lambda x: (-x['match_score'], x['title'].lower()))
+        if _engine is not None:
+            _engine.relieve_memory()
         return results
 
 # ── Fuzzy match ────────────────────────────────────────────────────────
