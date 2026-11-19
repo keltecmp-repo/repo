@@ -21,8 +21,8 @@ import time
 import re
 import threading
 import requests
-_tmdb_session = requests.Session()
-_tmdb_session.headers['Connection'] = 'keep-alive'
+from lib.lazy_import import LazySession as _LazySession
+_tmdb_session = _LazySession({'Connection': 'keep-alive'})
 from datetime import datetime, timedelta
 
 import xbmc

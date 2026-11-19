@@ -21,6 +21,7 @@ Observacoes:
   * Se o add-on atualizou a tela ha instantes (propriedade 'keltec_menu_refreshed' na
     janela Home), nao atualiza de novo.
 """
+import os
 import sys
 import threading
 import time
@@ -271,8 +272,43 @@ def _start_kpn_proxy():
         xbmc.log('[KelTec] service_refresh: proxy KPN: %s' % e, xbmc.LOGWARNING)
 
 
+def _precompile_background():
+    """Gera os .pyc do add-on em segundo plano logo apos o boot.
+
+    Sem isso, o PRIMEIRO clique no add-on compila todos os modulos (lento em TV Box).
+    Roda com prioridade baixa, uma vez por versao, e nunca atrapalha a reproducao.
+    """
+    def _work():
+        try:
+            import compileall
+            path = xbmcvfs.translatePath(xbmcaddon.Addon(ADDON_ID).getAddonInfo('path'))
+            ver = xbmcaddon.Addon(ADDON_ID).getAddonInfo('version')
+            prof = xbmcvfs.translatePath(xbmcaddon.Addon(ADDON_ID).getAddonInfo('profile'))
+            stamp = os.path.join(prof, 'precompiled.stamp')
+            try:
+                if open(stamp).read().strip() == ver:
+                    return
+            except Exception:
+                pass
+            try:
+                os.nice(10)
+            except Exception:
+                pass
+            compileall.compile_dir(path, quiet=2, maxlevels=4, workers=1)
+            if not os.path.isdir(prof):
+                os.makedirs(prof)
+            with open(stamp, 'w') as f:
+                f.write(ver)
+        except Exception as e:
+            xbmc.log('[KelTec] precompile: %s' % e, xbmc.LOGDEBUG)
+    t = threading.Thread(target=_work, name='KelTecPrecompile')
+    t.daemon = True
+    t.start()
+
+
 def run():
     _start_kpn_proxy()
+    _precompile_background()
 
     # -- Acelerador: pre-aquecimento em segundo plano ----------------------
     try:

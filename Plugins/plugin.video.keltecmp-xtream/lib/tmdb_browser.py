@@ -11,8 +11,8 @@ import re, json, time, os, threading, hashlib
 
 try:
     import requests as _req_lib
-    _tmdb_browser_session = _req_lib.Session()
-    _tmdb_browser_session.headers['Connection'] = 'keep-alive'
+    from lib.lazy_import import LazySession as _LazySession
+    _tmdb_browser_session = _LazySession({'Connection': 'keep-alive'})
     def _http_get(url, params=None, headers=None, timeout=18):
         h = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
         if headers:

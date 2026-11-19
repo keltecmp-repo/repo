@@ -79,8 +79,8 @@ query VideoPlayback($viconst: ID!) {
 
 try:
     import requests as _imdb_req
-    _imdb_session = _imdb_req.Session()
-    _imdb_session.headers['Connection'] = 'keep-alive'
+    from lib.lazy_import import LazySession as _LazySession
+    _imdb_session = _LazySession({'Connection': 'keep-alive'})
 except ImportError:
     _imdb_session = None
 

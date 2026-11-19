@@ -117,6 +117,8 @@
         <setting id="menu_show_webtv5"  type="bool" label="Mostrar WebTV 6 (experimental, oculto)" default="false"/>
         <setting id="menu_show_webtv7"        type="bool" label="Mostrar WebTV 7 (fonte 7)" default="true"/>
         <setting id="menu_show_webtv8"        type="bool" label="Mostrar WebTV 8 (fonte 8 - Agenda e Guia)" default="true"/>
+        <setting id="menu_show_webtv9"        type="bool" label="Mostrar Web Novelas (Novelas WEB)" default="true"/>
+        <setting id="menu_show_webtv10"       type="bool" label="Mostrar Web Animes (Animes WEB)" default="true"/>
         <setting id="menu_show_addons"        type="bool" label="Mostrar Meus Add-ons"           default="true"/>
         <setting id="menu_show_reload"        type="bool" label="Mostrar Atualizar Servidores"   default="false"/>
         <setting id="menu_show_parental"      type="bool" label="Mostrar Controle Parental"      default="true"/>

@@ -8,9 +8,17 @@ from urllib.parse import urlencode, quote as _quote, quote_plus
 from collections import OrderedDict
 
 import requests as _req
-_pluto_session = _req.Session()
-_pluto_session.headers['Connection'] = 'keep-alive'
+from lib.lazy_import import LazySession as _LazySession
+_pluto_session = _LazySession({'Connection': 'keep-alive'})
 import xbmc, xbmcgui, xbmcplugin, xbmcvfs
+
+try:                                    # cache em disco do acelerador (opcional)
+    from lib import accelerator as _acc
+except Exception:
+    try:
+        from . import accelerator as _acc
+    except Exception:
+        _acc = None
 try:
     from urllib3.util.ssl_ import create_urllib3_context
     import ssl, urllib3
@@ -67,6 +75,17 @@ def _fetch_data(force=False):
     with _cache_lock:
         if not force and _cache.get('data') and (now - _cache.get('data_ts', 0)) < CACHE_TTL:
             return _cache['data']
+    if not force and _acc is not None:      # cache do acelerador (sobrevive ao reiniciar)
+        try:
+            cached = _acc.load_cached_json('pluto_data', ttl_seconds=CACHE_TTL)
+            if isinstance(cached, dict) and cached.get('regions'):
+                with _cache_lock:
+                    _cache['data'] = cached
+                    _cache['data_ts'] = now
+                _log('Dados do cache do acelerador: %d regioes' % len(cached.get('regions', {})))
+                return cached
+        except Exception:
+            pass
     try:
         r = _pluto_session.get(PLUTO_DATA_URL, timeout=15, verify=False)
         r.raise_for_status()
@@ -75,6 +94,11 @@ def _fetch_data(force=False):
         with _cache_lock:
             _cache['data'] = data
             _cache['data_ts'] = now
+        if _acc is not None:
+            try:
+                _acc.save_cached_json('pluto_data', data)
+            except Exception:
+                pass
         _log('Dados carregados: %d regioes' % len(data.get('regions', {})))
         return data
     except Exception as e:

@@ -13,8 +13,8 @@ import unicodedata
 import re
 
 import requests as _pvr_req
-_pvr_session = _pvr_req.Session()
-_pvr_session.headers['Connection'] = 'keep-alive'
+from lib.lazy_import import LazySession as _LazySession
+_pvr_session = _LazySession({'Connection': 'keep-alive'})
 
 import xbmc
 import xbmcgui

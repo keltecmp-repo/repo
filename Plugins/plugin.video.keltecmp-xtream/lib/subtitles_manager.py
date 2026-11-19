@@ -57,9 +57,8 @@ def _ensure_dir(path):
 def _make_session():
     if not _HAS_REQUESTS:
         return None
-    s = _req.Session()
-    s.headers.update({'User-Agent': _USER_AGENT})
-    return s
+    from lib.lazy_import import LazySession
+    return LazySession({'User-Agent': _USER_AGENT})
 
 
 def _get_setting_bool(setting_id, default=True, addon=None):

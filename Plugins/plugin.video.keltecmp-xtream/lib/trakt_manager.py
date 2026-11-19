@@ -22,8 +22,8 @@ import threading
 
 try:
     import requests as _req
-    _trakt_session = _req.Session()
-    _trakt_session.headers['Connection'] = 'keep-alive'
+    from lib.lazy_import import LazySession as _LazySession
+    _trakt_session = _LazySession({'Connection': 'keep-alive'})
     _HAS_REQUESTS = True
 except ImportError:
     _trakt_session = None
