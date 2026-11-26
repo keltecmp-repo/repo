@@ -137,113 +137,47 @@ v1.0.0 (01/04/2026)
 </addon>
 
 <addon id="plugin.video.keltecmp-xtream"
-       name="[B][COLOR silver]KelTec Media Play Xtream[/COLOR][/B]"
+       name="[B][COLOR silver]KelTec Media Play Extream[/COLOR][/B]"
        version="4.0.0"
-       provider-name="Team KelTec">
-
+               provider-name="Team KelTec">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.requests"/>
-        <import addon="inputstream.adaptive" version="2.6.0"/>
     </requires>
-
-    <!-- Serviço de atualização -->
-    <extension point="xbmc.service"
-               library="service_refresh.py"/>
-
-    <!-- Plugin principal -->
-    <extension point="xbmc.python.pluginsource"
-               library="main.py">
+    <extension point="xbmc.python.pluginsource" library="main.py">
         <provides>video</provides>
     </extension>
-
-    <!-- Repositório KelTec -->
-    <extension point="xbmc.addon.repository"
-               name="KelTecMP Repo">
-        <dir>
-            <info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
-            <hashes>false</hashes>
-        </dir>
-    </extension>
-
-    <!-- Informações do Add-on -->
+		<extension point="xbmc.addon.repository" name="KelTecMP Repo">
+				
+	<dir>
+			<info compressed="false">https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml</info>
+			<checksum>https://raw.githubusercontent.com/keltecmp-repo/repo/master/addons.xml.md5</checksum>
+			<datadir zip="true">https://raw.githubusercontent.com/keltecmp-repo/repo/master/Plugins</datadir>
+			<hashes>false</hashes>
+    </dir>
+	
+    </extension>	
+	
     <extension point="xbmc.addon.metadata">
-
-        <summary lang="en_GB">KelTec Media Play Xtream - TV, Movies, Series, EPG and Global Search.</summary>
-
-        <summary lang="pt_BR">KelTec Media Play Xtream - TV, filmes, séries, EPG e busca global.</summary>
-
-        <description lang="en_GB">
-[COLOR orange][B]KelTec Media Play[/B][/COLOR]
-
-[COLOR silver]
-This add-on provides access to organized TV, movies, series and online entertainment links.
-
-NOTE: The add-on creator does not host media content. The add-on organizes and indexes links from external sources.
-[/COLOR]
-        </description>
-
-        <description lang="pt_BR">
-[COLOR darkorange][B]KelTec Media Play[/B][/COLOR]
-
-[COLOR silver]
-O add-on oferece acesso a links organizados de TV, filmes, séries e entretenimento online.
-
-OBS.: O criador deste add-on não hospeda conteúdos de mídia. O add-on organiza e indexa links provenientes de fontes externas.
-[/COLOR]
-        </description>
-
-        <disclaimer lang="en_GB">
-The author is not affiliated with Kodi, Team Kodi or the XBMC Foundation. This is an independent resource.
-        </disclaimer>
-
-        <disclaimer lang="pt_BR">
-[COLOR darkgrey][B]KelTec Media Play[/B][/COLOR]
-
-[COLOR crimson]
-O autor não possui vínculo ou afiliação com o Kodi, a Team Kodi ou a XBMC Foundation. Este é um projeto independente e sem fins lucrativos. O add-on não hospeda arquivos de mídia nem possui afiliação com provedores de conteúdo.
-[/COLOR]
-        </disclaimer>
-
-        <reuselanguageinvoker>true</reuselanguageinvoker>
-
-        <news>
-v3.1.60
-- Aceleracao: a IA de pre-carga agora funciona de verdade (nao depende mais da pre-carga de secoes).
-- Aceleracao: o pre-aquecimento (links, TMDB, EPG, WebTV) roda ao abrir a skin, respeitando perfil de RAM e video tocando.
-- Aceleracao: nova opcao Pre-carga (Inteligente / Completo / Desligado); renovacao de cache da navegacao nao e mais cortada.
-- Configuracoes reorganizadas em 14 categorias; opcoes de TMDB (fanart, elenco, trailer) e Modo debug agora funcionam.
-
-v3.1.58 (Kodi 19 Matrix)
-- Carregamento: o circulo nativo do Kodi foi trocado pelo icone da skin (logo + anel girando) com mensagem inteligente para cada acao (abrindo canal, preparando filme/episodio, carregando canais...). Vale ao iniciar reproducao e ao mudar de tela.
-- WebTV: removidos os avisos curtos do Guia de Programacao (sem transmissao / guia vazio / guia indisponivel).
-- WebTV: inicio da reproducao mais rapido (conexao com o player aquecida ao abrir a lista, cache curto do stream, historico gravado depois de abrir o canal, lista de canais sem esperar a rede).
-
-v3.1.57 (Kodi 19 Matrix)
-- Notificacoes no topo da tela (nativas do Kodi): nao abrem caixa no centro e nao travam a navegacao dos menus.
-- Avisos curtos que abriam caixa OK agora aparecem como notificacao no topo.
-- Acelerador: lista de itens entregue ao Kodi em lote, conexoes HTTP reaproveitadas e menos uso de CPU em segundo plano.
-- Compatibilidade Kodi 19: xbmcvfs.translatePath no servico; pacote limpo (sem cache Python 3.14 e skins duplicadas).
-
-Previous changes:
-- Simplified artwork selection options.
-- Fixed poster language selection.
-- Removed obsolete module dependencies.
-- Improved image retrieval through API calls.
-- Updated TMDb language settings.
-        </news>
-
+        <summary>Add-on KelTec MP Xtream  com TV, Filmes, Series, EPG e Busca Global</summary>	<summary lang="en">TV, Movies, Series, Drawings Online - KelTec Media'Play Official Repository</summary>
+	    <summary lang="pt">TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play</summary>
+	    <description lang="en">[COLOR orange] [B] KelTec Media Play [/ B] [/ COLOR] 
+	        [COLOR silver] The Add-on offers TV, Movies, Series, Online Drawings - KelTec Media'Play Official Repository, links that are fully functional and constantly
+updated NOTE: The creator of this Add-on does not host any content, we just reorganized, indexed it again, all content can be found on the internet with a simple search. [/ COLOR],</description>
+ 	    <description lang="pt">TV,Filmes,Series,Desenhos Online - Repositorio Oficial KelTec Media'Play
+[COLOR darkorange][B]KelTec Media Play[/B] [/COLOR] 
+[COLOR silver]O Add-on oferece TV,Filmes,Series,Desenhos Online - Repositório Oficial KelTec Media'Play, links totalmente funcionais e constantemente
+atualizados OBS: O criador desse Add-on não hospeda nenhum conteúdo apenas reorganizamos, indexamos novamente, todo conteúdo pode ser encontrado na internet com busca simples.[/COLOR],</description>
+        <disclaimer lang="en">The author is in no way affiliated with Kodi, Team Kodi or the XBMC Foundation. This is a non-profit resource.</disclaimer>
+	    <disclaimer lang="pt">[COLOR darkgrey][B] KelTec-Media-Play[/B][/COLOR]
+[COLOR crimson]O  autor não é de forma alguma afiliado à Kodi, à Team Kodi ou à XBMC Foundation. Este é um recurso sem fins lucrativos, organizado exclusivamente para fins educacionais e protegido pela doutrina de uso justo da Lei de Direitos Autorais, especificamente a seção 107, que promove a liberdade de expressão, permitindo o uso não licenciado de obras protegidas por direitos autorais; nao tem nenhuma afiliação com o provedor de conteúdo.[COLOR darkgrey][B] KelTec-Media-Play[/B] [/COLOR]</disclaimer>
         <platform>all</platform>
-
         <license>GPL-2.0-or-later</license>
-
+        <disclaimer>Xtream Total, um addon para Kodi que permite acesso a conteudo de IPTV.</disclaimer>
         <assets>
-            <icon>icon.png</icon>
-            <fanart>fanart.jpg</fanart>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
         </assets>
-
     </extension>
 </addon>
 
