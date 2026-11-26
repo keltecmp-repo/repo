@@ -5,12 +5,13 @@ SERVICE.PY - Inicia servidor proxy nativo KelTec (sem dependência de f4mTester)
 
 import xbmc
 import xbmcaddon
+import xbmcvfs
 import threading
 import sys
 import os
 
 addon = xbmcaddon.Addon()
-addon_path = xbmc.translatePath(addon.getAddonInfo('path'))
+addon_path = xbmcvfs.translatePath(addon.getAddonInfo('path'))
 sys.path.insert(0, addon_path)
 
 xbmc.log("[KelTec Proxy] Iniciando serviço...", xbmc.LOGINFO)
@@ -43,7 +44,7 @@ except Exception as _sp:
 try:
     from lib.session_manager import end_session
     from lib.vip_manager import get_vip_manager, _clear_token as _vip_clear_token
-    _addon_path = xbmc.translatePath(addon.getAddonInfo('profile'))
+    _addon_path = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
     # Envia action=end para servidor liberar o dispositivo
     end_session(_addon_path)
     xbmc.log("[KelTec Proxy] Sessão VIP encerrada no shutdown", xbmc.LOGINFO)

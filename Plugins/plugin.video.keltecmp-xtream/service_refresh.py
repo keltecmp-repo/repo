@@ -225,18 +225,62 @@ def _do_refresh(reason):
 
 
 class _PlayerWatcher(xbmc.Player):
-    """Avisa o laco principal quando uma reproducao termina (stop, fim ou erro)."""
+    """Avisa o laco principal quando uma reproducao termina (stop, fim ou erro).
+    Tambem acompanha o progresso para as etiquetas VISTO / EM ANDAMENTO (lib/watch_marks.py)."""
     def __init__(self):
         xbmc.Player.__init__(self)
         self.ended_at = 0.0
+        self._mark_on = False
+        self._mark_last = (0.0, 0.0)
+
+    # ---- etiquetas de visto / em andamento ----
+    def onAVStarted(self):
+        try:
+            from lib import watch_marks as _wm
+            if _wm.get_now():
+                self._mark_on = True
+                self._mark_last = (0.0, 0.0)
+                threading.Thread(target=self._mark_poll, daemon=True, name='KelTecMarks').start()
+            else:
+                self._mark_on = False
+        except Exception as e:
+            xbmc.log('[KelTec] marks start: %s' % e, xbmc.LOGDEBUG)
+
+    def _mark_poll(self):
+        mon = xbmc.Monitor()
+        while self._mark_on and not mon.abortRequested():
+            try:
+                if self.isPlayingVideo():
+                    t, d = self.getTime(), self.getTotalTime()
+                    if d > 0:
+                        self._mark_last = (t, d)
+            except Exception:
+                pass
+            if mon.waitForAbort(5):
+                break
+
+    def _mark_finish(self, ended):
+        if not self._mark_on:
+            return
+        self._mark_on = False
+        try:
+            from lib import watch_marks as _wm
+            pos, dur = self._mark_last
+            _wm.record_from_player(pos, dur, ended=ended)
+            _wm.clear_now()
+        except Exception as e:
+            xbmc.log('[KelTec] marks fim: %s' % e, xbmc.LOGDEBUG)
 
     def onPlayBackStopped(self):
+        self._mark_finish(False)
         self.ended_at = time.time()
 
     def onPlayBackEnded(self):
+        self._mark_finish(True)
         self.ended_at = time.time()
 
     def onPlayBackError(self):
+        self._mark_on = False
         self.ended_at = time.time()
 
 
@@ -280,6 +324,16 @@ def _precompile_background():
     """
     def _work():
         try:
+            # TV Box fraca (perfil ECONOMICO/NORMAL): NAO pre-compila. O Kodi ja grava o .pyc de cada
+            # modulo na 1a importacao; compilar o add-on inteiro (47 mil linhas) no boot prendia CPU
+            # e o GIL e travava os primeiros cliques por minutos.
+            try:
+                from lib import accel_engine as _ae
+                if _ae.current_tier() != 'turbo':
+                    return
+            except Exception:
+                return
+            xbmc.Monitor().waitForAbort(90)          # so depois que o Kodi assentou
             import compileall
             path = xbmcvfs.translatePath(xbmcaddon.Addon(ADDON_ID).getAddonInfo('path'))
             ver = xbmcaddon.Addon(ADDON_ID).getAddonInfo('version')
@@ -306,21 +360,67 @@ def _precompile_background():
     t.start()
 
 
+class _GuardMonitor(xbmc.Monitor):
+    """Monitor que vigia as configuracoes: se o controle parental for alterado SEM o PIN
+    (ex.: pelo dialogo de configuracoes do Kodi), a mudanca e desfeita na hora."""
+
+    def onSettingsChanged(self):
+        try:
+            from lib import parental_guard
+            parental_guard.enforce()
+        except Exception as e:
+            xbmc.log('[KelTec] parental_guard: %s' % e, xbmc.LOGDEBUG)
+
+
 def run():
     _start_kpn_proxy()
     _precompile_background()
 
     # -- Acelerador: pre-aquecimento em segundo plano ----------------------
+    # Desligado por padrao: o Kodi nao baixa/atualiza nada sozinho ao iniciar. O aquecimento
+    # acontece quando o usuario abre a skin do add-on. (Opcional: ibo_prewarm_boot = true)
     try:
-        _addon_path = xbmcvfs.translatePath(xbmcaddon.Addon(ADDON_ID).getAddonInfo('path'))
-        if _addon_path not in sys.path:
-            sys.path.insert(0, _addon_path)
-        from lib import accelerator
-        accelerator.start_prewarm(delay=12.0)
+        if xbmcaddon.Addon(ADDON_ID).getSetting('ibo_prewarm_boot') == 'true':
+            _addon_path = xbmcvfs.translatePath(xbmcaddon.Addon(ADDON_ID).getAddonInfo('path'))
+            if _addon_path not in sys.path:
+                sys.path.insert(0, _addon_path)
+            from lib import accelerator
+            accelerator.start_prewarm(delay=12.0)
     except Exception as _acc_e:
         xbmc.log('[KelTec] service_refresh: prewarm: %s' % _acc_e, xbmc.LOGDEBUG)
 
-    monitor = xbmc.Monitor()
+    # -- Trava do controle parental: adota o estado atual como autorizado (1a vez) ---
+    try:
+        from lib import parental_guard
+        parental_guard.ensure_baseline()
+    except Exception as _pg_e:
+        xbmc.log('[KelTec] service_refresh: parental_guard: %s' % _pg_e, xbmc.LOGDEBUG)
+
+    # -- Toasts no estilo da skin IBO Pro (este servico e quem desenha os avisos) ---
+    try:
+        from lib import ibo_dialogs
+        threading.Thread(target=ibo_dialogs.toast_host_loop, args=(xbmc.Monitor(),),
+                         name='IboToastHost', daemon=True).start()
+    except Exception as _toast_e:
+        xbmc.log('[KelTec] service_refresh: toast host: %s' % _toast_e, xbmc.LOGWARNING)
+
+    # -- TMDB da Web Novelas: a busca roda AQUI (processo vivo), nao no processo da lista -----
+    _addon_path_w9 = xbmcvfs.translatePath(xbmcaddon.Addon(ADDON_ID).getAddonInfo('path'))
+
+    def _tmdb_host():
+        try:
+            mon = xbmc.Monitor()
+            if mon.waitForAbort(4.0):
+                return
+            if _addon_path_w9 not in sys.path:
+                sys.path.insert(0, _addon_path_w9)
+            from lib import webtv9
+            webtv9.tmdb_service_loop(mon)
+        except Exception as _w9_e:
+            xbmc.log('[KelTec] service_refresh: webtv9 tmdb: %s' % _w9_e, xbmc.LOGWARNING)
+    threading.Thread(target=_tmdb_host, name='WebTV9TmdbHost', daemon=True).start()
+
+    monitor = _GuardMonitor()
     player = _PlayerWatcher()
     settings_was_open = False
     pending_until = 0.0

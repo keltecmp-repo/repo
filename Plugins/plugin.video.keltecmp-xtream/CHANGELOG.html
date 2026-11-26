@@ -372,6 +372,59 @@
   <!-- ═══════════ TIMELINE ═══════════ -->
   <div class="timeline">
 
+    <!-- ── v3.1.56 ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+      <div class="section-header">
+        <div class="section-title">v3.1.56 &mdash; Web Novelas paginada e mais r&aacute;pida</div>
+        <div class="section-date">21/11/2026</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Lista de novelas em p&aacute;ginas de 40 (configur&aacute;vel: 20 a 60)</div>
+          <div class="tags"><span class="tag tag-added">NOVO</span><span class="tag tag-enhanced">DESEMPENHO</span></div>
+        </div>
+        <div class="card-desc">
+          Cada p&aacute;gina do site (~200 novelas) &eacute; fatiada em p&aacute;ginas menores com &laquo;Pr&oacute;xima/Anterior&raquo;.
+          S&oacute; a fatia atual vira item da tela e entra no TMDB. Op&ccedil;&atilde;o: <code>webtv9_page_size</code>.
+          O TMDB em segundo plano usa 2 threads e espera enquanto voc&ecirc; abre uma novela; a pr&eacute;-carga cega de cap&iacute;tulos
+          das primeiras novelas foi removida (sobra a da IA, s&oacute; para a novela em foco).
+        </div>
+      </div>
+    </div>
+
+    <!-- ── v3.1.55 ── -->
+    <div class="timeline-section">
+      <div class="timeline-dot">&#x2713;</div>
+      <div class="section-header">
+        <div class="section-title">v3.1.55 &mdash; Parental protegido + IA de pr&eacute;-carga</div>
+        <div class="section-date">21/11/2026</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Controle parental n&atilde;o desativa mais sem PIN nas Configura&ccedil;&otilde;es</div>
+          <div class="tags"><span class="tag tag-security">SEGURANCA</span><span class="tag tag-fixed">CORRIGIDO</span></div>
+        </div>
+        <div class="card-desc">
+          O interruptor e o campo do PIN ficaram escondidos nas Configura&ccedil;&otilde;es e foram trocados por dois bot&otilde;es
+          (<code>parental_toggle</code> e <code>parental_change_pin</code>) que pedem o PIN, como o menu. Nova trava
+          <code>lib/parental_guard.py</code>: o servi&ccedil;o desfaz qualquer mudan&ccedil;a de estado/PIN feita sem passar pelo fluxo com PIN.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">IA de pr&eacute;-carga para filmes, s&eacute;ries e epis&oacute;dios (TV Box 2 GB)</div>
+          <div class="tags"><span class="tag tag-added">NOVO</span><span class="tag tag-enhanced">DESEMPENHO</span></div>
+        </div>
+        <div class="card-desc">
+          Novo <code>lib/ia_boost.py</code>: aprende seu h&aacute;bito (cadeia de Markov, meia-vida de 14 dias), olha adiante na lista
+          (s&eacute;rie &rarr; temporadas &rarr; epis&oacute;dios da 1&ordf; temporada) e adianta a pr&oacute;xima temporada. Fila &uacute;nica,
+          or&ccedil;amento por minuto conforme o perfil de RAM, pausa com v&iacute;deo tocando ou RAM curta. Op&ccedil;&otilde;es em
+          Acelerador &rarr; IA de pr&eacute;-carga (ligar, ver o que aprendeu, zerar).
+        </div>
+      </div>
+    </div>
+
     <!-- ── 1. Seguranca ── -->
     <div class="timeline-section">
       <div class="timeline-dot">&#x2713;</div>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Spinner de carregamento da skin IBO Pro: substitui o circulo nativo do Kodi (busydialog).
+     Janela NAO modal e sem controles focaveis: nunca captura teclas/controle remoto.
+     Propriedades: ibo.busy_msg (mensagem), ibo.busy_sub (detalhe). -->
+<window type="dialog">
+  <defaultcontrol always="false">-</defaultcontrol>
+  <allowoverlay>no</allowoverlay>
+  <animation type="WindowOpen" reversible="false">
+    <effect type="fade" start="0" end="100" time="160"/>
+  </animation>
+  <animation type="WindowClose" reversible="false">
+    <effect type="fade" start="100" end="0" time="140"/>
+  </animation>
+  <controls>
+    <control type="group">
+      <left>690</left>
+      <top>400</top>
+      <visible>String.IsEmpty(Window(Home).Property(ibo.busy.hold))</visible>
+      <animation type="WindowOpen" reversible="false">
+        <effect type="zoom" start="92" end="100" center="270,140" time="200" tween="back" easing="out"/>
+      </animation>
+      <control type="image">
+        <left>0</left><top>0</top><width>540</width><height>280</height>
+        <texture border="16">ibo_dlg.png</texture>
+      </control>
+      <!-- anel girando + logo da skin parado no centro -->
+      <control type="image">
+        <left>198</left><top>24</top><width>144</width><height>144</height>
+        <texture>ibo_spin_ring.png</texture>
+        <aspectratio>keep</aspectratio>
+        <animation effect="rotate" start="0" end="-360" center="auto" time="1000" loop="true" condition="true">Conditional</animation>
+      </control>
+      <control type="image">
+        <left>228</left><top>54</top><width>84</width><height>84</height>
+        <texture>ibo_logo_mark.png</texture>
+        <aspectratio>keep</aspectratio>
+      </control>
+      <control type="label">
+        <left>24</left><top>178</top><width>492</width><height>44</height>
+        <font>font15_title</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <align>center</align><aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.busy_msg)]</label>
+      </control>
+      <control type="label">
+        <left>24</left><top>224</top><width>492</width><height>36</height>
+        <font>font12</font>
+        <textcolor>FFB9B2C2</textcolor>
+        <align>center</align><aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.busy_sub)]</label>
+        <visible>!String.IsEmpty(Window.Property(ibo.busy_sub))</visible>
+      </control>
+    </control>
+  </controls>
+</window>

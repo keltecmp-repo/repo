@@ -93,11 +93,16 @@ class LoadingWindow(xbmcgui.WindowXMLDialog):
     def __new__(cls, xmlFile, scriptPath, defaultSkin, defaultSkinRes, **kwargs):
         instance = super(LoadingWindow, cls).__new__(cls, xmlFile, scriptPath, defaultSkin, defaultSkinRes)
         instance._search_func = kwargs.pop('search_func', None)
+        instance._title = kwargs.pop('title', '')
         instance._cancel_event = threading.Event()
         instance.result = None
         return instance
 
     def onInit(self):
+        try:
+            self.setProperty('ibo.load_title', getattr(self, '_title', '') or 'KelTec Media Play')
+        except Exception:
+            pass
         if self._search_func is None:
             xbmcgui.Window(10000).setProperty('loading.phase2', 'true')
             return
@@ -107,6 +112,7 @@ class LoadingWindow(xbmcgui.WindowXMLDialog):
 
     def _update_ui(self, pct, msg):
         try:
+            self.setProperty('ibo.load_bar', '1')
             ctrl = self.getControl(self.PROGRESS_CONTROL)
             ctrl.setPercent(min(100, max(0, pct)))
         except Exception:
@@ -168,6 +174,7 @@ class SourceSelectWindow(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         try:
+            self.setProperty('ibo.sel_title', 'Escolha o player')
             ctrl = self.getControl(self.LIST_CONTROL)
             ctrl.reset()
             for label in self.labels:
@@ -214,9 +221,24 @@ class LoadingManager:
     def _start_busy_suppressor(self):
         self._busy_stop.clear()
         threading.Thread(target=self._run_busy_suppressor, daemon=True).start()
+        self._busy_hold(True)
 
     def _stop_busy_suppressor(self):
         self._busy_stop.set()
+        self._busy_hold(False)
+
+    _busy_held = False
+
+    def _busy_hold(self, on):
+        """Esconde o spinner da skin (ibo_busy) enquanto a tela de busca/abertura esta aberta."""
+        try:
+            if on == self._busy_held:
+                return
+            self._busy_held = bool(on)
+            from lib import ibo_busy as _b
+            (_b.hold if on else _b.release)()
+        except Exception:
+            pass
 
     def _addon_path(self):
         return xbmcaddon.Addon('plugin.video.keltecmp-xtream').getAddonInfo('path')
@@ -235,7 +257,8 @@ class LoadingManager:
                 pass
 
     def show_search(self, title, all_servers, tmdb_browser, tmdb_type, fanart_path=None,
-                    tmdb_year='', max_wait=None, max_workers=6, request_timeout=None):
+                    tmdb_year='', max_wait=None, max_workers=6, request_timeout=None,
+                    tmdb_id='', alt_titles=None):
         addon_path = self._addon_path()
         fanart = fanart_path or self._default_fanart()
         xbmcgui.Window(10000).setProperty('loading.fanart', fanart)
@@ -254,11 +277,14 @@ class LoadingManager:
                 max_wait=max_wait,
                 max_workers=max_workers,
                 request_timeout=request_timeout,
+                tmdb_id=tmdb_id,
+                alt_titles=alt_titles,
             )
 
         self._start_busy_suppressor()
         window = LoadingWindow(
-            'DialogLoadingKelTec.xml', addon_path, 'Default', '1080i',
+            'IboLoading.xml', addon_path, 'IBOPro', '1080i',
+            title='Procurando nos servidores',
             search_func=search_func,
         )
         window.doModal()
@@ -281,7 +307,8 @@ class LoadingManager:
 
         def _run():
             window = LoadingWindow(
-                'DialogLoadingKelTec.xml', addon_path, 'Default', '1080i',
+                'IboLoading.xml', addon_path, 'IBOPro', '1080i',
+                title='Buscando',
             )
             with self._lock:
                 self._window = window
@@ -316,7 +343,8 @@ class LoadingManager:
 
         def _run():
             window = LoadingWindow(
-                'DialogLoadingKelTec.xml', addon_path, 'Default', '1080i',
+                'IboLoading.xml', addon_path, 'IBOPro', '1080i',
+                title='Abrindo o conteúdo',
             )
             with self._lock:
                 self._window = window
@@ -341,10 +369,19 @@ class LoadingManager:
             xbmcgui.Window(10000).setProperty('loading.phase', '2')
             labels = [label for label, _ in players]
             dialog = SourceSelectWindow(
-                'DialogSourceSelect.xml', addon_path, 'Default', '1080i',
+                'IboSource.xml', addon_path, 'IBOPro', '1080i',
                 labels=labels
             )
-            dialog.doModal()
+            try:
+                from lib import ibo_busy as _b
+                _b.hold()
+            except Exception:
+                _b = None
+            try:
+                dialog.doModal()
+            finally:
+                if _b is not None:
+                    _b.release()
             xbmcgui.Window(10000).clearProperty('mdl.loading.fanart')
             return dialog.selected_index
         except Exception:

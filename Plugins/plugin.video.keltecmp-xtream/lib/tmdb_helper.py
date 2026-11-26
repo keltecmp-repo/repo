@@ -436,6 +436,30 @@ class TMDBHelper:
     # PROCESSAMENTO DE METADADOS
     # =========================
     
+    @staticmethod
+    def _pref(key, default=True):
+        """Opcao de Configuracoes > TMDB (padrao: ligada). Aceita 'true'/'false'."""
+        try:
+            import xbmcaddon
+            raw = xbmcaddon.Addon('plugin.video.keltecmp-xtream').getSetting(key)
+            if raw in (None, ''):
+                return default
+            return str(raw).strip().lower() not in ('false', '0', 'off', 'no')
+        except Exception:
+            return default
+
+    def _apply_prefs(self, metadata):
+        """Aplica 'Usar Fanart', 'Mostrar elenco' e 'Incluir trailers' (antes eram opcoes sem efeito)."""
+        if not isinstance(metadata, dict):
+            return metadata
+        if not self._pref('tmdb_use_cast'):
+            metadata['cast'] = []
+        if not self._pref('tmdb_use_trailer'):
+            metadata['trailer'] = ''
+        if not self._pref('tmdb_use_fanart'):
+            metadata['fanart'] = ''
+        return metadata
+
     def get_image_url(self, path, size='original'):
         """Monta URL completa de imagem"""
         if not path:
@@ -515,7 +539,7 @@ class TMDBHelper:
         else:
             metadata['trailer'] = ''
         
-        return metadata
+        return self._apply_prefs(metadata)
     
     def process_tv_metadata(self, title, year=None):
         """
@@ -581,7 +605,7 @@ class TMDBHelper:
         else:
             metadata['trailer'] = ''
         
-        return metadata
+        return self._apply_prefs(metadata)
     
     def process_episode_metadata(self, tv_title, season, episode):
         """

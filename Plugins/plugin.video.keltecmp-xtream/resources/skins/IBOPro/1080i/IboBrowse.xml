@@ -1,0 +1,2012 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+  <defaultcontrol always="true">101</defaultcontrol>
+  <animation type="WindowOpen" reversible="false">
+    <effect type="fade" start="0" end="100" time="260"/>
+    <effect type="zoom" start="94" end="100" center="960,540" time="320" tween="cubic" easing="out"/>
+  </animation>
+  <animation type="WindowClose" reversible="false">
+    <effect type="fade" start="100" end="0" time="180"/>
+    <effect type="zoom" start="100" end="104" center="960,540" time="200" tween="cubic" easing="in"/>
+  </animation>
+  <controls>
+    <control type="image">
+      <left>0</left>
+      <top>0</top>
+      <width>1920</width>
+      <height>1080</height>
+      <texture>ibo_bg.jpg</texture>
+      <aspectratio>scale</aspectratio>
+    </control>
+    <control type="image">
+      <left>0</left>
+      <top>0</top>
+      <width>1920</width>
+      <height>1080</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>55000000</colordiffuse>
+    </control>
+    <control type="image">
+      <left>50</left>
+      <top>22</top>
+      <width>56</width>
+      <height>56</height>
+      <texture>ibo_logo_mark.png</texture>
+      <aspectratio>keep</aspectratio>
+    </control>
+    <control type="button" id="101">
+      <left>122</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>101</onleft>
+      <onright>102</onright>
+      <onup>101</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>122</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_live)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),live)</visible>
+    </control>
+    <control type="label">
+      <left>122</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_live)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),live)</visible>
+    </control>
+    <control type="image">
+      <left>148</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),live)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="102">
+      <left>254</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>101</onleft>
+      <onright>103</onright>
+      <onup>102</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>254</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_movies)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),vod)</visible>
+    </control>
+    <control type="label">
+      <left>254</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_movies)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),vod)</visible>
+    </control>
+    <control type="image">
+      <left>280</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),vod)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="103">
+      <left>386</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>102</onleft>
+      <onright>105</onright>
+      <onup>103</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>386</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_series)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),series)</visible>
+    </control>
+    <control type="label">
+      <left>386</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_series)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),series)</visible>
+    </control>
+    <control type="image">
+      <left>412</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),series)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="105">
+      <left>518</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>103</onleft>
+      <onright>106</onright>
+      <onup>105</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>518</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_webtv)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),webtv)</visible>
+    </control>
+    <control type="label">
+      <left>518</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_webtv)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),webtv)</visible>
+    </control>
+    <control type="image">
+      <left>544</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),webtv)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="106">
+      <left>650</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>105</onleft>
+      <onright>107</onright>
+      <onup>106</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>650</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_novelas)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),novelas)</visible>
+    </control>
+    <control type="label">
+      <left>650</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_novelas)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),novelas)</visible>
+    </control>
+    <control type="image">
+      <left>676</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),novelas)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="107">
+      <left>782</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>106</onleft>
+      <onright>108</onright>
+      <onup>107</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>782</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_animes)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),animes)</visible>
+    </control>
+    <control type="label">
+      <left>782</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_animes)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),animes)</visible>
+    </control>
+    <control type="image">
+      <left>808</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),animes)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="108">
+      <left>914</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>107</onleft>
+      <onright>109</onright>
+      <onup>108</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>914</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_tmdb)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),tmdb)</visible>
+    </control>
+    <control type="label">
+      <left>914</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_tmdb)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),tmdb)</visible>
+    </control>
+    <control type="image">
+      <left>940</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),tmdb)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="109">
+      <left>1046</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>108</onleft>
+      <onright>104</onright>
+      <onup>109</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>1046</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_favs)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),fav)</visible>
+    </control>
+    <control type="label">
+      <left>1046</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_favs)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),fav)</visible>
+    </control>
+    <control type="image">
+      <left>1072</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),fav)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="104">
+      <left>1178</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <texturefocus border="8">ibo_ring_y.png</texturefocus>
+      <onleft>109</onleft>
+      <onright>110</onright>
+      <onup>104</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="label">
+      <left>1178</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_home)]</label>
+      <visible>!String.IsEqual(Window.Property(ibo.section),home)</visible>
+    </control>
+    <control type="label">
+      <left>1178</left>
+      <top>22</top>
+      <width>128</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFEB3B</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_home)]</label>
+      <visible>String.IsEqual(Window.Property(ibo.section),home)</visible>
+    </control>
+    <control type="image">
+      <left>1204</left>
+      <top>80</top>
+      <width>76</width>
+      <height>4</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>FFFFEB3B</colordiffuse>
+      <visible>String.IsEqual(Window.Property(ibo.section),home)</visible>
+      <animation type="Visible" reversible="false"><effect type="zoom" start="20,100" end="100,100" center="auto" time="220" tween="cubic" easing="out"/></animation>
+    </control>
+    <control type="button" id="110">
+      <left>1326</left>
+      <top>22</top>
+      <width>400</width>
+      <height>56</height>
+      <texturefocus border="24">ibo_pill_f.png</texturefocus>
+      <texturenofocus border="24">ibo_pill.png</texturenofocus>
+      <onleft>104</onleft>
+      <onright>111</onright>
+      <onup>110</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="image">
+      <left>1346</left>
+      <top>36</top>
+      <width>28</width>
+      <height>28</height>
+      <texture>ibo_ic_search.png</texture>
+      <aspectratio>keep</aspectratio>
+    </control>
+    <control type="label">
+      <left>1388</left>
+      <top>22</top>
+      <width>326</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>FFFFFFFF</textcolor>
+      <align>left</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.filter)]</label>
+      <visible>!String.IsEmpty(Window.Property(ibo.filter))</visible>
+    </control>
+    <control type="label">
+      <left>1388</left>
+      <top>22</top>
+      <width>326</width>
+      <height>56</height>
+      <font>font13</font>
+      <textcolor>99DADADA</textcolor>
+      <align>left</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_search)]</label>
+      <visible>String.IsEmpty(Window.Property(ibo.filter))</visible>
+    </control>
+    <control type="button" id="111">
+      <left>1746</left>
+      <top>22</top>
+      <width>114</width>
+      <height>56</height>
+      <texturefocus border="24">ibo_pill_f.png</texturefocus>
+      <texturenofocus border="24">ibo_pill.png</texturenofocus>
+      <onleft>110</onleft>
+      <onright>111</onright>
+      <onup>111</onup>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),live)">200</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),webtv)">190</ondown>
+      <ondown condition="String.IsEqual(Window.Property(ibo.layout),grid)">201</ondown>
+    </control>
+    <control type="image">
+      <left>1766</left>
+      <top>34</top>
+      <width>32</width>
+      <height>32</height>
+      <texture>ibo_ic_playlist.png</texture>
+      <aspectratio>keep</aspectratio>
+    </control>
+    <control type="label">
+      <left>1802</left>
+      <top>22</top>
+      <width>56</width>
+      <height>56</height>
+      <font>font12</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>left</align>
+      <aligny>center</aligny>
+      <label>$INFO[Window.Property(ibo.t_server_short)]</label>
+    </control>
+    <control type="image">
+      <left>0</left>
+      <top>100</top>
+      <width>1920</width>
+      <height>2</height>
+      <texture>ibo_line.png</texture>
+    </control>
+    <control type="group">
+      <left>0</left>
+      <top>0</top>
+      <visible>String.IsEqual(Window.Property(ibo.layout),live)</visible>
+      <animation type="Visible" reversible="false">
+        <effect type="fade" start="0" end="100" time="240"/>
+        <effect type="slide" start="60,0" end="0,0" time="300" tween="cubic" easing="out"/>
+      </animation>
+    <control type="list" id="200">
+      <left>60</left>
+      <top>122</top>
+      <width>520</width>
+      <height>930</height>
+      <orientation>vertical</orientation>
+      <scrolltime>150</scrolltime>
+      <onup>101</onup>
+      <ondown>200</ondown>
+      <onleft>200</onleft>
+      <onright>300</onright>
+      <itemlayout height="66" width="520">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>520</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>370</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>370</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>380</left>
+            <top>0</top>
+            <width>124</width>
+            <height>63</height>
+            <font>font12</font>
+            <textcolor>FFDADADA</textcolor>
+            <align>right</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label2]</label>
+          </control>
+      </itemlayout>
+      <focusedlayout height="66" width="520">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>520</width>
+            <height>63</height>
+            <texture border="8">ibo_card_f.png</texture>
+            <visible>Control.HasFocus(200)</visible>
+          </control>
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>520</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+            <visible>!Control.HasFocus(200)</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>370</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <scroll>true</scroll>
+            <visible>Control.HasFocus(200)</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>370</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!Control.HasFocus(200) + String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>370</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!Control.HasFocus(200) + !String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>380</left>
+            <top>0</top>
+            <width>124</width>
+            <height>63</height>
+            <font>font12</font>
+            <textcolor>FFDADADA</textcolor>
+            <align>right</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label2]</label>
+          </control>
+      </focusedlayout>
+    </control>
+    <control type="list" id="300">
+      <left>596</left>
+      <top>122</top>
+      <width>640</width>
+      <height>930</height>
+      <orientation>vertical</orientation>
+      <scrolltime>150</scrolltime>
+      <onup>101</onup>
+      <ondown>300</ondown>
+      <onleft>200</onleft>
+      <onright>411</onright>
+      <itemlayout height="66" width="640">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>640</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+          </control>
+          <control type="label">
+            <left>4</left>
+            <top>0</top>
+            <width>70</width>
+            <height>63</height>
+            <font>font12</font>
+            <textcolor>FFDADADA</textcolor>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Property(ibo.num)]</label>
+          </control>
+        <control type="image">
+          <left>84</left>
+          <top>9</top>
+          <width>60</width>
+          <height>45</height>
+          <texture fallback="ibo_channel_default.png">$INFO[ListItem.Art(thumb)]</texture>
+          <aspectratio>keep</aspectratio>
+        </control>
+          <control type="label">
+            <left>158</left>
+            <top>0</top>
+            <width>410</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>String.IsEmpty(ListItem.Property(ibo.playing))</visible>
+          </control>
+          <control type="label">
+            <left>158</left>
+            <top>0</top>
+            <width>410</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.playing))</visible>
+          </control>
+          <control type="image">
+            <left>588</left>
+            <top>17</top>
+            <width>30</width>
+            <height>30</height>
+            <texture>ibo_ic_star_y.png</texture>
+            <aspectratio>keep</aspectratio>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.fav))</visible>
+          </control>
+      </itemlayout>
+      <focusedlayout height="66" width="640">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>640</width>
+            <height>63</height>
+            <texture border="8">ibo_card_f.png</texture>
+            <visible>Control.HasFocus(300)</visible>
+          </control>
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>640</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+            <visible>!Control.HasFocus(300)</visible>
+          </control>
+          <control type="label">
+            <left>4</left>
+            <top>0</top>
+            <width>70</width>
+            <height>63</height>
+            <font>font12</font>
+            <textcolor>FFDADADA</textcolor>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Property(ibo.num)]</label>
+          </control>
+        <control type="image">
+          <left>84</left>
+          <top>9</top>
+          <width>60</width>
+          <height>45</height>
+          <texture fallback="ibo_channel_default.png">$INFO[ListItem.Art(thumb)]</texture>
+          <aspectratio>keep</aspectratio>
+        </control>
+          <control type="label">
+            <left>158</left>
+            <top>0</top>
+            <width>410</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <scroll>true</scroll>
+            <visible>String.IsEmpty(ListItem.Property(ibo.playing))</visible>
+          </control>
+          <control type="label">
+            <left>158</left>
+            <top>0</top>
+            <width>410</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <scroll>true</scroll>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.playing))</visible>
+          </control>
+          <control type="image">
+            <left>588</left>
+            <top>17</top>
+            <width>30</width>
+            <height>30</height>
+            <texture>ibo_ic_star_y.png</texture>
+            <aspectratio>keep</aspectratio>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.fav))</visible>
+          </control>
+      </focusedlayout>
+    </control>
+    </control>
+    <control type="group">
+      <left>0</left>
+      <top>0</top>
+      <visible>String.IsEqual(Window.Property(ibo.layout),webtv)</visible>
+      <animation type="Visible" reversible="false">
+        <effect type="fade" start="0" end="100" time="240"/>
+        <effect type="slide" start="60,0" end="0,0" time="300" tween="cubic" easing="out"/>
+      </animation>
+    <control type="list" id="190">
+      <left>60</left>
+      <top>122</top>
+      <width>262</width>
+      <height>930</height>
+      <orientation>vertical</orientation>
+      <scrolltime>150</scrolltime>
+      <onup>101</onup>
+      <ondown>190</ondown>
+      <onleft>190</onleft>
+      <onright>195</onright>
+      <itemlayout height="66" width="262">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>262</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>214</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>214</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+      </itemlayout>
+      <focusedlayout height="66" width="262">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>262</width>
+            <height>63</height>
+            <texture border="8">ibo_card_f.png</texture>
+            <visible>Control.HasFocus(190)</visible>
+          </control>
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>262</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+            <visible>!Control.HasFocus(190)</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>214</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <scroll>true</scroll>
+            <visible>Control.HasFocus(190)</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>214</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!Control.HasFocus(190) + String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>214</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!Control.HasFocus(190) + !String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+      </focusedlayout>
+    </control>
+    <control type="list" id="195">
+      <left>338</left>
+      <top>122</top>
+      <width>384</width>
+      <height>930</height>
+      <orientation>vertical</orientation>
+      <scrolltime>150</scrolltime>
+      <onup>101</onup>
+      <ondown>195</ondown>
+      <onleft>190</onleft>
+      <onright>305</onright>
+      <itemlayout height="66" width="384">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>384</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>234</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>234</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>244</left>
+            <top>0</top>
+            <width>124</width>
+            <height>63</height>
+            <font>font12</font>
+            <textcolor>FFDADADA</textcolor>
+            <align>right</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label2]</label>
+          </control>
+      </itemlayout>
+      <focusedlayout height="66" width="384">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>384</width>
+            <height>63</height>
+            <texture border="8">ibo_card_f.png</texture>
+            <visible>Control.HasFocus(195)</visible>
+          </control>
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>384</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+            <visible>!Control.HasFocus(195)</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>234</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <scroll>true</scroll>
+            <visible>Control.HasFocus(195)</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>234</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!Control.HasFocus(195) + String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>24</left>
+            <top>0</top>
+            <width>234</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!Control.HasFocus(195) + !String.IsEmpty(ListItem.Property(ibo.active))</visible>
+          </control>
+          <control type="label">
+            <left>244</left>
+            <top>0</top>
+            <width>124</width>
+            <height>63</height>
+            <font>font12</font>
+            <textcolor>FFDADADA</textcolor>
+            <align>right</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label2]</label>
+          </control>
+      </focusedlayout>
+    </control>
+    <control type="list" id="305">
+      <left>738</left>
+      <top>122</top>
+      <width>498</width>
+      <height>930</height>
+      <orientation>vertical</orientation>
+      <scrolltime>150</scrolltime>
+      <onup>101</onup>
+      <ondown>305</ondown>
+      <onleft>195</onleft>
+      <onright>411</onright>
+      <itemlayout height="66" width="498">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>498</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+          </control>
+          <control type="label">
+            <left>4</left>
+            <top>0</top>
+            <width>70</width>
+            <height>63</height>
+            <font>font12</font>
+            <textcolor>FFDADADA</textcolor>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Property(ibo.num)]</label>
+          </control>
+        <control type="image">
+          <left>84</left>
+          <top>9</top>
+          <width>60</width>
+          <height>45</height>
+          <texture fallback="ibo_channel_default.png">$INFO[ListItem.Art(thumb)]</texture>
+          <aspectratio>keep</aspectratio>
+        </control>
+          <control type="label">
+            <left>158</left>
+            <top>0</top>
+            <width>340</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>String.IsEmpty(ListItem.Property(ibo.playing))</visible>
+          </control>
+          <control type="label">
+            <left>158</left>
+            <top>0</top>
+            <width>340</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.playing))</visible>
+          </control>
+          <control type="image">
+            <left>446</left>
+            <top>17</top>
+            <width>30</width>
+            <height>30</height>
+            <texture>ibo_ic_star_y.png</texture>
+            <aspectratio>keep</aspectratio>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.fav))</visible>
+          </control>
+      </itemlayout>
+      <focusedlayout height="66" width="498">
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>498</width>
+            <height>63</height>
+            <texture border="8">ibo_card_f.png</texture>
+            <visible>Control.HasFocus(305)</visible>
+          </control>
+          <control type="image">
+            <left>0</left>
+            <top>0</top>
+            <width>498</width>
+            <height>63</height>
+            <texture border="8">ibo_card.png</texture>
+            <visible>!Control.HasFocus(305)</visible>
+          </control>
+          <control type="label">
+            <left>4</left>
+            <top>0</top>
+            <width>70</width>
+            <height>63</height>
+            <font>font12</font>
+            <textcolor>FFDADADA</textcolor>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Property(ibo.num)]</label>
+          </control>
+        <control type="image">
+          <left>84</left>
+          <top>9</top>
+          <width>60</width>
+          <height>45</height>
+          <texture fallback="ibo_channel_default.png">$INFO[ListItem.Art(thumb)]</texture>
+          <aspectratio>keep</aspectratio>
+        </control>
+          <control type="label">
+            <left>158</left>
+            <top>0</top>
+            <width>340</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <scroll>true</scroll>
+            <visible>String.IsEmpty(ListItem.Property(ibo.playing))</visible>
+          </control>
+          <control type="label">
+            <left>158</left>
+            <top>0</top>
+            <width>340</width>
+            <height>63</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <scroll>true</scroll>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.playing))</visible>
+          </control>
+          <control type="image">
+            <left>446</left>
+            <top>17</top>
+            <width>30</width>
+            <height>30</height>
+            <texture>ibo_ic_star_y.png</texture>
+            <aspectratio>keep</aspectratio>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.fav))</visible>
+          </control>
+      </focusedlayout>
+    </control>
+    </control>
+    <control type="group">
+      <left>1256</left>
+      <top>122</top>
+      <visible>String.IsEqual(Window.Property(ibo.layout),live) | String.IsEqual(Window.Property(ibo.layout),webtv)</visible>
+      <animation type="Visible" reversible="false">
+        <effect type="fade" start="0" end="100" time="240"/>
+        <effect type="slide" start="-80,0" end="0,0" time="300" tween="cubic" easing="out"/>
+      </animation>
+      <control type="image">
+        <left>0</left>
+        <top>0</top>
+        <width>604</width>
+        <height>930</height>
+        <texture border="10">ibo_panel.png</texture>
+      </control>
+      <control type="image">
+        <left>16</left>
+        <top>16</top>
+        <width>572</width>
+        <height>322</height>
+        <texture>ibo_preview_default.png</texture>
+        <aspectratio>scale</aspectratio>
+        <visible>!Player.HasVideo</visible>
+      </control>
+      <control type="videowindow" id="400">
+        <left>16</left>
+        <top>16</top>
+        <width>572</width>
+        <height>322</height>
+        <visible>Player.HasVideo</visible>
+      </control>
+      <control type="label">
+        <left>20</left>
+        <top>352</top>
+        <width>564</width>
+        <height>56</height>
+        <font>font15_title</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <align>left</align>
+        <aligny>center</aligny>
+        <label>$INFO[Container(300).ListItem.Label]</label>
+        <scroll>true</scroll>
+        <visible>String.IsEqual(Window.Property(ibo.layout),live)</visible>
+      </control>
+      <control type="label">
+        <left>20</left>
+        <top>352</top>
+        <width>564</width>
+        <height>56</height>
+        <font>font15_title</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <align>left</align>
+        <aligny>center</aligny>
+        <label>$INFO[Container(305).ListItem.Label]</label>
+        <scroll>true</scroll>
+        <visible>String.IsEqual(Window.Property(ibo.layout),webtv)</visible>
+      </control>
+      <control type="label">
+        <left>20</left>
+        <top>406</top>
+        <width>564</width>
+        <height>36</height>
+        <font>font12</font>
+        <textcolor>FFDADADA</textcolor>
+        <align>left</align>
+        <aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.cat)]</label>
+      </control>
+      <control type="textbox">
+        <left>20</left>
+        <top>452</top>
+        <width>564</width>
+        <height>330</height>
+        <font>font12</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <label>$INFO[Container(300).ListItem.Property(ibo.plot)]</label>
+        <autoscroll time="3000" delay="4000" repeat="5000">true</autoscroll>
+        <visible>String.IsEqual(Window.Property(ibo.layout),live)</visible>
+      </control>
+      <control type="textbox">
+        <left>20</left>
+        <top>452</top>
+        <width>564</width>
+        <height>330</height>
+        <font>font12</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <label>$INFO[Container(305).ListItem.Property(ibo.plot)]</label>
+        <autoscroll time="3000" delay="4000" repeat="5000">true</autoscroll>
+        <visible>String.IsEqual(Window.Property(ibo.layout),webtv)</visible>
+      </control>
+      <control type="button" id="411">
+        <left>16</left>
+        <top>830</top>
+        <width>184</width>
+        <height>70</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <onleft condition="String.IsEqual(Window.Property(ibo.layout),live)">300</onleft>
+        <onleft condition="String.IsEqual(Window.Property(ibo.layout),webtv)">305</onleft>
+        <onright>412</onright>
+        <onup>411</onup>
+        <ondown>411</ondown>
+        <label>$INFO[Window.Property(ibo.t_fullscreen)]</label>
+      <font>font13</font>
+      <textcolor>FFFFFFFF</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+    </control>
+      <control type="button" id="412">
+        <left>210</left>
+        <top>830</top>
+        <width>184</width>
+        <height>70</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <onleft>411</onleft>
+        <onright>414</onright>
+        <onup>412</onup>
+        <ondown>412</ondown>
+        <label>$INFO[Window.Property(ibo.t_reload)]</label>
+      <font>font13</font>
+      <textcolor>FFFFFFFF</textcolor>
+      <align>center</align>
+      <aligny>center</aligny>
+    </control>
+      <control type="button" id="414">
+        <left>404</left>
+        <top>830</top>
+        <width>184</width>
+        <height>70</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <onleft>412</onleft>
+        <onright>414</onright>
+        <onup>414</onup>
+        <ondown>414</ondown>
+        <label>$INFO[Window.Property(ibo.t_fav)]</label>
+        <font>font13</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <align>center</align>
+        <aligny>center</aligny>
+      </control>
+    </control>
+    <control type="group">
+      <left>0</left>
+      <top>0</top>
+      <visible>String.IsEqual(Window.Property(ibo.layout),grid)</visible>
+      <animation type="Visible" reversible="false">
+        <effect type="fade" start="0" end="100" time="240"/>
+        <effect type="slide" start="0,40" end="0,0" time="300" tween="cubic" easing="out"/>
+      </animation>
+      <control type="button" id="201">
+        <left>60</left>
+        <top>120</top>
+        <width>380</width>
+        <height>56</height>
+        <texturefocus border="8">ibo_dd_f.png</texturefocus>
+        <texturenofocus border="8">ibo_dd.png</texturenofocus>
+        <onup>101</onup>
+        <ondown>301</ondown>
+        <onleft>201</onleft>
+        <onright>415</onright>
+      </control>
+      <control type="label">
+        <left>80</left>
+        <top>120</top>
+        <width>290</width>
+        <height>56</height>
+        <font>font13</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <align>left</align>
+        <aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.cat)]</label>
+        <scroll>true</scroll>
+      </control>
+      <control type="image">
+        <left>396</left>
+        <top>134</top>
+        <width>28</width>
+        <height>28</height>
+        <texture>ibo_ic_arrow_dn.png</texture>
+        <aspectratio>keep</aspectratio>
+      </control>
+      <control type="label">
+        <left>470</left>
+        <top>120</top>
+        <width>800</width>
+        <height>56</height>
+        <font>font13</font>
+        <textcolor>FFDADADA</textcolor>
+        <align>left</align>
+        <aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.title)]</label>
+      </control>
+      <control type="label">
+        <left>1000</left>
+        <top>120</top>
+        <width>690</width>
+        <height>56</height>
+        <font>font13</font>
+        <textcolor>FFDADADA</textcolor>
+        <align>right</align>
+        <aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.count)]</label>
+      </control>
+      <control type="button" id="415">
+        <left>1706</left>
+        <top>128</top>
+        <width>70</width>
+        <height>40</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <onleft>201</onleft>
+        <onright>413</onright>
+        <onup>101</onup>
+        <ondown>301</ondown>
+      </control>
+      <control type="image">
+        <left>1722</left>
+        <top>132</top>
+        <width>38</width>
+        <height>32</height>
+        <texture>ibo_ic_heart.png</texture>
+        <aspectratio>keep</aspectratio>
+      </control>
+      <control type="button" id="413">
+        <left>1790</left>
+        <top>128</top>
+        <width>70</width>
+        <height>40</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <onleft>415</onleft>
+        <onright>413</onright>
+        <onup>101</onup>
+        <ondown>301</ondown>
+      </control>
+      <control type="image">
+        <left>1805</left>
+        <top>132</top>
+        <width>40</width>
+        <height>32</height>
+        <texture>ibo_ic_reload.png</texture>
+        <aspectratio>keep</aspectratio>
+      </control>
+      <control type="label">
+        <left>1160</left>
+        <top>164</top>
+        <width>700</width>
+        <height>30</height>
+        <font>font12</font>
+        <textcolor>FFE0B040</textcolor>
+        <align>right</align>
+        <aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.tmdb)]</label>
+      </control>
+      <control type="panel" id="301">
+        <left>60</left>
+        <top>194</top>
+        <width>1800</width>
+        <height>860</height>
+        <orientation>vertical</orientation>
+        <scrolltime>180</scrolltime>
+        <preloaditems>2</preloaditems>
+        <onup>201</onup>
+        <ondown>301</ondown>
+        <onleft>301</onleft>
+        <onright>301</onright>
+        <itemlayout height="372" width="257">
+          <control type="image">
+            <left>8</left>
+            <top>8</top>
+            <width>241</width>
+            <height>356</height>
+            <texture border="8">ibo_card.png</texture>
+          </control>
+          <control type="image">
+            <left>8</left>
+            <top>8</top>
+            <width>241</width>
+            <height>300</height>
+            <texture fallback="ibo_poster_default.png">$INFO[ListItem.Art(poster)]</texture>
+            <aspectratio>scale</aspectratio>
+          </control>
+          <control type="image">
+            <left>8</left>
+            <top>308</top>
+            <width>241</width>
+            <height>56</height>
+            <texture border="8">ibo_titlebar.png</texture>
+          </control>
+          <control type="label">
+            <left>18</left>
+            <top>308</top>
+            <width>221</width>
+            <height>56</height>
+            <font>font12</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+          </control>
+<control type="image">
+<left>8</left><top>196</top><width>241</width><height>112</height>
+<texture>ibo_grad_bottom.png</texture>
+<visible>!String.IsEmpty(ListItem.Property(ibo.srv)) | !String.IsEmpty(ListItem.Property(ibo.q))</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF1F6FEB</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.sc),br)</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF8A3FE8</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.sc),web)</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF0E9AA7</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.sc),tmdb)</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFD9772B</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.sc),tv)</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF2A2A3A</colordiffuse>
+<visible>!String.IsEmpty(ListItem.Property(ibo.srv)) + !String.IsEqual(ListItem.Property(ibo.sc),br) + !String.IsEqual(ListItem.Property(ibo.sc),web) + !String.IsEqual(ListItem.Property(ibo.sc),tmdb) + !String.IsEqual(ListItem.Property(ibo.sc),tv)</visible>
+</control>
+<control type="label">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<font>font13</font>
+<textcolor>FFFFFFFF</textcolor>
+<shadowcolor>80000000</shadowcolor>
+<align>center</align><aligny>center</aligny>
+<label>[B]$INFO[ListItem.Property(ibo.srv)][/B]</label>
+<visible>!String.IsEmpty(ListItem.Property(ibo.srv))</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFFFB300</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),uhd)</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF2FB3E7</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),fhd)</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF4CD964</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),hd)</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFB0B0B0</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),sd)</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFFF5252</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),cam)</visible>
+</control>
+<control type="label">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<font>font12</font>
+<textcolor>FF10101A</textcolor>
+<shadowcolor>80000000</shadowcolor>
+<align>center</align><aligny>center</aligny>
+<label>[B]$INFO[ListItem.Property(ibo.q)][/B]</label>
+<visible>!String.IsEmpty(ListItem.Property(ibo.q))</visible>
+</control>
+<control type="image">
+<left>167</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF2E9E5B</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.tier),free)</visible>
+</control>
+<control type="image">
+<left>167</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFE0A800</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.tier),vip)</visible>
+</control>
+<control type="label">
+<left>167</left><top>230</top><width>66</width><height>28</height>
+<font>font12</font>
+<textcolor>FF10101A</textcolor>
+<shadowcolor>80000000</shadowcolor>
+<align>center</align><aligny>center</aligny>
+<label>[B]$INFO[ListItem.Property(ibo.tier_t)][/B]</label>
+<visible>!String.IsEmpty(ListItem.Property(ibo.tier))</visible>
+</control>
+          <control type="image">
+            <left>16</left>
+            <top>16</top>
+            <width>84</width>
+            <height>36</height>
+            <texture border="8">ibo_badge.png</texture>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.rating))</visible>
+          </control>
+          <control type="label">
+            <left>16</left>
+            <top>16</top>
+            <width>84</width>
+            <height>36</height>
+            <font>font12</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Property(ibo.rating)]</label>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.rating))</visible>
+          </control>
+<control type="image"><left>12</left><top>16</top><width>186</width><height>34</height><texture border="12">ibo_chip.png</texture><colordiffuse>F21E9E4B</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),done)</visible></control>
+<control type="image"><left>12</left><top>16</top><width>186</width><height>34</height><texture border="12">ibo_chip.png</texture><colordiffuse>FFE08A00</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part)</visible></control>
+<control type="label"><left>12</left><top>16</top><width>186</width><height>34</height><font>font12</font><textcolor>FFFFFFFF</textcolor><align>center</align><aligny>center</aligny><label>[B]$INFO[ListItem.Property(ibo.wst_t)][/B]</label><visible>!String.IsEmpty(ListItem.Property(ibo.wst))</visible></control>
+<control type="image"><left>12</left><top>56</top><width>150</width><height>30</height><texture border="12">ibo_chip.png</texture><colordiffuse>F2B8860B</colordiffuse><visible>!String.IsEmpty(ListItem.Property(ibo.ml))</visible></control>
+<control type="label"><left>12</left><top>56</top><width>150</width><height>30</height><font>font12</font><textcolor>FFFFFFFF</textcolor><align>center</align><aligny>center</aligny><label>[B]MINHA LISTA[/B]</label><visible>!String.IsEmpty(ListItem.Property(ibo.ml))</visible></control>
+<!-- barra de progresso: trilho + preenchimento (EM ANDAMENTO) / barra cheia (VISTO) -->
+<control type="image"><left>8</left><top>302</top><width>241</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>B3000000</colordiffuse><visible>!String.IsEmpty(ListItem.Property(ibo.wst))</visible></control>
+<control type="image"><left>8</left><top>302</top><width>241</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FF2ECC71</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),done)</visible></control>
+<control type="image"><left>8</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),0)</visible></control>
+<control type="image"><left>20</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),5)</visible></control>
+<control type="image"><left>32</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),10)</visible></control>
+<control type="image"><left>44</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),15)</visible></control>
+<control type="image"><left>56</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),20)</visible></control>
+<control type="image"><left>68</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),25)</visible></control>
+<control type="image"><left>80</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),30)</visible></control>
+<control type="image"><left>92</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),35)</visible></control>
+<control type="image"><left>104</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),40)</visible></control>
+<control type="image"><left>116</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),45)</visible></control>
+<control type="image"><left>128</left><top>302</top><width>13</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),50)</visible></control>
+<control type="image"><left>141</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),55)</visible></control>
+<control type="image"><left>153</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),60)</visible></control>
+<control type="image"><left>165</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),65)</visible></control>
+<control type="image"><left>177</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),70)</visible></control>
+<control type="image"><left>189</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),75)</visible></control>
+<control type="image"><left>201</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),80)</visible></control>
+<control type="image"><left>213</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),85)</visible></control>
+<control type="image"><left>225</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),90)</visible></control>
+<control type="image"><left>237</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),95)</visible></control>
+          <control type="image">
+            <left>205</left>
+            <top>16</top>
+            <width>32</width>
+            <height>32</height>
+            <texture>ibo_ic_star_y.png</texture>
+            <aspectratio>keep</aspectratio>
+            <visible>!String.IsEmpty(ListItem.Property(ibo.fav))</visible>
+          </control>
+        </itemlayout>
+        <focusedlayout height="372" width="257">
+          <control type="group">
+            <left>0</left>
+            <top>0</top>
+            <animation effect="zoom" start="100" end="104" center="auto" time="120" condition="Control.HasFocus(301)">Conditional</animation>
+            <control type="image">
+              <left>8</left>
+              <top>8</top>
+              <width>241</width>
+              <height>356</height>
+              <texture border="8">ibo_card.png</texture>
+            </control>
+            <control type="image">
+              <left>8</left>
+              <top>8</top>
+              <width>241</width>
+              <height>300</height>
+              <texture fallback="ibo_poster_default.png">$INFO[ListItem.Art(poster)]</texture>
+              <aspectratio>scale</aspectratio>
+            </control>
+            <control type="image">
+              <left>8</left>
+              <top>308</top>
+              <width>241</width>
+              <height>56</height>
+              <texture border="8">ibo_titlebar.png</texture>
+            </control>
+            <control type="label">
+              <left>18</left>
+              <top>308</top>
+              <width>221</width>
+              <height>56</height>
+              <font>font12</font>
+              <textcolor>FFFFFFFF</textcolor>
+              <align>left</align>
+              <aligny>center</aligny>
+              <label>$INFO[ListItem.Label]</label>
+              <scroll>true</scroll>
+            </control>
+<control type="image">
+<left>8</left><top>196</top><width>241</width><height>112</height>
+<texture>ibo_grad_bottom.png</texture>
+<visible>!String.IsEmpty(ListItem.Property(ibo.srv)) | !String.IsEmpty(ListItem.Property(ibo.q))</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF1F6FEB</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.sc),br)</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF8A3FE8</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.sc),web)</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF0E9AA7</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.sc),tmdb)</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFD9772B</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.sc),tv)</visible>
+</control>
+<control type="image">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF2A2A3A</colordiffuse>
+<visible>!String.IsEmpty(ListItem.Property(ibo.srv)) + !String.IsEqual(ListItem.Property(ibo.sc),br) + !String.IsEqual(ListItem.Property(ibo.sc),web) + !String.IsEqual(ListItem.Property(ibo.sc),tmdb) + !String.IsEqual(ListItem.Property(ibo.sc),tv)</visible>
+</control>
+<control type="label">
+<left>16</left><top>266</top><width>217</width><height>34</height>
+<font>font13</font>
+<textcolor>FFFFFFFF</textcolor>
+<shadowcolor>80000000</shadowcolor>
+<align>center</align><aligny>center</aligny>
+<label>[B]$INFO[ListItem.Property(ibo.srv)][/B]</label>
+<visible>!String.IsEmpty(ListItem.Property(ibo.srv))</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFFFB300</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),uhd)</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF2FB3E7</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),fhd)</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF4CD964</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),hd)</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFB0B0B0</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),sd)</visible>
+</control>
+<control type="image">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFFF5252</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.qc),cam)</visible>
+</control>
+<control type="label">
+<left>16</left><top>230</top><width>66</width><height>28</height>
+<font>font12</font>
+<textcolor>FF10101A</textcolor>
+<shadowcolor>80000000</shadowcolor>
+<align>center</align><aligny>center</aligny>
+<label>[B]$INFO[ListItem.Property(ibo.q)][/B]</label>
+<visible>!String.IsEmpty(ListItem.Property(ibo.q))</visible>
+</control>
+<control type="image">
+<left>167</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FF2E9E5B</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.tier),free)</visible>
+</control>
+<control type="image">
+<left>167</left><top>230</top><width>66</width><height>28</height>
+<texture border="12">ibo_chip.png</texture>
+<colordiffuse>FFE0A800</colordiffuse>
+<visible>String.IsEqual(ListItem.Property(ibo.tier),vip)</visible>
+</control>
+<control type="label">
+<left>167</left><top>230</top><width>66</width><height>28</height>
+<font>font12</font>
+<textcolor>FF10101A</textcolor>
+<shadowcolor>80000000</shadowcolor>
+<align>center</align><aligny>center</aligny>
+<label>[B]$INFO[ListItem.Property(ibo.tier_t)][/B]</label>
+<visible>!String.IsEmpty(ListItem.Property(ibo.tier))</visible>
+</control>
+            <control type="image">
+              <left>16</left>
+              <top>16</top>
+              <width>84</width>
+              <height>36</height>
+              <texture border="8">ibo_badge.png</texture>
+              <visible>!String.IsEmpty(ListItem.Property(ibo.rating))</visible>
+            </control>
+            <control type="label">
+              <left>16</left>
+              <top>16</top>
+              <width>84</width>
+              <height>36</height>
+              <font>font12</font>
+              <textcolor>FFFFFFFF</textcolor>
+              <align>center</align>
+              <aligny>center</aligny>
+              <label>$INFO[ListItem.Property(ibo.rating)]</label>
+              <visible>!String.IsEmpty(ListItem.Property(ibo.rating))</visible>
+            </control>
+<control type="image"><left>12</left><top>16</top><width>186</width><height>34</height><texture border="12">ibo_chip.png</texture><colordiffuse>F21E9E4B</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),done)</visible></control>
+<control type="image"><left>12</left><top>16</top><width>186</width><height>34</height><texture border="12">ibo_chip.png</texture><colordiffuse>FFE08A00</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part)</visible></control>
+<control type="label"><left>12</left><top>16</top><width>186</width><height>34</height><font>font12</font><textcolor>FFFFFFFF</textcolor><align>center</align><aligny>center</aligny><label>[B]$INFO[ListItem.Property(ibo.wst_t)][/B]</label><visible>!String.IsEmpty(ListItem.Property(ibo.wst))</visible></control>
+<control type="image"><left>12</left><top>56</top><width>150</width><height>30</height><texture border="12">ibo_chip.png</texture><colordiffuse>F2B8860B</colordiffuse><visible>!String.IsEmpty(ListItem.Property(ibo.ml))</visible></control>
+<control type="label"><left>12</left><top>56</top><width>150</width><height>30</height><font>font12</font><textcolor>FFFFFFFF</textcolor><align>center</align><aligny>center</aligny><label>[B]MINHA LISTA[/B]</label><visible>!String.IsEmpty(ListItem.Property(ibo.ml))</visible></control>
+<!-- barra de progresso: trilho + preenchimento (EM ANDAMENTO) / barra cheia (VISTO) -->
+<control type="image"><left>8</left><top>302</top><width>241</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>B3000000</colordiffuse><visible>!String.IsEmpty(ListItem.Property(ibo.wst))</visible></control>
+<control type="image"><left>8</left><top>302</top><width>241</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FF2ECC71</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),done)</visible></control>
+<control type="image"><left>8</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),0)</visible></control>
+<control type="image"><left>20</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),5)</visible></control>
+<control type="image"><left>32</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),10)</visible></control>
+<control type="image"><left>44</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),15)</visible></control>
+<control type="image"><left>56</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),20)</visible></control>
+<control type="image"><left>68</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),25)</visible></control>
+<control type="image"><left>80</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),30)</visible></control>
+<control type="image"><left>92</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),35)</visible></control>
+<control type="image"><left>104</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),40)</visible></control>
+<control type="image"><left>116</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),45)</visible></control>
+<control type="image"><left>128</left><top>302</top><width>13</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),50)</visible></control>
+<control type="image"><left>141</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),55)</visible></control>
+<control type="image"><left>153</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),60)</visible></control>
+<control type="image"><left>165</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),65)</visible></control>
+<control type="image"><left>177</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),70)</visible></control>
+<control type="image"><left>189</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),75)</visible></control>
+<control type="image"><left>201</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),80)</visible></control>
+<control type="image"><left>213</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),85)</visible></control>
+<control type="image"><left>225</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),90)</visible></control>
+<control type="image"><left>237</left><top>302</top><width>12</width><height>6</height><texture>ibo_white.png</texture><colordiffuse>FFFFA528</colordiffuse><visible>String.IsEqual(ListItem.Property(ibo.wst),part) + Integer.IsGreater(ListItem.Property(ibo.wpct),95)</visible></control>
+            <control type="image">
+              <left>205</left>
+              <top>16</top>
+              <width>32</width>
+              <height>32</height>
+              <texture>ibo_ic_star_y.png</texture>
+              <aspectratio>keep</aspectratio>
+              <visible>!String.IsEmpty(ListItem.Property(ibo.fav))</visible>
+            </control>
+            <control type="image">
+              <left>4</left>
+              <top>4</top>
+              <width>249</width>
+              <height>364</height>
+              <texture border="8">ibo_ring_y.png</texture>
+              <visible>Control.HasFocus(301)</visible>
+            </control>
+          </control>
+        </focusedlayout>
+      </control>
+    </control>
+    <control type="group">
+      <visible>String.IsEqual(Window.Property(ibo.loading),1)</visible>
+      <animation type="Visible" reversible="false">
+        <effect type="fade" start="0" end="100" time="200"/>
+      </animation>
+      <control type="image">
+        <left>0</left><top>184</top><width>1920</width><height>896</height>
+        <texture>ibo_white.png</texture>
+        <colordiffuse>B3140B1E</colordiffuse>
+      </control>
+      <control type="group">
+        <left>600</left>
+        <top>380</top>
+        <animation type="Visible" reversible="false">
+          <effect type="zoom" start="92" end="100" center="360,150" time="240" tween="back" easing="out"/>
+        </animation>
+        <control type="image">
+          <left>0</left><top>0</top><width>720</width><height>300</height>
+          <texture border="16">ibo_dlg.png</texture>
+        </control>
+        <control type="image">
+          <left>40</left><top>48</top><width>96</width><height>96</height>
+          <texture>ibo_ic_reload.png</texture>
+          <aspectratio>keep</aspectratio>
+          <animation effect="rotate" start="0" end="-360" center="auto" time="1100" loop="true" condition="String.IsEqual(Window.Property(ibo.loading),1)">Conditional</animation>
+        </control>
+        <control type="label">
+          <left>160</left><top>40</top><width>520</width><height>60</height>
+          <font>font15_title</font>
+          <textcolor>FFFFFFFF</textcolor>
+          <align>left</align><aligny>center</aligny>
+          <label>$INFO[Window.Property(ibo.t_loading)]</label>
+        </control>
+        <control type="label">
+          <left>160</left><top>104</top><width>520</width><height>44</height>
+          <font>font12</font>
+          <textcolor>FFB9B2C2</textcolor>
+          <align>left</align><aligny>center</aligny>
+          <label>Aguarde um instante...</label>
+        </control>
+        <control type="image">
+          <left>40</left><top>196</top><width>640</width><height>4</height>
+          <texture>ibo_white.png</texture>
+          <colordiffuse>33FFFFFF</colordiffuse>
+        </control>
+        <control type="image">
+          <left>40</left><top>196</top><width>200</width><height>4</height>
+          <texture>ibo_white.png</texture>
+          <colordiffuse>FFFFB300</colordiffuse>
+          <animation effect="slide" start="0,0" end="440,0" time="1300" tween="sine" easing="inout" loop="true" pulse="true" condition="String.IsEqual(Window.Property(ibo.loading),1)">Conditional</animation>
+        </control>
+        <control type="label">
+          <left>40</left><top>224</top><width>640</width><height>36</height>
+          <font>font12</font>
+          <textcolor>FF8E8799</textcolor>
+          <align>center</align><aligny>center</aligny>
+          <label>KelTec Media Play</label>
+        </control>
+      </control>
+    </control>
+    <control type="textbox">
+      <left>480</left>
+      <top>470</top>
+      <width>960</width>
+      <height>200</height>
+      <font>font13</font>
+      <textcolor>FFDADADA</textcolor>
+      <align>center</align>
+      <label>$INFO[Window.Property(ibo.empty)]</label>
+      <visible>!String.IsEmpty(Window.Property(ibo.empty))</visible>
+    </control>
+    <control type="group">
+      <left>60</left>
+      <top>184</top>
+      <visible>String.IsEqual(Window.Property(ibo.layout),grid) + String.IsEqual(Window.Property(ibo.dd),1)</visible>
+      <animation type="Visible" reversible="false">
+        <effect type="fade" start="0" end="100" time="160"/>
+        <effect type="slide" start="0,-30" end="0,0" time="200" tween="cubic" easing="out"/>
+      </animation>
+      <animation type="Hidden" reversible="false">
+        <effect type="fade" start="100" end="0" time="120"/>
+      </animation>
+      <control type="image">
+        <left>0</left>
+        <top>0</top>
+        <width>440</width>
+        <height>640</height>
+        <texture border="8">ibo_dd_list.png</texture>
+      </control>
+      <control type="list" id="202">
+        <left>10</left>
+        <top>10</top>
+        <width>420</width>
+        <height>620</height>
+        <orientation>vertical</orientation>
+        <scrolltime>120</scrolltime>
+        <onup>202</onup>
+        <ondown>202</ondown>
+        <onleft>202</onleft>
+        <onright>202</onright>
+        <itemlayout height="62" width="420">
+          <control type="label">
+            <left>16</left>
+            <top>0</top>
+            <width>388</width>
+            <height>62</height>
+            <font>font13</font>
+            <textcolor>FFFFFFFF</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+          </control>
+        </itemlayout>
+        <focusedlayout height="62" width="420">
+          <control type="image">
+            <left>0</left>
+            <top>2</top>
+            <width>420</width>
+            <height>58</height>
+            <texture border="8">ibo_card_f.png</texture>
+            <visible>Control.HasFocus(202)</visible>
+          </control>
+          <control type="label">
+            <left>16</left>
+            <top>0</top>
+            <width>388</width>
+            <height>62</height>
+            <font>font13</font>
+            <textcolor>FFFFEB3B</textcolor>
+            <align>left</align>
+            <aligny>center</aligny>
+            <label>$INFO[ListItem.Label]</label>
+            <scroll>true</scroll>
+          </control>
+        </focusedlayout>
+      </control>
+    </control>
+  </controls>
+</window>

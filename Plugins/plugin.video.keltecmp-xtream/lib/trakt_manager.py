@@ -55,6 +55,14 @@ _watchlist_cache   = {}
 _watchlist_cache_ts = 0
 
 
+try:
+    from lib.ibo_dialogs import Dialog as _IboDlg, Progress as _IboProg
+except Exception:  # fallback: dialogos nativos do Kodi
+    import xbmcgui as _xg_fallback
+    _IboDlg = _xg_fallback.Dialog
+    _IboProg = _xg_fallback.DialogProgress
+
+
 def _log(msg, level=None):
     if _HAS_KODI:
         lvl = level if level is not None else xbmc.LOGDEBUG
@@ -238,7 +246,7 @@ class TraktManager:
                 timeout=15
             )
         except Exception as e:
-            xbmcgui.Dialog().ok(
+            _IboDlg().ok(
                 '[B][COLOR crimson]Trakt - Sem conexao[/COLOR][/B]',
                 f'Nao foi possivel contatar o Trakt.\nErro: {e}\n\n'
                 'Verifique sua conexao com a internet.'
@@ -246,7 +254,7 @@ class TraktManager:
             return False
 
         if resp.status_code != 200:
-            xbmcgui.Dialog().ok(
+            _IboDlg().ok(
                 '[B][COLOR crimson]Trakt - Erro[/COLOR][/B]',
                 f'Resposta inesperada do Trakt: HTTP {resp.status_code}\n\n'
                 'Tente novamente em alguns instantes.'
@@ -257,7 +265,7 @@ class TraktManager:
         user_code   = data.get('user_code', '')
         device_code = data.get('device_code', '')
 
-        xbmcgui.Dialog().ok(
+        _IboDlg().ok(
             '[B][COLOR gold]Trakt - Conectar conta[/COLOR][/B]',
             '[B]Passo 1:[/B] Abra no navegador:\n'
             '[COLOR cyan][B]trakt.tv/activate[/B][/COLOR]\n\n'
@@ -294,7 +302,7 @@ class TraktManager:
                     break
 
             if tentativa < 2:
-                retry = xbmcgui.Dialog().yesno(
+                retry = _IboDlg().yesno(
                     '[B][COLOR gold]Trakt - Verificando[/COLOR][/B]',
                     f'Codigo: [COLOR gold][B]{user_code}[/B][/COLOR]\n\n'
                     'Autorizacao ainda nao detectada.\n\n'
@@ -305,7 +313,7 @@ class TraktManager:
                     break
 
         if not authorized:
-            oferecer = xbmcgui.Dialog().yesno(
+            oferecer = _IboDlg().yesno(
                 'Trakt - Autorizacao nao detectada',
                 'A autorizacao automatica nao funcionou.\n\n'
                 'Deseja inserir o Access Token manualmente?\n'
@@ -317,10 +325,10 @@ class TraktManager:
         if authorized:
             username = self._addon.getSetting(_TRAKT_USERNAME_KEY) or ''
             msg = f'Conectado como [B]{username}[/B]!' if username else 'Conta conectada!'
-            xbmcgui.Dialog().notification('Trakt', msg, xbmcgui.NOTIFICATION_INFO, 3500)
+            _IboDlg().notification('Trakt', msg, xbmcgui.NOTIFICATION_INFO, 3500)
             _log('Autenticado com sucesso.')
         else:
-            xbmcgui.Dialog().notification(
+            _IboDlg().notification(
                 'Trakt', 'Autorizacao nao concluida.',
                 xbmcgui.NOTIFICATION_WARNING, 3000
             )
@@ -329,7 +337,7 @@ class TraktManager:
     def _authenticate_manual_token(self):
         if not _HAS_KODI:
             return False
-        xbmcgui.Dialog().ok(
+        _IboDlg().ok(
             '[B][COLOR gold]Trakt - Token Manual[/COLOR][/B]',
             'Para obter seu Access Token:\n\n'
             '[B]1.[/B] Acesse: [COLOR cyan]trakt.tv/settings[/COLOR]\n'
@@ -344,7 +352,7 @@ class TraktManager:
             return False
         token = keyboard.getText().strip()
         if len(token) < 20:
-            xbmcgui.Dialog().ok('Trakt', 'Token invalido ou muito curto.')
+            _IboDlg().ok('Trakt', 'Token invalido ou muito curto.')
             return False
         try:
             self._addon.setSetting(_TRAKT_TOKEN_KEY,   token)

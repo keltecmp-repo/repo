@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog">
+  <defaultcontrol always="true">902</defaultcontrol>
+  <animation type="WindowOpen" reversible="false">
+    <effect type="fade" start="0" end="100" time="200"/>
+    <effect type="zoom" start="88" end="100" center="960,540" time="240" tween="back" easing="out"/>
+  </animation>
+  <animation type="WindowClose" reversible="false">
+    <effect type="fade" start="100" end="0" time="140"/>
+    <effect type="zoom" start="100" end="92" center="960,540" time="160" tween="cubic" easing="in"/>
+  </animation>
+  <controls>
+    <control type="image">
+      <left>0</left><top>0</top><width>1920</width><height>1080</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>A6000000</colordiffuse>
+    </control>
+    <control type="group">
+      <left>510</left>
+      <top>290</top>
+      <control type="image">
+        <left>0</left><top>0</top><width>900</width><height>500</height>
+        <texture border="16">ibo_dlg.png</texture>
+      </control>
+        <control type="image">
+          <left>40</left><top>34</top><width>72</width><height>72</height>
+          <texture>ibo_ic_info.png</texture>
+          <colordiffuse>FF2FB3E7</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.dlg_kind),info)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>34</top><width>72</width><height>72</height>
+          <texture>ibo_ic_ok.png</texture>
+          <colordiffuse>FF4CD964</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.dlg_kind),ok)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>34</top><width>72</width><height>72</height>
+          <texture>ibo_ic_warn.png</texture>
+          <colordiffuse>FFFFB300</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.dlg_kind),warn)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>34</top><width>72</width><height>72</height>
+          <texture>ibo_ic_err.png</texture>
+          <colordiffuse>FFFF5252</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.dlg_kind),err)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>34</top><width>72</width><height>72</height>
+          <texture>ibo_ic_ask.png</texture>
+          <colordiffuse>FFFFEB3B</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.dlg_kind),ask)</visible>
+        </control>
+      <control type="label">
+        <left>132</left><top>34</top><width>730</width><height>72</height>
+        <font>font15_title</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <align>left</align><aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.dlg_title)]</label>
+      </control>
+      <control type="image">
+        <left>40</left><top>122</top><width>820</width><height>2</height>
+        <texture>ibo_div.png</texture>
+      </control>
+      <control type="textbox" id="10">
+        <left>44</left><top>142</top><width>812</width><height>230</height>
+        <font>font13</font>
+        <textcolor>FFE6E6E6</textcolor>
+        <align>left</align>
+        <autoscroll delay="3500" time="2500" repeat="6000">!String.IsEmpty(Window.Property(ibo.dlg_long))</autoscroll>
+        <label>$INFO[Window.Property(ibo.dlg_text)]</label>
+      </control>
+      <control type="button" id="901">
+        <left>70</left><top>392</top><width>360</width><height>68</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <label>$INFO[Window.Property(ibo.dlg_yes)]</label>
+        <font>font13</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <focusedcolor>FFFFEB3B</focusedcolor>
+        <align>center</align><aligny>center</aligny>
+        <onleft>901</onleft><onright>902</onright><onup>901</onup><ondown>901</ondown>
+        <visible>!String.IsEmpty(Window.Property(ibo.dlg_two))</visible>
+      </control>
+      <control type="button" id="902">
+        <left>470</left><top>392</top><width>360</width><height>68</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <label>$INFO[Window.Property(ibo.dlg_no)]</label>
+        <font>font13</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <focusedcolor>FFFFEB3B</focusedcolor>
+        <align>center</align><aligny>center</aligny>
+        <onleft>901</onleft><onright>902</onright><onup>902</onup><ondown>902</ondown>
+        <visible>!String.IsEmpty(Window.Property(ibo.dlg_two))</visible>
+      </control>
+      <control type="button" id="903">
+        <left>250</left><top>392</top><width>400</width><height>68</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <label>$INFO[Window.Property(ibo.dlg_yes)]</label>
+        <font>font13</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <focusedcolor>FFFFEB3B</focusedcolor>
+        <align>center</align><aligny>center</aligny>
+        <onleft>903</onleft><onright>903</onright><onup>903</onup><ondown>903</ondown>
+        <visible>String.IsEmpty(Window.Property(ibo.dlg_two))</visible>
+      </control>
+    </control>
+  </controls>
+</window>

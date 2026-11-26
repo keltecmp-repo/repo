@@ -1,416 +1,323 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
 
-
-    <!-- ========================================== -->
-    <!-- VIP - ACESSO COLABORADOR                   -->
-    <!-- ========================================== -->
-    <category label="KelTec VIP">
+    <category label="Conta VIP">
         <setting label="Acesso VIP — Colaboradores KelTec Media Play" type="lsep"/>
-        <setting label="Autentique para acessar servidores e conteudos exclusivos" type="lsep"/>
-
+        <setting label="Autentique para liberar servidores e conteúdos exclusivos" type="lsep"/>
         <setting type="sep"/>
-        <setting label="Autenticacao" type="lsep"/>
+        <setting label="Autenticação" type="lsep"/>
         <setting label="Fazer login VIP" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=vip_login)"/>
         <setting label="Ver status da conta VIP" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=vip_status)"/>
         <setting label="Como adquirir acesso VIP" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=vip_contact)"/>
-
-        <setting type="sep"/>
-        <setting label="Dados internos VIP (nao editar manualmente)" type="lsep"/>
-        <setting id="vip_username"   type="text" label="Usuario VIP"         default="" visible="false"/>
-        <setting id="vip_plan"       type="text" label="Plano VIP"           default="" visible="false"/>
-        <setting id="vip_expires_at" type="text" label="Validade VIP"        default="" visible="false"/>
-        <setting id="vip_is_active"  type="bool" label="VIP Ativo"           default="false" visible="false"/>
+        <setting id="vip_username" type="text" label="Usuário VIP" default="" visible="false"/>
+        <setting id="vip_plan" type="text" label="Plano VIP" default="" visible="false"/>
+        <setting id="vip_expires_at" type="text" label="Validade VIP" default="" visible="false"/>
+        <setting id="vip_is_active" type="bool" label="VIP ativo" default="false" visible="false"/>
     </category>
 
-
-
-    <!-- ========================================== -->
-    <!-- CONFIGURACOES DE SERVIDOR PRINCIPAL        -->
-    <!-- ========================================== -->
-    <category label="Configuracao do Servidor">
+    <category label="Servidores">
+        <setting label="Servidor ativo" type="lsep"/>
+        <setting id="active_server" type="number" label="Servidor ativo (ID)" default="0"/>
+        <setting id="auto_fallback" type="bool" label="Trocar automaticamente de servidor se um falhar" default="true"/>
         <setting type="sep"/>
-        <setting id="active_server" type="number" label="Servidor Ativo (ID)"                  default="0"    visible="true"/>
-        <setting id="auto_fallback" type="bool"   label="Fallback automatico entre servidores" default="true"/>
-
-        <setting label="Servidor Principal (Legado)" type="lsep"/>
-        <setting label="Usado como fallback se nenhum servidor estiver ativo" type="lsep"/>
-
-        <setting id="base_url"  type="text" label="URL do Servidor"   default="http://"/>
-        <setting id="username"  type="text" label="Nome de Usuario"   default=""/>
-        <setting id="password"  type="text" label="Senha"             default="" option="hidden"/>
-
+        <setting label="Servidor principal (legado)" type="lsep"/>
+        <setting label="Usado como reserva quando nenhum servidor da lista estiver ativo" type="lsep"/>
+        <setting id="base_url" type="text" label="URL do servidor" default="http://"/>
+        <setting id="username" type="text" label="Usuário" default=""/>
+        <setting id="password" type="text" label="Senha" option="hidden" default=""/>
         <setting type="sep"/>
-        <setting label="Multiplos Servidores" type="lsep"/>
-        <setting label="Configure ate 5 servidores diferentes" type="lsep"/>
-
-        <setting id="server1_name" type="text" label="Servidor 1 - Nome"    default=""/>
-        <setting id="server1_url"  type="text" label="Servidor 1 - URL"     default=""/>
-        <setting id="server1_user" type="text" label="Servidor 1 - Usuario" default=""/>
-        <setting id="server1_pass" type="text" label="Servidor 1 - Senha"   default="" option="hidden"/>
-
+        <setting label="Servidor pessoal 1" type="lsep"/>
+        <setting id="server1_name" type="text" label="Nome" default=""/>
+        <setting id="server1_url" type="text" label="URL" default=""/>
+        <setting id="server1_user" type="text" label="Usuário" default=""/>
+        <setting id="server1_pass" type="text" label="Senha" option="hidden" default=""/>
         <setting type="sep"/>
-        <setting id="server2_name" type="text" label="Servidor 2 - Nome"    default=""/>
-        <setting id="server2_url"  type="text" label="Servidor 2 - URL"     default=""/>
-        <setting id="server2_user" type="text" label="Servidor 2 - Usuario" default=""/>
-        <setting id="server2_pass" type="text" label="Servidor 2 - Senha"   default="" option="hidden"/>
-
+        <setting label="Servidor pessoal 2" type="lsep"/>
+        <setting id="server2_name" type="text" label="Nome" default=""/>
+        <setting id="server2_url" type="text" label="URL" default=""/>
+        <setting id="server2_user" type="text" label="Usuário" default=""/>
+        <setting id="server2_pass" type="text" label="Senha" option="hidden" default=""/>
         <setting type="sep"/>
-        <setting id="server3_name" type="text" label="Servidor 3 - Nome"    default=""/>
-        <setting id="server3_url"  type="text" label="Servidor 3 - URL"     default=""/>
-        <setting id="server3_user" type="text" label="Servidor 3 - Usuario" default=""/>
-        <setting id="server3_pass" type="text" label="Servidor 3 - Senha"   default="" option="hidden"/>
-
+        <setting label="Servidor pessoal 3" type="lsep"/>
+        <setting id="server3_name" type="text" label="Nome" default=""/>
+        <setting id="server3_url" type="text" label="URL" default=""/>
+        <setting id="server3_user" type="text" label="Usuário" default=""/>
+        <setting id="server3_pass" type="text" label="Senha" option="hidden" default=""/>
         <setting type="sep"/>
-        <setting id="server4_name" type="text" label="Servidor 4 - Nome"    default=""/>
-        <setting id="server4_url"  type="text" label="Servidor 4 - URL"     default=""/>
-        <setting id="server4_user" type="text" label="Servidor 4 - Usuario" default=""/>
-        <setting id="server4_pass" type="text" label="Servidor 4 - Senha"   default="" option="hidden"/>
-
+        <setting label="Servidor pessoal 4" type="lsep"/>
+        <setting id="server4_name" type="text" label="Nome" default=""/>
+        <setting id="server4_url" type="text" label="URL" default=""/>
+        <setting id="server4_user" type="text" label="Usuário" default=""/>
+        <setting id="server4_pass" type="text" label="Senha" option="hidden" default=""/>
         <setting type="sep"/>
-        <setting id="server5_name" type="text" label="Servidor 5 - Nome"    default=""/>
-        <setting id="server5_url"  type="text" label="Servidor 5 - URL"     default=""/>
-        <setting id="server5_user" type="text" label="Servidor 5 - Usuario" default=""/>
-        <setting id="server5_pass" type="text" label="Servidor 5 - Senha"   default="" option="hidden"/>
+        <setting label="Servidor pessoal 5" type="lsep"/>
+        <setting id="server5_name" type="text" label="Nome" default=""/>
+        <setting id="server5_url" type="text" label="URL" default=""/>
+        <setting id="server5_user" type="text" label="Usuário" default=""/>
+        <setting id="server5_pass" type="text" label="Senha" option="hidden" default=""/>
+        <setting id="active_server_name" type="text" label="Nome do servidor ativo (interno)" default="" visible="false"/>
+        <setting id="active_server_id" type="text" label="ID do servidor ativo (interno)" default="" visible="false"/>
     </category>
 
-
-    <!-- ========================================== -->
-    <!-- MENU PRINCIPAL - VISIBILIDADE              -->
-    <!-- ========================================== -->
     <category label="Menu Principal">
-        <setting label="Escolha quais itens aparecem no menu principal" type="lsep"/>
-        <setting label="Itens sempre visiveis: Servidor, Configuracoes" type="lsep"/>
-
+        <setting label="Escolha o que aparece no menu principal" type="lsep"/>
+        <setting label="Servidor e Configurações ficam sempre visíveis" type="lsep"/>
         <setting type="sep"/>
-        <setting label="Conteudo" type="lsep"/>
-        <setting id="menu_show_doar"          type="bool" label="Mostrar Area de Doacoes"       default="false"/>
-        <setting id="menu_show_account"       type="bool" label="Mostrar Informacoes da Conta"  default="false"/>
-        <setting id="menu_show_search"        type="bool" label="Mostrar Pesquisa Global"        default="true"/>
-        <setting id="menu_show_tv"            type="bool" label="Mostrar TV ao Vivo"             default="true"/>
-        <setting id="menu_show_movies"        type="bool" label="Mostrar Filmes"                 default="true"/>
-        <setting id="menu_show_series"        type="bool" label="Mostrar Series"                 default="true"/>
-        <setting id="menu_show_pvrsync"       type="bool" label="Mostrar Sync IPTV + Proxy"       default="true"/>
-        <setting id="menu_show_pvrguide"      type="bool" label="Mostrar Guia IPTV (Proxy)"         default="true"/>
-
+        <setting label="Conteúdo" type="lsep"/>
+        <setting id="menu_show_search" type="bool" label="Pesquisa global" default="true"/>
+        <setting id="menu_show_tv" type="bool" label="TV ao vivo" default="true"/>
+        <setting id="menu_show_movies" type="bool" label="Filmes" default="true"/>
+        <setting id="menu_show_series" type="bool" label="Séries" default="true"/>
+        <setting id="menu_show_tmdb" type="bool" label="Catálogo TMDB" default="true"/>
         <setting type="sep"/>
-        <setting label="Favoritos e Historico" type="lsep"/>
-        <setting id="menu_show_favorites"     type="bool" label="Mostrar Favoritos"              default="true"/>
-        <setting id="menu_show_history"       type="bool" label="Mostrar Ultimos Vistos"         default="true"/>
-
+        <setting label="Biblioteca" type="lsep"/>
+        <setting id="menu_show_mylist" type="bool" label="Minha Lista" default="true"/>
+        <setting id="mylist_trakt_sync" type="bool" label="Minha Lista: sincronizar com a watchlist do Trakt" default="true"/>
+        <setting id="menu_show_favorites" type="bool" label="Favoritos" default="true"/>
+        <setting id="menu_show_history" type="bool" label="Últimos vistos" default="true"/>
+        <setting id="menu_show_trakt" type="bool" label="Trakt.tv" default="true"/>
+        <setting id="menu_show_stats" type="bool" label="Dashboard de estatísticas" default="true"/>
         <setting type="sep"/>
-        <setting label="Trakt e Estatisticas" type="lsep"/>
-        <setting id="menu_show_trakt"         type="bool" label="Mostrar Trakt.tv"                default="true"/>
-        <setting id="menu_show_stats"         type="bool" label="Mostrar Dashboard de Estatisticas" default="true"/>
-
+        <setting label="Fontes web (TV, Novelas e Animes)" type="lsep"/>
+        <setting id="menu_show_embedtv" type="bool" label="WebTV 1" default="true"/>
+        <setting id="menu_show_webtv2" type="bool" label="WebTV 2" default="true"/>
+        <setting id="menu_show_webtv3" type="bool" label="WebTV 3" default="true"/>
+        <setting id="menu_show_webtv4" type="bool" label="WebTV 4" default="true"/>
+        <setting id="menu_show_webtv6" type="bool" label="WebTV 5" default="true"/>
+        <setting id="menu_show_webtv5" type="bool" label="WebTV 6" default="true"/>
+        <setting id="menu_show_webtv7" type="bool" label="WebTV 7" default="true"/>
+        <setting id="menu_show_webtv8" type="bool" label="WebTV 8 (Agenda e Guia)" default="true"/>
+        <setting id="menu_show_plutotv" type="bool" label="Pluto TV" default="true"/>
+        <setting id="menu_show_webtv9" type="bool" label="Web Novelas" default="true"/>
+        <setting id="webtv9_page_size" type="slider" label="Novelas por página (menos = abre mais rápido)" range="20,10,60" option="int" default="40"/>
+        <setting id="menu_show_webtv10" type="bool" label="Web Animes" default="true"/>
         <setting type="sep"/>
-        <setting label="TMDB e Outros" type="lsep"/>
-        <setting id="menu_show_tmdb"          type="bool" label="Mostrar Catalogo TMDB"          default="true"/>
-        <setting id="menu_show_embedtv"       type="bool" label="Mostrar WebTV (fonte 1)"       default="true"/>
-        <setting id="menu_show_webtv2"        type="bool" label="Mostrar WebTV 2 (fonte 2)"     default="true"/>
-        <setting id="menu_show_webtv3"        type="bool" label="Mostrar WebTV 3 (fonte 3)"     default="true"/>
-        <setting id="menu_show_webtv4"        type="bool" label="Mostrar WebTV 4 (fonte 4)"     default="true"/>
-        <setting id="menu_show_webtv6"        type="bool" label="Mostrar WebTV 5 (fonte 5)" default="true"/>
-        <setting id="menu_show_webtv5"  type="bool" label="Mostrar WebTV 6 (experimental, oculto)" default="false"/>
-        <setting id="menu_show_webtv7"        type="bool" label="Mostrar WebTV 7 (fonte 7)" default="true"/>
-        <setting id="menu_show_webtv8"        type="bool" label="Mostrar WebTV 8 (fonte 8 - Agenda e Guia)" default="true"/>
-        <setting id="menu_show_webtv9"        type="bool" label="Mostrar Web Novelas (Novelas WEB)" default="true"/>
-        <setting id="menu_show_webtv10"       type="bool" label="Mostrar Web Animes (Animes WEB)" default="true"/>
-        <setting id="menu_show_addons"        type="bool" label="Mostrar Meus Add-ons"           default="true"/>
-        <setting id="menu_show_reload"        type="bool" label="Mostrar Atualizar Servidores"   default="false"/>
-        <setting id="menu_show_parental"      type="bool" label="Mostrar Controle Parental"      default="true"/>
-
+        <setting label="Utilitários" type="lsep"/>
+        <setting id="menu_show_pvrsync" type="bool" label="Sync IPTV + Proxy" default="true"/>
+        <setting id="menu_show_pvrguide" type="bool" label="Guia IPTV (Proxy)" default="true"/>
+        <setting id="menu_show_addons" type="bool" label="Meus Add-ons" default="true"/>
+        <setting id="menu_show_reload" type="bool" label="Atualizar servidores" default="false"/>
+        <setting id="menu_show_parental" type="bool" label="Controle parental" default="true"/>
+        <setting id="menu_show_account" type="bool" label="Informações da conta" default="false"/>
+        <setting id="menu_show_doar" type="bool" label="Área de doações" default="false"/>
         <setting type="sep"/>
-        <setting label="Visualizacao dos menus" type="lsep"/>
-        <setting label="Lista em TODOS os menus (mesmo com modo antigo salvo pelo Kodi). Poster somente em Filmes, Series e Temporadas." type="lsep"/>
-        <setting id="force_list_view" type="bool" label="Forcar Modo Lista organizado em todos os menus" default="true"/>
-        <setting id="force_list_all"  type="bool" label="Incluir Filmes e Series (tudo em Lista, sem Poster/Grade)" default="true" enable="eq(-1,true)"/>
-        <setting id="list_view_id"    type="number" label="ID do Modo Lista da skin (padrao 50)" default="50" enable="eq(-2,true)"/>
-        <setting id="poster_view_id"  type="number" label="ID do Modo Poster/Grade da skin (padrao 500; Aeon Nox = 51)" default="500"/>
+        <setting label="Visualização dos menus" type="lsep"/>
+        <setting label="Lista em todos os menus, mesmo com outro modo salvo pelo Kodi" type="lsep"/>
+        <setting id="force_list_view" type="bool" label="Forçar modo Lista organizado em todos os menus" default="true"/>
+        <setting id="force_list_all" type="bool" label="Incluir Filmes e Séries (tudo em Lista, sem Pôster/Grade)" default="true" enable="eq(-1,true)"/>
+        <setting id="list_view_id" type="number" label="ID do modo Lista da skin (padrão 50)" default="50" enable="eq(-2,true)"/>
+        <setting id="poster_view_id" type="number" label="ID do modo Pôster/Grade da skin (padrão 500; Aeon Nox = 51)" default="500"/>
     </category>
 
+    <category label="Interface IBO Pro">
+        <setting label="Interface estilo IBO Pro (skin própria do add-on)" type="lsep"/>
+        <setting type="sep"/>
+        <setting label="Inicialização" type="lsep"/>
+        <setting id="ibo_auto" type="bool" label="Abrir a interface IBO Pro ao iniciar o add-on" default="true"/>
+        <setting id="ibo_block_bg" type="bool" label="Não carregar o add-on sozinho ao iniciar o Kodi (atalhos/widgets só carregam ao clicar)" default="false"/>
+        <setting id="ibo_bg_lists" type="bool" label="Widgets da Home do Kodi carregam as listas sozinhos (não recomendado)" default="true"/>
+        <setting type="sep"/>
+        <setting label="Reprodução e busca" type="lsep"/>
+        <setting id="ibo_live_preview" type="bool" label="Ao vivo: o clique abre a prévia na janela (2º clique = tela cheia)" default="true"/>
+        <setting id="ibo_search_badges" type="bool" label="Busca: mostrar servidor e qualidade em cada item" default="true"/>
+        <setting type="sep"/>
+        <setting label="Avisos e carregamento" type="lsep"/>
+        <setting id="ibo_skin_dialogs" type="bool" label="Notificações, pop-ups e carregamento no estilo da skin IBO Pro" default="true"/>
+        <setting id="ibo_toast_style" type="labelenum" label="Notificações no topo da tela" values="Estilo da skin IBO Pro (recomendado)|Nativo do Kodi" default="Estilo da skin IBO Pro (recomendado)"/>
+        <setting id="ibo_busy_spinner" type="bool" label="Carregamento com o ícone da skin e mensagem inteligente (no lugar do círculo do Kodi)" default="true"/>
+        <setting id="ibo_ok_as_toast" type="bool" label="Avisos curtos aparecem no topo (sem caixa de diálogo no centro)" default="true"/>
+    </category>
 
-    <!-- ========================================== -->
-    <!-- TMDB - THE MOVIE DATABASE                  -->
-    <!-- ========================================== -->
+    <category label="Desempenho e Aceleração">
+        <setting label="Central de desempenho — pensada para TV box de 1 a 2 GB de RAM" type="lsep"/>
+        <setting label="O perfil de memória é medido sozinho e limita threads, caches e pré-carga" type="lsep"/>
+        <setting type="sep"/>
+        <setting label="Acelerador geral" type="lsep"/>
+        <setting id="accelerator_enabled" type="bool" label="Ativar acelerador (chave geral: cache de catálogos, pré-aquecimento, IA e índice)" default="true"/>
+        <setting id="catalog_cache_hours" type="slider" label="Validade do cache de catálogos (horas)" range="1,1,24" option="int" default="6" enable="eq(-1,true)"/>
+        <setting id="vod_cache_minutes" type="slider" label="Reuso de fontes de filme/episódio (minutos, 0 = desliga)" range="0,1,30" option="int" default="10" enable="eq(-2,true)"/>
+        <setting id="accel_index_enabled" type="bool" label="Índice de catálogos em SQLite (lê em streaming, quase sem RAM)" default="true" enable="eq(-3,true)"/>
+        <setting id="accel_disk_budget_mb" type="slider" label="Limite de disco do índice (MB)" range="60,10,800" option="int" default="250" enable="eq(-4,true)"/>
+        <setting id="accel_ram_mode" type="labelenum" label="Perfil de memória" values="Automatico|Economico (1-2 GB)|Normal (3-4 GB)|Turbo (6 GB ou mais)" default="Automatico" enable="eq(-5,true)"/>
+        <setting type="sep"/>
+        <setting label="Pré-carga e IA (deixam as listas prontas antes do clique)" type="lsep"/>
+        <setting id="preload_mode" type="labelenum" label="Pré-carga de seções e categorias em segundo plano" values="Inteligente|Completo|Desligado (recomendado: só carrega ao clicar)" default="Desligado (recomendado: só carrega ao clicar)"/>
+        <setting id="ia_boost_enabled" type="bool" label="IA de pré-carga: aprende o que você assiste e adianta o próximo clique" default="true"/>
+        <setting id="ibo_prewarm_boot" type="bool" label="Aquecer os dados também ao iniciar o Kodi (mais pesado no boot)" default="false"/>
+        <setting label="Ver o que a IA aprendeu e o que já pré-carregou" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=ia_status)"/>
+        <setting label="Zerar o aprendizado da IA" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=ia_reset)"/>
+        <setting type="sep"/>
+        <setting label="Navegação rápida (abrir, voltar e parar o vídeo sem esperar a rede)" type="lsep"/>
+        <setting id="nav_fast_mode" type="bool" label="Menus em cache: retorno instantâneo, sem esperar a rede a cada clique" default="true"/>
+        <setting id="nav_update_check_hours" type="slider" label="Checar atualização do add-on a cada (horas)" range="1,1,48" option="int" default="6" enable="eq(-1,true)"/>
+        <setting type="sep"/>
+        <setting label="Busca (TMDB/Trakt)" type="lsep"/>
+        <setting label="Valores menores deixam a busca mais rápida em TV box com pouca RAM" type="lsep"/>
+        <setting id="search_timeout" type="slider" label="Tempo limite por servidor (segundos)" range="2,1,12" option="int" default="5"/>
+        <setting id="search_max_workers" type="slider" label="Servidores consultados ao mesmo tempo" range="1,1,12" option="int" default="6"/>
+        <setting type="sep"/>
+        <setting label="Diagnóstico e manutenção" type="lsep"/>
+        <setting label="Ver status do acelerador (RAM, perfil, índice, pré-carga, IA)" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=accel_status)"/>
+        <setting label="Pré-indexar catálogos agora (um servidor por vez)" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=accel_index_now)"/>
+        <setting label="Limpar caches do acelerador (catálogos + WebTV + fontes VOD)" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=accel_clear_cache)"/>
+    </category>
+
+    <category label="Player e EPG">
+        <setting label="Reprodução" type="lsep"/>
+        <setting id="use_f4mtester" type="bool" label="Usar proxy nativo para canais ao vivo" default="true"/>
+        <setting type="sep"/>
+        <setting label="Guia de programação (EPG)" type="lsep"/>
+        <setting id="enable_epg" type="bool" label="Ativar EPG (Guia de Programação)" default="true"/>
+        <setting id="epg_refresh_minutes" type="slider" label="Intervalo entre atualizações (minutos)" range="60,60,1440" option="int" default="720" enable="eq(-1,true)"/>
+        <setting id="epg_offset_hours" type="slider" label="Ajuste manual de fuso horário (horas)" range="-12,1,12" option="int" default="0" enable="eq(-2,true)"/>
+        <setting type="sep"/>
+        <setting label="EPG dos canais WebTV" type="lsep"/>
+        <setting id="webtv_epg_enabled" type="bool" label="Ativar EPG dos canais WebTV" default="true"/>
+        <setting id="webtv_epg_extra_url" type="text" label="URL(s) de EPG extra em XMLTV (opcional; separe várias por espaço ou vírgula)" default="" enable="eq(-1,true)"/>
+        <setting id="proxy_http" type="bool" label="Proxy HTTP externo (obsoleto)" default="false" visible="false"/>
+    </category>
+
     <category label="TMDB - Metadados">
         <setting label="The Movie Database (TMDB)" type="lsep"/>
-        <setting label="Adiciona posters, plots, ratings, elenco e mais!" type="lsep"/>
-
+        <setting label="Pôsteres, sinopses, notas, elenco e muito mais" type="lsep"/>
+        <setting label="API key gratuita em: themoviedb.org/settings/api" type="lsep"/>
         <setting id="tmdb_enabled" type="bool" label="Habilitar TMDB" default="true"/>
-
+        <setting id="tmdb_api_key" type="text" label="API Key" default="fc168650632c6597038cf7072a7c20da" enable="eq(-1,true)"/>
+        <setting id="tmdb_language" type="labelenum" label="Idioma dos metadados (código TMDB)" values="pt-BR|pt-PT|en-US|es-ES|fr-FR" default="pt-BR" enable="eq(-2,true)"/>
+        <setting id="tmdb_cache_days" type="slider" label="Dias de cache do TMDB" range="1,1,30" option="int" default="7" enable="eq(-3,true)"/>
+        <setting id="tmdb_use_fanart" type="bool" label="Usar fanart (imagens de fundo)" default="true" enable="eq(-4,true)"/>
+        <setting id="tmdb_use_cast" type="bool" label="Mostrar elenco" default="true" enable="eq(-5,true)"/>
+        <setting id="tmdb_use_trailer" type="bool" label="Incluir trailers" default="true" enable="eq(-6,true)"/>
         <setting type="sep"/>
-        <setting label="Configuracao da API" type="lsep"/>
-        <setting label="Obtenha sua API Key GRATIS em:" type="lsep"/>
-        <setting label="https://www.themoviedb.org/settings/api" type="lsep"/>
-
-        <setting id="tmdb_api_key" type="text" label="API Key" default="fc168650632c6597038cf7072a7c20da"/>
-
-        <setting type="sep"/>
-        <setting label="Opcoes de Metadados" type="lsep"/>
-
-        <setting id="tmdb_language"    type="select" label="Idioma dos metadados"
-                 values="Portugues (Brasil)|pt-BR|Portugues (Portugal)|pt-PT|Ingles|en-US|Espanhol|es-ES|Frances|fr-FR"
-                 default="pt-BR"/>
-        <setting id="tmdb_cache_days"  type="slider" label="Dias de cache do TMDB" default="7" range="1,1,30" option="int"/>
-        <setting id="tmdb_use_fanart"  type="bool" label="Usar Fanart (fundos)"   default="true"/>
-        <setting id="tmdb_use_cast"    type="bool" label="Mostrar elenco"          default="true"/>
-        <setting id="tmdb_use_trailer" type="bool" label="Incluir trailers"        default="true"/>
-
-        <setting type="sep"/>
-        <setting label="Manutencao do Cache" type="lsep"/>
+        <setting label="Manutenção" type="lsep"/>
         <setting label="Limpar cache do TMDB" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=tmdb_clear_cache)"/>
     </category>
 
-
-    <!-- ========================================== -->
-    <!-- TRAKT.TV - SCROBBLE E WATCHLIST            -->
-    <!-- ========================================== -->
     <category label="Trakt.tv">
-        <setting label="Integracao com Trakt.tv" type="lsep"/>
-        <setting label="Scrobble automatico, watchlist e historico sincronizado" type="lsep"/>
-
-        <setting id="trakt_enabled" type="bool" label="Ativar integracao Trakt.tv" default="false"/>
-
+        <setting label="Integração com o Trakt.tv" type="lsep"/>
+        <setting label="Scrobble automático, watchlist e histórico sincronizado" type="lsep"/>
+        <setting label="Crie o app em trakt.tv/oauth/applications/new" type="lsep"/>
+        <setting label="Redirect URI obrigatório: urn:ietf:wg:oauth:2.0:oob" type="lsep"/>
+        <setting id="trakt_enabled" type="bool" label="Ativar integração com o Trakt.tv" default="false"/>
+        <setting id="trakt_client_id" type="text" label="Client ID" default="7790012fe4684af427bc39b712a1050c4e813ed0edec72d46fbce0dd1dc4fedb" enable="eq(-1,true)"/>
+        <setting id="trakt_client_secret" type="text" label="Client Secret" option="hidden" default="2f3bcc98ed7bc2f2a5a337267c1d4c0734886e6db8c220dd9d2a6e7156c716d1" enable="eq(-2,true)"/>
         <setting type="sep"/>
-        <setting label="Credenciais da API" type="lsep"/>
-        <setting label="Crie sua aplicacao em: trakt.tv/oauth/applications/new" type="lsep"/>
-        <setting label="Redirect URI obrigatorio: urn:ietf:wg:oauth:2.0:oob" type="lsep"/>
-
-        <setting id="trakt_client_id"     type="text" label="Client ID"     default="7790012fe4684af427bc39b712a1050c4e813ed0edec72d46fbce0dd1dc4fedb"/>
-        <setting id="trakt_client_secret" type="text" label="Client Secret" default="2f3bcc98ed7bc2f2a5a337267c1d4c0734886e6db8c220dd9d2a6e7156c716d1" option="hidden"/>
-
-        <setting type="sep"/>
-        <setting label="Autenticacao" type="lsep"/>
-        <setting label="Conectar conta Trakt (abre tela de ativacao)" type="action"
+        <setting label="Conta" type="lsep"/>
+        <setting label="Conectar conta Trakt (abre a tela de ativação)" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_auth)"/>
         <setting label="Desconectar conta Trakt" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_disconnect)"/>
-
         <setting type="sep"/>
-        <setting label="Acoes" type="lsep"/>
+        <setting label="Ações" type="lsep"/>
         <setting label="Ver minha Watchlist" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_watchlist)"/>
-        <setting label="Sincronizar historico local com o Trakt agora" type="action"
+        <setting label="Sincronizar o histórico local com o Trakt agora" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_sync_history)"/>
+        <setting label="Limpar cache do Trakt.tv" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_clear_cache)"/>
+        <setting id="trakt_access_token" type="text" label="Access Token (interno)" option="hidden" default="" visible="false"/>
+        <setting id="trakt_refresh_token" type="text" label="Refresh Token (interno)" option="hidden" default="" visible="false"/>
+        <setting id="trakt_token_expiry" type="text" label="Validade do token (interno)" default="" visible="false"/>
+        <setting id="trakt_username" type="text" label="Usuário Trakt (interno)" default="" visible="false"/>
+    </category>
 
-        <setting type="sep"/>
-        <setting label="Dados internos (nao editar manualmente)" type="lsep"/>
-        <setting id="trakt_access_token"  type="text" label="Access Token"  default="" option="hidden" visible="false"/>
-        <setting id="trakt_refresh_token" type="text" label="Refresh Token" default="" option="hidden" visible="false"/>
-        <setting id="trakt_token_expiry"  type="text" label="Token Expiry"  default=""                 visible="false"/>
-    </category>	
-
-
-    <!-- ========================================== -->
-    <!-- LEGENDAS (OpenSubtitles / Stremio)         -->
-    <!-- ========================================== -->
     <category label="Legendas">
         <setting label="Legendas via Stremio/OpenSubtitles (sem API key)" type="lsep"/>
-
-        <setting type="sep"/>
         <setting id="subtitles_enabled" type="bool" label="Ativar legendas" default="true"/>
-        <setting id="legendasauto" type="bool" label="Baixar automaticamente ao reproduzir" default="true"/>
-        <setting id="limparlegendas" type="bool" label="Limpar cache antes de baixar" default="true"/>
-
+        <setting id="legendasauto" type="bool" label="Baixar automaticamente ao reproduzir" default="true" enable="eq(-1,true)"/>
+        <setting id="limparlegendas" type="bool" label="Limpar o cache antes de baixar" default="true" enable="eq(-2,true)"/>
+        <setting id="idioma_legenda" type="enum" label="Idioma preferido" values="Português (Brasil)|Inglês|Espanhol" default="0" enable="eq(-3,true)"/>
+        <setting id="fallback_legenda" type="enum" label="Idioma de reserva" values="Nenhum|Português (Portugal)|Inglês|Espanhol" default="0" enable="eq(-4,true)"/>
         <setting type="sep"/>
-        <setting label="Idiomas" type="lsep"/>
-        <setting id="idioma_legenda" type="select" label="Idioma preferido"
-                  values="Portugues (Brasil)|Ingles|Espanhol"
-                  default="0"/>
-        <setting id="fallback_legenda" type="select" label="Idioma de fallback"
-                  values="Nenhum|Portugues (Portugal)|Ingles|Espanhol"
-                  default="0"/>
-
-        <setting type="sep"/>
-        <setting label="Manutencao" type="lsep"/>
-        <setting label="Limpar cache de legendas agora" type="action"
+        <setting label="Manutenção" type="lsep"/>
+        <setting label="Limpar o cache de legendas agora" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=subtitles_clear_cache)"/>
     </category>
 
-    <!-- ========================================== -->
-    <!-- PLAYER E EPG                               -->
-    <!-- ========================================== -->
-    <category label="Player e EPG">
-        <setting label="Configuracoes de Reproducao" type="lsep"/>
-
-        <setting id="use_f4mtester"    type="bool" label="Usar proxy nativo para canais ao vivo" default="true"/>
-        <setting id="use_keltec_proxy" type="bool" label="Usar proxy local para filmes e series" default="true"/>
-
-        <setting type="sep"/>
-        <setting label="Configuracoes do EPG" type="lsep"/>
-
-        <setting id="enable_epg" type="bool" label="Ativar EPG (Guia de Programacao)" default="true"/>
-        <setting id="webtv_epg_enabled" type="bool" label="Ativar EPG dos canais WebTV (1/2/3)" default="true"/>
-        <setting id="epg_refresh_minutes" type="slider" label="Intervalo entre atualizacoes (minutos)" default="720" range="60,60,1440" option="int"/>
-        <setting id="epg_offset_hours" type="slider" label="Ajuste manual de fuso horario (horas)" default="0" range="-12,1,12" option="int"/>
-
-        <setting type="sep"/>
-        <setting label="Proxy HTTP Externo" type="lsep"/>
-        <setting label="Roteia requisicoes por proxy anonimo (pode deixar lento)" type="lsep"/>
-        <setting id="proxy_http" type="bool" label="Ativar proxy externo (deprecado)" default="false" visible="false"/>
-
-        <!-- IDs internos salvos automaticamente -->
-        <setting id="active_server_name" type="text" label="Nome servidor ativo" default="" visible="false"/>
-        <setting id="active_server_id"   type="text" label="ID servidor ativo"   default="" visible="false"/>
-    </category>
-
-    <!-- ========================================== -->
-    <!-- PLUTO TV                                   -->
-    <!-- ========================================== -->
-    <category label="PVR (Proxy)">
-        <setting label="IPTV via Proxy - Instancia 4" type="lsep"/>
-        <setting label="Exporta canais do servidor IPTV para o PVR nativo (pvr.iptvsimple)" type="lsep"/>
-        <setting label="A reproducao passa pelo proxy nativo (KPN)" type="lsep"/>
-
-        <setting type="sep"/>
-        <setting label="Sincronizar IPTV com o PVR agora" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=pvr_sync_server)"/>
-    </category>
-
-    <!-- ========================================== -->
-    <!-- FAVORITOS DO SERVIDOR                      -->
-    <!-- ========================================== -->
-    <category label="Favoritos">
-        <setting label="Canais, filmes e series marcados como favoritos" type="lsep"/>
-        <setting label="Acesse seus favoritos no menu principal ou pelo botao direito nos itens" type="lsep"/>
-
-        <setting type="sep"/>
-        <setting label="Manutencao dos Favoritos" type="lsep"/>
+    <category label="Biblioteca">
+        <setting label="Favoritos" type="lsep"/>
+        <setting label="Canais, filmes e séries marcados; acesse pelo menu principal ou pelo botão direito nos itens" type="lsep"/>
         <setting label="Ver todos os favoritos" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=favorites_menu)"/>
         <setting label="Ver canais favoritos" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=favorites_list&amp;fav_type=live)"/>
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=favorites_list&amp;amp;fav_type=live)"/>
         <setting label="Ver filmes favoritos" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=favorites_list&amp;fav_type=movie)"/>
-        <setting label="Ver series favoritas" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=favorites_list&amp;fav_type=series)"/>
-    </category>
-
-
-    <!-- ========================================== -->
-    <!-- ULTIMOS VISTOS - HISTORICO                 -->
-    <!-- ========================================== -->
-    <category label="Historico de Reproducao">
-        <setting label="Registro dos ultimos itens assistidos" type="lsep"/>
-        <setting label="Canais, filmes e series aparecem no menu Ultimos Vistos" type="lsep"/>
-
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=favorites_list&amp;amp;fav_type=movie)"/>
+        <setting label="Ver séries favoritas" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=favorites_list&amp;amp;fav_type=series)"/>
         <setting type="sep"/>
-        <setting label="Manutencao do Historico" type="lsep"/>
-        <setting label="Limpar todo o historico de reproducao" type="action"
+        <setting label="Histórico de reprodução" type="lsep"/>
+        <setting label="Ver histórico completo" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=history)"/>
+        <setting label="Limpar todo o histórico de reprodução" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=history_clear)"/>
-        <setting label="Ver historico completo" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=history)"/>
-    </category>
-
-
-    <!-- ========================================== -->
-    <!-- CONTROLE PARENTAL                          -->
-    <!-- ========================================== -->
-    <category label="Controle Parental">
-        <setting label="Controle de Conteudo Adulto" type="lsep"/>
-        <setting label="Protege conteudo [18+] com PIN numerico" type="lsep"/>
-
-        <setting id="parental_enabled"        type="bool" label="Ativar Controle Parental"        default="true"/>
-        <setting id="parental_pin"            type="text" label="PIN de Seguranca (4 digitos)"    default="0000" option="hidden"/>
-        <setting id="parental_pin_configured" type="text" label="PIN ja configurado (interno)"    default="false" visible="false"/>
-
         <setting type="sep"/>
-        <setting label="Palavras-chave bloqueadas (automatico):" type="lsep"/>
-        <setting label="adult, xxx, 18+, porn, sexo, nude, hentai, lesbica, trans, hardcore" type="lsep"/>
-    </category>
-
-    <!-- ========================================== -->
-    <!-- ESTATISTICAS DE VISUALIZACAO               -->
-    <!-- ========================================== -->
-    <category label="Estatisticas">
-        <setting label="Dashboard de Visualizacoes" type="lsep"/>
-        <setting label="Resumo de horas, generos, streaks e titulos mais assistidos" type="lsep"/>
-
-        <setting type="sep"/>
-        <setting label="Abrir Dashboard de Estatisticas" type="action"
+        <setting label="Estatísticas" type="lsep"/>
+        <setting label="Horas assistidas, gêneros, sequências e títulos mais vistos" type="lsep"/>
+        <setting label="Abrir o dashboard de estatísticas" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=stats_dashboard)"/>
-        <setting label="Ver historico completo de reproducao" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=history)"/>
     </category>
 
+    <category label="Controle Parental">
+        <setting label="Controle de conteúdo adulto" type="lsep"/>
+        <setting label="Protege conteúdo [18+] com PIN numérico" type="lsep"/>
+        <setting type="sep"/>
+        <setting label="Ativar / desativar o controle parental (pede o PIN)" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=parental_toggle)"/>
+        <setting label="Alterar o PIN de segurança (pede o PIN atual)" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=parental_change_pin)"/>
+        <setting type="sep"/>
+        <setting label="Palavras-chave bloqueadas (automático):" type="lsep"/>
+        <setting label="adult, xxx, 18+, porn, sexo, nude, hentai, lésbica, trans, hardcore" type="lsep"/>
+        <setting id="parental_enabled" type="bool" label="Controle parental ativo" default="true" visible="false"/>
+        <setting id="parental_pin" type="text" label="PIN de segurança (4 dígitos)" option="hidden" default="0000" visible="false"/>
+        <setting id="parental_pin_configured" type="text" label="PIN já configurado (interno)" default="false" visible="false"/>
+    </category>
 
-    <!-- ========================================== -->
-    <!-- LINKS DAS FONTES (REMOTO)                  -->
-    <!-- ========================================== -->
-    <category label="Links das Fontes (remoto)">
-        <setting label="Troque os dominios das fontes sem atualizar o add-on" type="lsep"/>
-        <setting id="remote_links_hours" type="number" label="Validade do cache (horas)" default="1"/>
-        <setting id="remote_links_reload" type="action" label="Atualizar links agora"
+    <category label="IPTV (PVR)">
+        <setting label="IPTV via Proxy — Instância 4" type="lsep"/>
+        <setting label="Exporta os canais do servidor IPTV para o PVR nativo (pvr.iptvsimple)" type="lsep"/>
+        <setting label="A reprodução passa pelo proxy nativo (KPN)" type="lsep"/>
+        <setting type="sep"/>
+        <setting label="Sincronizar o IPTV com o PVR agora" type="action"
+                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=pvr_sync_server)"/>
+        <setting id="pvr_addon_control" type="bool" label="PVR: controle do add-on (interno)" default="false" visible="false"/>
+        <setting id="pvr_catchup_enabled" type="bool" label="PVR: catchup (interno)" default="false" visible="false"/>
+        <setting id="pvr_catchup_days" type="number" label="PVR: dias de catchup (interno)" default="3" visible="false"/>
+        <setting id="pvr_epg_refresh" type="number" label="PVR: atualização do EPG em min (interno)" default="60" visible="false"/>
+        <setting id="pvr_epg_url" type="text" label="PVR: URL do EPG (interno)" default="" visible="false"/>
+        <setting id="pvr_osd_navigation" type="bool" label="PVR: navegação no OSD (interno)" default="true" visible="false"/>
+        <setting id="pvr_favorites_enabled" type="bool" label="PVR: favoritos (interno)" default="false" visible="false"/>
+    </category>
+
+    <category label="Links das Fontes">
+        <setting label="Troque os domínios das fontes sem atualizar o add-on" type="lsep"/>
+        <setting id="remote_links_hours" type="number" label="Validade do cache dos links (horas)" default="1"/>
+        <setting label="Atualizar os links agora" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=links_reload)"/>
+        <setting id="remote_links_url" type="text" label="URL dos links remotos (interno, preenchida pelo painel)" default="" visible="false"/>
     </category>
 
-
-    <!-- ========================================== -->
-    <!-- DESEMPENHO DA BUSCA (TMDB/TRAKT)           -->
-    <!-- ========================================== -->
-    <category label="Desempenho da Busca">
-        <setting label="Ajuste fino da busca de conteudo (TMDB/Trakt)" type="lsep"/>
-        <setting label="Valores menores deixam a busca mais rapida em TV Box com pouca RAM" type="lsep"/>
-
+    <category label="Avançado">
+        <setting label="Opções avançadas" type="lsep"/>
+        <setting id="debug_mode" type="bool" label="Modo debug (logs detalhados no Kodi)" default="false"/>
         <setting type="sep"/>
-        <setting id="search_timeout" type="slider" label="Timeout por servidor (segundos)" default="5" range="2,1,12" option="int"/>
-        <setting id="search_max_workers" type="slider" label="Servidores consultados ao mesmo tempo" default="6" range="1,1,12" option="int"/>
-
-        <setting type="sep"/>
-        <setting label="Acelerador" type="lsep"/>
-        <setting label="Guarda o catalogo de cada servidor em disco e pre-carrega menus em segundo plano" type="lsep"/>
-        <setting id="accelerator_enabled" type="bool" label="Ativar acelerador (cache de catalogos + pre-aquecimento)" default="true"/>
-        <setting id="catalog_cache_hours" type="slider" label="Validade do cache de catalogos (horas)" default="6" range="1,1,24" option="int" enable="eq(-1,true)"/>
-        <setting id="vod_cache_minutes" type="slider" label="Reuso de fontes de filme/episodio (minutos, 0 = desliga)" default="10" range="0,1,30" option="int" enable="eq(-2,true)"/>
-        <setting label="Limpar caches do acelerador (catalogos + WebTV + fontes VOD)" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=accel_clear_cache)"/>
-
-        <setting type="sep"/>
-        <setting label="Modo hibrido: RAM x disco (TV Box de 1 a 2 GB)" type="lsep"/>
-        <setting label="Mede a RAM livre e ajusta threads, caches e pre-carga sozinho" type="lsep"/>
-        <setting type="sep"/>
-        <setting label="Acelerador de navegacao (abrir, voltar e parar o video rapido)" type="lsep"/>
-        <setting id="nav_fast_mode" type="bool" label="Retorno instantaneo: menus em cache + sem esperar a rede a cada clique" default="true"/>
-        <setting id="nav_update_check_hours" type="slider" label="Checar atualizacao do add-on a cada (horas)" default="6" range="1,1,48" option="int" enable="eq(-1,true)"/>
-        <setting type="sep"/>
-        <setting id="accel_ram_mode" type="labelenum" label="Perfil de memoria" values="Automatico|Economico (1-2 GB)|Normal (3-4 GB)|Turbo (6 GB ou mais)" default="Automatico"/>
-        <setting id="accel_index_enabled" type="bool" label="Indice de catalogos em SQLite (le em streaming, quase sem RAM)" default="true"/>
-        <setting id="accel_disk_budget_mb" type="slider" label="Limite de disco do indice (MB)" default="250" range="60,10,800" option="int"/>
-        <setting label="Ver status do acelerador (RAM, perfil, indice)" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=accel_status)"/>
-        <setting label="Pre-indexar catalogos agora (um servidor por vez)" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=accel_index_now)"/>
-    </category>
-
-
-    <!-- ========================================== -->
-    <!-- AVANCADO                                   -->
-    <!-- ========================================== -->
-    <category label="Avancado">
-        <setting label="Opcoes Avancadas" type="lsep"/>
-
-        <setting id="debug_mode" type="bool" label="Modo Debug (logs detalhados no Kodi)" default="false"/>
-        <setting id="retry"      type="bool" label="Tentar novamente em falhas"            default="true"/>
-
-        <setting type="sep"/>
-        <setting label="Manutencao" type="lsep"/>
-        <setting label="Limpar todos os caches (TMDB, EPG, Servidores, Trakt, DNS)" type="action"
+        <setting label="Manutenção" type="lsep"/>
+        <setting label="Limpar todos os caches (TMDB, EPG, servidores, Trakt, DNS)" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=clear_all_cache)"/>
-        <setting label="Forcar atualizacao de servidores remotos" type="action"
+        <setting label="Forçar a atualização dos servidores remotos" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=reload_servers)"/>
-        <setting label="Ver fontes dos servidores carregados" type="action"
+        <setting label="Ver as fontes dos servidores carregados" type="action"
                  action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=server_sources)"/>
-        <setting label="Limpar cache TMDB" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=tmdb_clear_cache)"/>
-        <setting label="Limpar cache Trakt.tv" type="action"
-                 action="RunPlugin(plugin://plugin.video.keltecmp-xtream/?mode=trakt_clear_cache)"/>
-
-        <!-- IDs internos Meus Add-ons -->
         <setting id="ag_1_enabled" type="bool" label="Grupo 1 habilitado" default="false" visible="false"/>
         <setting id="ag_2_enabled" type="bool" label="Grupo 2 habilitado" default="false" visible="false"/>
         <setting id="ag_3_enabled" type="bool" label="Grupo 3 habilitado" default="false" visible="false"/>
@@ -421,23 +328,11 @@
         <setting id="ag_3_name" type="text" label="Grupo 3 nome" default="" visible="false"/>
         <setting id="ag_4_name" type="text" label="Grupo 4 nome" default="" visible="false"/>
         <setting id="ag_5_name" type="text" label="Grupo 5 nome" default="" visible="false"/>
-        <setting id="ag_1_addons" type="text" label="Grupo 1 addons" default="" visible="false"/>
-        <setting id="ag_2_addons" type="text" label="Grupo 2 addons" default="" visible="false"/>
-        <setting id="ag_3_addons" type="text" label="Grupo 3 addons" default="" visible="false"/>
-        <setting id="ag_4_addons" type="text" label="Grupo 4 addons" default="" visible="false"/>
-        <setting id="ag_5_addons" type="text" label="Grupo 5 addons" default="" visible="false"/>
-
-        <!-- PVR (configuracao interna) -->
-        <setting id="pvr_addon_control"   type="bool" label="PVR: Addon Control"     default="false" visible="false"/>
-        <setting id="pvr_catchup_enabled" type="bool" label="PVR: Catchup"           default="false" visible="false"/>
-        <setting id="pvr_catchup_days"    type="number" label="PVR: Dias Catchup"    default="3"     visible="false"/>
-        <setting id="pvr_epg_refresh"     type="number" label="PVR: EPG Refresh (min)" default="60" visible="false"/>
-        <setting id="pvr_epg_url"         type="text"   label="PVR: EPG URL"          default=""     visible="false"/>
-        <setting id="pvr_osd_navigation"  type="bool"   label="PVR: OSD Navigation"   default="true" visible="false"/>
-        <setting id="pvr_favorites_enabled" type="bool" label="PVR: Favoritos"         default="false" visible="false"/>
-
-        <!-- Trakt interno -->
-        <setting id="trakt_username" type="text" label="Trakt Username" default="" visible="false"/>
+        <setting id="ag_1_addons" type="text" label="Grupo 1 add-ons" default="" visible="false"/>
+        <setting id="ag_2_addons" type="text" label="Grupo 2 add-ons" default="" visible="false"/>
+        <setting id="ag_3_addons" type="text" label="Grupo 3 add-ons" default="" visible="false"/>
+        <setting id="ag_4_addons" type="text" label="Grupo 4 add-ons" default="" visible="false"/>
+        <setting id="ag_5_addons" type="text" label="Grupo 5 add-ons" default="" visible="false"/>
     </category>
 
 </settings>

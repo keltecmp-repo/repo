@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog">
+  <defaultcontrol always="false">-</defaultcontrol>
+  <depth>0.55</depth>
+  <animation type="WindowOpen" reversible="false">
+    <effect type="fade" start="0" end="100" time="180"/>
+    <effect type="slide" start="80,0" end="0,0" time="260" tween="cubic" easing="out"/>
+  </animation>
+  <animation type="WindowClose" reversible="false">
+    <effect type="fade" start="100" end="0" time="200"/>
+    <effect type="slide" start="0,0" end="80,0" time="220" tween="cubic" easing="in"/>
+  </animation>
+  <controls>
+    <control type="group">
+      <left>1270</left>
+      <top>36</top>
+      <control type="image">
+        <left>0</left><top>0</top><width>610</width><height>122</height>
+        <texture border="18">ibo_toast.png</texture>
+      </control>
+        <control type="image">
+          <left>14</left><top>16</top><width>8</width><height>90</height>
+          <texture>ibo_accent.png</texture>
+          <colordiffuse>FF2FB3E7</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),info)</visible>
+        </control>
+        <control type="image">
+          <left>14</left><top>16</top><width>8</width><height>90</height>
+          <texture>ibo_accent.png</texture>
+          <colordiffuse>FF4CD964</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),ok)</visible>
+        </control>
+        <control type="image">
+          <left>14</left><top>16</top><width>8</width><height>90</height>
+          <texture>ibo_accent.png</texture>
+          <colordiffuse>FFFFB300</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),warn)</visible>
+        </control>
+        <control type="image">
+          <left>14</left><top>16</top><width>8</width><height>90</height>
+          <texture>ibo_accent.png</texture>
+          <colordiffuse>FFFF5252</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),err)</visible>
+        </control>
+        <control type="image">
+          <left>14</left><top>16</top><width>8</width><height>90</height>
+          <texture>ibo_accent.png</texture>
+          <colordiffuse>FFFFEB3B</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),ask)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>30</top><width>62</width><height>62</height>
+          <texture>ibo_ic_info.png</texture>
+          <colordiffuse>FF2FB3E7</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),info)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>30</top><width>62</width><height>62</height>
+          <texture>ibo_ic_ok.png</texture>
+          <colordiffuse>FF4CD964</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),ok)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>30</top><width>62</width><height>62</height>
+          <texture>ibo_ic_warn.png</texture>
+          <colordiffuse>FFFFB300</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),warn)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>30</top><width>62</width><height>62</height>
+          <texture>ibo_ic_err.png</texture>
+          <colordiffuse>FFFF5252</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),err)</visible>
+        </control>
+        <control type="image">
+          <left>40</left><top>30</top><width>62</width><height>62</height>
+          <texture>ibo_ic_ask.png</texture>
+          <colordiffuse>FFFFEB3B</colordiffuse>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window.Property(ibo.toast_kind),ask)</visible>
+        </control>
+      <control type="image">
+        <left>40</left><top>28</top><width>66</width><height>66</height>
+        <texture>$INFO[Window.Property(ibo.toast_img)]</texture>
+        <aspectratio>keep</aspectratio>
+        <visible>!String.IsEmpty(Window.Property(ibo.toast_img))</visible>
+      </control>
+      <control type="label">
+        <left>124</left><top>16</top><width>462</width><height>38</height>
+        <font>font13</font>
+        <textcolor>FFFFEB3B</textcolor>
+        <align>left</align><aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.toast_title)]</label>
+      </control>
+      <control type="textbox">
+        <left>124</left><top>54</top><width>462</width><height>58</height>
+        <font>font12</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <align>left</align>
+        <label>$INFO[Window.Property(ibo.toast_msg)]</label>
+      </control>
+    </control>
+  </controls>
+</window>

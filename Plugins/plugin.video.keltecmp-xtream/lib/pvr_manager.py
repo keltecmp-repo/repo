@@ -18,6 +18,11 @@ _pvr_session = _LazySession({'Connection': 'keep-alive'})
 
 import xbmc
 import xbmcgui
+try:
+    from lib.ibo_dialogs import Dialog as _IboDlg, Progress as _IboProg
+except Exception:  # fallback: dialogos nativos do Kodi
+    _IboDlg = xbmcgui.Dialog
+    _IboProg = xbmcgui.DialogProgress
 import xbmcaddon
 import xbmcvfs
 
@@ -34,7 +39,7 @@ def _log(msg):
 
 
 def _notify(title, msg, icon=xbmcgui.NOTIFICATION_INFO, time_ms=4000):
-    xbmcgui.Dialog().notification(title, msg, icon, time_ms)
+    _IboDlg().notification(title, msg, icon, time_ms)
 
 
 # ─────────────────────────────────────────────────────────────
@@ -85,7 +90,7 @@ def is_pvr_installed():
 
 def prompt_install_pvr():
     """Solicita instalação do pvr.iptvsimple."""
-    if xbmcgui.Dialog().yesno(
+    if _IboDlg().yesno(
         'PVR IPTV Simple Client',
         'O addon pvr.iptvsimple não está instalado.\n\nDeseja abrir a loja de addons para instalá-lo?'
     ):

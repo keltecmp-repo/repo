@@ -349,6 +349,31 @@ class TMDBBrowser:
         d = self._get('genre/tv/list')
         return d.get('genres', []) if d else []
 
+    @staticmethod
+    def _pref(key):
+        """Opcao de Configuracoes > TMDB (padrao: ligada)."""
+        try:
+            import xbmcaddon
+            raw = xbmcaddon.Addon('plugin.video.keltecmp-xtream').getSetting(key)
+            if raw in (None, ''):
+                return True
+            return str(raw).strip().lower() not in ('false', '0', 'off', 'no')
+        except Exception:
+            return True
+
+    def _apply_prefs(self, det):
+        """Aplica 'Mostrar elenco', 'Incluir trailers' e 'Usar Fanart' as fichas completas."""
+        if not isinstance(det, dict):
+            return det
+        det = dict(det)
+        if not self._pref('tmdb_use_cast'):
+            det['cast'] = []
+        if not self._pref('tmdb_use_trailer'):
+            det['trailer'] = ''
+        if not self._pref('tmdb_use_fanart'):
+            det['fanart'] = ''
+        return det
+
     # ── Detalhes completos ───────────────────────────────────────────
 
     def get_full_movie_details(self, tmdb_id):
@@ -360,7 +385,7 @@ class TMDBBrowser:
         """
         key = f'fmov_{tmdb_id}'
         cached = self.cache.get(key)
-        if cached: return cached
+        if cached: return self._apply_prefs(cached)
 
         data = self._get(
             f'movie/{tmdb_id}',
@@ -454,7 +479,7 @@ class TMDBBrowser:
             'homepage':       data.get('homepage', ''),
         }
         self.cache.set(key, result)
-        return result
+        return self._apply_prefs(result)
 
     def get_full_tv_details(self, tmdb_id):
         """
@@ -464,7 +489,7 @@ class TMDBBrowser:
         """
         key = f'ftv_{tmdb_id}'
         cached = self.cache.get(key)
-        if cached: return cached
+        if cached: return self._apply_prefs(cached)
 
         data = self._get(
             f'tv/{tmdb_id}',
@@ -530,7 +555,7 @@ class TMDBBrowser:
             'imdb_id':        (data.get('external_ids') or {}).get('imdb_id', ''),
         }
         self.cache.set(key, result)
-        return result
+        return self._apply_prefs(result)
 
 #________________________________________________________________________________    
 
@@ -600,7 +625,7 @@ class TMDBBrowser:
 
     # ── Busca em todos os servidores (paralela) ──────────────────────
 
-    def find_in_all_servers(self, title, tmdb_type, servers, progress_cb=None, tmdb_year='', cancel_event=None, max_wait=None, max_workers=None, request_timeout=None):
+    def find_in_all_servers(self, title, tmdb_type, servers, progress_cb=None, tmdb_year='', cancel_event=None, max_wait=None, max_workers=None, request_timeout=None, tmdb_id='', alt_titles=None):
         """
         Busca em TODOS os servidores Xtream em paralelo (todos sao consultados).
         progress_cb(pct, msg) - callback opcional para DialogProgress
@@ -665,6 +690,23 @@ class TMDBBrowser:
                       if not (_sm_is_year_token and _sm_is_year_token(t))]
                      or _q_tokens_all)
 
+        # Titulos alternativos (ex.: titulo original) e ID do TMDB: o servidor pode
+        # ter o titulo em outro idioma; o ID do TMDB resolve mesmo assim.
+        _tid = str(tmdb_id or '').strip()
+        _tid = _tid if _tid.isdigit() and _tid != '0' else ''
+        _alts = []
+        for _a in (alt_titles or []):
+            _a = str(_a or '').strip()
+            if _a and _a.lower() != _q_lower and _a not in _alts:
+                _alts.append(_a)
+        _alt_info = []          # (titulo, minusculo, normalizado, tokens)
+        for _a in _alts[:3]:
+            _an = _norm_title(_a)
+            _at = [t for t in _an.split() if t]
+            if _at:
+                _alt_info.append((_a, _a.lower(), _an, _at))
+        _engine_extra = [(a[1], a[3]) for a in _alt_info]
+
         def _finish(srv):
             with results_lock:
                 done_count[0] += 1
@@ -712,14 +754,17 @@ class TMDBBrowser:
                         s_url, s_user, s_pass, tmdb_type, _q_lower, _q_tokens,
                         request_timeout=request_timeout, ctimeout=ctimeout,
                         cancel_event=cancel_event, uas=_ALT_UAS,
-                        on_net_fail=_dns_invalidate_url)
+                        on_net_fail=_dns_invalidate_url,
+                        tmdb_id=_tid, extra=_engine_extra)
                 except Exception as _he:
                     xbmc.log(f'[KelTec-TMDBv3] motor hibrido indisponivel: {type(_he).__name__}: {_he}',
                              xbmc.LOGWARNING)
                     _hy_rows = None
-                if _hy_rows is not None:
+                _is_ml = (srv.get('source') == 'minha_lista')
+                if _hy_rows is not None and not (_is_ml and not _hy_rows):
                     data = _hy_rows
                     _from_cache = True      # pula o caminho classico (ja tratado)
+                # Minha Lista nunca fica sem a 2a chance: indice vazio/falho cai no caminho classico
             if _accelerator is not None and not _from_cache:
                 try:
                     _cached = _accelerator.load_catalog(s_url, tmdb_type)
@@ -815,16 +860,36 @@ class TMDBBrowser:
                 raw  = (item.get('name') or '').strip()
                 if not raw:
                     continue
-                _rl = raw.lower()
-                if _q_lower not in _rl:
-                    if not _q_tokens:
+                sc = 0.0
+                # 1) ID do TMDB igual = certeza (qualquer idioma de titulo)
+                if _tid:
+                    _it_tid = str(item.get('tmdb') or item.get('tmdb_id') or '').strip()
+                    if not _it_tid:
+                        _inf0 = item.get('info')
+                        if isinstance(_inf0, dict):
+                            _it_tid = str(_inf0.get('tmdb_id') or _inf0.get('tmdb') or '').strip()
+                    if _it_tid == _tid:
+                        sc = 1.0
+                if sc < 1.0:
+                    _rl = raw.lower()
+                    _rf = None
+                    _pass = False
+                    if _q_lower in _rl:
+                        _pass = True
+                    elif _q_tokens:
+                        _rf = _rl.translate(_FOLD_TABLE)
+                        _pass = all(_t in _rf for _t in _q_tokens)
+                    if _pass:
+                        sc = _match_with_year(title, raw, tmdb_year, q_norm=_q_norm)
+                    # 2) titulos alternativos (titulo original etc.)
+                    if sc < 0.60 and _alt_info:
+                        if _rf is None:
+                            _rf = _rl.translate(_FOLD_TABLE)
+                        for _a, _al, _an, _at in _alt_info:
+                            if _al in _rl or all(_t in _rf for _t in _at):
+                                sc = max(sc, _match_with_year(_a, raw, tmdb_year, q_norm=_an))
+                    if sc < 0.60:  # threshold elevado — filtra titulos parciais
                         continue
-                    _rf = _rl.translate(_FOLD_TABLE)
-                    if not all(_t in _rf for _t in _q_tokens):
-                        continue
-                sc   = _match_with_year(title, raw, tmdb_year, q_norm=_q_norm)
-                if sc < 0.60:  # threshold elevado — filtra titulos parciais
-                    continue
 
                 sid = str(item.get('stream_id') or item.get('series_id') or '')
                 if not sid:
@@ -854,6 +919,8 @@ class TMDBBrowser:
                             'match_score':  sc,
                             'tmdb_type':    tmdb_type,
                             'server_name':  s_name,
+                            'server_source': srv.get('source') or '',
+                            'server_vip':   (bool(srv.get('vip')) if 'vip' in srv else None),
                             'server_url':   s_url,
                             'server_user':  s_user,
                             'server_pass':  s_pass,
@@ -893,7 +960,7 @@ class TMDBBrowser:
             xbmc.log(f'[KelTec-TMDBv3] retornando cedo: {alive} servidor(es) ainda respondendo', xbmc.LOGINFO)
 
         with results_lock:
-            results.sort(key=lambda x: (-x['match_score'], x['title'].lower()))
+            results.sort(key=lambda x: (-x['match_score'], 0 if x.get('server_source') == 'minha_lista' else 1, x['title'].lower()))
         if _engine is not None:
             _engine.relieve_memory()
         return results

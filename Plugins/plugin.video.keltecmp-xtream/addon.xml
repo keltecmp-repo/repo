@@ -1,8 +1,7 @@
-﻿
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.keltecmp-xtream"
        name="[B][COLOR silver]KelTec Media Play Xtream[/COLOR][/B]"
-       version="3.1.44"
+       version="4.0.0"
        provider-name="Team KelTec">
 
     <requires>
@@ -74,11 +73,22 @@ O autor não possui vínculo ou afiliação com o Kodi, a Team Kodi ou a XBMC Fo
         <reuselanguageinvoker>true</reuselanguageinvoker>
 
         <news>
-v3.1.43
-- Revisão das informações do add-on.
-- Atualização dos metadados.
-- Revisão das descrições em português e inglês.
-- Preparação do manifesto para testes de compatibilidade com Kodi 22.
+v3.1.60
+- Aceleracao: a IA de pre-carga agora funciona de verdade (nao depende mais da pre-carga de secoes).
+- Aceleracao: o pre-aquecimento (links, TMDB, EPG, WebTV) roda ao abrir a skin, respeitando perfil de RAM e video tocando.
+- Aceleracao: nova opcao Pre-carga (Inteligente / Completo / Desligado); renovacao de cache da navegacao nao e mais cortada.
+- Configuracoes reorganizadas em 14 categorias; opcoes de TMDB (fanart, elenco, trailer) e Modo debug agora funcionam.
+
+v3.1.58 (Kodi 19 Matrix)
+- Carregamento: o circulo nativo do Kodi foi trocado pelo icone da skin (logo + anel girando) com mensagem inteligente para cada acao (abrindo canal, preparando filme/episodio, carregando canais...). Vale ao iniciar reproducao e ao mudar de tela.
+- WebTV: removidos os avisos curtos do Guia de Programacao (sem transmissao / guia vazio / guia indisponivel).
+- WebTV: inicio da reproducao mais rapido (conexao com o player aquecida ao abrir a lista, cache curto do stream, historico gravado depois de abrir o canal, lista de canais sem esperar a rede).
+
+v3.1.57 (Kodi 19 Matrix)
+- Notificacoes no topo da tela (nativas do Kodi): nao abrem caixa no centro e nao travam a navegacao dos menus.
+- Avisos curtos que abriam caixa OK agora aparecem como notificacao no topo.
+- Acelerador: lista de itens entregue ao Kodi em lote, conexoes HTTP reaproveitadas e menos uso de CPU em segundo plano.
+- Compatibilidade Kodi 19: xbmcvfs.translatePath no servico; pacote limpo (sem cache Python 3.14 e skins duplicadas).
 
 Previous changes:
 - Simplified artwork selection options.

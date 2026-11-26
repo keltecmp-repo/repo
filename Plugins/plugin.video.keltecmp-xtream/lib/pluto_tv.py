@@ -11,6 +11,11 @@ import requests as _req
 from lib.lazy_import import LazySession as _LazySession
 _pluto_session = _LazySession({'Connection': 'keep-alive'})
 import xbmc, xbmcgui, xbmcplugin, xbmcvfs
+try:
+    from lib.ibo_dialogs import Dialog as _IboDlg, Progress as _IboProg
+except Exception:  # fallback: dialogos nativos do Kodi
+    _IboDlg = xbmcgui.Dialog
+    _IboProg = xbmcgui.DialogProgress
 
 try:                                    # cache em disco do acelerador (opcional)
     from lib import accelerator as _acc
@@ -208,7 +213,7 @@ def _end(content_type=''):
 def menu_regions():
     data = _fetch_data()
     if not data:
-        xbmcgui.Dialog().notification('Pluto TV', 'Erro ao carregar dados.')
+        _IboDlg().notification('Pluto TV', 'Erro ao carregar dados.')
         _end(); return
     regions = data.get('regions', {})
     for code in sorted(regions, key=lambda c: (regions[c].get('sort', 9), regions[c].get('name', ''))):
@@ -344,14 +349,14 @@ def menu_channels(region_code, group_name=None):
 def sync_to_pvr(region_code=None):
     addon = __import__('xbmcaddon').Addon('plugin.video.keltecmp-xtream')
     profile = __import__('xbmcvfs').translatePath(addon.getAddonInfo('profile'))
-    dp = xbmcgui.DialogProgress()
+    dp = _IboProg()
     label = 'Pluto TV - PVR'
     if region_code: label += ' [%s]' % region_code
     dp.create(label, 'Carregando dados dos canais...')
     data = _fetch_data()
     if not data or dp.iscanceled():
         if dp.iscanceled(): dp.close()
-        else: xbmcgui.Dialog().notification('Pluto TV', 'Erro ao carregar dados', xbmcgui.NOTIFICATION_ERROR)
+        else: _IboDlg().notification('Pluto TV', 'Erro ao carregar dados', xbmcgui.NOTIFICATION_ERROR)
         return
     try:
         from lib.pluto_epg import build_pvr_channels, build_epg_xml, enrich_programs_tmdb, export_pvr_files
@@ -359,7 +364,7 @@ def sync_to_pvr(region_code=None):
     except Exception as e:
         _log(f'Erro ao importar modulos EPG: {e}')
         dp.close()
-        xbmcgui.Dialog().notification('Pluto TV', 'Erro interno', xbmcgui.NOTIFICATION_ERROR)
+        _IboDlg().notification('Pluto TV', 'Erro interno', xbmcgui.NOTIFICATION_ERROR)
         return
     if not is_pvr_installed():
         dp.close()
@@ -371,7 +376,7 @@ def sync_to_pvr(region_code=None):
     channels = build_pvr_channels(data, region_code=region_code)
     if not channels:
         dp.close()
-        xbmcgui.Dialog().notification('Pluto TV', 'Nenhum canal encontrado', xbmcgui.NOTIFICATION_WARNING)
+        _IboDlg().notification('Pluto TV', 'Nenhum canal encontrado', xbmcgui.NOTIFICATION_WARNING)
         return
     dp.update(20, 'Carregando cache TMDB...')
     try:
@@ -388,7 +393,7 @@ def sync_to_pvr(region_code=None):
     ok = export_pvr_files(channels, epg_root, m3u_path, epg_path)
     if not ok:
         dp.close()
-        xbmcgui.Dialog().notification('Pluto TV', 'Falha ao exportar', xbmcgui.NOTIFICATION_ERROR)
+        _IboDlg().notification('Pluto TV', 'Falha ao exportar', xbmcgui.NOTIFICATION_ERROR)
         return
     dp.update(80, 'Configurando PVR (instancia 3)...\nAcesse TV > Guia de Programacao')
     ok_cfg = _configure_pvr_instance(m3u_path, epg_path, instance=3, instance_name='Pluto TV')
@@ -400,16 +405,16 @@ def sync_to_pvr(region_code=None):
         dp.update(100, 'Pronto!')
         xbmc.sleep(300)
         dp.close()
-        xbmcgui.Dialog().notification('Pluto TV',
+        _IboDlg().notification('Pluto TV',
             f'{len(channels)} canais sincronizados!',
             xbmcgui.NOTIFICATION_INFO, 3000)
-        yes = xbmcgui.Dialog().yesno('Pluto TV', f'{len(channels)} canais exportados.\nDeseja abrir a Guia de Programacao?')
+        yes = _IboDlg().yesno('Pluto TV', f'{len(channels)} canais exportados.\nDeseja abrir a Guia de Programacao?')
         if yes:
             xbmc.sleep(2000)
             xbmc.executebuiltin('ActivateWindow(TVGuide)')
     else:
         dp.close()
-        xbmcgui.Dialog().notification('Pluto TV', 'Falha ao configurar PVR', xbmcgui.NOTIFICATION_ERROR)
+        _IboDlg().notification('Pluto TV', 'Falha ao configurar PVR', xbmcgui.NOTIFICATION_ERROR)
     _log(f'PVR sync: {len(channels)} canais Pluto TV')
 
 def _find_channel(data, channel_id):

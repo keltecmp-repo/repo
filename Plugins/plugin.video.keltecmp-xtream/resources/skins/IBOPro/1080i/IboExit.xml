@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window type="dialog">
+  <defaultcontrol always="true">902</defaultcontrol>
+  <animation type="WindowOpen" reversible="false">
+    <effect type="fade" start="0" end="100" time="200"/>
+    <effect type="zoom" start="86" end="100" center="960,540" time="260" tween="back" easing="out"/>
+  </animation>
+  <animation type="WindowClose" reversible="false">
+    <effect type="fade" start="100" end="0" time="140"/>
+    <effect type="zoom" start="100" end="90" center="960,540" time="160" tween="cubic" easing="in"/>
+  </animation>
+  <controls>
+    <control type="image">
+      <left>0</left>
+      <top>0</top>
+      <width>1920</width>
+      <height>1080</height>
+      <texture>ibo_white.png</texture>
+      <colordiffuse>99000000</colordiffuse>
+    </control>
+    <control type="group">
+      <left>580</left>
+      <top>370</top>
+      <control type="image">
+        <left>0</left>
+        <top>0</top>
+        <width>760</width>
+        <height>340</height>
+        <texture border="16">ibo_dlg.png</texture>
+      </control>
+      <control type="label">
+        <left>20</left>
+        <top>28</top>
+        <width>720</width>
+        <height>60</height>
+        <font>font15_title</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <align>center</align>
+        <aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.exit_title)]</label>
+      </control>
+      <control type="label">
+        <left>40</left>
+        <top>100</top>
+        <width>680</width>
+        <height>80</height>
+        <font>font13</font>
+        <textcolor>FFDADADA</textcolor>
+        <align>center</align>
+        <aligny>center</aligny>
+        <label>$INFO[Window.Property(ibo.exit_text)]</label>
+      </control>
+      <control type="button" id="901">
+        <left>70</left>
+        <top>220</top>
+        <width>270</width>
+        <height>68</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <label>$INFO[Window.Property(ibo.t_yes)]</label>
+        <font>font13</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <focusedcolor>FFFFEB3B</focusedcolor>
+        <align>center</align>
+        <aligny>center</aligny>
+        <onleft>901</onleft>
+        <onright>902</onright>
+        <onup>901</onup>
+        <ondown>901</ondown>
+      </control>
+      <control type="button" id="902">
+        <left>420</left>
+        <top>220</top>
+        <width>270</width>
+        <height>68</height>
+        <texturefocus border="8">ibo_btn_f.png</texturefocus>
+        <texturenofocus border="8">ibo_btn.png</texturenofocus>
+        <label>$INFO[Window.Property(ibo.t_no)]</label>
+        <font>font13</font>
+        <textcolor>FFFFFFFF</textcolor>
+        <focusedcolor>FFFFEB3B</focusedcolor>
+        <align>center</align>
+        <aligny>center</aligny>
+        <onleft>901</onleft>
+        <onright>902</onright>
+        <onup>902</onup>
+        <ondown>902</ondown>
+      </control>
+    </control>
+  </controls>
+</window>

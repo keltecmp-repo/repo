@@ -616,6 +616,36 @@ class StatsManager:
                 )
 
         # =====================================================================
+        # MINHA LISTA
+        # =====================================================================
+        try:
+            from lib import my_list as _ML
+            from lib import watch_marks as _WM
+            _lm, _ls = _ML.get('movie'), _ML.get('series')
+            if _lm or _ls:
+                _sep()
+                _section('MINHA LISTA')
+                _sep()
+                _m_done = sum(1 for e in _lm if _WM.status_of(_WM.movie_key(e.get('title', '')))[0] == 'done')
+                _m_part = sum(1 for e in _lm if _WM.status_of(_WM.movie_key(e.get('title', '')))[0] == 'part')
+                _s_done = _s_part = 0
+                for e in _ls:
+                    _st = _WM.series_progress(e.get('title', ''))['state']
+                    _s_done += (_st == 'done')
+                    _s_part += (_st == 'part')
+                _tot = len(_lm) + len(_ls)
+                _fin = _m_done + _s_done
+                _inp = _m_part + _s_part
+                _add(f'[B]Titulos na lista:[/B]  [COLOR gold]{_tot}[/COLOR]'
+                     f'  [COLOR dimgray]({len(_lm)} filmes, {len(_ls)} series)[/COLOR]')
+                _add(f'  [COLOR lime]Concluidos:[/COLOR]  [B]{_fin}[/B]  {self._bar(_fin, _tot, width=10)}'
+                     f'  [COLOR dimgray]({self._pct(_fin, _tot)}%)[/COLOR]')
+                _add(f'  [COLOR orange]Em andamento:[/COLOR]  [B]{_inp}[/B]  {self._bar(_inp, _tot, width=10)}')
+                _add(f'  [COLOR white]Ainda nao iniciados:[/COLOR]  [B]{max(_tot - _fin - _inp, 0)}[/B]')
+        except Exception:
+            pass
+
+        # =====================================================================
         # FOOTER
         # =====================================================================
         _sep()

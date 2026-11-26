@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IboLogin: tela de conta no estilo do app IBO Pro (abas VIP/Colaborador e Minha Lista). Gerado por gen_login.py -->
+<window>
+<defaultcontrol always="true">11</defaultcontrol>
+<animation type="WindowOpen" reversible="false"><effect type="fade" start="0" end="100" time="220"/><effect type="zoom" start="94" end="100" center="960,540" time="280" tween="cubic" easing="out"/></animation>
+<animation type="WindowClose" reversible="false"><effect type="fade" start="100" end="0" time="160"/></animation>
+<controls>
+<control type="image"><left>0</left><top>0</top><width>1920</width><height>1080</height><texture>ibo_bg.jpg</texture><aspectratio>scale</aspectratio></control>
+<control type="image"><left>0</left><top>0</top><width>1920</width><height>1080</height><texture>ibo_white.png</texture><colordiffuse>99000000</colordiffuse></control>
+<control type="button" id="10"><left>60</left><top>40</top><width>84</width><height>84</height><texturefocus border="14">ibo_btn_f.png</texturefocus><texturenofocus border="14">ibo_btn.png</texturenofocus><label></label><onleft>10</onleft><onright>10</onright><onup>10</onup><ondown>11</ondown></control>
+<control type="image"><left>78</left><top>58</top><width>48</width><height>48</height><texture>ibo_ic_back.png</texture><aspectratio>keep</aspectratio></control>
+<control type="image"><left>170</left><top>44</top><width>76</width><height>76</height><texture>ibo_logo_mark.png</texture><aspectratio>keep</aspectratio></control>
+<control type="label"><left>262</left><top>40</top><width>1200</width><height>52</height><font>font15_title</font><textcolor>FFFFFFFF</textcolor><align>left</align><aligny>center</aligny><label>CONTA</label></control>
+<control type="label"><left>262</left><top>88</top><width>1200</width><height>34</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>Conecte o seu acesso VIP / Colaborador ou adicione a sua própria lista (Xtream)</label></control>
+<control type="group"><left>410</left><top>160</top>
+<control type="image"><left>0</left><top>0</top><width>1100</width><height>800</height><texture border="16">ibo_dlg.png</texture></control>
+<control type="image"><left>40</left><top>28</top><width>500</width><height>76</height><texture border="14">ibo_chip.png</texture><visible>String.IsEqual(Window.Property(ibo.lg.tab),vip)</visible></control>
+<control type="button" id="11"><left>40</left><top>28</top><width>500</width><height>76</height>
+<texturefocus border="14">ibo_pill_f.png</texturefocus><texturenofocus border="14">ibo_pill.png</texturenofocus>
+<label>$INFO[Window.Property(ibo.lg.tab_vip)]</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>11</onleft><onright>12</onright><onup>10</onup><ondown>21</ondown>
+</control>
+<control type="image"><left>40</left><top>100</top><width>500</width><height>4</height><texture>ibo_white.png</texture><colordiffuse>FFFFEB3B</colordiffuse><visible>String.IsEqual(Window.Property(ibo.lg.tab),vip)</visible></control>
+<control type="image"><left>560</left><top>28</top><width>500</width><height>76</height><texture border="14">ibo_chip.png</texture><visible>String.IsEqual(Window.Property(ibo.lg.tab),ml)</visible></control>
+<control type="button" id="12"><left>560</left><top>28</top><width>500</width><height>76</height>
+<texturefocus border="14">ibo_pill_f.png</texturefocus><texturenofocus border="14">ibo_pill.png</texturenofocus>
+<label>$INFO[Window.Property(ibo.lg.tab_ml)]</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>11</onleft><onright>12</onright><onup>10</onup><ondown>41</ondown>
+</control>
+<control type="image"><left>560</left><top>100</top><width>500</width><height>4</height><texture>ibo_white.png</texture><colordiffuse>FFFFEB3B</colordiffuse><visible>String.IsEqual(Window.Property(ibo.lg.tab),ml)</visible></control>
+<control type="image"><left>40</left><top>118</top><width>1020</width><height>2</height><texture>ibo_div.png</texture></control>
+<control type="label"><left>44</left><top>136</top><width>700</width><height>34</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>Usuário</label><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_form)</visible></control>
+<control type="group"><left>40</left><top>172</top><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_form)</visible>
+<control type="edit" id="21"><left>0</left><top>0</top><width>1020</width><height>72</height>
+<texturefocus border="14">ibo_dd_f.png</texturefocus><texturenofocus border="14">ibo_dd.png</texturenofocus>
+<label></label><hinttext>Digite o usuário</hinttext><font>font13</font><textcolor>FFFFFFFF</textcolor>
+<align>left</align><aligny>center</aligny><textoffsetx>84</textoffsetx>
+<onleft>21</onleft><onright>21</onright><onup>11</onup><ondown>22</ondown>
+</control>
+<control type="image"><left>22</left><top>16</top><width>40</width><height>40</height><texture>ibo_ic_account.png</texture><aspectratio>keep</aspectratio></control>
+<control type="image"><left>0</left><top>10</top><width>6</width><height>52</height><texture>ibo_white.png</texture><colordiffuse>FFE63946</colordiffuse><visible>Control.HasFocus(21)</visible></control>
+</control>
+<control type="label"><left>44</left><top>258</top><width>700</width><height>34</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>Senha</label><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_form)</visible></control>
+<control type="group"><left>40</left><top>294</top><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_form)</visible>
+<control type="edit" id="22"><left>0</left><top>0</top><width>1020</width><height>72</height>
+<texturefocus border="14">ibo_dd_f.png</texturefocus><texturenofocus border="14">ibo_dd.png</texturenofocus>
+<label></label><hinttext>Digite a senha</hinttext><password>true</password><font>font13</font><textcolor>FFFFFFFF</textcolor>
+<align>left</align><aligny>center</aligny><textoffsetx>84</textoffsetx>
+<onleft>22</onleft><onright>22</onright><onup>21</onup><ondown>30</ondown>
+</control>
+<control type="image"><left>22</left><top>16</top><width>40</width><height>40</height><texture>ibo_ic_lock.png</texture><aspectratio>keep</aspectratio></control>
+<control type="image"><left>0</left><top>10</top><width>6</width><height>52</height><texture>ibo_white.png</texture><colordiffuse>FFE63946</colordiffuse><visible>Control.HasFocus(22)</visible></control>
+</control>
+<control type="group"><left>40</left><top>398</top><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_form)</visible>
+<control type="button" id="30"><left>0</left><top>0</top><width>1020</width><height>80</height>
+<texturefocus border="14">ibo_btn_f.png</texturefocus><texturenofocus border="14">ibo_chip.png</texturenofocus>
+<label>$INFO[Window.Property(ibo.lg.btn_vip)]</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>30</onleft><onright>30</onright><onup>22</onup><ondown>31</ondown>
+</control></control>
+<control type="group"><left>40</left><top>498</top><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_form) + !String.IsEmpty(Window.Property(ibo.lg.trial))</visible>
+<control type="button" id="31"><left>0</left><top>0</top><width>500</width><height>72</height>
+<texturefocus border="14">ibo_btn_f.png</texturefocus><texturenofocus border="14">ibo_btn.png</texturenofocus>
+<label>Gerar teste grátis</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>31</onleft><onright>32</onright><onup>30</onup><ondown>31</ondown>
+</control></control>
+<control type="group"><left>560</left><top>498</top><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_form)</visible>
+<control type="button" id="32"><left>0</left><top>0</top><width>500</width><height>72</height>
+<texturefocus border="14">ibo_btn_f.png</texturefocus><texturenofocus border="14">ibo_btn.png</texturenofocus>
+<label>Como adquirir VIP</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>31</onleft><onright>32</onright><onup>30</onup><ondown>32</ondown>
+</control></control>
+<control type="label"><left>44</left><top>590</top><width>1012</width><height>100</height><font>font12</font><textcolor>FF8F889A</textcolor><align>left</align><aligny>center</aligny><label>Acesso exclusivo para clientes VIP e colaboradores. O VIP desbloqueia os servidores e seções exclusivas e pode ser usado junto com a sua Minha Lista.</label><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_form)</visible></control>
+<control type="label"><left>44</left><top>130</top><width>700</width><height>32</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>Nome da lista (opcional)</label><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible></control>
+<control type="group"><left>40</left><top>162</top><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible>
+<control type="edit" id="41"><left>0</left><top>0</top><width>1020</width><height>68</height>
+<texturefocus border="14">ibo_dd_f.png</texturefocus><texturenofocus border="14">ibo_dd.png</texturenofocus>
+<label></label><hinttext>Ex.: Minha Lista Premium</hinttext><font>font13</font><textcolor>FFFFFFFF</textcolor>
+<align>left</align><aligny>center</aligny><textoffsetx>84</textoffsetx>
+<onleft>41</onleft><onright>41</onright><onup>12</onup><ondown>42</ondown>
+</control>
+<control type="image"><left>22</left><top>14</top><width>40</width><height>40</height><texture>ibo_ic_playlist.png</texture><aspectratio>keep</aspectratio></control>
+<control type="image"><left>0</left><top>10</top><width>6</width><height>48</height><texture>ibo_white.png</texture><colordiffuse>FFE63946</colordiffuse><visible>Control.HasFocus(41)</visible></control>
+</control>
+<control type="label"><left>44</left><top>238</top><width>700</width><height>32</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>DNS / Servidor (exemplo: http://meudns.com:8080)</label><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible></control>
+<control type="group"><left>40</left><top>270</top><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible>
+<control type="edit" id="42"><left>0</left><top>0</top><width>1020</width><height>68</height>
+<texturefocus border="14">ibo_dd_f.png</texturefocus><texturenofocus border="14">ibo_dd.png</texturenofocus>
+<label></label><hinttext>http://meudns.com:8080</hinttext><font>font13</font><textcolor>FFFFFFFF</textcolor>
+<align>left</align><aligny>center</aligny><textoffsetx>84</textoffsetx>
+<onleft>42</onleft><onright>42</onright><onup>41</onup><ondown>43</ondown>
+</control>
+<control type="image"><left>22</left><top>14</top><width>40</width><height>40</height><texture>ibo_ic_server.png</texture><aspectratio>keep</aspectratio></control>
+<control type="image"><left>0</left><top>10</top><width>6</width><height>48</height><texture>ibo_white.png</texture><colordiffuse>FFE63946</colordiffuse><visible>Control.HasFocus(42)</visible></control>
+</control>
+<control type="label"><left>44</left><top>346</top><width>480</width><height>32</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>Usuário</label><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible></control>
+<control type="label"><left>564</left><top>346</top><width>480</width><height>32</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>Senha</label><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible></control>
+<control type="group"><left>40</left><top>378</top><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible>
+<control type="edit" id="43"><left>0</left><top>0</top><width>500</width><height>68</height>
+<texturefocus border="14">ibo_dd_f.png</texturefocus><texturenofocus border="14">ibo_dd.png</texturenofocus>
+<label></label><hinttext>Usuário da lista</hinttext><font>font13</font><textcolor>FFFFFFFF</textcolor>
+<align>left</align><aligny>center</aligny><textoffsetx>84</textoffsetx>
+<onleft>43</onleft><onright>44</onright><onup>42</onup><ondown>45</ondown>
+</control>
+<control type="image"><left>22</left><top>14</top><width>40</width><height>40</height><texture>ibo_ic_account.png</texture><aspectratio>keep</aspectratio></control>
+<control type="image"><left>0</left><top>10</top><width>6</width><height>48</height><texture>ibo_white.png</texture><colordiffuse>FFE63946</colordiffuse><visible>Control.HasFocus(43)</visible></control>
+</control>
+<control type="group"><left>560</left><top>378</top><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible>
+<control type="edit" id="44"><left>0</left><top>0</top><width>500</width><height>68</height>
+<texturefocus border="14">ibo_dd_f.png</texturefocus><texturenofocus border="14">ibo_dd.png</texturenofocus>
+<label></label><hinttext>Senha da lista</hinttext><password>true</password><font>font13</font><textcolor>FFFFFFFF</textcolor>
+<align>left</align><aligny>center</aligny><textoffsetx>84</textoffsetx>
+<onleft>43</onleft><onright>44</onright><onup>42</onup><ondown>45</ondown>
+</control>
+<control type="image"><left>22</left><top>14</top><width>40</width><height>40</height><texture>ibo_ic_lock.png</texture><aspectratio>keep</aspectratio></control>
+<control type="image"><left>0</left><top>10</top><width>6</width><height>48</height><texture>ibo_white.png</texture><colordiffuse>FFE63946</colordiffuse><visible>Control.HasFocus(44)</visible></control>
+</control>
+<control type="group"><left>40</left><top>478</top><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible>
+<control type="button" id="45"><left>0</left><top>0</top><width>1020</width><height>80</height>
+<texturefocus border="14">ibo_btn_f.png</texturefocus><texturenofocus border="14">ibo_chip.png</texturenofocus>
+<label>$INFO[Window.Property(ibo.lg.btn_ml)]</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>45</onleft><onright>45</onright><onup>43</onup><ondown>45</ondown>
+</control></control>
+<control type="label"><left>44</left><top>574</top><width>1012</width><height>110</height><font>font12</font><textcolor>FF8F889A</textcolor><align>left</align><aligny>center</aligny><label>A Minha Lista é o seu próprio servidor Xtream. Depois de conectada ela fica fixa no topo do seletor de servidores e aparece no rodapé da tela inicial, ao lado do VIP.</label><visible>String.IsEqual(Window.Property(ibo.lg.view),ml_form)</visible></control>
+<control type="label"><left>44</left><top>128</top><width>1012</width><height>44</height><font>font13</font><textcolor>FFFFEB3B</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.info_title)]</label><visible>String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)</visible></control>
+<control type="label"><left>60</left><top>178</top><width>480</width><height>52</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r1l)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r1v))</visible></control>
+<control type="label"><left>540</left><top>178</top><width>500</width><height>52</height><font>font13</font><textcolor>FFFFFFFF</textcolor><align>right</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r1v)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r1v))</visible></control>
+<control type="image"><left>40</left><top>230</top><width>1020</width><height>2</height><texture>ibo_div.png</texture><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r1v))</visible></control>
+<control type="label"><left>60</left><top>234</top><width>480</width><height>52</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r2l)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r2v))</visible></control>
+<control type="label"><left>540</left><top>234</top><width>500</width><height>52</height><font>font13</font><textcolor>FFFFFFFF</textcolor><align>right</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r2v)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r2v))</visible></control>
+<control type="image"><left>40</left><top>286</top><width>1020</width><height>2</height><texture>ibo_div.png</texture><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r2v))</visible></control>
+<control type="label"><left>60</left><top>290</top><width>480</width><height>52</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r3l)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r3v))</visible></control>
+<control type="label"><left>540</left><top>290</top><width>500</width><height>52</height><font>font13</font><textcolor>FFFFFFFF</textcolor><align>right</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r3v)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r3v))</visible></control>
+<control type="image"><left>40</left><top>342</top><width>1020</width><height>2</height><texture>ibo_div.png</texture><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r3v))</visible></control>
+<control type="label"><left>60</left><top>346</top><width>480</width><height>52</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r4l)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r4v))</visible></control>
+<control type="label"><left>540</left><top>346</top><width>500</width><height>52</height><font>font13</font><textcolor>FFFFFFFF</textcolor><align>right</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r4v)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r4v))</visible></control>
+<control type="image"><left>40</left><top>398</top><width>1020</width><height>2</height><texture>ibo_div.png</texture><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r4v))</visible></control>
+<control type="label"><left>60</left><top>402</top><width>480</width><height>52</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r5l)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r5v))</visible></control>
+<control type="label"><left>540</left><top>402</top><width>500</width><height>52</height><font>font13</font><textcolor>FFFFFFFF</textcolor><align>right</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r5v)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r5v))</visible></control>
+<control type="image"><left>40</left><top>454</top><width>1020</width><height>2</height><texture>ibo_div.png</texture><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r5v))</visible></control>
+<control type="label"><left>60</left><top>458</top><width>480</width><height>52</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r6l)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r6v))</visible></control>
+<control type="label"><left>540</left><top>458</top><width>500</width><height>52</height><font>font13</font><textcolor>FFFFFFFF</textcolor><align>right</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r6v)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r6v))</visible></control>
+<control type="image"><left>40</left><top>510</top><width>1020</width><height>2</height><texture>ibo_div.png</texture><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r6v))</visible></control>
+<control type="label"><left>60</left><top>514</top><width>480</width><height>52</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r7l)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r7v))</visible></control>
+<control type="label"><left>540</left><top>514</top><width>500</width><height>52</height><font>font13</font><textcolor>FFFFFFFF</textcolor><align>right</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r7v)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r7v))</visible></control>
+<control type="image"><left>40</left><top>566</top><width>1020</width><height>2</height><texture>ibo_div.png</texture><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r7v))</visible></control>
+<control type="label"><left>60</left><top>570</top><width>480</width><height>52</height><font>font12</font><textcolor>FFB9B2C2</textcolor><align>left</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r8l)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r8v))</visible></control>
+<control type="label"><left>540</left><top>570</top><width>500</width><height>52</height><font>font13</font><textcolor>FFFFFFFF</textcolor><align>right</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.r8v)]</label><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r8v))</visible></control>
+<control type="image"><left>40</left><top>622</top><width>1020</width><height>2</height><texture>ibo_div.png</texture><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)] + !String.IsEmpty(Window.Property(ibo.lg.r8v))</visible></control>
+<control type="group"><left>40</left><top>650</top><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)]</visible>
+<control type="button" id="51"><left>0</left><top>0</top><width>320</width><height>72</height>
+<texturefocus border="14">ibo_btn_f.png</texturefocus><texturenofocus border="14">ibo_btn.png</texturenofocus>
+<label>ATUALIZAR</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>51</onleft><onright>52</onright><onup>11</onup><ondown>51</ondown>
+</control></control>
+<control type="group"><left>390</left><top>650</top><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)]</visible>
+<control type="button" id="52"><left>0</left><top>0</top><width>340</width><height>72</height>
+<texturefocus border="14">ibo_btn_f.png</texturefocus><texturenofocus border="14">ibo_chip.png</texturenofocus>
+<label>$INFO[Window.Property(ibo.lg.btn_out)]</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>51</onleft><onright>53</onright><onup>11</onup><ondown>52</ondown>
+</control></control>
+<control type="group"><left>760</left><top>650</top><visible>[String.IsEqual(Window.Property(ibo.lg.view),vip_info) | String.IsEqual(Window.Property(ibo.lg.view),ml_info)]</visible>
+<control type="button" id="53"><left>0</left><top>0</top><width>300</width><height>72</height>
+<texturefocus border="14">ibo_btn_f.png</texturefocus><texturenofocus border="14">ibo_btn.png</texturenofocus>
+<label>FECHAR</label><font>font13</font><textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFEB3B</focusedcolor><align>center</align><aligny>center</aligny>
+<onleft>52</onleft><onright>53</onright><onup>11</onup><ondown>53</ondown>
+</control></control>
+<control type="textbox"><left>44</left><top>702</top><width>1012</width><height>80</height><font>font12</font><textcolor>FFFFFFFF</textcolor><align>center</align><label>$INFO[Window.Property(ibo.lg.msg)]</label><visible>!String.IsEmpty(Window.Property(ibo.lg.msg))</visible></control>
+<control type="group"><visible>!String.IsEmpty(Window.Property(ibo.lg.busy))</visible><control type="image"><left>2</left><top>2</top><width>1096</width><height>796</height><texture border="16">ibo_dlg.png</texture><colordiffuse>E6FFFFFF</colordiffuse></control><control type="image"><left>466</left><top>250</top><width>168</width><height>168</height><texture>ibo_spin_ring.png</texture><aspectratio>keep</aspectratio><animation effect="rotate" start="0" end="-360" center="auto" time="1000" loop="true" condition="true">Conditional</animation></control><control type="image"><left>506</left><top>290</top><width>88</width><height>88</height><texture>ibo_logo_mark.png</texture><aspectratio>keep</aspectratio></control><control type="label"><left>40</left><top>440</top><width>1020</width><height>50</height><font>font15_title</font><textcolor>FFFFFFFF</textcolor><align>center</align><aligny>center</aligny><label>$INFO[Window.Property(ibo.lg.busy)]</label></control></control>
+</control>
+</controls>
+</window>
